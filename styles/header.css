@@ -1,0 +1,23 @@
+.ul_head {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+  }
+  
+.li_head {
+    float: left;
+  }
+  
+.li_head a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+  }
+  
+.li_head a:hover {
+    background-color: #111111;
+  }

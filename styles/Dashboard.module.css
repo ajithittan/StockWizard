@@ -1,0 +1,7 @@
+.main{
+	width: 700px;
+	height: 700px;
+	border-width: 3px;
+	border-color: red;
+	position: absolute;
+}
