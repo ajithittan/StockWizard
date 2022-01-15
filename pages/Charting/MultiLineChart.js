@@ -24,27 +24,32 @@ const MultiLineChart = () =>{
         {symbol:'AAPL',change:1.5,date:'2021-12-01'},
         ])
     }
+
+    const [width,setWidth] = useState(1400)
+    const [height,setHeight] = useState(800)
     
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = 1400,
-            height = 800,
-            domainwidth = width - margin.left - margin.right,
-            domainheight = height - margin.top - margin.bottom;
+    var margin = {top: 20, right: 20, bottom: 30, left: 50}
+            //width = 1400,
+            //height = 800,
 
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
     const [charData, setcharData] = useState(null)
-    const svgElement = d3.select(ref.current).attr("width",width).attr("height",height)
+    const svgElement = d3.select(ref.current)
 
     const removeFromList = (stk) => {
         setcharData([...charData.filter(item => item.symbol === stk)])
     }
 
     const action = () =>{
-        console.log("action............")
-        svgElement = d3.select(ref.current).attr("width",300).attr("height",100)
+        console.log("action............lll")
+        setWidth(300)
+        setHeight(200)
+        ModalBox(modalref,event,false)
+        //svgElement = d3.select(ref.current).attr("width",width).attr("height",height)
     }
+
 
     useEffect (() =>{
         if (!charData){
@@ -60,12 +65,16 @@ const MultiLineChart = () =>{
             {
                 setTimeout(async ()=>{
                     setcharData([...initialset,...generateDataset()])
-                    }, 5000)    
+                    }, 1000)    
             }
         }
     },[])
 
     useEffect (() => {  
+        var domainwidth = width - margin.left - margin.right,
+            domainheight = height - margin.top - margin.bottom;
+
+        svgElement.attr("width",width).attr("height",height)
         svgElement.selectAll("*").remove()
         var g = svgElement.append("g")
             .attr("transform", "translate(" + margin.top + "," + margin.top + ")");         
@@ -108,6 +117,13 @@ const MultiLineChart = () =>{
                 .attr("height", y(0) + y(maxChng))
                 .attr("fill", "#EAFFF1")
                 .on("click",(event,d) => ModalBox(modalref,event,false))
+                .on("dblclick", (event,d) => {
+                    //d3.event.preventDefault();
+                    console.log("double clicked....")
+                    // do your thing
+                    setWidth(1400)
+                    setHeight(800)
+                  })
                 
             g.selectAll("rect_down")
                 .data(charData)
@@ -119,11 +135,18 @@ const MultiLineChart = () =>{
                 .attr("height", y(minChng) - y(0))
                 .attr("fill", "#FDE7E8")
                 .on("click",(event,d) => ModalBox(modalref,event,false))
+                .on("dblclick", (event,d) => {
+                    //d3.event.preventDefault();
+                    console.log("double clicked....")
+                    // do your thing
+                    setWidth(1400)
+                    setHeight(800)
+                  })                
                 
             g.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(1)).tickFormat(d3.timeFormat("%b")))
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(3)).tickFormat(d3.timeFormat("%b")))
     
             g.append("g")
                 .attr("class", "y axis")
@@ -153,7 +176,7 @@ const MultiLineChart = () =>{
             })
             .attr("fill", "none")
             .attr("stroke", d => color(d.key))
-            .attr("stroke-width", 2)
+            .attr("stroke-width", 1)
     
             const getRamdomVal = (max) =>{
                 return Math.floor(Math.random() * max)
@@ -218,7 +241,7 @@ const MultiLineChart = () =>{
                 .duration(1000)
         }
                 
-    },[charData])
+    },[charData,width,height])
 
     return ( 
         <div style={{padding:2,paddingLeft:50}} viewBox="0 0 100 100" onScroll={() => console.log("scrolling....")}>
