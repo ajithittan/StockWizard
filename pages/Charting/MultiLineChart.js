@@ -4,6 +4,7 @@ import moment from 'moment';
 import MultiLineAggregate from './MultiLineAggreate'
 import ModalBox from './ModalBox'
 import {CreateChartContext} from './ChartContext'
+import { useRouter } from 'next/router'
 
 const MultiLineChart = () =>{
 
@@ -35,6 +36,7 @@ const MultiLineChart = () =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
+    const router = useRouter()
     const [charData, setcharData] = useState(null)
     const svgElement = d3.select(ref.current)
 
@@ -44,9 +46,10 @@ const MultiLineChart = () =>{
 
     const action = () =>{
         console.log("action............lll")
-        setWidth(300)
-        setHeight(200)
-        ModalBox(modalref,event,false)
+        router.push('/Layout')
+        //setWidth(300)
+        //setHeight(200)
+        //ModalBox(modalref,event,false)
         //svgElement = d3.select(ref.current).attr("width",width).attr("height",height)
     }
 

@@ -352,3 +352,25 @@ color: white;
       padding:2px 5px;
       background:#ccc;
   }
+
+  #outer-grid {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
+  #outer-grid > div {
+    background-color: white;
+    color: white;
+    font-size: 4vw;
+    padding: 10px;
+  }
+  #inner-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+  }
+  #inner-grid > div {
+    background: salmon;
+    padding: 10px;
+  }
