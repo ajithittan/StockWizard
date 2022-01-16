@@ -108,6 +108,21 @@ const MultiLineChart = () =>{
             var y = d3.scaleLinear()
                     .domain(yExtent)
                     .range([domainheight, 0]); 
+
+            g.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + y.range()[0] + ")")
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(3)).tickFormat(d3.timeFormat("%b")))
+        
+            g.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
+                .call(d3.axisLeft(y).ticks(tickScale(height)).tickFormat(d => d + "%"))
+    
+            g.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + x.range()[1] + ", 0)")
+                .call(d3.axisRight(y).ticks(tickScale(height)).tickFormat(d => d + "%"))                    
             
                         
             g.selectAll("rect_up")
@@ -145,21 +160,6 @@ const MultiLineChart = () =>{
                     setWidth(1400)
                     setHeight(800)
                   })                
-                
-            g.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(3)).tickFormat(d3.timeFormat("%b")))
-    
-            g.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
-                .call(d3.axisLeft(y).ticks(tickScale(height)).tickFormat(d => d + "%"))
-    
-            g.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + x.range()[1] + ", 0)")
-                .call(d3.axisRight(y).ticks(tickScale(height)).tickFormat(d => d + "%"))
                 
             var sumstat = MultiLineAggregate(charData)  
                                 

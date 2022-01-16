@@ -1,9 +1,10 @@
-import Charting from '../Charting'
+import LineChart from '../Charts/LineChart'
 
 const index = () =>{
+    var margin = {top: 20, right: 20, bottom: 30, left: 50}
     return (
         <div id="outer-grid">
-        <div><Charting /></div>
+          <div><LineChart width={1400} height={800} margin={margin}/>?</div>
         <div id="inner-grid">
           <div>5</div>
           <div>6</div>
