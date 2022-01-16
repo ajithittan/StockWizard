@@ -37,6 +37,9 @@ const LineChart = (props) =>{
         domainheight = height - margin.top - margin.bottom;
 
     useEffect (() =>{
+        charData.sort(function(a, b) {
+            return a.date - b.date;
+        });
         const svgElement = d3.select(ref.current)
         svgElement.attr("width",width).attr("height",height)
 
@@ -49,17 +52,17 @@ const LineChart = (props) =>{
         g.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + y.range()[0] + ")")
-        .call(d3.axisBottom(x).ticks(d3.timeMonth.every(3)).tickFormat(d3.timeFormat("%b")))
+        .call(d3.axisBottom(x).ticks(d3.timeMonth.every(1)).tickFormat(d3.timeFormat("%b")))
 
         g.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
         .call(d3.axisLeft(y).ticks(5))
 
-        const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(tooltipref.current)
+        const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(tooltipref.current,x,y,charData)            
 
         Rectangle(g,charData,x,y,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,"date","close")
-        Line(g,charData,x,y)
+        Line(g,charData,x,y,tooltip,onMouseOver,onMouseOut,onMouseMove,"date","close")
 
 
     },[charData])
