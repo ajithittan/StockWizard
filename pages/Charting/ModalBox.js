@@ -13,16 +13,6 @@ const ModalBox = (modalref,event,display,action) =>{
     .append("button")
     .html("Price Chart")
     .on("click", () => action())
-
-    d3.select(modalref.current)
-    .append("text")
-    .html("<br/>")
-
-    d3.select(modalref.current)
-    .attr('class', 'modalbox')
-    .append("button")
-    .html("Minimize")
-    .on("click", () => action());  
 }
 
 export default ModalBox

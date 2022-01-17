@@ -360,6 +360,7 @@ color: white;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
+    height: 90%;
   }
   #outer-grid > div {
     background-color: white;
@@ -370,10 +371,19 @@ color: white;
   #inner-grid {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 5px;
+    grid-gap: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 90%;
   }
   #inner-grid > div {
     background:  white;
+  }
+  #inner-grid>* {
+    flex: 1 1 80px;
   }
   .line1 .crosshair {
     fill: none;

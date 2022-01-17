@@ -59,7 +59,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata) =>{
     const onMouseOut = (tp) => tp.style('display', 'none')
 
     const onMouseMove = (event,d,tp) =>{
-        console.log(event,d3.pointer(event))
+        //console.log(event,d3.pointer(event))
         var xPosition = xScale.invert(event.clientX),
             closestElement = bisectDate(linedata, moment(xPosition), 1),
             d0 = linedata[closestElement - 1],

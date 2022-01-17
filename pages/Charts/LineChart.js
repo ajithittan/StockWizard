@@ -28,7 +28,7 @@ const LineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const [charData, setcharData] = useState(generateDataset())
+    const [charData, setcharData] = useState(null)
 
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
@@ -48,9 +48,11 @@ const LineChart = (props) =>{
 
     useEffect (() =>{
         if (charData) {
+
             charData.sort(function(a, b) {
                 return a.date - b.date;
             });
+
             const svgElement = d3.select(ref.current)
             svgElement.attr("width",width).attr("height",height)
     
@@ -64,15 +66,17 @@ const LineChart = (props) =>{
             yTicks(g,x,y,width,height)    
     
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData)            
+
+            const swapStk = () => props.swap ? props.swap(props.stock): null
             
-            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove)
+            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk)
             Line(g,charData,x,y,tooltip,onMouseOver,onMouseOut,onMouseMove,"date","close")
         }
     },[charData])
 
     return (
         <>
-            <svg ref={ref}/>
+            <svg ref={ref} className="SVG_1"/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
             <div ref={modalref} style={{position:"absolute"}}></div>
         </>

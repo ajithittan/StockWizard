@@ -1,11 +1,13 @@
 import { useEffect,useState } from "react";
 import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
+import { useRouter } from 'next/router'
 
 const MovableList = (props) => {
 
     const [listofitems,setlistofitems] = useState(props.stockdetails)
     const [clicked,setClicked] = useState(false)
     const [skinVal,changeSkinVal] = useAppSkinContext()
+    const router = useRouter()
 
     let dragged;
     let id;
@@ -78,6 +80,9 @@ const MovableList = (props) => {
     const resetClk = () =>{
         clicked ? setClicked(false) : setClicked(true)
     }
+    const showPriceChart = (stk) =>{
+        router.push({pathname: '/Layout',query: {stock:stk}})
+    }
 
     return(
             <div>
@@ -96,7 +101,7 @@ const MovableList = (props) => {
                     listofitems ? listofitems.map((item,index) => 
                         <div className="drpzone" id={index} draggable="true" style={{alignItems:"center", height:'40px',cursor:'grabbing',backgroundColor:'gray'}}>
                             <div className="Row" style={{height:'40px',width:'97%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
-                                <div className="Column"><a href="#">{item.symbol}</a></div>
+                                <div className="Column"><a href="#" onClick={() => showPriceChart(item.symbol)}>{item.symbol}</a></div>
                                 <div className="Column">${item.close}</div>
                                 <div className="Column">{item.perchange.toFixed(2)}%</div>
                                 <div className="Column">{item.volume.toLocaleString()}</div>

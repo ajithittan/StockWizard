@@ -45,12 +45,7 @@ const MultiLineChart = () =>{
     }
 
     const action = () =>{
-        console.log("action............lll")
         router.push('/Layout')
-        //setWidth(300)
-        //setHeight(200)
-        //ModalBox(modalref,event,false)
-        //svgElement = d3.select(ref.current).attr("width",width).attr("height",height)
     }
 
 
