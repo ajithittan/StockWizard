@@ -381,8 +381,8 @@ color: white;
     stroke-width: 1px;
   }
   .line1 #crosshairX {
-    stroke: red;
+    stroke: #c4c4ca;
   }
   .line1 #crosshairY {
-    stroke: blue;
+    stroke: #c4c4ca;
   }

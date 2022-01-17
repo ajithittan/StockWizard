@@ -27,7 +27,7 @@ const LineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const [charData, setcharData] = useState(null)
+    const [charData, setcharData] = useState(generateDataset())
 
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
