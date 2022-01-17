@@ -5,4 +5,11 @@ const ListOfStocks  = async () =>{
     return data.data
 }
 
-export default ListOfStocks
+const StockPrice = async (stock,duration) =>{
+    let url = "http://localhost:5100/api/stocks/" + stock + "/" + duration
+    const data = await axios.get(url)
+    return data.data
+    
+}
+
+export {ListOfStocks,StockPrice}

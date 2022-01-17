@@ -11,10 +11,6 @@ const Line = (g,chardata,x,y,tooltip,onMouseOver,onMouseOut,onMouseMove,xfield,y
       .attr("d", d3.line()
       .x(d => x(moment(d.date)))
       .y(d => y(d.close)))
-      //.on('mouseover', (event,d) => {console.log("rect",event,d), onMouseOver(tooltip)})
-      .on('mouseout', () => onMouseOut(tooltip))
-      .on('mouseover', (event,d) => { console.log("mousemove in rect",event), onMouseMove(event,d,tooltip)} )
-
 }
 
 export default Line

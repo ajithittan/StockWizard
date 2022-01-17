@@ -321,8 +321,8 @@ color: white;
       border:solid;
       border-width: 0.5px;
       border-radius: 5px;
-      padding: 10px;;      
-      opacity: 0.9;
+      padding: 7px;      
+      opacity: 0.5;
       color: black;
     }
     .line_label{
@@ -375,4 +375,14 @@ color: white;
   #inner-grid > div {
     background: salmon;
     padding: 10px;
+  }
+  .line1 .crosshair {
+    fill: none;
+    stroke-width: 1px;
+  }
+  .line1 #crosshairX {
+    stroke: red;
+  }
+  .line1 #crosshairY {
+    stroke: blue;
   }
