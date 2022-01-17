@@ -60,8 +60,8 @@ const LineChart = (props) =>{
             var g = svgElement.append("g")
                 .attr("transform", "translate(" + margin.top + "," + margin.top + ")");   
             
-            xTicks(g,x,y)    
-            yTicks(g,x,y)    
+            xTicks(g,x,y,width,height)    
+            yTicks(g,x,y,width,height)    
     
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData)            
             
