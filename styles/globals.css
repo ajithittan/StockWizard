@@ -335,7 +335,7 @@ color: white;
       border-width: 0.5px;
       border-radius: 5px;
       padding: 10px;;      
-      opacity: 0.9;
+      opacity: 0.5;
     }
     .modalbox button{
       align-items: center;
@@ -373,8 +373,7 @@ color: white;
     grid-gap: 5px;
   }
   #inner-grid > div {
-    background: salmon;
-    padding: 10px;
+    background:  white;
   }
   .line1 .crosshair {
     fill: none;

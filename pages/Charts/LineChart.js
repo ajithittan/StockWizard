@@ -5,6 +5,7 @@ import Rectangle from './Components/Rectangle'
 import Line from './Components/Line'
 import ToolTip from './Components/ToolTip'
 import {StockPrice} from '../../modules/api/StockMaster'
+import { xTicks,yTicks } from "./Components/Ticks";
 
 const generateDataset = () =>{
     return ([{symbol:'AAPL',close:121,date:'2021-01-01'},
@@ -57,17 +58,10 @@ const LineChart = (props) =>{
             var y = YScale(charData,domainheight,"close")  
             
             var g = svgElement.append("g")
-                .attr("transform", "translate(" + margin.top + "," + margin.top + ")");    
+                .attr("transform", "translate(" + margin.top + "," + margin.top + ")");   
             
-            g.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + y.range()[0] + ")")
-            .call(d3.axisBottom(x).ticks(d3.timeMonth.every(1)).tickFormat(d3.timeFormat("%b")))
-    
-            g.append("g")
-            .attr("class", "y axis")
-            .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
-            .call(d3.axisLeft(y).ticks(5))
+            xTicks(g,x,y)    
+            yTicks(g,x,y)    
     
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData)            
             
