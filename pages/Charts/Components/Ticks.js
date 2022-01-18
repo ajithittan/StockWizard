@@ -1,7 +1,6 @@
 import { axisLeft,axisBottom, timeMonth,timeFormat,width,height} from "d3"
 
 const noOfXTicks = (width) =>{
-    console.log("widthwidthwidthwidth",width)
     if (width > 1200){
         return 1
     }else{

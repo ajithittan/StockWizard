@@ -41,7 +41,6 @@ const LineChart = (props) =>{
     useEffect(async () => {
         if (!charData){
             let res = await StockPrice(props.stock,12)
-            console.log("data from backend is",res)
             setcharData(res)
         }
     },[])    
