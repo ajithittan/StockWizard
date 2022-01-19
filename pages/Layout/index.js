@@ -49,7 +49,7 @@ const index = () =>{
           }
         <div id="inner-grid">
           {
-            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={Math.round(width*0.12) + eachStk} width={Math.round(width*0.12)} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
+            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={Math.round(width*0.15) + eachStk} width={Math.round(width*0.13)} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
           }
           
         </div>

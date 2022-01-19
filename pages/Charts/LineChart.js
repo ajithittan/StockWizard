@@ -4,7 +4,7 @@ import {XScale,YScale} from './Components/Scales'
 import Rectangle from './Components/Rectangle'
 import Line from './Components/Line'
 import ToolTip from './Components/ToolTip'
-import {StockPrice} from '../../modules/api/StockMaster'
+import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "./Components/Ticks";
 
 const generateDataset = () =>{
@@ -29,6 +29,8 @@ const LineChart = (props) =>{
     const tooltipref = useRef()
     const modalref = useRef()
     const [charData, setcharData] = useState(null)
+    const duration = 12
+    const cacheKey = props.stock + "_" + duration + "_PRICE"
 
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
@@ -40,7 +42,8 @@ const LineChart = (props) =>{
 
     useEffect(async () => {
         if (!charData){
-            let res = await StockPrice(props.stock,12)
+            //getStockPriceHist.cache.clear()
+            let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:12})
             setcharData(res)
         }
     },[])    
