@@ -11,12 +11,12 @@ import Text from './Components/Text'
 
 const generateDataset = () =>{
     return ([{symbol:'AAPL',close:121,date:'2021-01-01'},
-    {symbol:'AAPL',close:123,date:'2021-02-01'},
+    {symbol:'AAPL',close:1123,date:'2021-02-01'},
     {symbol:'AAPL',close:120,date:'2021-03-01'},
     {symbol:'AAPL',close:119,date:'2021-04-01'},
     {symbol:'AAPL',close:130,date:'2021-05-01'},
     {symbol:'AAPL',close:145,date:'2021-06-01'},
-    {symbol:'AAPL',close:150,date:'2021-07-01'},
+    {symbol:'AAPL',close:1150,date:'2021-07-01'},
     {symbol:'AAPL',close:120,date:'2021-08-01'},
     {symbol:'AAPL',close:130,date:'2021-09-01'},
     {symbol:'AAPL',close:134,date:'2021-10-01'},
@@ -30,7 +30,7 @@ const LineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const [charData, setcharData] = useState(null)
+    const [charData, setcharData] = useState(generateDataset())
     const duration = 12
     const cacheKey = props.stock + "_" + duration + "_PRICE"
 
@@ -44,7 +44,6 @@ const LineChart = (props) =>{
 
     useEffect(async () => {
         if (!charData){
-            //getStockPriceHist.cache.clear()
             let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:12})
             setcharData(res)
         }

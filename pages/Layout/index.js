@@ -45,11 +45,11 @@ const index = () =>{
     return (
         <div id="outer-grid">
           {
-            stocks && width > 0 ? <div><LineChart key={Math.round(width*0.70) + stocks[0]}  width={Math.round(width*0.70)} height={Math.round(height*.90)} margin={margin} stock={stocks[0]} />?</div> : <p>getting......</p>
+            stocks && width > 0 ? <div><LineChart key={Math.round(width*0.70) + stocks[0]}  width={Math.round(width*0.70)} height={Math.round(height*.90)} margin={margin} stock={stocks[0]} /></div> : <p>getting......</p>
           }
         <div id="inner-grid">
           {
-            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={Math.round(width*0.15) + eachStk} width={Math.round(width*0.13)} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
+            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={Math.round(width*0.13) + eachStk} width={Math.round(width*0.13)} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
           }
           
         </div>
