@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState,useContext } from "react"
 import * as d3 from "d3";
+import moment from "moment";
 import {XScale,YScale} from './Components/Scales'
 import Rectangle from './Components/Rectangle'
 import Line from './Components/Line'
 import ToolTip from './Components/ToolTip'
 import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "./Components/Ticks";
+import Text from './Components/Text'
 
 const generateDataset = () =>{
     return ([{symbol:'AAPL',close:121,date:'2021-01-01'},
@@ -73,6 +75,7 @@ const LineChart = (props) =>{
             
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk)
             Line(g,charData,x,y,tooltip,onMouseOver,onMouseOut,onMouseMove,"date","close")
+            Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,props.stock)
         }
     },[charData])
 

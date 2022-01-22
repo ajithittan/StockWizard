@@ -395,3 +395,8 @@ color: white;
   .line1 #crosshairY {
     stroke: #c4c4ca;
   }
+
+  .ChartHeader {
+    color: #070791;
+    font-size: 15px;
+  }
