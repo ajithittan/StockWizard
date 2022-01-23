@@ -11,13 +11,24 @@ const index = () =>{
     const [height, setHeight]   = useState(0);
 
     useEffect(() => {
+          const calcWidth = () =>{
+            //Can this be moved to css? Not happy at all!
+            if (window.innerWidth > 1300){
+              setWidth(window.innerWidth - 700);
+            } else if (window.innerWidth > 1000 && window.innerWidth < 1300) {
+              setWidth(window.innerWidth - 350);
+            }
+              else{
+              setWidth(window.innerWidth);
+            }
+          }
           if (width === 0){
-            setWidth(window.innerWidth);
+            calcWidth();
             setHeight(window.innerHeight);
           }
           const updateDimensions = () => {
-            setWidth(window.innerWidth);
-            setHeight(window.innerHeight);
+            calcWidth();
+            setHeight(window.innerHeight);  
         }
         window.addEventListener("resize", updateDimensions);
         return () => window.removeEventListener("resize", updateDimensions);
@@ -45,11 +56,11 @@ const index = () =>{
     return (
         <div id="outer-grid">
           {
-            stocks && width > 0 ? <div><LineChart key={Math.round(width*0.70) + stocks[0]}  width={Math.round(width*0.70)} height={Math.round(height*.90)} margin={margin} stock={stocks[0]} /></div> : <p>getting......</p>
+            stocks && width > 0 ? <div><LineChart key={Math.round(width) + stocks[0]}  width={Math.round(width)} height={Math.round(height*.90)} margin={margin} stock={stocks[0]} /></div> : <p>getting......</p>
           }
         <div id="inner-grid">
           {
-            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={Math.round(width*0.13) + eachStk} width={Math.round(width*0.13)} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
+            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={eachStk} width={300} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
           }
           
         </div>

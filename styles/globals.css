@@ -353,38 +353,53 @@ color: white;
       padding:2px 5px;
       background:#ccc;
   }
-
   #outer-grid {
     padding-left: 20px;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
+    height: 95%;  
   }
   #outer-grid > div {
     background-color: rgb(41, 38, 201);
     color: white;
     font-size: 4vw;
-    height: 95%;  
   }
-  #inner-grid {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row-reverse;
-    overflow-x: hidden;
-    overflow-y: auto;
+
+  @media screen and (max-width: 2000px) {
+    #inner-grid {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+    }
+    #inner-grid > div {
+      padding-left: 20px;
+      background:  rgb(187, 46, 46);
+    }
+    #inner-grid>* {
+      flex: 1 1 80px;
+    }
   }
-  #inner-grid > div {
-    background:  rgb(187, 46, 46);
-    height: 95%;
+
+  @media screen and (max-width: 1200px) {
+    #inner-grid {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+      overflow-y:auto ;
+      overflow-x: hidden;
+      height: 95%;
+    }
+    #inner-grid > div {
+      padding-left: 20px;
+      background:  rgb(181, 222, 33);
+    }
+    #inner-grid>* {
+      flex: 1 1 80px;
+    }
   }
   
-  #inner-grid>* {
-    flex: 1 1 80px;
-  }
   
   .line1 .crosshair {
     fill: none;

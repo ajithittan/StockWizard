@@ -30,7 +30,7 @@ const LineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const [charData, setcharData] = useState(generateDataset())
+    const [charData, setcharData] = useState(null)
     const duration = 12
     const cacheKey = props.stock + "_" + duration + "_PRICE"
 
