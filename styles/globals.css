@@ -355,47 +355,59 @@ color: white;
   }
   #outer-grid {
     padding-left: 20px;
+    padding-top: 10px;
+    padding-right: 10px;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
-    height: 95%;  
+
   }
   #outer-grid > div {
-    background-color: rgb(41, 38, 201);
+
     color: white;
     font-size: 4vw;
   }
-
+  .inner-grid.prpl{
+    background-color: #f8dee8;
+  }
+  .inner-grid.blu{
+    background-color: #d2d3f7;
+  }
+  .inner-grid.blk{
+    background-color: #acacaf;
+  }
   @media screen and (max-width: 2000px) {
-    #inner-grid {
+    .inner-grid {
       display: flex;
       flex-wrap: wrap;
       flex-direction: row-reverse;
+      overflow-y:auto ;
+      overflow-x: hidden;      
+      height: 90vh;
+      border-radius: 5px;
     }
-    #inner-grid > div {
+    .inner-grid > div {
       padding-left: 20px;
-      background:  rgb(187, 46, 46);
     }
-    #inner-grid>* {
+    .inner-grid>* {
       flex: 1 1 80px;
     }
   }
 
   @media screen and (max-width: 1200px) {
-    #inner-grid {
+    .inner-grid {
       display: flex;
       flex-wrap: wrap;
       flex-direction: row-reverse;
       overflow-y:auto ;
       overflow-x: hidden;
-      height: 95%;
+      height: 90vh;
     }
-    #inner-grid > div {
+    .inner-grid > div {
       padding-left: 20px;
-      background:  rgb(181, 222, 33);
     }
-    #inner-grid>* {
+    .inner-grid>* {
       flex: 1 1 80px;
     }
   }

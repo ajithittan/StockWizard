@@ -1,12 +1,13 @@
-import { getLocationOrigin } from 'next/dist/shared/lib/utils'
+import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useEffect, useState } from 'react'
 import LineChart from '../Charts/LineChart'
 import { useRouter } from 'next/router'
 
 const index = () =>{
     const [stocks,setStocks] = useState(null)
+    const [skinVal,changeSkinVal] = useAppSkinContext()
     const router = useRouter()
-    const margin = {top: 20, right: 20, bottom: 30, left: 50}
+    const margin = {top: 20, right: 0, bottom: 30, left: 50}
     const [width, setWidth]   = useState(0);
     const [height, setHeight]   = useState(0);
 
@@ -28,6 +29,7 @@ const index = () =>{
           }
           const updateDimensions = () => {
             calcWidth();
+            console.log(window.innerHeight)
             setHeight(window.innerHeight);  
         }
         window.addEventListener("resize", updateDimensions);
@@ -58,7 +60,7 @@ const index = () =>{
           {
             stocks && width > 0 ? <div><LineChart key={Math.round(width) + stocks[0]}  width={Math.round(width)} height={Math.round(height*.90)} margin={margin} stock={stocks[0]} /></div> : <p>getting......</p>
           }
-        <div id="inner-grid">
+        <div className={"inner-grid" + " " + skinVal.header} >
           {
             stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={eachStk} width={300} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
           }
