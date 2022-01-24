@@ -19,7 +19,7 @@ const index = () =>{
             } else if (window.innerWidth > 1000 && window.innerWidth < 1300) {
               setWidth(window.innerWidth - 350);
             }
-              else{
+            else{
               setWidth(window.innerWidth);
             }
           }
@@ -56,17 +56,19 @@ const index = () =>{
     }
 
     return (
+        <>
+        <div></div>
         <div id="outer-grid">
           {
             stocks && width > 0 ? <div><LineChart key={Math.round(width) + stocks[0]}  width={Math.round(width)} height={Math.round(height*.90)} margin={margin} stock={stocks[0]} /></div> : <p>getting......</p>
           }
-        <div className={"inner-grid" + " " + skinVal.header} >
-          {
-            stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={eachStk} width={300} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
-          }
-          
+          <div className={"inner-grid" + " " + skinVal.header} >
+            {
+              stocks && width > 0 ? stocks.slice(1).map(eachStk => <div><LineChart key={eachStk} width={300} height={200} margin={margin} stock={eachStk} swap={swapFirstPlace} /></div>) : <p>getting......</p>
+            }        
+          </div>
         </div>
-      </div>
+        </>
     )
 }
 export default index
