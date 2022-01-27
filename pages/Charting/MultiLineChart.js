@@ -3,36 +3,34 @@ import * as d3 from "d3";
 import moment from 'moment';
 import MultiLineAggregate from './MultiLineAggreate'
 import ModalBox from './ModalBox'
-import {CreateChartContext} from './ChartContext'
 import { useRouter } from 'next/router'
+import {StockPerChange} from '../../modules/api/StockMaster'
+import {useAppContext} from '../../modules/state/stockstate'
 
 const MultiLineChart = () =>{
 
-    console.log("Context in MultiLineChart",useContext(CreateChartContext))
-
     const generateDataset = () =>{
-        return ([{symbol:'AAPL',change:0,date:'2021-01-01'},
-        {symbol:'AAPL',change:2,date:'2021-02-01'},
-        {symbol:'AAPL',change:1,date:'2021-03-01'},
-        {symbol:'AAPL',change:-1,date:'2021-04-01'},
-        {symbol:'AAPL',change:-1,date:'2021-05-01'},
-        {symbol:'AAPL',change:-1,date:'2021-06-01'},
-        {symbol:'AAPL',change:1.5,date:'2021-07-01'},
-        {symbol:'AAPL',change:1,date:'2021-08-01'},
-        {symbol:'AAPL',change:1,date:'2021-09-01'},
-        {symbol:'AAPL',change:0.5,date:'2021-10-01'},
-        {symbol:'AAPL',change:2.5,date:'2021-11-01'},
-        {symbol:'AAPL',change:1.5,date:'2021-12-01'},
+        return ([{symbol:'AMD',change:0,date:'2021-01-01'},
+        {symbol:'AMD',change:2,date:'2021-02-01'},
+        {symbol:'AMD',change:1,date:'2021-03-01'},
+        {symbol:'AMD',change:-1,date:'2021-04-01'},
+        {symbol:'AMD',change:-1,date:'2021-05-01'},
+        {symbol:'AMD',change:-1,date:'2021-06-01'},
+        {symbol:'AMD',change:1.5,date:'2021-07-01'},
+        {symbol:'AMD',change:1,date:'2021-08-01'},
+        {symbol:'AMD',change:1,date:'2021-09-01'},
+        {symbol:'AMD',change:0.5,date:'2021-10-01'},
+        {symbol:'AMD',change:2.5,date:'2021-11-01'},
+        {symbol:'AMD',change:1.5,date:'2021-12-01'},
         ])
     }
 
     const [width,setWidth] = useState(1400)
     const [height,setHeight] = useState(800)
-    
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
-            //width = 1400,
-            //height = 800,
 
+    const stklist = useAppContext()
+    console.log("asdfsafd",stklist)
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -44,29 +42,21 @@ const MultiLineChart = () =>{
         setcharData([...charData.filter(item => item.symbol === stk)])
     }
 
-    const action = () =>{
-        router.push('/Layout')
+    const action = (stk) =>{
+        router.push({pathname: '/Layout',query: {stock:stk}})
     }
 
 
-    useEffect (() =>{
-        if (!charData){
-            let initialset = [{symbol:'AMD',change:0,date:'2021-01-01'},    
-            {symbol:'AMD',change:-5,date:'2021-04-01'},
-            {symbol:'AMD',change:-2,date:'2021-05-01'},
-            {symbol:'AMD',change:1,date:'2021-06-01'},
-            {symbol:'AMD',change:2,date:'2021-07-01'},
-            {symbol:'AMD',change:0,date:'2021-09-01'},
-            {symbol:'AMD',change:0,date:'2021-12-01'}]
-
-            setcharData(initialset)
-            {
-                setTimeout(async ()=>{
-                    setcharData([...initialset,...generateDataset()])
-                    }, 1000)    
-            }
+    useEffect (async () =>{
+        if (!charData && stklist){
+           let tempData = []
+           for (let i=0;i < stklist.length-1;i++){
+            console.log("stklist[i]",stklist[i])   
+            tempData = await StockPerChange(stklist[i].symbol,12,1,"M")
+            i ? setcharData(tempData) : setcharData([...charData,...tempData])
+           } 
         }
-    },[])
+    },[stklist])
 
     useEffect (() => {  
         var domainwidth = width - margin.left - margin.right,
@@ -215,7 +205,7 @@ const MultiLineChart = () =>{
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),removeFromList(d.symbol)}
                     else{
-                        ModalBox(modalref,event,true,action)
+                        ModalBox(modalref,event,true,action,d.symbol)
                     }    
                 })
                 .on('mouseover', () => {

@@ -1,16 +1,8 @@
-import { useEffect, useState } from "react"
+import axios from "axios";
 
-const StockList = () =>{
-
-    const [stkList,setstkList] = useState(null)
-
-    useEffect(() => {
-        setTimeout(() => setstkList([{stock:'AAPL'},{stock:'MSFT'}]),5000)
-    },[])
-
-    return (
-        stkList
-    )
+const StockList = async () =>{
+    const data = await axios.get(`http://0.0.0.0:5100/api/stocks/v2`)
+    return data.data
 }
 
 export default StockList

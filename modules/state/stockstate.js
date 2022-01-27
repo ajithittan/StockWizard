@@ -1,13 +1,20 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext,useState,useEffect } from 'react';
 import StockList from './api/stocklist'
 
 const AppContext = createContext();
 
 export function AppWrapper({ children }) {
-  let sharedState = StockList()
+
+  const [stkList,setStkList] = useState(null)
+
+  useEffect(async () =>{
+      let stklist = await StockList()
+      console.log("here?",stklist)
+      setStkList(stklist)
+  },[])
 
   return (
-    <AppContext.Provider value={sharedState}>
+    <AppContext.Provider value={stkList}>
       {children}
     </AppContext.Provider>
   );
