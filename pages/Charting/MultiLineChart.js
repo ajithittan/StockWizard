@@ -30,7 +30,6 @@ const MultiLineChart = () =>{
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
 
     const stklist = useAppContext()
-    console.log("asdfsafd",stklist)
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -62,12 +61,7 @@ const MultiLineChart = () =>{
     },[stklist])
 
     useEffect(() =>{
-        if(charData){
-            setcharData([...charData,...stkPrcData])
-
-        }else{
-            setcharData(stkPrcData)
-        }
+        charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
     },[stkPrcData])
 
     useEffect (() => {  
