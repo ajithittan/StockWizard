@@ -2,6 +2,7 @@ import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useEffect, useState } from 'react'
 import LineChart from '../Charts/LineChart'
 import { useRouter } from 'next/router'
+import {useAppContext} from '../../modules/state/stockstate'
 
 const index = () =>{
     const [stocks,setStocks] = useState(null)
@@ -10,6 +11,7 @@ const index = () =>{
     const margin = {top: 20, right: 0, bottom: 30, left: 50}
     const [width, setWidth]   = useState(0);
     const [height, setHeight]   = useState(0);
+    const stklist = useAppContext()
 
     useEffect(() => {
           const calcWidth = () =>{
@@ -37,7 +39,7 @@ const index = () =>{
     }, []);
 
     useEffect(() =>{
-      let listOfstks = ["AAPL","AMZN","BE","QS","AMD","WKSP","C","TSLA"]
+      let listOfstks = stklist
       let qryParamStk = router.query.stock
       if (qryParamStk){
         listOfstks[listOfstks.indexOf(qryParamStk)] = listOfstks[0]
@@ -47,7 +49,7 @@ const index = () =>{
       else{
         setStocks(listOfstks)
       }
-    },[])
+    },[stklist])
 
     const swapFirstPlace = (stk) =>{
       stocks[stocks.indexOf(stk)] = stocks[0]

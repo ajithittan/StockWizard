@@ -36,6 +36,8 @@ const MultiLineChart = () =>{
     const modalref = useRef()
     const router = useRouter()
     const [charData, setcharData] = useState(null)
+    const [stkPrcData, setstkPrcData] = useState(null)
+    const [duration,setDuration] = useState(24)
     const svgElement = d3.select(ref.current)
 
     const removeFromList = (stk) => {
@@ -50,13 +52,23 @@ const MultiLineChart = () =>{
     useEffect (async () =>{
         if (!charData && stklist){
            let tempData = []
-           for (let i=0;i < stklist.length-1;i++){
+           for (let i=0;i < stklist.length;i++){
             console.log("stklist[i]",stklist[i])   
-            tempData = await StockPerChange(stklist[i].symbol,12,1,"M")
-            i ? setcharData(tempData) : setcharData([...charData,...tempData])
+            tempData = await StockPerChange(stklist[i],duration,1,"M")
+            console.log(tempData)
+            setstkPrcData(tempData)
            } 
         }
     },[stklist])
+
+    useEffect(() =>{
+        if(charData){
+            setcharData([...charData,...stkPrcData])
+
+        }else{
+            setcharData(stkPrcData)
+        }
+    },[stkPrcData])
 
     useEffect (() => {  
         var domainwidth = width - margin.left - margin.right,
