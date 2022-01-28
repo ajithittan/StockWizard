@@ -29,7 +29,6 @@ const LineChart = (props) =>{
 
     const ref = useRef()
     const tooltipref = useRef()
-    const modalref = useRef()
     const [charData, setcharData] = useState(null)
     const duration = 12
     const cacheKey = props.stock + "_" + duration + "_PRICE"
@@ -66,14 +65,13 @@ const LineChart = (props) =>{
                 .attr("transform", "translate(" + margin.top + "," + margin.top + ")");   
             
             xTicks(g,x,y,width,height)    
-            yTicks(g,x,y,width,height)    
-    
-            const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData)            
+            yTicks(g,x,y,width,height)                
 
             const swapStk = () => props.swap ? props.swap(props.stock): null
-            
+
+            const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk)
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk)
-            Line(g,charData,x,y,tooltip,onMouseOver,onMouseOut,onMouseMove,"date","close")
+            Line(g,charData,x,y)
             Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,props.stock)
         }
     },[charData])
@@ -82,7 +80,6 @@ const LineChart = (props) =>{
         <>
             <svg ref={ref} className="SVG_1"/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
-            <div ref={modalref} style={{position:"absolute"}}></div>
         </>
     )
 }

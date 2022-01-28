@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as d3 from "d3";
 
-const Line = (g,chardata,x,y,tooltip,onMouseOver,onMouseOut,onMouseMove,xfield,yfield) =>{
+const Line = (g,chardata,x,y) =>{
     //console.log("tooltip",tooltip)
     g.append("path")
       .datum(chardata)
