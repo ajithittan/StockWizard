@@ -68,8 +68,8 @@ const LineChart = (props) =>{
             yTicks(g,x,y,width,height)                
 
             const swapStk = () => props.swap ? props.swap(props.stock): null
-
-            const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk)
+            const classNameAppend = props.main ? "_M" : "_N"
+            const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk,classNameAppend,props.main)
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk)
             Line(g,charData,x,y)
             Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,props.stock)
@@ -79,7 +79,9 @@ const LineChart = (props) =>{
     return (
         <div style={{position:'relative'}}>
             <svg ref={ref} className="SVG_1"/>
-            <div ref={tooltipref} style={{position:"absolute"}}></div>
+            {
+                props.main ? <div ref={tooltipref} style={{position:"absolute"}}></div> : null
+            }
         </div>
     )
 }

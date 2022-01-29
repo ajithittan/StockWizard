@@ -428,3 +428,11 @@ color: white;
     color: #070791;
     font-size: 15px;
   }
+  .ToolTipText_M{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .ToolTipText_N{
+    font-size: 12px;
+    font-weight:normal;
+  }

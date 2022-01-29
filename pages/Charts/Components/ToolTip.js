@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import moment from 'moment';
 
-const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
+const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip) =>{
     const tooltip = d3.select(tooltipref)
         .attr('class', 'tooltip')
         .style("visibility", "hidden")
@@ -20,7 +20,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
             .attr("fill", "orange")
             .on("click",() => console.log("clicked?"))
     }
-    const addCrossHairs = (x,y,event) => {
+    const addCrossHairs = (x,y,event,d) => {
         const minDt = moment(linedata.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()
         const maxDt = moment(linedata.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toDate()
 
@@ -56,7 +56,15 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
           .attr("y2", mouse[1])
           .on("dblclick",dblClick)
           addCircle(x,y)
+          showToolTip ? addToolTip(moment(minDt),maxChng,d) : null
     } 
+
+    const addToolTip = (x,y,d) =>{
+      tooltip.style("left", xScale(moment(x)) + 30 +"px")
+      .style("top", yScale(y) + 20 +"px")
+      .style("z-index",50)
+      .html("Date:" + d.date + "<br /> " + "High:" + d.high + "<br /> " + "Low:" + d.low + "<br /> "  + "Open:" + d.open + "<br /> ")
+    }
     
     const onMouseOver = () => tooltip.style("visibility", "visible")
     
@@ -69,17 +77,22 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
             d0 = linedata[closestElement - 1],
             d1 = linedata[closestElement],
             d = d1 ? xPosition - d0.date > d1.date - xPosition ? d1 : d0 : d0  
-            //console.log(event,d3.pointer(event),closestElement)
 
-        d3.selectAll("line").remove()
-        addCrossHairs(moment(d.date),d.close,event)
-
-        tooltip.style("left", xScale(moment(d.date))+"px")
-          .style("top", yScale(d.close)+"px")
-          .style("z-index",100)
-          .html(d.date + "<br /> " + d.close)   
+        d3.selectAll("line.crosshair").remove()
+        addCrossHairs(moment(d.date),d.close,event,d)
+        Text(xScale(moment(d.date)),yScale(d.close), d.close + "<br /> " + moment(d.date).format("DD MMM"))   
     }
-    
+
+    const Text = (x,y,dispTxt) => {
+      d3.selectAll("text.ToolTipText" + classNameAppend).remove()
+      g.append("text")      // text label for the x axis
+      .attr("x",x + 10)
+      .attr("y",y-5)
+      .style("z-index",100)
+      .attr("class","ToolTipText" + classNameAppend)
+      .style("text-anchor", "middle")
+      .html(dispTxt);
+  }
     
     return {tooltip,onMouseOver,onMouseOut,onMouseMove}
 
