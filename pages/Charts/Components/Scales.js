@@ -6,7 +6,7 @@ const XScale = (chartdata,domainwidth,field) =>{
     const minDt = moment(chartdata.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item[field])?acc:item[field]},'')).toDate()
     const maxDt = moment(chartdata.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item[field])?acc:item[field]},'')).toDate()
 
-    var x = d3.scaleTime()
+    let x = d3.scaleTime()
     .domain([minDt,maxDt])
     .range([0, domainwidth]);
 
@@ -16,7 +16,7 @@ const XScale = (chartdata,domainwidth,field) =>{
 const YScale = (chartdata,domainheight,field) =>{
 
     let yExtent = d3.extent(chartdata.map(item => item[field]));
-    var y = d3.scaleLinear()
+    let y = d3.scaleLinear()
     .domain(yExtent)
     .range([domainheight, 0]); 
 

@@ -17,9 +17,9 @@ const index = () =>{
           const calcWidth = () =>{
             //Can this be moved to css? Not happy at all!
             if (window.innerWidth > 1300){
-              setWidth(window.innerWidth - 700);
+              setWidth(window.innerWidth - 400);
             } else if (window.innerWidth > 1000 && window.innerWidth < 1300) {
-              setWidth(window.innerWidth - 350);
+              setWidth(window.innerWidth - 400);
             }
             else{
               setWidth(window.innerWidth);

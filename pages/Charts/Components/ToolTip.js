@@ -2,10 +2,9 @@ import * as d3 from "d3";
 import moment from 'moment';
 
 const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
-    const tooltip = d3
-        .select(tooltipref)
+    const tooltip = d3.select(tooltipref)
         .attr('class', 'tooltip')
-        .style('display', 'none')
+        .style("visibility", "hidden")
 
     const bisectDate = d3.bisector(function(d) { return moment(d.date); }).left;            
 
@@ -28,7 +27,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
         const minChng = linedata.reduce((acc,item)=>{return acc&& acc < item.close ?acc:item.close},'')
         const maxChng = linedata.reduce((acc,item)=>{return acc&& acc > item.close ?acc:item.close},'')
 
-        var crosshair = g.append("g")
+        const crosshair = g.append("g")
         .attr("class", "line1");
   
       // create horizontal line
@@ -41,7 +40,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
             .attr("id", "crosshairY")
             .attr("class", "crosshair");
 
-        var mouse = d3.pointer(event);
+        let mouse = d3.pointer(event);
 
         crosshair.select("#crosshairX")
           .attr("x1", mouse[0])
@@ -57,15 +56,15 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
           .attr("y2", mouse[1])
           .on("dblclick",dblClick)
           addCircle(x,y)
-    }
+    } 
     
-    const onMouseOver = (tp) => tp.style('display', null)
+    const onMouseOver = () => tooltip.style("visibility", "visible")
     
-    const onMouseOut = (tp) => tp.style('display', null)
+    const onMouseOut = () => tooltip.style("visibility", "visible")
 
-    const onMouseMove = (event,d,tp) =>{
-        
-        var xPosition = xScale.invert(d3.pointer(event)[0]),
+    const onMouseMove = (event) =>{
+        tooltip.style("visibility", "hidden")
+        let xPosition = xScale.invert(d3.pointer(event)[0]),
             closestElement = bisectDate(linedata, moment(xPosition), 1),
             d0 = linedata[closestElement - 1],
             d1 = linedata[closestElement],
@@ -73,13 +72,12 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick) =>{
             //console.log(event,d3.pointer(event),closestElement)
 
         d3.selectAll("line").remove()
-        //addCircle(moment(d.date),d.close)
         addCrossHairs(moment(d.date),d.close,event)
 
-        tp.style("left", xScale(moment(d.date))+"px")
+        tooltip.style("left", xScale(moment(d.date))+"px")
           .style("top", yScale(d.close)+"px")
-          .style("z-index",10)
-          .html(d.date + "<br /> " + d.close)
+          .style("z-index",100)
+          .html(d.date + "<br /> " + d.close)   
     }
     
     

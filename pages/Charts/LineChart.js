@@ -36,9 +36,9 @@ const LineChart = (props) =>{
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
     
-    var margin = props.margin
+    let margin = props.margin
 
-    var domainwidth = width - margin.left - margin.right,
+    let domainwidth = width - margin.left - margin.right,
         domainheight = height - margin.top - margin.bottom;
 
     useEffect(async () => {
@@ -58,10 +58,10 @@ const LineChart = (props) =>{
             const svgElement = d3.select(ref.current)
             svgElement.attr("width",width).attr("height",height)
     
-            var x = XScale(charData,domainwidth,"date")
-            var y = YScale(charData,domainheight,"close")  
+            const x = XScale(charData,domainwidth,"date")
+            const y = YScale(charData,domainheight,"close")  
             
-            var g = svgElement.append("g")
+            const g = svgElement.append("g")
                 .attr("transform", "translate(" + margin.top + "," + margin.top + ")");   
             
             xTicks(g,x,y,width,height)    
@@ -77,10 +77,10 @@ const LineChart = (props) =>{
     },[charData])
 
     return (
-        <>
+        <div style={{position:'relative'}}>
             <svg ref={ref} className="SVG_1"/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
-        </>
+        </div>
     )
 }
 export default LineChart
