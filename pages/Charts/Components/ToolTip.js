@@ -61,9 +61,9 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
 
     const addToolTip = (x,y,d) =>{
       tooltip.style("left", xScale(moment(x)) + 30 +"px")
-      .style("top", yScale(y) + 20 +"px")
+      .style("top", yScale(y) + 30 +"px")
       .style("z-index",50)
-      .html("Date:" + d.date + "<br /> " + "High:" + d.high + "<br /> " + "Low:" + d.low + "<br /> "  + "Open:" + d.open + "<br /> ")
+      .html("Date: " + d.date + "<br /> " + "Open: " + d.open + "<br /> " + "High: " + d.high + "<br /> " + "Low: " + d.low + "<br /> "  + "Close: " + d.close)
     }
     
     const onMouseOver = () => tooltip.style("visibility", "visible")
@@ -80,14 +80,14 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
 
         d3.selectAll("line.crosshair").remove()
         addCrossHairs(moment(d.date),d.close,event,d)
-        Text(xScale(moment(d.date)),yScale(d.close), d.close + "<br /> " + moment(d.date).format("DD MMM"))   
+        Text(xScale(moment(d.date)),yScale(d.close), d.close)   
     }
 
     const Text = (x,y,dispTxt) => {
       d3.selectAll("text.ToolTipText" + classNameAppend).remove()
       g.append("text")      // text label for the x axis
-      .attr("x",x + 10)
-      .attr("y",y-5)
+      .attr("x",x + 5)
+      .attr("y",y -10)
       .style("z-index",100)
       .attr("class","ToolTipText" + classNameAppend)
       .style("text-anchor", "middle")
