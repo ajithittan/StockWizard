@@ -8,7 +8,7 @@ import {StockPerChange} from '../../modules/api/StockMaster'
 import {useAppContext} from '../../modules/state/stockstate'
 import Text from '../Charts/Components/Text'
 
-const MultiLineChart = () =>{
+const MultiLineChart = (props) =>{
 
     const [width,setWidth] = useState(1400)
     const [height,setHeight] = useState(800)
@@ -21,7 +21,7 @@ const MultiLineChart = () =>{
     const router = useRouter()
     const [charData, setcharData] = useState(null)
     const [stkPrcData, setstkPrcData] = useState(null)
-    const [duration,setDuration] = useState(24)
+    const [duration,setDuration] = useState(props.dur)
     const svgElement = d3.select(ref.current)
 
     let colors= ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 
