@@ -61,7 +61,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
 
     const addToolTip = (x,y,d) =>{
       tooltip.style("left", xScale(moment(x)) + 30 +"px")
-      .style("top", yScale(y) + 30 +"px")
+      .style("top", yScale(y) + 20 + "px")
       .style("z-index",50)
       .html("Date: " + d.date + "<br /> " + "Open: " + d.open + "<br /> " + "High: " + d.high + "<br /> " + "Low: " + d.low + "<br /> "  + "Close: " + d.close)
     }

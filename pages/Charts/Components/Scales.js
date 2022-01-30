@@ -17,9 +17,10 @@ const XScale = (chartdata,domainwidth,field) =>{
 const YScale = (chartdata,domainheight,field) =>{
 
     let yExtent = extent(chartdata.map(item => item[field]));
+    yExtent = [yExtent[0],yExtent[1] * 1.01]
     let y = scaleLinear()
     .domain(yExtent)
-    .range([domainheight, 0]); 
+    .range([domainheight, 0])
 
     return y
 }

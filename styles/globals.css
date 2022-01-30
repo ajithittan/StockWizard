@@ -375,7 +375,7 @@ color: white;
     background-color: #d2d3f7;
   }
   .inner-grid.blk{
-    background-color: #acacaf;
+    background-color: #cdcdd3;
   }
   @media screen and (max-width: 2000px) {
     .inner-grid {
@@ -431,7 +431,7 @@ color: white;
   .ToolTipText_M{
     font-size: 14px;
     font-weight: bold;
-    color: blue;
+    background-color: blue;
   }
   .ToolTipText_N{
     font-size: 12px;

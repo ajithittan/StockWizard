@@ -6,24 +6,9 @@ import ModalBox from './ModalBox'
 import { useRouter } from 'next/router'
 import {StockPerChange} from '../../modules/api/StockMaster'
 import {useAppContext} from '../../modules/state/stockstate'
+import Text from '../Charts/Components/Text'
 
 const MultiLineChart = () =>{
-
-    const generateDataset = () =>{
-        return ([{symbol:'AMD',change:0,date:'2021-01-01'},
-        {symbol:'AMD',change:2,date:'2021-02-01'},
-        {symbol:'AMD',change:1,date:'2021-03-01'},
-        {symbol:'AMD',change:-1,date:'2021-04-01'},
-        {symbol:'AMD',change:-1,date:'2021-05-01'},
-        {symbol:'AMD',change:-1,date:'2021-06-01'},
-        {symbol:'AMD',change:1.5,date:'2021-07-01'},
-        {symbol:'AMD',change:1,date:'2021-08-01'},
-        {symbol:'AMD',change:1,date:'2021-09-01'},
-        {symbol:'AMD',change:0.5,date:'2021-10-01'},
-        {symbol:'AMD',change:2.5,date:'2021-11-01'},
-        {symbol:'AMD',change:1.5,date:'2021-12-01'},
-        ])
-    }
 
     const [width,setWidth] = useState(1400)
     const [height,setHeight] = useState(800)
@@ -39,14 +24,24 @@ const MultiLineChart = () =>{
     const [duration,setDuration] = useState(24)
     const svgElement = d3.select(ref.current)
 
-    const removeFromList = (stk) => {
+    let colors= ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 
+                'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 
+                'silver', 'teal', 'white', 'yellow'];
+
+    const keepInList = (stk) => {
         setcharData([...charData.filter(item => item.symbol === stk)])
+    }
+    const removeFrmData = (stk) =>{
+        setcharData([...charData.filter(item => item.symbol !== stk)])     
+    }
+    const color = (val) =>{
+        if (val === "AAPL") return "steelblue"
+        else return "red"
     }
 
     const action = (stk) =>{
         router.push({pathname: '/Layout',query: {stock:stk}})
     }
-
 
     useEffect (async () =>{
         if (!charData && stklist){
@@ -80,11 +75,6 @@ const MultiLineChart = () =>{
     
             const minChng = charData.reduce((acc,item)=>{return acc&& acc < item.change ?acc:item.change},'')
             const maxChng = charData.reduce((acc,item)=>{return acc&& acc > item.change ?acc:item.change},'')
-    
-            const color = (val) =>{
-                if (val === "AAPL") return "steelblue"
-                else return "red"
-            }
     
             console.log(moment(minDt).toDate(),moment(maxDt).toDate())
     
@@ -186,20 +176,29 @@ const MultiLineChart = () =>{
                 .style("stroke", data => color(data.key))
                 .text(d => d.key)
                 .transition()
-                .duration(2000)
-    
-            
-            const focus = svgElement.append('g')
-                            .attr('class', 'focus')
-                            .style('display', 'none');
-    
-            focus.append('circle').attr('r', 5).attr('class', 'circle');
+                .duration(1500)
+
+            g.selectAll("line_label_x")
+                .append("g")
+                .data(sumstat)
+                .enter()
+                .append("text")
+                .attr("class", "line_label_x")
+                .attr("transform", data => {let pos = data.values.length-1; return "translate(" + (x(maxDt) + 5) + "," + (y(data.values[pos].change)) + ")" })
+                .style("stroke", data => color(data.key))
+                .text(d => d.key)
+                .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
+                .transition()
+                .duration(1000)                
+
+            //Text(g,x(maxDt),y(20),"This is it?")
+
     
             const tooltip = d3
                 .select(tooltipref.current)
                 .attr('class', 'tooltip')
                 .style('display', 'none')
-    
+
             g.selectAll("circle")
             .data(charData)
             .join("circle")
@@ -209,7 +208,7 @@ const MultiLineChart = () =>{
                 .on("click", (event, d) => {
                     console.log(sumstat.length);
                     if (sumstat.length > 1) 
-                        {svgElement.selectAll("*").remove(),removeFromList(d.symbol)}
+                        {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
                         ModalBox(modalref,event,true,action,d.symbol)
                     }    
