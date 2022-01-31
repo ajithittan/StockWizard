@@ -13,7 +13,6 @@ const StockPrice = async (stock,duration) =>{
 }
 const StockPerChange = async (stock,duration,rollup,unit) =>{
     let url = "http://localhost:5100/api/v2/stocks/perchange/" + stock + "/" + duration + "/" + rollup + "/" + unit
-    console.log(url)
     const data = await axios.get(url)
     return data.data
 }

@@ -5,16 +5,14 @@ import MultiLineAggregate from './MultiLineAggreate'
 import ModalBox from './ModalBox'
 import { useRouter } from 'next/router'
 import {StockPerChange} from '../../modules/api/StockMaster'
-import {useAppContext} from '../../modules/state/stockstate'
-import Text from '../Charts/Components/Text'
 
 const MultiLineChart = (props) =>{
 
     const [width,setWidth] = useState(1400)
     const [height,setHeight] = useState(800)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
+    const [stklist,setstklist] = useState(props.stocks)
 
-    const stklist = useAppContext()
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -32,6 +30,7 @@ const MultiLineChart = (props) =>{
         setcharData([...charData.filter(item => item.symbol === stk)])
     }
     const removeFrmData = (stk) =>{
+        props.remove(stk)
         setcharData([...charData.filter(item => item.symbol !== stk)])     
     }
     const color = (val) =>{
@@ -47,9 +46,7 @@ const MultiLineChart = (props) =>{
         if (!charData && stklist){
            let tempData = []
            for (let i=0;i < stklist.length;i++){
-            console.log("stklist[i]",stklist[i])   
             tempData = await StockPerChange(stklist[i],duration,1,"M")
-            console.log(tempData)
             setstkPrcData(tempData)
            } 
         }
@@ -75,8 +72,6 @@ const MultiLineChart = (props) =>{
     
             const minChng = charData.reduce((acc,item)=>{return acc&& acc < item.change ?acc:item.change},'')
             const maxChng = charData.reduce((acc,item)=>{return acc&& acc > item.change ?acc:item.change},'')
-    
-            console.log(moment(minDt).toDate(),moment(maxDt).toDate())
     
             var tickScale = d3.scaleQuantize()
                 .domain([100, 1600])
@@ -118,7 +113,6 @@ const MultiLineChart = (props) =>{
                 .on("click",(event,d) => ModalBox(modalref,event,false))
                 .on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
-                    console.log("double clicked....")
                     // do your thing
                     setWidth(1400)
                     setHeight(800)
@@ -204,9 +198,8 @@ const MultiLineChart = (props) =>{
             .join("circle")
                 .attr("cx",d => x(moment(d.date).toDate()))
                 .attr("cy",d => y(d.change))
-                .attr("r",5)  
+                .attr("r",4)  
                 .on("click", (event, d) => {
-                    console.log(sumstat.length);
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
@@ -228,7 +221,7 @@ const MultiLineChart = (props) =>{
                 tooltip.transition()
                  .duration(200)
                  .style('display', null);
-                tooltip.html(d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
+                tooltip.html(d.symbol + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
                 })
                 .transition()
                 .duration(1000)

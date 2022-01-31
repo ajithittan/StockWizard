@@ -10,7 +10,6 @@ export function AppWrapper({ children }) {
   useEffect(async () =>{
       let stklist = await StockList()
       const arrStks = Array.from(Object.values(stklist), item => item.symbol)
-      console.log("here?",arrStks)
       setStkList(arrStks)
   },[])
 
