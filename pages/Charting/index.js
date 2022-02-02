@@ -18,16 +18,20 @@ const index = () => {
     const removefromlst = (stk) =>{
         setlstOfStcks([...lstOfStcks.filter(item => item !==stk)])
     }
+    const keepinlst = (stk) =>{
+        setlstOfStcks([stk])
+    }
+
 
     console.log("stkliststkliststkliststkliststklist",stklist)
 
     return (
         <div className="flex-container">
             <div className="flex-child main">
-                <MultiLineChart key={duration+lstOfStcks} dur={duration} stocks={lstOfStcks} remove={removefromlst}/>
+                <MultiLineChart key={duration+lstOfStcks} dur={duration} stocks={lstOfStcks} remove={removefromlst} keep={keepinlst}/>
             </div>
             <div className="flex-child controlplane">
-                <ControlPlane onChangeDuration={setDuration}/>
+                <ControlPlane onChangeDuration={setDuration} />
             </div>
         </div>
     )

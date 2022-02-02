@@ -27,11 +27,12 @@ const MultiLineChart = (props) =>{
                 'silver', 'teal', 'white', 'yellow'];
 
     const keepInList = (stk) => {
-        setcharData([...charData.filter(item => item.symbol === stk)])
+        props.keep(stk)
+        //setcharData([...charData.filter(item => item.symbol === stk)])
     }
     const removeFrmData = (stk) =>{
         props.remove(stk)
-        setcharData([...charData.filter(item => item.symbol !== stk)])     
+        //setcharData([...charData.filter(item => item.symbol !== stk)])     
     }
     const color = (val) =>{
         if (val === "AAPL") return "steelblue"

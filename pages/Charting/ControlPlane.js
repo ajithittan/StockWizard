@@ -1,5 +1,8 @@
-const ControlPlane = (props) =>{
+import {useAppContext} from '../../modules/state/stockstate'
 
+const ControlPlane = (props) =>{
+    const stklist = useAppContext()
+    
     return(
         <select className="Duration" id="Duration" onChange={e => props.onChangeDuration(e.target.value)}>
             <option value="12">12</option>
