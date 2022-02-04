@@ -68,8 +68,8 @@ const MultiLineChart = (props) =>{
 
         if (charData) {
             let yExtent = d3.extent(charData.map(item => item.change));
-            const minDt = moment(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()
-            const maxDt = moment(charData.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toDate()
+            const minDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
+            const maxDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
     
             const minChng = charData.reduce((acc,item)=>{return acc&& acc < item.change ?acc:item.change},'')
             const maxChng = charData.reduce((acc,item)=>{return acc&& acc > item.change ?acc:item.change},'')
@@ -79,8 +79,10 @@ const MultiLineChart = (props) =>{
                 .range([3, 5, 10]); 
     
             var x = d3.scaleTime()
-                    .domain([minDt,maxDt])
+                    .domain(d3.extent(charData, d => new Date(d.date)))
                     .range([0, domainwidth]);
+
+            console.log("hmmm",x)        
     
             var y = d3.scaleLinear()
                     .domain(yExtent)
@@ -89,7 +91,7 @@ const MultiLineChart = (props) =>{
             g.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(3)).tickFormat(d3.timeFormat("%b")))
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
         
             g.append("g")
                 .attr("class", "y axis")
