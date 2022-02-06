@@ -322,7 +322,7 @@ color: white;
       border-width: 0.5px;
       border-radius: 5px;
       padding: 7px;      
-      opacity: 0.5;
+      opacity: 1;
       color: black;
     }
     .line_label{
@@ -335,7 +335,7 @@ color: white;
       border-width: 0.5px;
       border-radius: 5px;
       padding: 10px;;      
-      opacity: 0.5;
+      opacity: 1;
     }
     .modalbox button{
       align-items: center;
@@ -455,4 +455,9 @@ color: white;
   width: 80%;
   height: 30px;
   background-color: rgb(10, 88, 233);
+}
+.flex-container_control {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
 }

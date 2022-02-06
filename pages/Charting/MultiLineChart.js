@@ -4,7 +4,7 @@ import moment from 'moment';
 import MultiLineAggregate from './MultiLineAggreate'
 import ModalBox from './ModalBox'
 import { useRouter } from 'next/router'
-import {StockPerChange} from '../../modules/api/StockMaster'
+import getStockPerChange from '../../modules/cache/cacheperchange'
 
 const MultiLineChart = (props) =>{
 
@@ -28,11 +28,9 @@ const MultiLineChart = (props) =>{
 
     const keepInList = (stk) => {
         props.keep(stk)
-        //setcharData([...charData.filter(item => item.symbol === stk)])
     }
     const removeFrmData = (stk) =>{
         props.remove(stk)
-        //setcharData([...charData.filter(item => item.symbol !== stk)])     
     }
     const color = (val) =>{
         if (val === "AAPL") return "steelblue"
@@ -47,7 +45,8 @@ const MultiLineChart = (props) =>{
         if (!charData && stklist){
            let tempData = []
            for (let i=0;i < stklist.length;i++){
-            tempData = await StockPerChange(stklist[i],duration,1,"M")
+            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"               
+            tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
             setstkPrcData(tempData)
            } 
         }
@@ -81,8 +80,6 @@ const MultiLineChart = (props) =>{
             var x = d3.scaleTime()
                     .domain(d3.extent(charData, d => new Date(d.date)))
                     .range([0, domainwidth]);
-
-            console.log("hmmm",x)        
     
             var y = d3.scaleLinear()
                     .domain(yExtent)
@@ -133,7 +130,7 @@ const MultiLineChart = (props) =>{
                 .on("click",(event,d) => ModalBox(modalref,event,false))
                 .on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
-                    console.log("double clicked....")
+                    //console.log("double clicked....")
                     // do your thing
                     setWidth(1400)
                     setHeight(800)

@@ -6,8 +6,7 @@ import {useAppContext} from '../../modules/state/stockstate'
 const index = () => {
     const stklist = useAppContext()
     const [lstOfStcks,setlstOfStcks] = useState(null)
-    const [duration,setDuration] = useState(12)
-    console.log("durationdurationdurationduration",duration)
+    const [duration,setDuration] = useState(6)
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -21,9 +20,10 @@ const index = () => {
     const keepinlst = (stk) =>{
         setlstOfStcks([stk])
     }
-
-
-    console.log("stkliststkliststkliststkliststklist",stklist)
+    const addTolst = (stk) =>{
+        lstOfStcks.push(stk)
+        setlstOfStcks([...lstOfStcks])
+    }
 
     return (
         <div className="flex-container">
@@ -31,7 +31,7 @@ const index = () => {
                 <MultiLineChart key={duration+lstOfStcks} dur={duration} stocks={lstOfStcks} remove={removefromlst} keep={keepinlst}/>
             </div>
             <div className="flex-child controlplane">
-                <ControlPlane onChangeDuration={setDuration} />
+                <ControlPlane key={stklist} key={lstOfStcks} onChangeDuration={setDuration} stocks={stklist} checked={lstOfStcks} remove={removefromlst} add={addTolst}/>
             </div>
         </div>
     )
