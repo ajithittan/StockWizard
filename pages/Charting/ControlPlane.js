@@ -1,4 +1,5 @@
 import ListingOfStocks from './Components/ListingOfStocks'
+import SectorStocks from './Components/SectorStocks'
 const ControlPlane = (props) =>{
     
     return(
@@ -13,6 +14,7 @@ const ControlPlane = (props) =>{
             </select>
             <div className="flex-container_control">
                 <ListingOfStocks stocks={props.stocks} remove={props.remove} add={props.add} checked={props.checked}/>
+                <SectorStocks />
             </div>
         </>
     )

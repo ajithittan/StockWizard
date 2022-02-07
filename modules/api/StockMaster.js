@@ -16,5 +16,10 @@ const StockPerChange = async (stock,duration,rollup,unit) =>{
     const data = await axios.get(url)
     return data.data
 }
+const StockSector = async () =>{
+    let url = "http://localhost:5100/api/v2/sectors"
+    const data = await axios.get(url)
+    return data.data
+}
 
-export {ListOfStocks,StockPrice,StockPerChange}
+export {ListOfStocks,StockPrice,StockPerChange,StockSector}
