@@ -17,11 +17,6 @@ const SectorStocks = () =>{
             sectors ? sectors.map(item => 
                 <>
                     <div className="sector">{item.sector}
-                        <>
-                            {     
-                                item.stocks.map(stk => <>{stk}</>)
-                            }
-                        </>
                     </div>
                 </>
             ) : null

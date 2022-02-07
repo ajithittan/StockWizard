@@ -452,17 +452,29 @@ color: white;
 }
 
 #Duration{
-  width: 80%;
+  width: 90%;
   height: 30px;
   background-color: rgb(10, 88, 233);
 }
 .flex-container_control {
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
+  font-size: 12px;
 }
 .sector{
   padding-left: 10px;
   padding-top: 10px;
+  font-weight: bold;
+}
+.listStocks{
+  padding-top: 5px;
+  background-color: rgb(186, 206, 243);
+  width: 90%;
+  border-radius: 5px;
+  padding-bottom: 5px;
+}
+.headerListStocks{
+  align-content: center;
+  padding-left: 10px;
   font-weight: bold;
 }

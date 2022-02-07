@@ -12,8 +12,14 @@ const ControlPlane = (props) =>{
                 <option value="48">48</option>
                 <option value="60">60</option>
             </select>
+            <br></br><br></br>
+            <div className="listStocks">
+                <span className="headerListStocks">Positions</span>
+                <div className="flex-container_control">
+                    <ListingOfStocks stocks={props.stocks} remove={props.remove} add={props.add} checked={props.checked}/>
+                </div>
+            </div>
             <div className="flex-container_control">
-                <ListingOfStocks stocks={props.stocks} remove={props.remove} add={props.add} checked={props.checked}/>
                 <SectorStocks />
             </div>
         </>
