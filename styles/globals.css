@@ -466,6 +466,9 @@ color: white;
   padding-top: 10px;
   font-weight: bold;
 }
+.sector:hover {
+  cursor: pointer;
+}
 .listStocks{
   padding-top: 5px;
   background-color: rgb(186, 206, 243);

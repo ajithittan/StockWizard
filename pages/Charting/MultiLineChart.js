@@ -184,9 +184,6 @@ const MultiLineChart = (props) =>{
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
                 .transition()
                 .duration(1000)                
-
-            //Text(g,x(maxDt),y(20),"This is it?")
-
     
             const tooltip = d3
                 .select(tooltipref.current)
