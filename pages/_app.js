@@ -1,6 +1,7 @@
 import { AppWrapper } from '../modules/state/stockstate'
 import {AppSkinWrapper} from '../modules/state/GlobalSkinState'
 import '../styles/globals.css'
+import '../styles/sectormaint.css'
 import Header from './Header/Index'
 
 function MyApp({ Component, pageProps }) {

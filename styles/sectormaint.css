@@ -1,0 +1,10 @@
+.sectormaint{
+    padding: 10px;
+    width: 40%;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.sectormaint > div{
+    font-size: 15px;
+}

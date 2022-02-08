@@ -479,5 +479,6 @@ color: white;
 .headerListStocks{
   align-content: center;
   padding-left: 10px;
+  font-size: 12px;
   font-weight: bold;
 }

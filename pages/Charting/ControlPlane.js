@@ -19,8 +19,8 @@ const ControlPlane = (props) =>{
                     <ListingOfStocks stocks={props.stocks} remove={props.remove} add={props.add} checked={props.checked}/>
                 </div>
             </div>
-            <div className="flex-container_control">
-                <SectorStocks onChangeSector={props.onChangeSector} pos={props.pos}/>
+            <div className="flex-container_control" style={{paddingTop:'5px'}}>
+                <SectorStocks onChangeSector={props.onChangeSector} pos={props.pos} header={props.header}/>
             </div>
         </>
     )
