@@ -28,4 +28,11 @@ const CreateStockSector = async (sector) =>{
     return data
 }
 
-export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector}
+const DeleteStockSector = async (sectorId) =>{
+    let url = "http://localhost:5100/api/v2/delsectors/" + sectorId
+    const data = await axios.post(url)
+    return data
+}
+
+
+export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector}

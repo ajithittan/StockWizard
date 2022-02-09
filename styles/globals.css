@@ -455,6 +455,8 @@ color: white;
   width: 90%;
   height: 30px;
   background-color: rgb(10, 88, 233);
+  color: whitesmoke;
+  align-items: center;
 }
 .flex-container_control {
   display: flex;
