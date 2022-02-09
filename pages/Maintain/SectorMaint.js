@@ -62,7 +62,7 @@ const SectorMaint = () =>{
                     <fieldset>
                         <legend>
                             <input type="text" name="title" className="sectorinput"  value={item.sector} onClick={(e) => startSector()} onChange={(e) => setInpSec(e.target.value)}/> 
-                            <a href="#" className="sectordelete" title="Remove article" onClick={() => delSector(item.idstocksector)}>&#10006;</a>
+                            <a href="#" className="sectordelete" title="Remove sector" onClick={() => delSector(item.idstocksector)}>&#10006;</a>
                         </legend>
                         {
                             item.stocks.map((item,index) => <div >{index+1}) {item}</div>)
@@ -81,7 +81,7 @@ const SectorMaint = () =>{
                                 </div>) 
                          : null
                 }
-                <input className="sectorbutton" type="button" value="Create Sector" onClick={() => sendToDb()} />
+                <input className="sectorbutton" type="button" value="Create Sector" onClick={(e) => {e.target.disable = true; sendToDb()}} />
             </fieldset>
             {
                     processing ? <div className="sectorprocessing">Updating.....</div> : null

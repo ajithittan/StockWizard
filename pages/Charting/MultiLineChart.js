@@ -12,7 +12,7 @@ const MultiLineChart = (props) =>{
     const [height,setHeight] = useState(800)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(props.stocks)
-
+    const [circSize , setcircSize] = useState(5)
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -40,6 +40,14 @@ const MultiLineChart = (props) =>{
     const action = (stk) =>{
         router.push({pathname: '/Layout',query: {stock:stk}})
     }
+
+    useEffect(() =>{
+        if (36 > duration > 84){
+            setcircSize(3)
+        }else if (duration > 84){
+            setcircSize(2)
+        }
+    },[duration])
 
     useEffect (async () =>{
         if (!charData && stklist){
@@ -195,7 +203,7 @@ const MultiLineChart = (props) =>{
             .join("circle")
                 .attr("cx",d => x(moment(d.date).toDate()))
                 .attr("cy",d => y(d.change))
-                .attr("r",4)  
+                .attr("r",circSize)  
                 .on("click", (event, d) => {
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}

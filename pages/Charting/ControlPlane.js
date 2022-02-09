@@ -11,6 +11,11 @@ const ControlPlane = (props) =>{
                 <option value="36">36</option>
                 <option value="48">48</option>
                 <option value="60">60</option>
+                <option value="72">72</option>
+                <option value="84">84</option>
+                <option value="96">96</option>
+                <option value="108">108</option>
+                <option value="120">120</option>
             </select>
             <br></br><br></br>
             <div className="listStocks">
