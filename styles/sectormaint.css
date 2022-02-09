@@ -1,10 +1,32 @@
 .sectormaint{
-    padding: 10px;
-    width: 40%;
+    padding-top: 10px;
+    width: 90%;
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
 }
 .sectormaint > div{
     font-size: 15px;
+}
+
+.sectorinput{
+    font-size: 15px;
+    height: 30px;
+    text-align: center;
+    font-weight:500;
+    border-color: rgb(24, 85, 4);
+}
+
+.sectorinputnew{
+    font-size: 15px;
+    height: 30px;
+    text-align: center;
+    font-weight:500;
+    border-color: rgb(147, 6, 50);
+}
+
+.sectorbutton {
+    border-color: rgb(147, 6, 50);
+    width: 100px;
+    vertical-align: bottom;
 }
