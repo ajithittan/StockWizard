@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import getStockSector from '../../modules/cache/cachesector'
 import {CreateStockSector} from '../../modules/api/StockMaster'
+import { useRouter } from 'next/router'
 
 const SectorMaint = () =>{
+    const router = useRouter()
     const [sectors,setSectors] = useState(null)
     const [inpSec, setInpSec] = useState("Add Sector")
     const [widthOfFieldSet,setwidthOfFieldSet] = useState(50)
@@ -30,11 +32,13 @@ const SectorMaint = () =>{
         setstks([...stks])
     }
 
-    const sendToDb = () =>{
+    const sendToDb = async () =>{
         let sendVal = {}
         sendVal.sector = inpSec
         sendVal.stocks = stks.map(item => item.stock)
-        CreateStockSector(sendVal)
+        let retval = await CreateStockSector(sendVal)
+        console.log("retval",retval)
+        router.reload(window.location.pathname)
     }
 
     return(
