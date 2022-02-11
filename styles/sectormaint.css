@@ -8,6 +8,9 @@
 .sectormaint > div{
     font-size: 15px;
 }
+.sectormaint > fieldset{
+    padding: 10px;
+}
 
 .sectorinput{
     font-size: 15px;

@@ -12,7 +12,7 @@ const MultiLineChart = (props) =>{
     const [height,setHeight] = useState(800)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(props.stocks)
-    const [circSize , setcircSize] = useState(5)
+    const [circSize , setcircSize] = useState(3)
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -42,9 +42,9 @@ const MultiLineChart = (props) =>{
     }
 
     useEffect(() =>{
-        if (36 > duration > 84){
+        if (36 > duration > 48){
             setcircSize(3)
-        }else if (duration > 84){
+        }else if (duration > 48){
             setcircSize(2)
         }
     },[duration])
