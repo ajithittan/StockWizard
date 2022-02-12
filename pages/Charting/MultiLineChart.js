@@ -57,8 +57,7 @@ const MultiLineChart = (props) =>{
            for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
             if (showAllSector){
-                tempData = await getSectorStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
-                console.log(tempData)
+                tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
             }else{
                 tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
             }            
@@ -185,7 +184,7 @@ const MultiLineChart = (props) =>{
                 .style("stroke", data => color(data.key))
                 .text(d => d.key)
                 .transition()
-                .duration(1500)
+                .duration(500)
 
             g.selectAll("line_label_x")
                 .append("g")
@@ -198,7 +197,7 @@ const MultiLineChart = (props) =>{
                 .text(d => d.key)
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
                 .transition()
-                .duration(1000)                
+                .duration(500)                
     
             const tooltip = d3
                 .select(tooltipref.current)
@@ -213,7 +212,7 @@ const MultiLineChart = (props) =>{
                 .attr("r",circSize)  
                 .on("click", (event, d) => {
                     if (sumstat.length > 1) 
-                        {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
+                        {svgElement.selectAll("*").remove(),keepInList(props.labels.filter(item => item.id === d.symbol)[0].desc)}
                     else{
                         ModalBox(modalref,event,true,action,d.symbol)
                     }    
@@ -236,7 +235,7 @@ const MultiLineChart = (props) =>{
                 tooltip.html( (d.label ? d.label: d.symbol)  + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
                 })
                 .transition()
-                .duration(1000)
+                .duration(500)
         }
                 
     },[charData,width,height])

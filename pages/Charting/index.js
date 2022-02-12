@@ -13,6 +13,7 @@ const index = () => {
     const [header,setHeader] = useState(null)
     const [postions,setPostions] = useState(true)
     const [showAllSec, setshowAllSec] = useState(false)
+    const [labels,setLabels] = useState(null)
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -25,7 +26,7 @@ const index = () => {
     },[stklist])
 
     const removefromlst = (stk) =>{
-        setlstOfStcks([...lstOfStcks.filter(item => String(item) !==stk)])
+        setlstOfStcks([...lstOfStcks.filter(item => String(item) !== String(stk))])
     }
     const keepinlst = (stk) =>{
         setlstOfStcks([stk])
@@ -54,19 +55,22 @@ const index = () => {
         let res = await getStockSector()
         setHeader("All Sectors")
         setPostions(false)
-        setfullList(res.map(item => item.idstocksector))
-        setlstOfStcks(res.map(item => item.idstocksector))
+        setfullList(res.map(item => item.sector))
+        setlstOfStcks(res.map(item => item.sector))
+        setLabels(res.map(item => ({"id":item.idstocksector,"desc":item.sector})))
         setshowAllSec(true)
     }
 
     return (
         <div className="flex-container">
             <div className="flex-child main">
-                <MultiLineChart key={duration+lstOfStcks + showAllSec} dur={duration} stocks={lstOfStcks} remove={removefromlst} keep={keepinlst} allSect={showAllSec}/>
+                <MultiLineChart key={duration+lstOfStcks+showAllSec+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
+                        keep={keepinlst} allSect={showAllSec} labels={labels}/>
             </div>
             <div className="flex-child controlplane">
                 <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
-                    checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} clickedSector={clickedSector}/>
+                    checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
+                    clickedSector={clickedSector} allsectors={showAllSec}/>
             </div>
         </div>
     )
