@@ -5,6 +5,7 @@ import MultiLineAggregate from './MultiLineAggreate'
 import ModalBox from './ModalBox'
 import { useRouter } from 'next/router'
 import getStockPerChange from '../../modules/cache/cacheperchange'
+import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
@@ -21,6 +22,9 @@ const MultiLineChart = (props) =>{
     const [stkPrcData, setstkPrcData] = useState(null)
     const [duration,setDuration] = useState(props.dur)
     const svgElement = d3.select(ref.current)
+    const [showAllSector, setshowAllSector] = useState(props.allSect)
+
+    console.log(showAllSector)
 
     let colors= ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 
                 'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 
@@ -53,8 +57,13 @@ const MultiLineChart = (props) =>{
         if (!charData && stklist){
            let tempData = []
            for (let i=0;i < stklist.length;i++){
-            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"               
-            tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
+            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
+            if (showAllSector){
+                tempData = await getSectorStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
+                console.log(tempData)
+            }else{
+                tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
+            }            
             setstkPrcData(tempData)
            } 
         }

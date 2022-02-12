@@ -17,7 +17,13 @@ const ControlPlane = (props) =>{
                 <option value="108">108</option>
                 <option value="120">120</option>
             </select>
-            <br></br><br></br>
+            <div style={{padding:'5px'}}></div>
+            <div className="listStocks" onClick={props.clickedSector}>
+                <div className="sector" style={{textAlign:'center'}}>
+                    <span className="headerListStocks">All Sectors</span>
+                </div>
+            </div>
+            <div style={{padding:'5px'}}></div>
             <div className="listStocks">
                 <span className="headerListStocks">{props.header}</span>
                 <div className="flex-container_control">

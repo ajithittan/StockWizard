@@ -16,6 +16,12 @@ const StockPerChange = async (stock,duration,rollup,unit) =>{
     const data = await axios.get(url)
     return data.data
 }
+const SectorStockPerChange = async (stock,duration,rollup,unit) =>{
+    let url = "http://localhost:5100/api/v2/stocks/secperchange/" + stock + "/" + duration + "/" + rollup + "/" + unit
+    const data = await axios.get(url)
+    return data.data
+}
+
 const StockSector = async () =>{
     let url = "http://localhost:5100/api/v2/sectors"
     const data = await axios.get(url)
@@ -35,4 +41,4 @@ const DeleteStockSector = async (sectorId) =>{
 }
 
 
-export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector}
+export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,SectorStockPerChange}
