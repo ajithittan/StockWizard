@@ -25,7 +25,7 @@ const index = () => {
     },[stklist])
 
     const removefromlst = (stk) =>{
-        setlstOfStcks([...lstOfStcks.filter(item => item !==stk)])
+        setlstOfStcks([...lstOfStcks.filter(item => String(item) !==stk)])
     }
     const keepinlst = (stk) =>{
         setlstOfStcks([stk])
@@ -51,9 +51,10 @@ const index = () => {
     }
 
     const clickedSector = async () =>{
-        console.log("clickedSector")
         let res = await getStockSector()
-        console.log("res",res.map(item => item.idstocksector))
+        setHeader("All Sectors")
+        setPostions(false)
+        setfullList(res.map(item => item.idstocksector))
         setlstOfStcks(res.map(item => item.idstocksector))
         setshowAllSec(true)
     }

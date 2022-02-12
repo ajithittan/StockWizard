@@ -24,8 +24,6 @@ const MultiLineChart = (props) =>{
     const svgElement = d3.select(ref.current)
     const [showAllSector, setshowAllSector] = useState(props.allSect)
 
-    console.log(showAllSector)
-
     let colors= ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 
                 'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 
                 'silver', 'teal', 'white', 'yellow'];
@@ -235,7 +233,7 @@ const MultiLineChart = (props) =>{
                 tooltip.transition()
                  .duration(200)
                  .style('display', null);
-                tooltip.html(d.symbol + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
+                tooltip.html( (d.label ? d.label: d.symbol)  + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
                 })
                 .transition()
                 .duration(1000)
