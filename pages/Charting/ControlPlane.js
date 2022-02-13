@@ -4,7 +4,7 @@ import SectorStocks from './Components/SectorStocks'
 const ControlPlane = (props) =>{
     
     return(
-        <>
+            <>
             <select className="Duration" id="Duration" onChange={e => props.onChangeDuration(e.target.value)}>
                 <option value="6">6</option>
                 <option value="12">12</option>
@@ -18,15 +18,7 @@ const ControlPlane = (props) =>{
                 <option value="108">108</option>
                 <option value="120">120</option>
             </select>
-            {
-                props.allsectors === false ?  <> <div style={{padding:'5px'}}></div>
-                <div className="listStocks" onClick={props.clickedSector}>
-                    <div className="sector" style={{textAlign:'center'}}>
-                        <span className="headerListStocks">All Sectors</span>
-                    </div>
-                </div> </> : null
-    
-            }
+            <div style={{overflow: 'auto',height:'90%'}}>
             <div style={{padding:'5px'}}></div>
             <div className="listStocks">
                 <span className="headerListStocks">{props.header}</span>
@@ -34,9 +26,17 @@ const ControlPlane = (props) =>{
                     <ListingOfStocks stocks={props.stocks} remove={props.remove} add={props.add} checked={props.checked}/>
                 </div>
             </div>
+            {
+                props.allsectors === false ?  <> <div style={{padding:'5px'}}></div>
+                <div className="listStocks sector" onClick={props.clickedSector}>
+                        <span className="headerListStocks">All Sectors</span>
+                </div> </> : null
+    
+            }
             <div className="flex-container_control" style={{paddingTop:'5px'}}>
                 <SectorStocks onChangeSector={props.onChangeSector} pos={props.pos} header={props.header}/>
             </div>
+        </div>
         </>
     )
 }

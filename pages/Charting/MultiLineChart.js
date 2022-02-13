@@ -9,7 +9,7 @@ import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
-    const [width,setWidth] = useState(1400)
+    const [width,setWidth] = useState(1300)
     const [height,setHeight] = useState(800)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(props.stocks)
@@ -29,10 +29,19 @@ const MultiLineChart = (props) =>{
                 'silver', 'teal', 'white', 'yellow'];
 
     const keepInList = (stk) => {
-        props.keep(stk)
+        if (showAllSector){
+            props.keep(props.labels.filter(item => String(item.id) === stk)[0].desc)
+        }else{
+            props.keep(stk)
+        }
     }
     const removeFrmData = (stk) =>{
-        props.remove(stk)
+        if (showAllSector){
+            props.remove(props.labels.filter(item => String(item.id) === stk)[0].desc)
+        }else{
+            props.remove(stk)
+        }
+        
     }
     const color = (val) =>{
         if (val === "AAPL") return "steelblue"
@@ -58,6 +67,7 @@ const MultiLineChart = (props) =>{
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
             if (showAllSector){
                 tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
+                //console.log(tempData)
             }else{
                 tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
             }            
@@ -194,7 +204,7 @@ const MultiLineChart = (props) =>{
                 .attr("class", "line_label_x")
                 .attr("transform", data => {let pos = data.values.length-1; return "translate(" + (x(maxDt) + 5) + "," + (y(data.values[pos].change)) + ")" })
                 .style("stroke", data => color(data.key))
-                .text(d => d.key)
+                .text(d => showAllSector ? props.labels.filter(item => String(item.id) === d.key)[0].desc : d.key)
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
                 .transition()
                 .duration(500)                
@@ -212,7 +222,7 @@ const MultiLineChart = (props) =>{
                 .attr("r",circSize)  
                 .on("click", (event, d) => {
                     if (sumstat.length > 1) 
-                        {svgElement.selectAll("*").remove(),keepInList(props.labels.filter(item => item.id === d.symbol)[0].desc)}
+                        {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
                         ModalBox(modalref,event,true,action,d.symbol)
                     }    
