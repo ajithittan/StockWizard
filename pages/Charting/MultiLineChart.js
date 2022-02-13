@@ -9,7 +9,7 @@ import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
-    const [width,setWidth] = useState(1300)
+    const [width,setWidth] = useState(1400)
     const [height,setHeight] = useState(800)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(props.stocks)

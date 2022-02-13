@@ -39,11 +39,15 @@
     margin-left: 10px;
     text-align: center;
     font-style: normal;
-    background-color: #eee;
     color: rgb(244, 76, 76);
-    width: 16px;
-    height: 16px;
     cursor: pointer;
+  }
+  .stockdelete {
+    margin-left: 5px;
+    text-align: center;
+    font-style: normal;
+    cursor: pointer;
+    color: crimson;
   }
   .sectorprocessing {
     position: absolute;

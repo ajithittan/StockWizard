@@ -11,11 +11,13 @@ const SectorMaint = () =>{
     const [widthOfFieldSet,setwidthOfFieldSet] = useState(50)
     const [stks,setstks] = useState([{stock:""}])
     const [processing,setProcessing] = useState(false)
+    const [modifysect, setmodifysect] = useState(null)
 
     useEffect(async () => {
         if (!sectors){
             let res = await getStockSector()
             setSectors(res)
+            setmodifysect(res)
         }
     },[])
 
@@ -32,6 +34,32 @@ const SectorMaint = () =>{
     const addrows = () =>{
         stks.push({stock:""})
         setstks([...stks])
+    }
+
+    const addrowstosec = (sectorid) =>{
+        let tempindx = modifysect.findIndex(item => item.idstocksector === sectorid)
+        let temparr = []
+        if (modifysect.filter(item => item.idstocksector === sectorid)[0].newstks){
+            temparr = modifysect.filter(item => item.idstocksector === sectorid)[0].newstks
+            temparr.push("")
+        }else{
+            temparr = ["",""]
+        }
+        modifysect[tempindx].newstks = temparr
+        setSectors([...modifysect])
+    }
+
+    const addStockToSec = (newStk,sectorid) =>{
+        console.log(sectorid)
+        let tempindx = modifysect.findIndex(item => item.idstocksector === sectorid)
+        let temparr = modifysect[tempindx].newstks
+        if (temparr){
+
+        }else{
+            temparr = [newStk]
+        }
+        modifysect[tempindx].newstks = temparr
+        setSectors([...modifysect])
     }
 
     const reload = async () =>{
@@ -55,6 +83,17 @@ const SectorMaint = () =>{
         reload()
     }
 
+    const delStock = (sectorId,stock) =>{
+        console.log(sectorId,stock)
+        let tempindx = modifysect.findIndex(item => item.idstocksector === sectorId)
+        let tempstks = modifysect.filter(item => item.idstocksector === sectorId)[0].stocks
+        tempstks = tempstks.filter(item => item !== stock)
+        console.log(tempindx,tempstks)
+        modifysect[tempindx].stocks = tempstks
+        console.log(modifysect)
+        setSectors([...modifysect])
+    }
+
     return(
         <div className="sectormaint" >
         {
@@ -62,10 +101,21 @@ const SectorMaint = () =>{
                     <fieldset>
                         <legend>
                             <input type="text" name="title" className="sectorinput"  value={item.sector} onClick={(e) => startSector()} onChange={(e) => setInpSec(e.target.value)}/> 
-                            <a href="#" className="sectordelete" title="Remove sector" onClick={() => delSector(item.idstocksector)}>&#10006;</a>
+                            <a href="#" className="sectordelete" title="Remove sector" onClick={() => delSector(item.idstocksector)}>&#10060;</a>
                         </legend>
                         {
-                            item.stocks.map((item,index) => <div >{index+1}) {item}</div>)
+                            item.stocks.map((stock,index) => <div >{index+1}) {stock} <a href="#" className="stockdelete" title="Remove stock" onClick={() => delStock(item.idstocksector,stock)}>x</a></div>)
+                        }
+                        {
+                            item.newstks?
+                                item.newstks.map((newitem,index) => 
+                                        <div>
+                                            <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,index)}/>&nbsp;&nbsp; {index === item.newstks.length -1 ? <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a> : null}
+                                        </div>) 
+                                    :<div>
+                                        <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,item.idstocksector)}/>
+                                        <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a>
+                                    </div>
                         }
                     </fieldset>
             ) : null
