@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import getStockSector from '../../modules/cache/cachesector'
-import {CreateStockSector, DeleteStockSector} from '../../modules/api/StockMaster'
+import {CreateStockSector, DeleteStockSector,UpdateStockSectors} from '../../modules/api/StockMaster'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
@@ -49,16 +49,18 @@ const SectorMaint = () =>{
         setSectors([...modifysect])
     }
 
-    const addStockToSec = (newStk,sectorid) =>{
-        console.log(sectorid)
+    const addStockToSec = (newStk,sectorid,index) =>{
+        console.log(newStk,sectorid)
         let tempindx = modifysect.findIndex(item => item.idstocksector === sectorid)
         let temparr = modifysect[tempindx].newstks
         if (temparr){
-
+            temparr[index] = newStk
         }else{
+            console.log("here is error....")
             temparr = [newStk]
         }
         modifysect[tempindx].newstks = temparr
+        modifysect[tempindx].mod = true
         setSectors([...modifysect])
     }
 
@@ -84,13 +86,37 @@ const SectorMaint = () =>{
     }
 
     const delStock = (sectorId,stock) =>{
-        console.log(sectorId,stock)
         let tempindx = modifysect.findIndex(item => item.idstocksector === sectorId)
         let tempstks = modifysect.filter(item => item.idstocksector === sectorId)[0].stocks
         tempstks = tempstks.filter(item => item !== stock)
         console.log(tempindx,tempstks)
         modifysect[tempindx].stocks = tempstks
-        console.log(modifysect)
+        modifysect[tempindx].mod = true
+        setSectors([...modifysect])
+    }
+
+    const saveUpdates = () =>{
+        let modItems = modifysect.filter(item => item.mod === true)
+        for (let i=0;i<modItems.length;i++){
+            console.log("inside loop")
+            if (modItems[i].newstks){
+                let finalarr = [...modItems[i].newstks,...modItems[i].stocks]
+                let stks = new Set(finalarr)
+                modItems[i].stocks = [...stks]
+                delete modItems[i].newstks
+            }
+        }
+        if (modItems.length > 0){
+            UpdateStockSectors(modItems)
+        }
+        setSectors([...modifysect])
+        console.log(modItems)
+    }
+
+    const updSecName = (updSec,sectorid) =>{
+        let tempindx = modifysect.findIndex(item => item.idstocksector === sectorid)
+        modifysect[tempindx].sector = updSec
+        modifysect[tempindx].mod = true
         setSectors([...modifysect])
     }
 
@@ -100,7 +126,7 @@ const SectorMaint = () =>{
             sectors ? sectors.map(item =>   
                     <fieldset>
                         <legend>
-                            <input type="text" name="title" className="sectorinput"  value={item.sector} onClick={(e) => startSector()} onChange={(e) => setInpSec(e.target.value)}/> 
+                            <input type="text" name={item.sector} className="sectorinput"  value={item.sector} onChange={(e) => updSecName(e.target.value,item.idstocksector)}/> 
                             <a href="#" className="sectordelete" title="Remove sector" onClick={() => delSector(item.idstocksector)}>&#10060;</a>
                         </legend>
                         {
@@ -110,10 +136,10 @@ const SectorMaint = () =>{
                             item.newstks?
                                 item.newstks.map((newitem,index) => 
                                         <div>
-                                            <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,index)}/>&nbsp;&nbsp; {index === item.newstks.length -1 ? <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a> : null}
+                                            <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,item.idstocksector,index)}/>&nbsp;&nbsp; {index === item.newstks.length -1 ? <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a> : null}
                                         </div>) 
                                     :<div>
-                                        <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,item.idstocksector)}/>
+                                        <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,item.idstocksector,0)}/>
                                         <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a>
                                     </div>
                         }
@@ -134,7 +160,7 @@ const SectorMaint = () =>{
                 <input className="sectorbutton" type="button" value="Create Sector" onClick={(e) => {e.target.disable = true; sendToDb()}} />
             </fieldset>
             {
-                    processing ? <div className="sectorprocessing">Updating.....</div> : null
+                    processing ? <div className="sectorprocessing">Updating.....</div> : <input className="sectorprocessing" type="button" name="Save Changes" value="Save Changes" onClick={() => saveUpdates()}/>
             }
         </div>
     )
