@@ -50,18 +50,19 @@ const SectorMaint = () =>{
     }
 
     const addStockToSec = (newStk,sectorid,index) =>{
-        console.log(newStk,sectorid)
-        let tempindx = modifysect.findIndex(item => item.idstocksector === sectorid)
-        let temparr = modifysect[tempindx].newstks
-        if (temparr){
-            temparr[index] = newStk
-        }else{
-            console.log("here is error....")
-            temparr = [newStk]
+        if (newStk !==""){
+            let tempindx = modifysect.findIndex(item => item.idstocksector === sectorid)
+            let temparr = modifysect[tempindx].newstks
+            if (temparr){
+                temparr[index] = newStk
+            }else{
+                console.log("here is error....")
+                temparr = [newStk]
+            }
+            modifysect[tempindx].newstks = temparr
+            modifysect[tempindx].mod = true
+            setSectors([...modifysect])    
         }
-        modifysect[tempindx].newstks = temparr
-        modifysect[tempindx].mod = true
-        setSectors([...modifysect])
     }
 
     const reload = async () =>{
@@ -102,7 +103,8 @@ const SectorMaint = () =>{
             if (modItems[i].newstks){
                 let finalarr = [...modItems[i].newstks,...modItems[i].stocks]
                 let stks = new Set(finalarr)
-                modItems[i].stocks = [...stks]
+                console.log(stks)
+                modItems[i].stocks = [...stks].filter(item => item.trim() !=="")
                 delete modItems[i].newstks
             }
         }

@@ -28,14 +28,23 @@ const ControlPlane = (props) =>{
             </div>
             {
                 props.allsectors === false ?  <> <div style={{padding:'5px'}}></div>
-                <div className="listStocks sector" onClick={props.clickedSector}>
+                <div className="listStocks" onClick={props.clickedSector}>
                         <span className="headerListStocks">All Sectors</span>
                 </div> </> : null
     
             }
+            {
+                props.pos === false ?  <> <div style={{padding:'5px'}}></div>
+                <div className="listStocks" onClick={() => props.onChangeSector(null,0)}>
+                        <span className="headerListStocks">My positions</span>
+                </div> </> : null
+    
+            }
+            <> <div style={{padding:'5px'}}></div>
             <div className="flex-container_control" style={{paddingTop:'5px'}}>
                 <SectorStocks onChangeSector={props.onChangeSector} pos={props.pos} header={props.header}/>
             </div>
+            </>
         </div>
         </>
     )

@@ -24,24 +24,27 @@ const SectorStocks = (props) =>{
             return null
         }else{
             return (
-                    <div className="sector" onClick={() =>changeSector(sector)}>
+                    <>
+                    <div className="sector" style={{width:'45%'}} onClick={() =>changeSector(sector)}>
                         {sector}
                         {
-                            stocks.map((item,index) => <div style={{fontSize:'10px',fontWeight:'normal'}}>{index+1}) {item}</div>)
+                            stocks.map((item,index) => 
+                                <div style={{fontSize:'10px',fontWeight:'normal', textAlign:'left'}}>
+                                    {index+1}) {item}
+                                </div>
+                            )
                         }
                     </div>
+                    </>
             )
         }
     }
 
     return (
         <>
-        {
-          props.pos === false ? <div className="sector listStocks" onClick={() =>changeSector(0)}><p>My Positions</p></div> : null
-        }
-        {
-            sectors ? sectors.map(item => Sector(item.sector,item.stocks)) : null
-        }
+            {
+                sectors ? sectors.map(item => Sector(item.sector,item.stocks)) : null
+            }
         </>
     )
 }
