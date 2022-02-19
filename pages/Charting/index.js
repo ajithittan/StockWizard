@@ -66,7 +66,12 @@ const index = () => {
     }
 
     const openPrcChart = (stk) =>{
-        router.push({pathname: '/Layout',query: {stock:stk,list:fullList}})
+        if (showAllSec){
+            console.log("when it is all sectors.....",fullList,stk)
+        }
+        else{
+            router.push({pathname: '/Layout',query: {stock:stk,list:fullList}})
+        }
     }
 
     return (

@@ -20,7 +20,7 @@ const MultiLineChart = (props) =>{
     const [stkPrcData, setstkPrcData] = useState(null)
     const [duration,setDuration] = useState(props.dur)
     const svgElement = d3.select(ref.current)
-    const [showAllSector, setshowAllSector] = useState(props.allSect)
+    const [showAllSector, setshowAllSector] = useState(null)
 
     let colors= ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 
                 'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 
@@ -41,10 +41,6 @@ const MultiLineChart = (props) =>{
         }
         
     }
-    const color = (val) =>{
-        if (val === "AAPL") return "steelblue"
-        else return "gray"
-    }
 
     useEffect(() =>{
         if (36 > duration > 48){
@@ -54,26 +50,35 @@ const MultiLineChart = (props) =>{
         }
     },[duration])
 
+    useEffect(() =>{
+        setshowAllSector(props.allSect)
+    },[props.allSect])
+
     useEffect (async () =>{
         if (!charData && stklist){
            let tempData = []
-           const generateRandomHexColor = () => `#${Math.floor(Math.random() * 0xffffff).toString(16)}`;``
+           const generateRandomHexColor = () => `hsla(${Math.random() * 360}, 100%, 50%, 1)`
            for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-            if (showAllSector){
-                tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
-                //console.log(tempData)
+            if (showAllSector !==null){
+                if (showAllSector){
+                    //console.log("showAllSector - did I make it here?",showAllSector)
+                    tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
+                }else{
+                    //console.log("did I make it here?",showAllSector)
+                    tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
+                }        
+               if (tempData !== undefined && tempData !==[]){
+                   let color = generateRandomHexColor()
+                   tempData.map(item => {item.color=color; return item})    
+                }
+                setstkPrcData(tempData)    
             }else{
-                tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
-            }        
-            console.log("tempDatatempDatatempDatatempData",tempData)
-            if (tempData !== undefined){
-                tempData.map(item => {item.color=generateRandomHexColor(); return item})    
+                break;
             }
-            setstkPrcData(tempData)
            } 
         }
-    },[stklist])
+    },[stklist,showAllSector])
 
     useEffect(() =>{
         charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
@@ -176,6 +181,7 @@ const MultiLineChart = (props) =>{
             })
             .attr("fill", "none")
             .attr("stroke-width", 1)
+            //.attr("stroke", d => "blue")
             .attr("stroke", d => d.values[0].color)
     
             const getRamdomVal = (max) =>{
