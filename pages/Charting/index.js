@@ -1,6 +1,7 @@
 import MultiLineChart from './MultiLineChart';
 import ControlPlane from './ControlPlane'
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
 import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
 
@@ -14,6 +15,8 @@ const index = () => {
     const [postions,setPostions] = useState(true)
     const [showAllSec, setshowAllSec] = useState(false)
     const [labels,setLabels] = useState(null)
+    const [expandSec, setExpandSec] = useState(false)
+    const router = useRouter()
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -55,22 +58,27 @@ const index = () => {
         let res = await getStockSector()
         setHeader("All Sectors")
         setPostions(false)
+        setExpandSec(false)
         setfullList(res.map(item => item.sector))
         setlstOfStcks(res.map(item => item.sector))
         setLabels(res.map(item => ({"id":item.idstocksector,"desc":item.sector})))
         setshowAllSec(true)
     }
 
+    const openPrcChart = (stk) =>{
+        router.push({pathname: '/Layout',query: {stock:stk,list:fullList}})
+    }
+
     return (
         <div className="flex-container">
             <div className="flex-child main">
                 <MultiLineChart key={duration+lstOfStcks+showAllSec+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
-                        keep={keepinlst} allSect={showAllSec} labels={labels}/>
+                        keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart}/>
             </div>
             <div className="flex-child controlplane">
                 <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
                     checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
-                    clickedSector={clickedSector} allsectors={showAllSec}/>
+                    clickedSector={clickedSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
             </div>
         </div>
     )

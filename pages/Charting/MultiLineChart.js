@@ -3,13 +3,12 @@ import * as d3 from "d3";
 import moment from 'moment';
 import MultiLineAggregate from './MultiLineAggreate'
 import ModalBox from './ModalBox'
-import { useRouter } from 'next/router'
 import getStockPerChange from '../../modules/cache/cacheperchange'
 import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
-    const [width,setWidth] = useState(1400)
+    const [width,setWidth] = useState(1300)
     const [height,setHeight] = useState(800)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(props.stocks)
@@ -17,7 +16,6 @@ const MultiLineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const router = useRouter()
     const [charData, setcharData] = useState(null)
     const [stkPrcData, setstkPrcData] = useState(null)
     const [duration,setDuration] = useState(props.dur)
@@ -45,11 +43,7 @@ const MultiLineChart = (props) =>{
     }
     const color = (val) =>{
         if (val === "AAPL") return "steelblue"
-        else return "red"
-    }
-
-    const action = (stk) =>{
-        router.push({pathname: '/Layout',query: {stock:stk}})
+        else return "gray"
     }
 
     useEffect(() =>{
@@ -63,6 +57,7 @@ const MultiLineChart = (props) =>{
     useEffect (async () =>{
         if (!charData && stklist){
            let tempData = []
+           const generateRandomHexColor = () => `#${Math.floor(Math.random() * 0xffffff).toString(16)}`;``
            for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
             if (showAllSector){
@@ -70,7 +65,11 @@ const MultiLineChart = (props) =>{
                 //console.log(tempData)
             }else{
                 tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
-            }            
+            }        
+            console.log("tempDatatempDatatempDatatempData",tempData)
+            if (tempData !== undefined){
+                tempData.map(item => {item.color=generateRandomHexColor(); return item})    
+            }
             setstkPrcData(tempData)
            } 
         }
@@ -118,13 +117,12 @@ const MultiLineChart = (props) =>{
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
                 .call(d3.axisLeft(y).ticks(tickScale(height)).tickFormat(d => d + "%"))
-    
+            /*
             g.append("g")
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + x.range()[1] + ", 0)")
                 .call(d3.axisRight(y).ticks(tickScale(height)).tickFormat(d => d + "%"))                    
-            
-                        
+            */        
             g.selectAll("rect_up")
                 .data(charData)
                 .enter()
@@ -177,8 +175,8 @@ const MultiLineChart = (props) =>{
                     (d.values)
             })
             .attr("fill", "none")
-            .attr("stroke", d => color(d.key))
             .attr("stroke-width", 1)
+            .attr("stroke", d => d.values[0].color)
     
             const getRamdomVal = (max) =>{
                 return Math.floor(Math.random() * max)
@@ -191,7 +189,7 @@ const MultiLineChart = (props) =>{
                 .append("text")
                 .attr("class", "line_label")
                 .attr("transform", data => {let pos = getRamdomVal(data.values.length-1); return "translate(" + (x(moment(data.values[pos].date).toDate()) + 5) + "," + (y(data.values[pos].change) + 20) + ")" })
-                .style("stroke", data => color(data.key))
+                .style("stroke", data => data.values[0].color)
                 .text(d => d.key)
                 .transition()
                 .duration(500)
@@ -203,7 +201,7 @@ const MultiLineChart = (props) =>{
                 .append("text")
                 .attr("class", "line_label_x")
                 .attr("transform", data => {let pos = data.values.length-1; return "translate(" + (x(maxDt) + 5) + "," + (y(data.values[pos].change)) + ")" })
-                .style("stroke", data => color(data.key))
+                .style("stroke", data => data.values[0].color)
                 .text(d => showAllSector ? props.labels.filter(item => String(item.id) === d.key)[0].desc : d.key)
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
                 .transition()
@@ -224,7 +222,7 @@ const MultiLineChart = (props) =>{
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
-                        ModalBox(modalref,event,true,action,d.symbol)
+                        ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
                     }    
                 })
                 .on('mouseover', () => {
@@ -251,7 +249,7 @@ const MultiLineChart = (props) =>{
     },[charData,width,height])
 
     return ( 
-        <div style={{padding:2,paddingLeft:50}} viewBox="0 0 100 100" onScroll={() => console.log("scrolling....")}>
+        <div style={{padding:2,paddingLeft:40,paddingRight:50}} viewBox="0 0 100 100" onScroll={() => console.log("scrolling....")}>
             <svg ref={ref}/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
             <div ref={modalref} style={{position:"absolute"}}></div>

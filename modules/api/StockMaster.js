@@ -46,6 +46,13 @@ const UpdateStockSectors = async (sector) =>{
     return data
 }
 
+const UpdateStockPrice = async () =>{
+    let url = "http://localhost:5100/api/v2/syncstkprices"
+    const data = await axios.post(url)
+    return data
+}
 
 
-export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,SectorStockPerChange,UpdateStockSectors}
+
+export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
+    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice}

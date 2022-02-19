@@ -39,12 +39,17 @@ const index = () =>{
     }, []);
 
     useEffect(() =>{
-      let listOfstks = stklist
+      let listOfstks = router.query.list
       let qryParamStk = router.query.stock
+
       if (qryParamStk){
-        listOfstks[listOfstks.indexOf(qryParamStk)] = listOfstks[0]
-        listOfstks[0] = qryParamStk
-        setStocks([...listOfstks])
+        if (listOfstks){
+          listOfstks[listOfstks.indexOf(qryParamStk)] = listOfstks[0]
+          listOfstks[0] = qryParamStk
+          setStocks([...listOfstks])  
+        }else{
+          setStocks([qryParamStk])  
+        }
       }
       else{
         setStocks(listOfstks)

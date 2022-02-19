@@ -2,10 +2,16 @@ import { useState } from 'react'
 import ListingOfStocks from './Components/ListingOfStocks'
 import SectorStocks from './Components/SectorStocks'
 const ControlPlane = (props) =>{
+
+    const clickedList = () => {
+        console.log("clicked?")
+        props.onChangeSector(null,0)
+        props.expSec(false)
+    }
     
     return(
             <>
-            <select className="Duration" id="Duration" onChange={e => props.onChangeDuration(e.target.value)}>
+            <select className="Duration" id="Duration" onChange={e => props.onChangeDuration(e.target.value)} value={props.dur}>
                 <option value="6">6</option>
                 <option value="12">12</option>
                 <option value="24">24</option>
@@ -29,20 +35,25 @@ const ControlPlane = (props) =>{
             {
                 props.allsectors === false ?  <> <div style={{padding:'5px'}}></div>
                 <div className="listStocks" onClick={props.clickedSector}>
-                        <span className="headerListStocks">All Sectors</span>
+                        <span className="headerListStocks">Plot All Sectors</span>
                 </div> </> : null
     
             }
             {
                 props.pos === false ?  <> <div style={{padding:'5px'}}></div>
-                <div className="listStocks" onClick={() => props.onChangeSector(null,0)}>
-                        <span className="headerListStocks">My positions</span>
+                <div className="listStocks" onClick={() => clickedList()}>
+                        <span className="headerListStocks">Plot My positions</span>
                 </div> </> : null
     
             }
             <> <div style={{padding:'5px'}}></div>
-            <div className="flex-container_control" style={{paddingTop:'5px'}}>
-                <SectorStocks onChangeSector={props.onChangeSector} pos={props.pos} header={props.header}/>
+            <div className="flex-container_control" >
+            {
+                props.exp ? <SectorStocks onChangeSector={props.onChangeSector} pos={props.pos} header={props.header}/>: 
+                        <div className="listStocks" onClick={() => props.expSec(true)}>
+                            <span className="headerListStocks">Expand Sectors</span>
+                        </div>
+            }
             </div>
             </>
         </div>
