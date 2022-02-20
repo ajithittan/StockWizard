@@ -181,7 +181,6 @@ const MultiLineChart = (props) =>{
             })
             .attr("fill", "none")
             .attr("stroke-width", 1)
-            //.attr("stroke", d => "blue")
             .attr("stroke", d => d.values[0].color)
     
             const getRamdomVal = (max) =>{
@@ -209,6 +208,7 @@ const MultiLineChart = (props) =>{
                 .attr("transform", data => {let pos = data.values.length-1; return "translate(" + (x(maxDt) + 5) + "," + (y(data.values[pos].change)) + ")" })
                 .style("stroke", data => data.values[0].color)
                 .text(d => showAllSector ? props.labels.filter(item => String(item.id) === d.key)[0].desc : d.key)
+                .style("cursor", "pointer")
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
                 .transition()
                 .duration(500)                
@@ -231,6 +231,7 @@ const MultiLineChart = (props) =>{
                         ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
                     }    
                 })
+                .style("cursor", "pointer")
                 .on('mouseover', () => {
                     tooltip.style('display', null);
                 })
