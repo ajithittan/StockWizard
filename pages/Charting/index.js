@@ -55,7 +55,7 @@ const index = () => {
         }
     }
 
-    const clickedSector = async () =>{
+    const clickedAllSector = async () =>{
         let res = await getStockSector()
         setallsecvals(res)
         setHeader("All Sectors")
@@ -80,13 +80,13 @@ const index = () => {
     return (
         <div className="flex-container">
             <div className="flex-child main">
-                <MultiLineChart key={duration+lstOfStcks+showAllSec+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
+                <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
                         keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart}/>
             </div>
             <div className="flex-child controlplane">
                 <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
                     checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
-                    clickedSector={clickedSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
+                    clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
             </div>
         </div>
     )

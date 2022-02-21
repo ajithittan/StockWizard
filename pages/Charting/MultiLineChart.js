@@ -92,7 +92,7 @@ const MultiLineChart = (props) =>{
                 setstkPrcData(tempData)    
            } 
         }
-    },[stklist,showAllSector])
+    },[stklist])
 
     useEffect(() =>{
         charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
