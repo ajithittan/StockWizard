@@ -12,6 +12,7 @@ const ControlPlane = (props) =>{
     return(
             <>
             <select className="Duration" id="Duration" onChange={e => props.onChangeDuration(e.target.value)} value={props.dur}>
+                <option value="3">3</option>
                 <option value="6">6</option>
                 <option value="12">12</option>
                 <option value="24">24</option>

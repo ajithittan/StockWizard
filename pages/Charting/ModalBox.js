@@ -11,7 +11,7 @@ const ModalBox = (modalref,event,display,action,symbol) =>{
     d3.select(modalref.current)
     .attr('class', 'modalbox')
     .append("button")
-    .html("Price Chart")
+    .html("Drill More")
     .on("click", () => action(symbol))
 }
 

@@ -8,10 +8,10 @@ import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
-    const [width,setWidth] = useState(1300)
-    const [height,setHeight] = useState(800)
+    const [width,setWidth] = useState(1350)
+    const [height,setHeight] = useState(750)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
-    const [stklist,setstklist] = useState(props.stocks)
+    const [stklist,setstklist] = useState(null)
     const [circSize , setcircSize] = useState(3)
     const ref = useRef()
     const tooltipref = useRef()
@@ -39,8 +39,13 @@ const MultiLineChart = (props) =>{
         }else{
             props.remove(stk)
         }
-        
     }
+
+    useEffect(() =>{
+        if (!stklist && !showAllSector){
+            setstklist(props.stocks)
+        }
+    },[props.stocks])
 
     useEffect(() =>{
         if (36 > duration > 48){
@@ -52,30 +57,39 @@ const MultiLineChart = (props) =>{
 
     useEffect(() =>{
         setshowAllSector(props.allSect)
-    },[props.allSect])
+        if (props.allSect){
+            getSectorData()
+        }
+    },[stklist,props.allSect])
+
+    const generateRandomHexColor = () => `hsla(${Math.random() * 360}, 100%, 50%, 1)`
+
+    const getSectorData = async () => {
+        if (!charData && stklist){
+            let tempData = []
+            for (let i=0;i < stklist.length;i++){
+            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
+            tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
+            if (tempData !== undefined && tempData !==[]){
+                    let color = generateRandomHexColor()
+                    tempData.map(item => {item.color=color; return item})    
+                }
+                setstkPrcData(tempData)    
+            }     
+        }
+    }
 
     useEffect (async () =>{
-        if (!charData && stklist){
+        if (!charData && stklist && showAllSector===false){
            let tempData = []
-           const generateRandomHexColor = () => `hsla(${Math.random() * 360}, 100%, 50%, 1)`
            for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-            if (showAllSector !==null){
-                if (showAllSector){
-                    //console.log("showAllSector - did I make it here?",showAllSector)
-                    tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
-                }else{
-                    //console.log("did I make it here?",showAllSector)
-                    tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
-                }        
+               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
                if (tempData !== undefined && tempData !==[]){
                    let color = generateRandomHexColor()
                    tempData.map(item => {item.color=color; return item})    
                 }
                 setstkPrcData(tempData)    
-            }else{
-                break;
-            }
            } 
         }
     },[stklist,showAllSector])

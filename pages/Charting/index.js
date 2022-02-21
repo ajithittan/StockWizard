@@ -10,12 +10,13 @@ const index = () => {
     const stklist = useAppContext()
     const [fullList,setfullList] = useState(null)
     const [lstOfStcks,setlstOfStcks] = useState(null)
-    const [duration,setDuration] = useState(6)
+    const [duration,setDuration] = useState(3)
     const [header,setHeader] = useState(null)
     const [postions,setPostions] = useState(true)
     const [showAllSec, setshowAllSec] = useState(false)
     const [labels,setLabels] = useState(null)
     const [expandSec, setExpandSec] = useState(false)
+    const [allsecvals, setallsecvals] = useState(null)
     const router = useRouter()
 
     useEffect(() =>{
@@ -56,6 +57,7 @@ const index = () => {
 
     const clickedSector = async () =>{
         let res = await getStockSector()
+        setallsecvals(res)
         setHeader("All Sectors")
         setPostions(false)
         setExpandSec(false)
@@ -67,7 +69,8 @@ const index = () => {
 
     const openPrcChart = (stk) =>{
         if (showAllSec){
-            console.log("when it is all sectors.....",fullList,stk)
+            changeSector(allsecvals.filter(item => String(item.idstocksector) === stk)[0].stocks,
+                        allsecvals.filter(item => String(item.idstocksector) === stk)[0].sector)
         }
         else{
             router.push({pathname: '/Layout',query: {stock:stk,list:fullList}})
