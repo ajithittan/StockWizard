@@ -185,8 +185,9 @@ const MultiLineChart = (props) =>{
             .data(sumstat)
             .enter()
             .append("path")
-            .transition()  
-            .duration(1000)
+            //.transition()  
+            //.duration(1000)
+            .attr("id", (d,i) => "linenumber" + i)
             .attr("d", function (d) {
                 return d3.line()
                     .x(d => x(moment(d.date).toDate()))
@@ -196,6 +197,8 @@ const MultiLineChart = (props) =>{
             .attr("fill", "none")
             .attr("stroke-width", 1)
             .attr("stroke", d => d.values[0].color)
+            .on("mouseover" , function (d,i) {console.log(d,i)})
+            
     
             const getRamdomVal = (max) =>{
                 return Math.floor(Math.random() * max)
