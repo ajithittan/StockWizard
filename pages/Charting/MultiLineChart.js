@@ -117,7 +117,17 @@ const MultiLineChart = (props) =>{
     
             var x = d3.scaleTime()
                     .domain(d3.extent(charData, d => new Date(d.date)))
-                    .range([0, domainwidth]);
+                    .range([0, domainwidth])
+
+            function zoomed() {
+                console.log("zooming.....")
+                svg.select(".x.axis").call(xAxis);
+                // svg.select(".y.axis").call(yAxis);
+                svg.selectAll('path.line').attr('d', line);
+                points.selectAll('circle').attr("transform", function (d) {
+                    return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")";
+                });
+            }                    
     
             var y = d3.scaleLinear()
                     .domain(yExtent)
@@ -126,7 +136,8 @@ const MultiLineChart = (props) =>{
             g.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")).on("zoom", zoomed))
+                
         
             g.append("g")
                 .attr("class", "y axis")
@@ -294,6 +305,7 @@ const MultiLineChart = (props) =>{
                         .style('display', 'none')
                 })
                 .on("mouseover", function(event,d) {
+
                     tooltip.style("left", (event.clientX + 10)+"px")
                     .style("top", (event.clientY +10)+"px");  
                 tooltip.transition()
