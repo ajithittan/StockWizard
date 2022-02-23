@@ -22,10 +22,6 @@ const MultiLineChart = (props) =>{
     const svgElement = d3.select(ref.current)
     const [showAllSector, setshowAllSector] = useState(null)
 
-    let colors= ['aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 
-                'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 
-                'silver', 'teal', 'white', 'yellow'];
-
     const keepInList = (stk) => {
         if (showAllSector){
             props.keep(props.labels.filter(item => String(item.id) === stk)[0].desc)
@@ -62,7 +58,7 @@ const MultiLineChart = (props) =>{
         }
     },[stklist,props.allSect])
 
-    const generateRandomHexColor = () => `hsla(${Math.random() * 360}, 100%, 50%, 1)`
+    const generateRandomHexColor = () => 'hsla(' + Math.floor(Math.random()*360) + ', 100%, 70%, 1)'
 
     const getSectorData = async () => {
         if (!charData && stklist){
@@ -150,7 +146,7 @@ const MultiLineChart = (props) =>{
                 .attr("y", y(maxChng))
                 .attr("width", domainwidth)
                 .attr("height", y(0) + y(maxChng))
-                .attr("fill", "#EAFFF1")
+                .attr("fill", "#F5FEF8")
                 .on("click",(event,d) => ModalBox(modalref,event,false))
                 .on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
@@ -167,7 +163,7 @@ const MultiLineChart = (props) =>{
                 .attr("y", y(0))
                 .attr("width", domainwidth)
                 .attr("height", y(minChng) - y(0))
-                .attr("fill", "#FDE7E8")
+                .attr("fill", "#FFF8F9")
                 .on("click",(event,d) => ModalBox(modalref,event,false))
                 .on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
@@ -264,7 +260,7 @@ const MultiLineChart = (props) =>{
                 .style("cursor", "pointer")
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
                 .on("mouseover", (d,i) => hoveredline(i.values[0].label))
-                .on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
+                //.on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
                 .transition()
                 .duration(500)                
     
@@ -289,7 +285,7 @@ const MultiLineChart = (props) =>{
                 })
                 .style("cursor", "pointer")
                 .on('mouseover', () => {
-                    tooltip.style('display', null);
+                    tooltip.style('display', null)
                 })
                 .on('mouseout', () => {
                     tooltip
