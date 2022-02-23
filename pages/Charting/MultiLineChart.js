@@ -220,7 +220,7 @@ const MultiLineChart = (props) =>{
                 .style('opacity', 1)
                 .attr("stroke-width", 2)
                 .style('transition', "opacity 0.1s")
-                setOpacity(label,0.1)
+                setOpacity(label,0.05)
             }
 
             const hoveredoutline = (label) =>{
