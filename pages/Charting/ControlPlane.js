@@ -4,7 +4,6 @@ import SectorStocks from './Components/SectorStocks'
 const ControlPlane = (props) =>{
 
     const clickedList = () => {
-        console.log("clicked?")
         props.onChangeSector(null,0)
         props.expSec(false)
     }

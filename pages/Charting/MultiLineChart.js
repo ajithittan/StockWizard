@@ -185,9 +185,7 @@ const MultiLineChart = (props) =>{
             .data(sumstat)
             .enter()
             .append("path")
-            //.transition()  
-            //.duration(1000)
-            .attr("id", (d,i) => d.key)
+            .attr("id", (d,i) => d.values[0].label)
             .attr("d", function (d) {
                 return d3.line()
                     .x(d => x(moment(d.date).toDate()))
@@ -197,25 +195,44 @@ const MultiLineChart = (props) =>{
             .attr("fill", "none")
             .attr("stroke-width", 1)
             .attr("stroke", d => d.values[0].color)
-            .on("mouseover", (d,i) => hoveredline(d,i))
-            //.on("mouseout", (d,i) => hoveredoutline(d,i))
+            .on("mouseover", (d,i) => hoveredline(i.values[0].label))
+            .on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
+            .on("click", (event, d) => {
+                if (sumstat.length > 1) 
+                    {svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)}
+                else{
+                    ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
+                }    
+            })
             .style("cursor", "pointer")
+             
+            const getAllLabels = () => [...new Set(charData.map(item => item.label))]
 
-
-            const hoveredline = (d,i) =>{
-                console.log(d,i)
-                const item = d3.selectAll("#BIG-MINING")
-                .style('opacity', 1)
-                .attr("stroke-width", 3)
-                .style('transition', "opacity 0.1s")
+            const setOpacity = (ignorelabel,opcty) =>{
+                let labels = getAllLabels()
+                for (let i=0;i < labels.length; i++){
+                    if (ignorelabel !== labels[i]){
+                        d3.selectAll("#" + labels[i])
+                        .style('opacity', opcty)
+                        .style('transition', "opacity 0.2s")    
+                    }
+                }    
             }
 
-            const hoveredoutline = (d,i) =>{
-                console.log(item)
-                const item = d3.selectAll("#"+i.key)
+            const hoveredline = (label) =>{
+                d3.selectAll("#" + label)
+                .style('opacity', 1)
+                .attr("stroke-width", 2)
+                .style('transition', "opacity 0.1s")
+                setOpacity(label,0.1)
+            }
+
+            const hoveredoutline = (label) =>{
+                d3.selectAll("#" + label)
                 .style('opacity', 1)
                 .attr("stroke-width", 1)
                 .style('transition', "opacity 0.1s")
+                setOpacity(label,1)
             }
     
             const getRamdomVal = (max) =>{
@@ -228,6 +245,7 @@ const MultiLineChart = (props) =>{
                 .enter()
                 .append("text")
                 .attr("class", "line_label")
+                .attr("id", (d,i) => d.values[0].label)
                 .attr("transform", data => {let pos = getRamdomVal(data.values.length-1); return "translate(" + (x(moment(data.values[pos].date).toDate()) + 5) + "," + (y(data.values[pos].change) + 20) + ")" })
                 .style("stroke", data => data.values[0].color)
                 .text(d => d.key)
@@ -245,6 +263,8 @@ const MultiLineChart = (props) =>{
                 .text(d => showAllSector ? props.labels.filter(item => String(item.id) === d.key)[0].desc : d.key)
                 .style("cursor", "pointer")
                 .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
+                .on("mouseover", (d,i) => hoveredline(i.values[0].label))
+                .on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
                 .transition()
                 .duration(500)                
     
@@ -259,6 +279,7 @@ const MultiLineChart = (props) =>{
                 .attr("cx",d => x(moment(d.date).toDate()))
                 .attr("cy",d => y(d.change))
                 .attr("r",circSize)  
+                .attr("id", (d,i) => d.label)
                 .on("click", (event, d) => {
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
