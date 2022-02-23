@@ -187,7 +187,7 @@ const MultiLineChart = (props) =>{
             .append("path")
             //.transition()  
             //.duration(1000)
-            .attr("id", (d,i) => "linenumber" + i)
+            .attr("id", (d,i) => d.key)
             .attr("d", function (d) {
                 return d3.line()
                     .x(d => x(moment(d.date).toDate()))
@@ -197,8 +197,26 @@ const MultiLineChart = (props) =>{
             .attr("fill", "none")
             .attr("stroke-width", 1)
             .attr("stroke", d => d.values[0].color)
-            .on("mouseover" , function (d,i) {console.log(d,i)})
-            
+            .on("mouseover", (d,i) => hoveredline(d,i))
+            //.on("mouseout", (d,i) => hoveredoutline(d,i))
+            .style("cursor", "pointer")
+
+
+            const hoveredline = (d,i) =>{
+                console.log(d,i)
+                const item = d3.selectAll("#BIG-MINING")
+                .style('opacity', 1)
+                .attr("stroke-width", 3)
+                .style('transition', "opacity 0.1s")
+            }
+
+            const hoveredoutline = (d,i) =>{
+                console.log(item)
+                const item = d3.selectAll("#"+i.key)
+                .style('opacity', 1)
+                .attr("stroke-width", 1)
+                .style('transition', "opacity 0.1s")
+            }
     
             const getRamdomVal = (max) =>{
                 return Math.floor(Math.random() * max)
