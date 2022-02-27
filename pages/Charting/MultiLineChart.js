@@ -101,9 +101,10 @@ const MultiLineChart = (props) =>{
         svgElement.attr("width",width).attr("height",height)
         svgElement.selectAll("*").remove()
         var g = svgElement.append("g")
-            .attr("transform", "translate(" + margin.top + "," + margin.top + ")");         
+            .attr("transform", "translate(" + margin.top + "," + margin.top + ")");           
 
         if (charData) {
+
             let yExtent = d3.extent(charData.map(item => item.change));
             const minDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
             const maxDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
@@ -117,32 +118,37 @@ const MultiLineChart = (props) =>{
     
             var x = d3.scaleTime()
                     .domain(d3.extent(charData, d => new Date(d.date)))
-                    .range([0, domainwidth])
-
-            function zoomed() {
-                console.log("zooming.....")
-                svg.select(".x.axis").call(xAxis);
-                // svg.select(".y.axis").call(yAxis);
-                svg.selectAll('path.line').attr('d', line);
-                points.selectAll('circle').attr("transform", function (d) {
-                    return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")";
-                });
-            }                    
+                    .range([0, domainwidth])                  
     
             var y = d3.scaleLinear()
                     .domain(yExtent)
                     .range([domainheight, 0]); 
+                        
+            let zoom = d3.zoom().on("zoom", () => handlezoom())       
+            svgElement.call(zoom)
 
             g.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")).on("zoom", zoomed))
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
                 
         
             g.append("g")
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
                 .call(d3.axisLeft(y).ticks(tickScale(height)).tickFormat(d => d + "%"))
+
+            const handlezoom = () =>{
+                console.log("in here.....")
+                 // recover the new scale
+                var newX = d3.event.transform.rescaleX(x);
+                var newY = d3.event.transform.rescaleY(y);
+                console.log(newX,newY)
+                // update axes with these new boundaries
+                xAxis.call(d3.axisBottom(newX))
+                yAxis.call(d3.axisLeft(newY))
+                //g.attr("transform", d3.event.transform);
+            }                    
             /*
             g.append("g")
                 .attr("class", "y axis")
