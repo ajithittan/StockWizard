@@ -124,29 +124,47 @@ const MultiLineChart = (props) =>{
                     .domain(yExtent)
                     .range([domainheight, 0]); 
                         
-            let zoom = d3.zoom().on("zoom", () => handlezoom())       
+            let zoom = d3.zoom().on("zoom", (e) => handlezoom(e))       
             svgElement.call(zoom)
 
-            g.append("g")
+            let xAxis = (g, x) => g
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + y.range()[0] + ")")
                 .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
-                
+
+            const gx = g.append("g")
+                .call(xAxis, x);
+            /*                                
+            g.append("g")
+                .attr("class", "xaxis")
+                .attr("transform", "translate(0," + y.range()[0] + ")")
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
+            */    
         
             g.append("g")
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + x.range()[0] / 2 + ", 0)")
                 .call(d3.axisLeft(y).ticks(tickScale(height)).tickFormat(d => d + "%"))
 
-            const handlezoom = () =>{
-                console.log("in here.....")
+            const area = (data, x) => {
+                return d3.area()
+                .curve(d3.curveStepAfter)
+                .x(d => x(d.date))
+                .y0(y(0))
+                .y1(d => y(d.value))
+              (data)
+            }
+
+            const handlezoom = (e) =>{
                  // recover the new scale
-                var newX = d3.event.transform.rescaleX(x);
-                var newY = d3.event.transform.rescaleY(y);
-                console.log(newX,newY)
+                var newX = e.transform.rescaleX(x);
+                //var newY = d3.event.transform.rescaleY(y);
+                //console.log(newX)
                 // update axes with these new boundaries
-                xAxis.call(d3.axisBottom(newX))
-                yAxis.call(d3.axisLeft(newY))
+                gx.call(xAxis,newX)
+                console.log(area(charData, newX))
+                g.selectAll("path").attr("d",area(charData, newX))
+                //yAxis.call(d3.axisLeft(newY))
                 //g.attr("transform", d3.event.transform);
             }                    
             /*
