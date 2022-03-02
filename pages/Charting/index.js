@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
+import ScatterChart from '../Charts/ScatterChart'
 
 const index = () => {
     const defHeader = "My Positions"
@@ -18,6 +19,7 @@ const index = () => {
     const [expandSec, setExpandSec] = useState(false)
     const [allsecvals, setallsecvals] = useState(null)
     const router = useRouter()
+    const margin = {top: 20, right: 0, bottom: 30, left: 50}
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -78,7 +80,8 @@ const index = () => {
     }
 
     return (
-        <div className="flex-container">
+        <>
+        <div className="flex-container" style={{display:'none'}}>
             <div className="flex-child main">
                 <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
                         keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart}/>
@@ -89,6 +92,10 @@ const index = () => {
                     clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
             </div>
         </div>
+                    <div style={{padding:'50px'}}>
+                    <ScatterChart key={100}  width={1400} height={700} margin={margin} stock={"AMD"} main={true} ></ScatterChart>
+                </div>
+        </>        
     )
 }
 
