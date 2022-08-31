@@ -1,17 +1,15 @@
 import MultiLineChart from './MultiLineChart';
-import ControlPlane from './ControlPlane'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
-import SliderForCharts from './SliderForCharts'
 
-const index = () => {
+const index = (props) => {
     const defHeader = "My Positions"
     const stklist = useAppContext()
     const [fullList,setfullList] = useState(null)
     const [lstOfStcks,setlstOfStcks] = useState(null)
-    const [duration,setDuration] = useState(3)
+    const [duration,setDuration] = useState(5)
     const [header,setHeader] = useState(null)
     const [postions,setPostions] = useState(true)
     const [showAllSec, setshowAllSec] = useState(false)
@@ -19,6 +17,25 @@ const index = () => {
     const [expandSec, setExpandSec] = useState(false)
     const [allsecvals, setallsecvals] = useState(null)
     const router = useRouter()
+    const [stocks,setStocks] = useState(null)
+
+    const [width, setWidth]   = useState(null);
+    const [height, setHeight] = useState(null);
+
+    useEffect(() =>{
+        updateDimensions()
+    },[props.size])
+
+    const updateDimensions = () => {
+        if (props.size){
+            setWidth(window.innerWidth*(props.size/12));
+            setHeight(window.innerHeight*(props.size/12));    
+        }
+    }
+    useEffect(() => {
+        window.addEventListener("resize", updateDimensions);
+        return () => window.removeEventListener("resize", updateDimensions);
+    }, []);
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -29,6 +46,16 @@ const index = () => {
         }
         setHeader(defHeader)
     },[stklist])
+
+    useEffect(() =>{
+        if (props.stocks ){setStocks(props.stocks)}
+    },[props.stocks])
+
+    useEffect(() =>{
+        if (props.duration){
+            setDuration(props.duration)
+        }
+    },[props.duration])
 
     const removefromlst = (stk) =>{
         setlstOfStcks([...lstOfStcks.filter(item => String(item) !== String(stk))])
@@ -81,13 +108,12 @@ const index = () => {
     return (
         <div className="flex-container">
             <div className="flex-child main">
-                <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
-                        keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart}/>
-            </div>
-            <div className="flex-child controlplane">
-                <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
-                    checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
-                    clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
+                {
+                    <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} indx={props.indx} 
+                            keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} width={width} 
+                            height={height} name={props.name}/>
+            
+                }
             </div>
         </div>
     )

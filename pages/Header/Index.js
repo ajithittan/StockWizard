@@ -28,6 +28,11 @@ const Header = () =>{
             </Link>
           </li>
           <li className={hdThemes.li_head}>
+            <Link href="/SectorPerformance">
+              <a>Performance v2</a>
+            </Link>
+          </li>
+          <li className={hdThemes.li_head}>
             <Link href="/Maintain">
               <a>Maintain</a>
             </Link>

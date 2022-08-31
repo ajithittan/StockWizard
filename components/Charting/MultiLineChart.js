@@ -2,15 +2,13 @@ import { useEffect, useRef, useState,useContext } from "react"
 import * as d3 from "d3";
 import moment from 'moment';
 import MultiLineAggregate from './MultiLineAggreate'
-import ModalBox from './ModalBox'
 import getStockPerChange from '../../modules/cache/cacheperchange'
-import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
-    const [width,setWidth] = useState(1350)
-    const [height,setHeight] = useState(750)
-    var margin = {top: 20, right: 20, bottom: 30, left: 50}
+    const [width,setWidth] = useState(null)
+    const [height,setHeight] = useState(null)
+    var margin = {top: 2, right: 2, bottom: 2, left: 2}
     const [stklist,setstklist] = useState(null)
     const [circSize , setcircSize] = useState(3)
     const ref = useRef()
@@ -38,6 +36,13 @@ const MultiLineChart = (props) =>{
     }
 
     useEffect(() =>{
+        if (props.width){
+            setWidth(props.width)
+            setHeight(props.height)    
+        }
+    },[])
+
+    useEffect(() =>{
         if (!stklist && !showAllSector){
             setstklist(props.stocks)
         }
@@ -45,38 +50,16 @@ const MultiLineChart = (props) =>{
 
     useEffect(() =>{
         if (36 > duration > 48){
-            setcircSize(3)
-        }else if (duration > 48){
             setcircSize(2)
+        }else if (duration > 48){
+            setcircSize(1)
         }
     },[duration])
 
-    useEffect(() =>{
-        setshowAllSector(props.allSect)
-        if (props.allSect){
-            getSectorData()
-        }
-    },[stklist,props.allSect])
-
     const generateRandomHexColor = () => 'hsla(' + Math.floor(Math.random()*360) + ', 100%, 70%, 1)'
 
-    const getSectorData = async () => {
-        if (!charData && stklist){
-            let tempData = []
-            for (let i=0;i < stklist.length;i++){
-            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-            tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
-            if (tempData !== undefined && tempData !==[]){
-                    let color = generateRandomHexColor()
-                    tempData.map(item => {item.color=color; return item})    
-                }
-                setstkPrcData(tempData)    
-            }     
-        }
-    }
-
     useEffect (async () =>{
-        if (!charData && stklist && showAllSector===false){
+        if (!charData && stklist){
            let tempData = []
            for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
@@ -182,7 +165,7 @@ const MultiLineChart = (props) =>{
                 .attr("width", domainwidth)
                 .attr("height", y(0) + y(maxChng))
                 .attr("fill", "#F5FEF8")
-                .on("click",(event,d) => ModalBox(modalref,event,false))
+                .on("click",(event,d) => {})
                 .on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
                     // do your thing
@@ -199,7 +182,7 @@ const MultiLineChart = (props) =>{
                 .attr("width", domainwidth)
                 .attr("height", y(minChng) - y(0))
                 .attr("fill", "#FFF8F9")
-                .on("click",(event,d) => ModalBox(modalref,event,false))
+                .on("click",(event,d) => {})
                 .on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
                     //console.log("double clicked....")
@@ -227,12 +210,12 @@ const MultiLineChart = (props) =>{
             .attr("stroke-width", 1)
             .attr("stroke", d => d.values[0].color)
             .on("mouseover", (d,i) => hoveredline(i.values[0].label))
-            .on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
+            .on("mouseout", (d,i) => setTimeout(() => hoveredoutline(i.values[0].label),5000))
             .on("click", (event, d) => {
                 if (sumstat.length > 1) 
                     {svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)}
                 else{
-                    ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
+                    //ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
                 }    
             })
             .style("cursor", "pointer")
@@ -243,7 +226,7 @@ const MultiLineChart = (props) =>{
                 let labels = getAllLabels()
                 for (let i=0;i < labels.length; i++){
                     if (ignorelabel !== labels[i]){
-                        d3.selectAll("#" + labels[i])
+                        svgElement.selectAll("#" + labels[i])
                         .style('opacity', opcty)
                         .style('transition', "opacity 0.2s")    
                     }
@@ -251,7 +234,7 @@ const MultiLineChart = (props) =>{
             }
 
             const hoveredline = (label) =>{
-                d3.selectAll("#" + label)
+                svgElement.selectAll("#" + label)
                 .style('opacity', 1)
                 .attr("stroke-width", 2)
                 .style('transition', "opacity 0.1s")
@@ -259,7 +242,7 @@ const MultiLineChart = (props) =>{
             }
 
             const hoveredoutline = (label) =>{
-                d3.selectAll("#" + label)
+                svgElement.selectAll("#" + label)
                 .style('opacity', 1)
                 .attr("stroke-width", 1)
                 .style('transition', "opacity 0.1s")
@@ -315,7 +298,7 @@ const MultiLineChart = (props) =>{
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
-                        ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
+                        //ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
                     }    
                 })
                 .style("cursor", "pointer")
@@ -344,7 +327,8 @@ const MultiLineChart = (props) =>{
     },[charData,width,height])
 
     return ( 
-        <div style={{padding:2,paddingLeft:40,paddingRight:50}} viewBox="0 0 100 100" onScroll={() => console.log("scrolling....")}>
+        <div style={{padding:2,paddingLeft:40,paddingRight:50}} onDoubleClick={() => console.log("double...", )}>
+            {props.name}
             <svg ref={ref}/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
             <div ref={modalref} style={{position:"absolute"}}></div>
