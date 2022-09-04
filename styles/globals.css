@@ -324,6 +324,7 @@ color: white;
       padding: 7px;      
       opacity: 0.9;
       color: black;
+      z-index: 100;
     }
     .line_label{
       font-size: 12px;
@@ -498,7 +499,7 @@ color: white;
   padding: 20px;
   position: fixed;
   right: 0;
-  width: 1%;
+  width: 3%;
   height: 5%;
   border-radius: 5px;
   transition: width 0.5s;
@@ -509,8 +510,37 @@ color: white;
   padding: 20px;
   position: fixed;
   right: 0;
-  width: 10%;
+  width: 200px;
   height: 100%;
   border-radius: 5px;
   transition: width 0.5s;
+}
+
+.arrow-5 {
+  width:10px;
+  height:10px;
+  display: grid;
+  overflow: hidden;
+}
+.arrow-5:before,
+.arrow-5:after {
+  content: "";
+  grid-area: 1/1;
+  background: rgb(3, 3, 80);
+  clip-path: polygon(0 10px,calc(100% - 15px) 10px,calc(100% - 15px) 0,100% 50%,calc(100% - 15px) 100%,calc(100% - 15px) calc(100% - 10px),0 calc(100% - 10px));
+  animation: a5 1s infinite;
+  transform: translate(calc(0% + var(--s,0%)));
+}
+
+.arrow-5:after {
+  --s:-100%;
+}
+
+@keyframes a5 {
+  80%,100%{transform: translate(calc(100% + var(--s,0%)))}
+}
+
+.loadmore {
+  font-size:"12px";
+  color:"blue"
 }

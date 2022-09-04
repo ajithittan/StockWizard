@@ -10,15 +10,16 @@ const MultiLineChart = (props) =>{
     const [height,setHeight] = useState(null)
     var margin = {top: 2, right: 2, bottom: 2, left: 2}
     const [stklist,setstklist] = useState(null)
-    const [circSize , setcircSize] = useState(3)
+    const [circSize , setcircSize] = useState(1.5)
     const ref = useRef()
     const tooltipref = useRef()
-    const modalref = useRef()
     const [charData, setcharData] = useState(null)
     const [stkPrcData, setstkPrcData] = useState(null)
     const [duration,setDuration] = useState(props.dur)
     const svgElement = d3.select(ref.current)
     const [showAllSector, setshowAllSector] = useState(null)
+    const [showspinner,setshowspinner] = useState(true)
+    const [inModal,setInModal] = useState(false)
 
     const keepInList = (stk) => {
         if (showAllSector){
@@ -27,6 +28,13 @@ const MultiLineChart = (props) =>{
             props.keep(stk)
         }
     }
+
+    useEffect(() =>{
+        if(props.inModal){
+            setInModal(props.inModal)
+        }
+    },[props.inModal])
+
     const removeFrmData = (stk) =>{
         if (showAllSector){
             props.remove(props.labels.filter(item => String(item.id) === stk)[0].desc)
@@ -49,10 +57,10 @@ const MultiLineChart = (props) =>{
     },[props.stocks])
 
     useEffect(() =>{
-        if (36 > duration > 48){
-            setcircSize(2)
-        }else if (duration > 48){
+        if (11 > duration > 48){
             setcircSize(1)
+        }else if (duration > 48){
+            setcircSize(0.5)
         }
     },[duration])
 
@@ -61,14 +69,17 @@ const MultiLineChart = (props) =>{
     useEffect (async () =>{
         if (!charData && stklist){
            let tempData = []
-           for (let i=0;i < stklist.length;i++){
+           //let limit = stklist.length > 10 ? 10 : stklist.length
+           let limit = stklist.length
+           for (let i=0;i < limit;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
                tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
                if (tempData !== undefined && tempData !==[]){
                    let color = generateRandomHexColor()
                    tempData.map(item => {item.color=color; return item})    
                 }
-                setstkPrcData(tempData)    
+                setstkPrcData(tempData)
+                setshowspinner(false)    
            } 
         }
     },[stklist])
@@ -117,12 +128,6 @@ const MultiLineChart = (props) =>{
 
             const gx = g.append("g")
                 .call(xAxis, x);
-            /*                                
-            g.append("g")
-                .attr("class", "xaxis")
-                .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
-            */    
         
             g.append("g")
                 .attr("class", "y axis")
@@ -166,12 +171,12 @@ const MultiLineChart = (props) =>{
                 .attr("height", y(0) + y(maxChng))
                 .attr("fill", "#F5FEF8")
                 .on("click",(event,d) => {})
-                .on("dblclick", (event,d) => {
+                //.on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
                     // do your thing
-                    setWidth(1400)
-                    setHeight(800)
-                  })
+                    //setWidth(1400)
+                    //setHeight(800)
+                  //})
                 
             g.selectAll("rect_down")
                 .data(charData)
@@ -183,13 +188,13 @@ const MultiLineChart = (props) =>{
                 .attr("height", y(minChng) - y(0))
                 .attr("fill", "#FFF8F9")
                 .on("click",(event,d) => {})
-                .on("dblclick", (event,d) => {
+                //.on("dblclick", (event,d) => {
                     //d3.event.preventDefault();
                     //console.log("double clicked....")
                     // do your thing
-                    setWidth(1400)
-                    setHeight(800)
-                  })                
+                    //setWidth(1400)
+                    //setHeight(800)
+                  //})                
                 
             var sumstat = MultiLineAggregate(charData)  
                                 
@@ -210,7 +215,7 @@ const MultiLineChart = (props) =>{
             .attr("stroke-width", 1)
             .attr("stroke", d => d.values[0].color)
             .on("mouseover", (d,i) => hoveredline(i.values[0].label))
-            .on("mouseout", (d,i) => setTimeout(() => hoveredoutline(i.values[0].label),5000))
+            .on("mouseout", (d,i) => setTimeout(() => hoveredoutline(i.values[0].label),3000))
             .on("click", (event, d) => {
                 if (sumstat.length > 1) 
                     {svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)}
@@ -301,8 +306,8 @@ const MultiLineChart = (props) =>{
                         //ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
                     }    
                 })
-                .style("cursor", "pointer")
-                .on('mouseover', () => {
+                //.style("cursor", "pointer")
+                .on('mouseover', (e) => {
                     tooltip.style('display', null)
                 })
                 .on('mouseout', () => {
@@ -312,13 +317,14 @@ const MultiLineChart = (props) =>{
                         .style('display', 'none')
                 })
                 .on("mouseover", function(event,d) {
-
-                    tooltip.style("left", (event.clientX + 10)+"px")
-                    .style("top", (event.clientY +10)+"px");  
-                tooltip.transition()
-                 .duration(200)
-                 .style('display', null);
-                tooltip.html( (d.label ? d.label: d.symbol)  + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
+                    let left = (inModal ? event.offsetX + 45 : event.clientX + 10)
+                    let top = (inModal ? event.offsetY + 40 : event.clientY + 10) 
+                    tooltip.style("left", left +"px")
+                    .style("top", top +"px");  
+                    tooltip.transition()
+                    .duration(200)
+                    .style('display', null);
+                    tooltip.html( (d.label ? d.label: d.symbol)  + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
                 })
                 .transition()
                 .duration(500)
@@ -327,11 +333,11 @@ const MultiLineChart = (props) =>{
     },[charData,width,height])
 
     return ( 
-        <div style={{padding:2,paddingLeft:40,paddingRight:50}} onDoubleClick={() => console.log("double...", )}>
-            {props.name}
+        <div style={{padding:2,paddingLeft:40,paddingRight:50}} onDoubleClick={() => props.openmodal()}>
+            <div><a href="#" onClick={() => {setshowspinner(true);props.openmodal()}}>{props.name}</a></div>
             <svg ref={ref}/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
-            <div ref={modalref} style={{position:"absolute"}}></div>
+            {showspinner ? <p>loading......</p> : null}
         </div>
     )
 

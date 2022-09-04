@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import getStockSector from '../../modules/cache/cachesector'
 import {CreateStockSector, DeleteStockSector,UpdateStockSectors} from '../../modules/api/StockMaster'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 
 const SectorMaint = () =>{
     const router = useRouter()
@@ -16,6 +15,7 @@ const SectorMaint = () =>{
     useEffect(async () => {
         if (!sectors){
             let res = await getStockSector()
+            console.log("resresresres",res)
             setSectors(res)
             setmodifysect(res)
         }
@@ -132,7 +132,14 @@ const SectorMaint = () =>{
                             <a href="#" className="sectordelete" title="Remove sector" onClick={() => delSector(item.idstocksector)}>&#10060;</a>
                         </legend>
                         {
-                            item.stocks.map((stock,index) => <div >{index+1}) {stock} <a href="#" className="stockdelete" title="Remove stock" onClick={() => delStock(item.idstocksector,stock)}>x</a></div>)
+                            item.stocks.map((stock,index) => {if (index < 10) {
+                                                                            return(<div >{index+1}) {stock} <a href="#" 
+                                                                            className="stockdelete" title="Remove stock" 
+                                                                            onClick={() => delStock(item.idstocksector,stock)}>x</a>
+                                                                            </div>)}})
+                        }
+                        {
+                            item.stocks.length > 10 ? <a href="#" style={{fontSize:"12px",color:"blue"}}>Load More..</a> : null
                         }
                         {
                             item.newstks?

@@ -19,6 +19,9 @@ const index = () => {
     const [expandSec, setExpandSec] = useState(false)
     const [allsecvals, setallsecvals] = useState(null)
     const router = useRouter()
+    const [showContent,setshowContent] = useState(false)
+    const [width, setWidth]   = useState(null);
+    const [height, setHeight] = useState(null);
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -29,6 +32,11 @@ const index = () => {
         }
         setHeader(defHeader)
     },[stklist])
+
+    useEffect(() =>{
+        setWidth(window.innerWidth*0.95)
+        setHeight(window.innerHeight*0.9)
+    },[])
 
     const removefromlst = (stk) =>{
         setlstOfStcks([...lstOfStcks.filter(item => String(item) !== String(stk))])
@@ -79,17 +87,25 @@ const index = () => {
     }
 
     return (
-        <div className="flex-container">
-            <div className="flex-child main">
-                <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} remove={removefromlst} 
-                        keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart}/>
+        <>
+            <div className="flex-container">
+                <div>
+                    <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} 
+                            remove={removefromlst} keep={keepinlst} allSect={showAllSec} labels={labels} 
+                            openPrcChart={openPrcChart} width={width} height={height}/>
+                </div>
+                <div className= "Controlpanel" onMouseEnter={() => setshowContent(true)} onMouseLeave={() => setshowContent(false)}>
+                {
+                    showContent ? 
+                                    <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
+                                        checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
+                                        clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
+                                : <div class="arrow-5"></div>
+                }
             </div>
-            <div className="flex-child controlplane">
-                <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
-                    checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
-                    clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
+
             </div>
-        </div>
+        </>
     )
 }
 

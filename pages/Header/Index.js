@@ -29,12 +29,12 @@ const Header = () =>{
           </li>
           <li className={hdThemes.li_head}>
             <Link href="/SectorPerformance">
-              <a>Performance v2</a>
+              <a>Sector Performance</a>
             </Link>
           </li>
           <li className={hdThemes.li_head}>
-            <Link href="/Maintain">
-              <a>Maintain</a>
+            <Link href="/SectorSetUp">
+              <a>Sector SetUp</a>
             </Link>
           </li>
           <li className="li_head_rt">

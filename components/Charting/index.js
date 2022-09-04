@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
+import ModalBox from '../ModalBox'
 
 const index = (props) => {
     const defHeader = "My Positions"
@@ -14,10 +15,10 @@ const index = (props) => {
     const [postions,setPostions] = useState(true)
     const [showAllSec, setshowAllSec] = useState(false)
     const [labels,setLabels] = useState(null)
-    const [expandSec, setExpandSec] = useState(false)
     const [allsecvals, setallsecvals] = useState(null)
     const router = useRouter()
     const [stocks,setStocks] = useState(null)
+    const [showInModal,setShowInModal] = useState(false)
 
     const [width, setWidth]   = useState(null);
     const [height, setHeight] = useState(null);
@@ -83,18 +84,6 @@ const index = (props) => {
         }
     }
 
-    const clickedAllSector = async () =>{
-        let res = await getStockSector()
-        setallsecvals(res)
-        setHeader("All Sectors")
-        setPostions(false)
-        setExpandSec(false)
-        setfullList(res.map(item => item.sector))
-        setlstOfStcks(res.map(item => item.sector))
-        setLabels(res.map(item => ({"id":item.idstocksector,"desc":item.sector})))
-        setshowAllSec(true)
-    }
-
     const openPrcChart = (stk) =>{
         if (showAllSec){
             changeSector(allsecvals.filter(item => String(item.idstocksector) === stk)[0].stocks,
@@ -105,13 +94,19 @@ const index = (props) => {
         }
     }
 
+    const renderChart = (factor,modal) =>{
+        return (
+            <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} indx={props.indx} 
+            keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} width={width*factor} 
+            height={height*factor} name={props.name} openmodal={() => setShowInModal(true)} inModal={modal}/>    
+        )
+    }
+
     return (
         <div className="flex-container">
             <div className="flex-child main">
                 {
-                    <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} indx={props.indx} 
-                            keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} width={width} 
-                            height={height} name={props.name}/>
+                    showInModal ? <ModalBox content={renderChart(3,true)} onClose={() => setShowInModal(false)}></ModalBox> : renderChart(1,false) 
             
                 }
             </div>

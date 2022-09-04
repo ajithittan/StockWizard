@@ -29,11 +29,17 @@ const SectorStocks = (props) =>{
                         {sector}
                         {
                             stocks.map((item,index) => 
-                                <div style={{fontSize:'10px',fontWeight:'normal', textAlign:'left'}}>
-                                    {index+1}) {item}
-                                </div>
+                                {
+                                    if (index < 10){
+                                        return (<div style={{fontSize:'10px',fontWeight:'normal', textAlign:'left'}}>
+                                        {index+1}) {item}
+                                        </div>)
+
+                                    }
+                                }
                             )
                         }
+                        {stocks.length > 10 ? <a style={{fontSize:"8px",color:"blue"}} href="#">load more...</a> : null}
                     </div>
                     </>
             )

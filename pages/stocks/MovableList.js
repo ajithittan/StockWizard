@@ -87,7 +87,7 @@ const MovableList = (props) => {
     return(
             <div>
                 <div style={{alignItems:"center", height:'40px',cursor:'grabbing',backgroundColor:'gray'}}>
-                    <div className="Row"  style={{height:'40px',width:'97%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
+                    <div className="Row"  style={{height:'25px',width:'100%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
                         <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortsymbol()}>Symbol</div>
                         <div className={"Column DivHeader_" + skinVal.header}>Close</div>
                         <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortListPerChg()}>% Change</div>
@@ -99,8 +99,8 @@ const MovableList = (props) => {
                 {
                     console.log("listofitems",listofitems),
                     listofitems ? listofitems.map((item,index) => 
-                        <div className="drpzone" id={index} draggable="true" style={{alignItems:"center", height:'40px',cursor:'grabbing',backgroundColor:'gray'}}>
-                            <div className="Row" style={{height:'40px',width:'97%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
+                        <div className="drpzone" id={index} draggable="true" style={{alignItems:"center", height:'25px',cursor:'grabbing',backgroundColor:'gray'}}>
+                            <div className="Row" style={{height:'25px',width:'100%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
                                 <div className="Column"><a href="#" onClick={() => showPriceChart(item.symbol)}>{item.symbol}</a></div>
                                 <div className="Column">${item.close}</div>
                                 <div className="Column">{item.perchange.toFixed(2)}%</div>

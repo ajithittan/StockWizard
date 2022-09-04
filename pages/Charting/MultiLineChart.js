@@ -8,8 +8,8 @@ import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 
 const MultiLineChart = (props) =>{
 
-    const [width,setWidth] = useState(1350)
-    const [height,setHeight] = useState(750)
+    const [width,setWidth] = useState(null)
+    const [height,setHeight] = useState(null)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(null)
     const [circSize , setcircSize] = useState(3)
@@ -29,6 +29,27 @@ const MultiLineChart = (props) =>{
             props.keep(stk)
         }
     }
+
+    useEffect(() =>{
+        if (props.width){
+            setWidth(props.width)
+            setHeight(props.height)    
+        }
+    },[])
+
+    useEffect(() => {
+        window.addEventListener('resize', updateDimensions);
+    
+        return () => {
+          window.removeEventListener('resize', updateDimensions);
+        }
+      }, [])
+
+    const updateDimensions = () => {
+        setWidth(window.innerWidth*0.9)
+        setHeight(window.innerHeight*0.9)
+    }
+
     const removeFrmData = (stk) =>{
         if (showAllSector){
             props.remove(props.labels.filter(item => String(item.id) === stk)[0].desc)
@@ -344,7 +365,7 @@ const MultiLineChart = (props) =>{
     },[charData,width,height])
 
     return ( 
-        <div style={{padding:2,paddingLeft:40,paddingRight:50}} viewBox="0 0 100 100" onScroll={() => console.log("scrolling....")}>
+        <div style={{padding:2,paddingLeft:40,paddingRight:50}} viewBox="0 0 100 100">
             <svg ref={ref}/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
             <div ref={modalref} style={{position:"absolute"}}></div>
