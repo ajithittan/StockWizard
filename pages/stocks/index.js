@@ -5,7 +5,7 @@ import MovableList from './MovableList'
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const index = (props) =>{
-    const address = 'http://0.0.0.0:5100/api/stocks/v2'
+    const address = '/api/stocks/v2'
     const { data, error } = useSWR(address, fetcher,{revalidateIfStale:false})
     console.log("data from the swr is,",data)
 

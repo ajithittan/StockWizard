@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const StockList = async () =>{
-    const data = await axios.get(`http://0.0.0.0:5100/api/stocks/v2`)
+    const data = await axios.get(`/api/stocks/v2`)
     return data.data
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState,useContext } from "react"
 import * as d3 from "d3";
 import moment from 'moment';
 import MultiLineAggregate from './MultiLineAggreate'
-import ModalBox from './ModalBox'
+import ModalBox from '../../components/Charting/Components/ModalBox'
 import getStockPerChange from '../../modules/cache/cacheperchange'
 import getSectorStockPerChange from '../../modules/cache/cachesectorperchange'
 

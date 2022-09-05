@@ -4,6 +4,7 @@ import {useContext} from 'react'
 const ModalBoxContent = (props) =>{
     
     //const value = useContext(CreateChartContext)
+    const value = 10
     props.action()
 
     console.log("comntext value")

@@ -4,7 +4,7 @@ const index = (props) =>{
 
     const fetcher = (url) => fetch(url).then((res) => res.json())
 
-    const address = 'http://0.0.0.0:5100/newsfeed/' + props.feedtype
+    const address = '/newsfeed/' + props.feedtype
     const { data, error } = useSWR(address, fetcher,{revalidateIfStale:false})
 
     return(

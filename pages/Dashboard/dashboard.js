@@ -52,9 +52,6 @@ const DashBoard = (props) => {
                 </div>     
             </div>
         </div>
-        <div style={{paddingTop:"250px"}}>
-            
-        </div>
         </>
     )
    }

@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState,useContext } from "react"
 import * as d3 from "d3";
 import moment from "moment";
-import {XScale,YScale} from './Components/Scales'
-import Rectangle from './Components/Rectangle'
-import Line from './Components/Line'
-import ToolTip from './Components/ToolTip'
+import {XScale,YScale} from '../../components/Charting/Components/Scales'
+import Rectangle from '../../components/Charting/Components/Rectangle'
+import Line from '../../components/Charting/Components/Line'
+import ToolTip from '../../components/Charting/Components/ToolTip'
 import getStockPriceHist from '../../modules/cache/cacheprice'
-import { xTicks,yTicks } from "./Components/Ticks";
-import Text from './Components/Text'
+import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
+import Text from '../../components/Charting/Components/Text'
 
 const LineChart = (props) =>{
 
@@ -19,11 +19,17 @@ const LineChart = (props) =>{
 
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
-    
-    let margin = props.margin
+    const [domainwidth,setdomainwidth] = useState(null)
+    const [domainheight,setdomainheight] = useState(null)
 
-    let domainwidth = width - margin.left - margin.right,
-        domainheight = height - margin.top - margin.bottom;
+    
+    useEffect(() =>{
+        if (props.margin){
+            let margin = props.margin
+            setdomainwidth(width - margin.left - margin.right)
+            setdomainheight(height - margin.top - margin.bottom)
+        }
+    },[])
 
     useEffect(async () => {
         if (!charData){
@@ -47,7 +53,7 @@ const LineChart = (props) =>{
             const y = YScale(charData,domainheight,"close")  
             
             const g = svgElement.append("g")
-                .attr("transform", "translate(" + margin.top + "," + margin.top + ")");   
+                .attr("transform", "translate(" + 5 + "," + 5 + ")");   
             
             xTicks(g,x,y,width,height)    
             yTicks(g,x,y,width,height)                
