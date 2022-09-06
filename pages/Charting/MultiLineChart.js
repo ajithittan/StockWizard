@@ -253,7 +253,8 @@ const MultiLineChart = (props) =>{
                 if (sumstat.length > 1) 
                     {svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)}
                 else{
-                    ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
+                    //ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
+                    props.openPrcChart(d.values[0].symbol)
                 }    
             })
             .style("cursor", "pointer")
@@ -336,7 +337,8 @@ const MultiLineChart = (props) =>{
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
-                        ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
+                        //ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
+                        props.openPrcChart(d.symbol)
                     }    
                 })
                 .style("cursor", "pointer")

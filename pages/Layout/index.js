@@ -31,7 +31,6 @@ const index = () =>{
           }
           const updateDimensions = () => {
             calcWidth();
-            console.log(window.innerHeight)
             setHeight(window.innerHeight);  
         }
         window.addEventListener("resize", updateDimensions);
