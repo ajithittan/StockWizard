@@ -89,6 +89,7 @@ const index = () => {
     return (
         <>
             <div className="flex-container">
+                <title>Performance</title>
                 <div>
                     <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} 
                             remove={removefromlst} keep={keepinlst} allSect={showAllSec} labels={labels} 

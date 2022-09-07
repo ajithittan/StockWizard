@@ -39,6 +39,7 @@ const SectorPerformance = () =>{
 
     return(
         <> 
+          <title>Sector Performance</title>
           <ControlPanel key={initialSetUp} onChanges={handleControlPanel} initialsetup={initialSetUp}></ControlPanel>   
           <MainGrid key={chartItems} items = {chartItems} size={3}/>
         </>

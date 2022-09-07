@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import HeaderThemes from '../../modules/themes/HeaderThemes'
 import StockPriceSyncer from '../../components/StockPriceSyncer'
+import GoogleLoginComponent from '../Login/Google/GoogleLoginComponent'
 
 const Header = () =>{
 
@@ -43,7 +44,7 @@ const Header = () =>{
                 <option value={1}>Blue</option>
                 <option value={2}>Purple</option>
               </select>  
-              <StockPriceSyncer></StockPriceSyncer>
+              <GoogleLoginComponent></GoogleLoginComponent>
           </li>
         </ul>
       );

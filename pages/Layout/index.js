@@ -63,6 +63,7 @@ const index = () =>{
 
     return (
         <>
+        <title>Price Charts</title>
         <div></div>
         <div id="outer-grid">
           {
