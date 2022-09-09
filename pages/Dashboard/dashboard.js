@@ -9,7 +9,7 @@ import MainGrid from '../Containers'
 const DashBoard = (props) => {
     const [skinVal,changeSkinVal] = useAppSkinContext()
     const [dataSetUp,setdataSetUp] = useState(null)
-    const stockList = useAppContext()
+    const stockList = useAppContext()[0]
     const [chartItems,setchartItems] = useState(null)
 
     useEffect(() =>{

@@ -1,7 +1,10 @@
+import { PropaneSharp } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import {googleSuccessfulAuth} from '../../../modules/login/googlehandler'
+import Image from 'next/image'
+import googlebtn from './googlebtn.png'
 
-const GoogleLoginComponent = () => {
+const GoogleLoginComponent = (props) => {
 
    useEffect(() =>{
         const script = document.createElement("script");
@@ -12,7 +15,8 @@ const GoogleLoginComponent = () => {
 
    const callBackFromGoogle = async (authCreds)  => {
     await googleSuccessfulAuth(authCreds)    
-    window.location.reload()
+    //window.location.reload()
+    props.status()
     }
 
   useEffect (() =>{
@@ -21,20 +25,8 @@ const GoogleLoginComponent = () => {
 
   return (
     <>
-        <div id="g_id_onload"
-            data-client_id="289288660745-sm918of4as0ssurtrv1s7m31ioudud8g.apps.googleusercontent.com"
-            data-context="signin"
-            data-ux_mode="popup"
-            data-callback="callBackFromGoogle"
-            data-auto_prompt="false">
-        </div>
-        <div className="g_id_signin"
-            data-type="standard"
-            data-shape="rectangular"
-            data-theme="filled_blue"
-            data-text="signin_with"
-            data-size="large"
-            data-logo_alignment="left">
+        <div>
+          <a href="/auth/google"><Image src={googlebtn} width={230} height={45} ></Image></a>
         </div>
     </>
   );

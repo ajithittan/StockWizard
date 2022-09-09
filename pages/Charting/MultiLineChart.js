@@ -183,7 +183,6 @@ const MultiLineChart = (props) =>{
                 //console.log(newX)
                 // update axes with these new boundaries
                 gx.call(xAxis,newX)
-                console.log(area(charData, newX))
                 g.selectAll("path").attr("d",area(charData, newX))
                 //yAxis.call(d3.axisLeft(newY))
                 //g.attr("transform", d3.event.transform);

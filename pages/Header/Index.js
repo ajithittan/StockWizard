@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import HeaderThemes from '../../modules/themes/HeaderThemes'
 import StockPriceSyncer from '../../components/StockPriceSyncer'
-import GoogleLoginComponent from '../Login/Google/GoogleLoginComponent'
 
 const Header = () =>{
 
@@ -19,7 +18,7 @@ const Header = () =>{
     return (
         <ul className={hdThemes.ul_head}>
           <li className={hdThemes.li_head}>
-            <Link href="/">
+            <Link href="/Dashboard">
               <a>Stock Wizard!</a>
             </Link>
           </li>
@@ -44,7 +43,7 @@ const Header = () =>{
                 <option value={1}>Blue</option>
                 <option value={2}>Purple</option>
               </select>  
-              <GoogleLoginComponent></GoogleLoginComponent>
+
           </li>
         </ul>
       );

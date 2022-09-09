@@ -1,9 +1,9 @@
 // pages/index.js
-import Dashboard from './Dashboard'
+import Login from './Login'
 
 const Index = () => (
   <>
-    <Dashboard />
+    <Login />
   </>
 );
 

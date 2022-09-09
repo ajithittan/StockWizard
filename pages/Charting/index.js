@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
 import SliderForCharts from './SliderForCharts'
+import AuthWrapper from '../../modules/state/authState'
 
 const index = () => {
     const defHeader = "My Positions"
