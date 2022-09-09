@@ -1,6 +1,4 @@
 import { useEffect,useState } from 'react'
-import DashboardSetUp from './dashboardsetup'
-import DashBoard from './dashboard'
 import DashBoardv2 from './dashboardv2'
 
 const index = () =>{
