@@ -22,10 +22,12 @@ const SectorPerformance = () =>{
     const getSectors = async () =>{
         let res = await getStockSector()
         console.log("res",res)
-        let tempcharitems = res.map((sector,indx) => <Charting stocks={sector.stocks} size={3} indx={indx} 
-                                    duration={initDur} name={sector.sector}/>)
-        setSector(res)
-        setchartItems(tempcharitems)
+        if (res.length > 0){
+            let tempcharitems = res.map((sector,indx) => <Charting stocks={sector.stocks} size={3} indx={indx} 
+                                duration={initDur} name={sector.sector}/>)
+            setSector(res)
+            setchartItems(tempcharitems)
+        }
     }
 
     const handleControlPanel = (key,value) =>{

@@ -6,19 +6,29 @@ const AuthContext = createContext();
 
 export function AuthWrapper({ children }) {
 
+  console.log("in AuthWrapper???")
   const router = useRouter()
+  const [authStatus,setauthStatus] = useState(false)
 
   useEffect(async () =>{
       let authStatus = await getLoggedInStatus()
-      if (authStatus === false){
-        console.log("before redirecting AuthWrapper")  
+      if (authStatus.data === false){
         router.push("/Login")
       }
   },[])
 
+  const changeAuthStatus = (newvalue) =>{
+    console.log("changed auth status to - ",newvalue)
+    setauthStatus(newvalue)
+  }
+
   return (
-    <AuthContext.Provider>
+    <AuthContext.Provider value={[authStatus,changeAuthStatus]} >
       {children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuthWrapperContext() {
+  return useContext(AuthContext);
 }

@@ -1,15 +1,18 @@
 import GoogleLoginComponent from '../Login/Google/GoogleLoginComponent'
+import {useAuthWrapperContext} from '../../modules/state/authState'
 import { useRouter } from 'next/router'
 
 const Login = () =>{
 
     const router = useRouter()
+    const [authState,setauthState] = useAuthWrapperContext()
 
     const redirect = () =>{
         router.push({pathname: '/Dashboard',query: {}})
     }
 
     const loginStatus = () =>{
+        setauthState(true)
         redirect()
     }
 
