@@ -10,12 +10,12 @@ export function AuthWrapper({ children }) {
 
   useEffect(async () =>{
       let authStatus = await getLoggedInStatus()
-      if (authStatus.data === false){
+      if (authStatus === false){
         console.log("before redirecting AuthWrapper")  
         router.push("/Login")
       }
   },[])
-  
+
   return (
     <AuthContext.Provider>
       {children}
