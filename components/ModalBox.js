@@ -8,10 +8,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
+  bgcolor: "white",
+  p: 1,
 };
 
 const ModalBox = (props) => {
@@ -20,15 +18,13 @@ const ModalBox = (props) => {
   const handleClose = () => {setOpen(false);props.onClose()}
 
   return (
-    <div>
+    <div style={{margin:"300px"}}>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-description" >
+          <Typography sx={{m:4}}>
             {props.content}
           </Typography>
         </Box>

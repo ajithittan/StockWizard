@@ -557,3 +557,99 @@ color: white;
   border-radius: 5px;
   background-color: #55c6bf;
 }
+
+/* Mobile Devices */
+@media (max-width: 480px) {
+  .flex-container2 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-content: center;
+  }
+  .flex-container2 > div {
+    max-width: 300px;
+    height: 250px;
+    margin: 40px;  
+  }
+}
+      
+/* Low resolution Tablets and iPads */
+@media (min-width: 481px) and (max-width: 767px) {
+  .flex-container2 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-content: center;
+  }
+  .flex-container2 > div {
+    min-width: 400px;
+    height: 250px;
+    margin: 40px;  
+  }
+}
+      
+/* Tablets iPads (Portrait) */
+@media (min-width: 768px) and (max-width: 1024px){
+  .flex-container2 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    padding: 5px;
+  }
+  .flex-container2 > div {
+    width: 500px;
+    height: 300px;
+    margin-right: 80px;  /* and that, will result in a 10px gap */
+    margin-bottom: 50px;
+  }
+}
+  
+/* Laptops and Desktops */
+@media (min-width: 1025px) and (max-width: 1280px){
+  .flex-container2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 5px;
+  }
+  .flex-container2 > div {
+    width: 400px;
+    height: 250px;
+    margin-right: 80px;  /* and that, will result in a 10px gap */
+    margin-bottom: 20px;
+  }
+}
+  
+/* Big boi Monitors */
+@media (min-width: 1281px) {
+  .flex-container2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 40px;
+  }
+  .flex-container2 > div {
+    width: 525px;
+    height: 300px;
+    margin-right: 80px;  /* and that, will result in a 10px gap */
+    /*margin-bottom: 50px;*/
+    border-color:3px, rgb(10, 88, 233);
+    border: 3px;
+  }
+}
+
+.SecPerfHeader{
+  text-align: center;
+  color: blue;
+  font-size: small;
+}
+
+.field_set_charts{
+  border-style: ridge;
+  border-color: rgba(0,0,255,0.25);
+  border-style: solid;
+  border-width: 0.5px;
+}

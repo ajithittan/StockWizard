@@ -44,11 +44,14 @@ const MultiLineChart = (props) =>{
     }
 
     useEffect(() =>{
-        if (props.width){
-            setWidth(props.width)
-            setHeight(props.height)    
+        if(props.dim){
+            setWidth(window.innerWidth*0.75)
+            setHeight(window.innerHeight*0.75)
+        }else{
+            setWidth(ref.current.parentElement.offsetWidth)
+            setHeight(ref.current.parentElement.offsetHeight)    
         }
-    },[])
+    },[props.dim])
 
     useEffect(() =>{
         if (!stklist && !showAllSector){
@@ -171,12 +174,11 @@ const MultiLineChart = (props) =>{
                 .attr("height", y(0) + y(maxChng))
                 .attr("fill", "#F5FEF8")
                 .on("click",(event,d) => {})
-                //.on("dblclick", (event,d) => {
-                    //d3.event.preventDefault();
-                    // do your thing
-                    //setWidth(1400)
-                    //setHeight(800)
-                  //})
+                .on("dblclick", (event,d) => {
+                    event.preventDefault();
+                    setshowspinner(true)
+                    props.openmodal()
+                })
                 
             g.selectAll("rect_down")
                 .data(charData)
@@ -188,13 +190,11 @@ const MultiLineChart = (props) =>{
                 .attr("height", y(minChng) - y(0))
                 .attr("fill", "#FFF8F9")
                 .on("click",(event,d) => {})
-                //.on("dblclick", (event,d) => {
-                    //d3.event.preventDefault();
-                    //console.log("double clicked....")
-                    // do your thing
-                    //setWidth(1400)
-                    //setHeight(800)
-                  //})                
+                .on("dblclick", (event,d) => {
+                    event.preventDefault();
+                    setshowspinner(true)
+                    props.openmodal()
+                })                
                 
             var sumstat = MultiLineAggregate(charData)  
                                 
@@ -257,7 +257,7 @@ const MultiLineChart = (props) =>{
             const getRamdomVal = (max) =>{
                 return Math.floor(Math.random() * max)
             }
-    
+            /*
             g.selectAll("line_label")
                 .append("g")
                 .data(sumstat)
@@ -270,6 +270,7 @@ const MultiLineChart = (props) =>{
                 .text(d => d.key)
                 .transition()
                 .duration(500)
+            */    
 
             g.selectAll("line_label_x")
                 .append("g")
@@ -277,6 +278,7 @@ const MultiLineChart = (props) =>{
                 .enter()
                 .append("text")
                 .attr("class", "line_label_x")
+                .attr("stroke-width",0.5)
                 .attr("transform", data => {let pos = data.values.length-1; return "translate(" + (x(maxDt) + 5) + "," + (y(data.values[pos].change)) + ")" })
                 .style("stroke", data => data.values[0].color)
                 .text(d => showAllSector ? props.labels.filter(item => String(item.id) === d.key)[0].desc : d.key)
@@ -333,12 +335,11 @@ const MultiLineChart = (props) =>{
     },[charData,width,height])
 
     return ( 
-        <div style={{padding:2,paddingLeft:40,paddingRight:50}} onDoubleClick={() => props.openmodal()}>
-            <div><a href="#" onClick={() => {setshowspinner(true);props.openmodal()}}>{props.name}</a></div>
+        <>
             <svg ref={ref}/>
             <div ref={tooltipref} style={{position:"absolute"}}></div>
             {showspinner ? <p>loading......</p> : null}
-        </div>
+        </>
     )
 
 }

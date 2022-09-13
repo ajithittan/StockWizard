@@ -23,7 +23,7 @@ const SectorPerformance = () =>{
         let res = await getStockSector()
         console.log("res",res)
         if (res.length > 0){
-            let tempcharitems = res.map((sector,indx) => <Charting stocks={sector.stocks} size={3} indx={indx} 
+            let tempcharitems = res.map((sector,indx) => <Charting stocks={sector.stocks} size={5} indx={indx} 
                                 duration={initDur} name={sector.sector}/>)
             setSector(res)
             setchartItems(tempcharitems)
@@ -34,7 +34,7 @@ const SectorPerformance = () =>{
         let tempChng = {}
         tempChng[key] = value
         console.log(tempChng)
-        let tempitems = sector.map((sector,indx) => <Charting stocks={sector.stocks} size={3} indx={indx} 
+        let tempitems = sector.map((sector,indx) => <Charting stocks={sector.stocks} size={5} indx={indx} 
                                     {...tempChng} name={sector.sector}/>)
         setchartItems([...tempitems])
     }
@@ -43,7 +43,7 @@ const SectorPerformance = () =>{
         <> 
           <title>Sector Performance</title>
           <ControlPanel key={initialSetUp} onChanges={handleControlPanel} initialsetup={initialSetUp}></ControlPanel>   
-          <MainGrid key={chartItems} items = {chartItems} size={3}/>
+          <MainGrid key={chartItems} items = {chartItems}/>
         </>
     )
     

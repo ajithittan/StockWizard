@@ -24,21 +24,6 @@ const index = (props) => {
     const [height, setHeight] = useState(null);
 
     useEffect(() =>{
-        updateDimensions()
-    },[props.size])
-
-    const updateDimensions = () => {
-        if (props.size){
-            setWidth(window.innerWidth*(props.size/12));
-            setHeight(window.innerHeight*(props.size/12));    
-        }
-    }
-    useEffect(() => {
-        window.addEventListener("resize", updateDimensions);
-        return () => window.removeEventListener("resize", updateDimensions);
-    }, []);
-
-    useEffect(() =>{
         if (!lstOfStcks){
             setlstOfStcks(stklist)
         }
@@ -95,22 +80,28 @@ const index = (props) => {
     }
 
     const renderChart = (factor,modal) =>{
+        if (modal){
         return (
-            <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} indx={props.indx} 
-            keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} width={width*factor} 
-            height={height*factor} name={props.name} openmodal={() => setShowInModal(true)} inModal={modal}/>    
+            <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} 
+            indx={props.indx} keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} 
+            name={props.name} openmodal={() => setShowInModal(true)} inModal={modal} dim={1000}/>    
+        )}
+        else{
+            return (
+            <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} 
+            indx={props.indx} keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} 
+            name={props.name} openmodal={() => setShowInModal(true)} inModal={modal}/>    
         )
+        }
     }
 
     return (
-        <div className="flex-container">
-            <div className="flex-child main">
+            <>
                 {
-                    showInModal ? <ModalBox content={renderChart(3,true)} onClose={() => setShowInModal(false)}></ModalBox> : renderChart(1,false) 
+                    showInModal ? <ModalBox content={renderChart(3.5,true)} onClose={() => setShowInModal(false)}></ModalBox> : renderChart(1,false) 
             
                 }
-            </div>
-        </div>
+            </>
     )
 }
 
