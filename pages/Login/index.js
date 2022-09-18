@@ -1,6 +1,5 @@
 import GoogleLoginComponent from '../Login/Google/GoogleLoginComponent'
 import { useRouter } from 'next/router'
-import AppWrapper from '../../modules/state/stockstate'
 
 const Login = () =>{
 
@@ -25,7 +24,6 @@ const Login = () =>{
             <br></br>
             <div>
                 <GoogleLoginComponent status={loginStatus}>
-                    <AppWrapper></AppWrapper>
                 </GoogleLoginComponent>
             </div>
         </div>

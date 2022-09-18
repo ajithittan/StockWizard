@@ -7,11 +7,11 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 const index = (props) =>{
     const address = '/api/stocks/v2'
     const { data, error } = useSWR(address, fetcher,{revalidateIfStale:false})
-    console.log("data from the swr is,",data)
 
     return (
       <>
-        <MovableList stockdetails={data} key={data}/>
+        <MovableList stockdetails={data} key={data}>
+        </MovableList>
       </>
   )
 }

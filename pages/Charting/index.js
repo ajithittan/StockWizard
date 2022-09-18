@@ -35,8 +35,8 @@ const index = () => {
     },[stklist])
 
     useEffect(() =>{
-        setWidth(window.innerWidth*0.95)
-        setHeight(window.innerHeight*0.9)
+        setWidth(window.innerWidth*0.90)
+        setHeight(window.innerHeight*0.90)
     },[])
 
     const removefromlst = (stk) =>{
@@ -102,7 +102,7 @@ const index = () => {
                                     <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
                                         checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
                                         clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
-                                : <div class="arrow-5"></div>
+                                : <div className="arrow-5"></div>
                 }
             </div>
 

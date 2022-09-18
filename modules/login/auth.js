@@ -6,4 +6,10 @@ const getLoggedInStatus = async () =>{
     return data
 }
 
-export {getLoggedInStatus}
+const logout = async () =>{
+    let url = "/api/logout"
+    const data = await axios.post(url)
+    return data.data
+}
+
+export {getLoggedInStatus,logout}

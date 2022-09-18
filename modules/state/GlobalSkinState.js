@@ -5,7 +5,7 @@ const AppSkinContext = createContext();
 const allSkinState = [{header:'blk',footer:'blk',id:0},{header:'blu',footer:'blu',id:1},{header:'prpl',footer:'prpl',id:2}]
 
 const getSessionVal = () => {
-  return localStorage.getItem("theme") || 0
+  return localStorage.getItem("theme") || 1
 }
 
 export function AppSkinWrapper({ children }) {

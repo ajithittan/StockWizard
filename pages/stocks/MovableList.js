@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react";
 import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useRouter } from 'next/router'
+import MovingAvg from './MovingAvg'
 
 const MovableList = (props) => {
 
@@ -84,26 +85,30 @@ const MovableList = (props) => {
         router.push({pathname: '/Layout',query: {stock:stk}})
     }
 
+
     return(
             <div>
                 <div style={{alignItems:"center", height:'40px',cursor:'grabbing',backgroundColor:'gray'}}>
                     <div className="Row"  style={{height:'25px',width:'100%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
                         <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortsymbol()}>Symbol</div>
+                        <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortListPerChg()}>% Change</div>                        
                         <div className={"Column DivHeader_" + skinVal.header}>Close</div>
-                        <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortListPerChg()}>% Change</div>
+                        <div className={"Column DivHeader_" + skinVal.header}>50D Avg</div>
+                        <div className={"Column DivHeader_" + skinVal.header}>200D Avg</div>
                         <div className={"Column DivHeader_" + skinVal.header}>Volume</div>
                         <div className={"Column DivHeader_" + skinVal.header}>10D Volume</div>
                         <div className={"Column DivHeader_" + skinVal.header}>3M Volume</div>
                     </div>
                 </div>
                 {
-                    console.log("listofitems",listofitems),
                     listofitems ? listofitems.map((item,index) => 
                         <div className="drpzone" id={index} draggable="true" style={{alignItems:"center", height:'25px',cursor:'grabbing',backgroundColor:'gray'}}>
                             <div className="Row" style={{height:'25px',width:'100%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
                                 <div className="Column"><a href="#" onClick={() => showPriceChart(item.symbol)}>{item.symbol}</a></div>
-                                <div className="Column">${item.close}</div>
                                 <div className="Column">{item.perchange.toFixed(2)}%</div>
+                                <div className="Column">${item.close}</div>
+                                <div className="Column"><MovingAvg symbol = {item.symbol} type={"SMA_50"}/></div>
+                                <div className="Column"><MovingAvg symbol = {item.symbol} type={"SMA_200"}/></div>                                
                                 <div className="Column">{item.volume.toLocaleString()}</div>
                                 <div className="Column">{item.avgdayvol10day.toLocaleString()}</div>
                                 <div className="Column">{item.avgdayvol3mon.toLocaleString()}</div>

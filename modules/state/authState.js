@@ -6,7 +6,6 @@ const AuthContext = createContext();
 
 export function AuthWrapper({ children }) {
 
-  console.log("in AuthWrapper???")
   const router = useRouter()
   const [authStatus,setauthStatus] = useState(false)
 

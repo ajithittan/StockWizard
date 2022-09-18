@@ -594,7 +594,7 @@ color: white;
 @media (min-width: 768px) and (max-width: 1024px){
   .flex-container2 {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     align-content: center;
     padding: 5px;

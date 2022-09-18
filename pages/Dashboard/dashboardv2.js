@@ -15,6 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
   alignContent:'center',
   overflow:"scroll",
   color: theme.palette.text.secondary,
+  margin:"100px"
 }));
 
 const Item1 = styled(Paper)(({ theme }) => ({
@@ -39,26 +40,25 @@ const Item2 = styled(Paper)(({ theme }) => ({
 }));
 
 const DashBoard = (initialSetUpItems) => {
+
+  const feedtypes = [6,4,2,3]
     
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={0.5} direction="row" rowSpacing={1} columnSpacing={3}>
-        <Grid item xs={8}>
-          <Grid container spacing={0.5} direction="row" rowSpacing={1} columnSpacing={3}>
+        <Grid item xs={9}>
+          <Grid container spacing={0.5} direction="column" rowSpacing={1}>
             <Grid item xs={12}>
               <Item1><Stocks /></Item1>
             </Grid>
-            <Grid item xs={12}>
-              <Item><ChartsForDashBoard /></Item>
+            <Grid sx={{ width: "90%", height: "60vh", marginLeft:"5%", marginTop:"2%" }}>
+              <ChartsForDashBoard />
             </Grid>   
            </Grid>
         </Grid>
-        <Grid item xs={2} >
-          <Item2><Newsfeeds feedtype={2}/></Item2>
-        </Grid>
-        <Grid item xs={2}>
-          <Item2><Newsfeeds feedtype={3}/></Item2>
+        <Grid item xs={3} >
+          <Item2><Newsfeeds feedtype={JSON.stringify(feedtypes)}/></Item2>
         </Grid>
       </Grid>
     </Box>

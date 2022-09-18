@@ -46,8 +46,8 @@ const MultiLineChart = (props) =>{
       }, [])
 
     const updateDimensions = () => {
-        setWidth(window.innerWidth*0.8)
-        setHeight(window.innerHeight*0.8)
+        setWidth(window.innerWidth*0.90)
+        setHeight(window.innerHeight*0.90)
     }
 
     const removeFrmData = (stk) =>{

@@ -19,7 +19,7 @@ const index = () =>{
             //dashboard ? <DashBoard data={["a","b","c"]}/> : <DashboardSetUp />
             <>
             <title>Home</title>
-            <DashBoardv2 />
+                <DashBoardv2 />
             </>
         }
         </>
