@@ -102,7 +102,7 @@ const index = () => {
                                     <ControlPlane key={fullList} key={lstOfStcks} header={header} pos={postions} onChangeDuration={setDuration} stocks={fullList} 
                                         checked={lstOfStcks} remove={removefromlst} add={addTolst} onChangeSector={changeSector} 
                                         clickedSector={clickedAllSector} allsectors={showAllSec} dur={duration} exp={expandSec} expSec={setExpandSec}/>
-                                : <div className="arrow-5"></div>
+                                : null
                 }
             </div>
 
