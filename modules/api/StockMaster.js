@@ -52,7 +52,13 @@ const UpdateStockPrice = async () =>{
     return data
 }
 
+const SaveNewPositions = async (newPos) =>{
+
+    let url = "/api/v2/savepositions"
+    const data = await axios.post(url,newPos)
+    return data.data
+}
 
 
 export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
-    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice}
+    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions}

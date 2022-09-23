@@ -10,6 +10,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   bgcolor: "white",
   p: 1,
+  transition: '5 s'
 };
 
 const ModalBox = (props) => {
@@ -18,7 +19,7 @@ const ModalBox = (props) => {
   const handleClose = () => {setOpen(false);props.onClose()}
 
   return (
-    <div style={{margin:"300px"}}>
+    <div style={{margin:"30px"}}>
       <Modal
         open={open}
         onClose={handleClose}

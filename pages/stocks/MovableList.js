@@ -2,6 +2,7 @@ import { useEffect,useState } from "react";
 import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useRouter } from 'next/router'
 import MovingAvg from './MovingAvg'
+import AddPositions from './AddPositions'
 
 const MovableList = (props) => {
 
@@ -113,9 +114,11 @@ const MovableList = (props) => {
                                 <div className="Column">{item.avgdayvol10day.toLocaleString()}</div>
                                 <div className="Column">{item.avgdayvol3mon.toLocaleString()}</div>
                             </div>
+                            
                         </div>
                     ):null
                 }
+                <AddPositions />
             </div>
     )
    }

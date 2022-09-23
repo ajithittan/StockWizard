@@ -656,3 +656,6 @@ color: white;
   border-style: solid;
   border-width: 0.5px;
 }
+.textOnPositions{
+  font-style: italic; 
+}

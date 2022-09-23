@@ -41,7 +41,7 @@ const Item2 = styled(Paper)(({ theme }) => ({
 
 const DashBoard = (initialSetUpItems) => {
 
-  const feedtypes = [6,4,2,3]
+  const feedtypes = [3,4,2,6]
     
 
   return (
@@ -50,7 +50,9 @@ const DashBoard = (initialSetUpItems) => {
         <Grid item xs={9}>
           <Grid container spacing={0.5} direction="column" rowSpacing={1}>
             <Grid item xs={12}>
-              <Item1><Stocks /></Item1>
+              <Item1>
+                <Stocks />
+              </Item1>
             </Grid>
             <Grid sx={{ width: "90%", height: "60vh", marginLeft:"5%", marginTop:"2%" }}>
               <ChartsForDashBoard />
