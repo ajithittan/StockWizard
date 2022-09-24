@@ -1,6 +1,6 @@
 import { Button,TextField } from "@mui/material"
 import { useEffect, useState } from "react"
-import {SaveNewPositions} from '../../modules/api/StockMaster'
+import {SaveNewPositions,checkValidStock} from '../../modules/api/StockMaster'
 
 const ProcessNewPositions = (props) =>{
 
@@ -14,7 +14,6 @@ const ProcessNewPositions = (props) =>{
     const saveNewPositions = async () =>{
         if (symbols){
             let forDb = symbols.filter(item => item.symbol !== null).map(item => item.symbol)
-            console.log("forDb",forDb)
             if (forDb.length > 0){
                 forDb = Array.from(new Set([...forDb]))
                 let retval = await SaveNewPositions(forDb)
@@ -35,10 +34,17 @@ const ProcessNewPositions = (props) =>{
     }
 
     const AddtoList = (e,index) =>{
-        console.log(e.target.value,index)
+        //console.log(e.target.value,index)
         let tempsymbols = [...symbols]
-        tempsymbols[index].symbol = e.target.value
+        tempsymbols[index].symbol = e.target.value.toUpperCase()
         setsymbols([...tempsymbols])
+    }
+
+    const checkValidStk = async (stock,index) =>{
+        if (stock.trim() !== ""){
+            let res = await checkValidStock(stock)
+            console.log("checking if this is a valid stock....",res)    
+        }
     }
 
     return(
@@ -50,7 +56,9 @@ const ProcessNewPositions = (props) =>{
                 symbols? 
                 symbols.map((item,index) => (
                                             <TextField id="outlined-basic" label="Stock" 
-                                               variant="outlined" size="medium" onChange={(e) =>AddtoList(e,index)}>{item.symbol}</TextField>
+                                               variant="outlined" size="medium" 
+                                               onChange={(e) =>AddtoList(e,index)}
+                                               onBlur={(e) =>checkValidStk(e.target.value.toUpperCase(),index)} >{item.symbol}</TextField>
                                     )
 
                 ):null

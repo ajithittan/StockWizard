@@ -59,6 +59,19 @@ const SaveNewPositions = async (newPos) =>{
     return data.data
 }
 
+const DeleteStkFromPositions = async (newPos) =>{
+
+    let url = "/api/v2/deletestkpos/" + newPos
+    const data = await axios.post(url)
+    return data.data
+}
+
+const checkValidStock = async (stk) =>{
+    let url = "/api/v2/checkvalidstock/" + stk
+    const data = await axios.get(url)
+    return data.data
+}
+
 
 export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
-    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions}
+    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock}

@@ -128,7 +128,7 @@ const SectorMaint = () =>{
             sectors ? sectors.map(item =>   
                     <fieldset>
                         <legend>
-                            <input type="text" name={item.sector} className="sectorinput"  value={item.sector} onChange={(e) => updSecName(e.target.value,item.idstocksector)}/> 
+                            <input type="text" name={item.sector} className="sectorinput"  value={item.sector} onChange={(e) => updSecName(e.target.value.toUpperCase(),item.idstocksector)}/> 
                             <a href="#" className="sectordelete" title="Remove sector" onClick={() => delSector(item.idstocksector)}>&#10060;</a>
                         </legend>
                         {
@@ -145,10 +145,10 @@ const SectorMaint = () =>{
                             item.newstks?
                                 item.newstks.map((newitem,index) => 
                                         <div>
-                                            <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,item.idstocksector,index)}/>&nbsp;&nbsp; {index === item.newstks.length -1 ? <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a> : null}
+                                            <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value.toUpperCase(),item.idstocksector,index)}/>&nbsp;&nbsp; {index === item.newstks.length -1 ? <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a> : null}
                                         </div>) 
                                     :<div>
-                                        <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value,item.idstocksector,0)}/>
+                                        <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value.toUpperCase(),item.idstocksector,0)}/>
                                         <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a>
                                     </div>
                         }
@@ -156,13 +156,13 @@ const SectorMaint = () =>{
             ) : null
         }
             <fieldset style={{width:widthOfFieldSet}} >
-                <legend><input type="text" name="title" className="sectorinputnew" value={inpSec} onClick={(e) => startSector()} onChange={(e) => setInpSec(e.target.value)}/></legend>
+                <legend><input type="text" name="title" className="sectorinputnew" value={inpSec} onClick={(e) => startSector()} onChange={(e) => setInpSec(e.target.value.toUpperCase())}/></legend>
                 
                 {
                     stks?
                         stks.map((item,index) => 
                                 <div>
-                                   <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStock(e.target.value,index)}/>&nbsp;&nbsp; {index === stks.length -1 ? <a href="#" onClick={() =>addrows()}>+</a> : null}
+                                   <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStock(e.target.value.toUpperCase(),index)}/>&nbsp;&nbsp; {index === stks.length -1 ? <a href="#" onClick={() =>addrows()}>+</a> : null}
                                 </div>) 
                          : null
                 }

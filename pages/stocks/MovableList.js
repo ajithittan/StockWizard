@@ -3,6 +3,8 @@ import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useRouter } from 'next/router'
 import MovingAvg from './MovingAvg'
 import AddPositions from './AddPositions'
+import { responsiveFontSizes } from "@mui/material";
+import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 
 const MovableList = (props) => {
 
@@ -10,6 +12,7 @@ const MovableList = (props) => {
     const [clicked,setClicked] = useState(false)
     const [skinVal,changeSkinVal] = useAppSkinContext()
     const router = useRouter()
+    const [showTheDelete,setshowTheDelete] = useState(false)
 
     let dragged;
     let id;
@@ -86,6 +89,15 @@ const MovableList = (props) => {
         router.push({pathname: '/Layout',query: {stock:stk}})
     }
 
+    const deleteStkPos = async (stockSym) =>{
+        let res = await DeleteStkFromPositions(stockSym)
+        console.log("Stock to be deleted",stockSym,res)
+        if (res){
+            let temparr = [...listofitems]
+            setlistofitems([...temparr.filter(item => item.symbol !==stockSym)])
+        }
+    }
+
 
     return(
             <div>
@@ -105,7 +117,12 @@ const MovableList = (props) => {
                     listofitems ? listofitems.map((item,index) => 
                         <div className="drpzone" id={index} draggable="true" style={{alignItems:"center", height:'25px',cursor:'grabbing',backgroundColor:'gray'}}>
                             <div className="Row" style={{height:'25px',width:'100%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
-                                <div className="Column"><a href="#" onClick={() => showPriceChart(item.symbol)}>{item.symbol}</a></div>
+                                <div className="Column" onMouseEnter={() => setshowTheDelete(true)} onMouseLeave={() => setshowTheDelete(false)}>
+                                    <a href="#" onClick={() => showPriceChart(item.symbol)}>{item.symbol}</a>
+                                    {
+                                        showTheDelete ? <span><a href="#" style={{color:"red"}} onClick={() =>deleteStkPos(item.symbol)}>&nbsp;&nbsp;&#9003;</a></span> : null
+                                    }
+                                </div>
                                 <div className="Column">{item.perchange.toFixed(2)}%</div>
                                 <div className="Column">${item.close}</div>
                                 <div className="Column"><MovingAvg symbol = {item.symbol} type={"SMA_50"}/></div>
