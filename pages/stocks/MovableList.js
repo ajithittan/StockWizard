@@ -120,7 +120,7 @@ const MovableList = (props) => {
                                 <div className="Column" onMouseEnter={() => setshowTheDelete(true)} onMouseLeave={() => setshowTheDelete(false)}>
                                     <a href="#" onClick={() => showPriceChart(item.symbol)}>{item.symbol}</a>
                                     {
-                                        showTheDelete ? <span><a href="#" style={{color:"red"}} onClick={() =>deleteStkPos(item.symbol)}>&nbsp;&nbsp;&#9003;</a></span> : null
+                                        showTheDelete ? <span title="Delete Position"><a href="#" style={{color:"red"}} onClick={() =>deleteStkPos(item.symbol)}>&nbsp;&nbsp;&#9003;</a></span> : null
                                     }
                                 </div>
                                 <div className="Column">{item.perchange.toFixed(2)}%</div>
