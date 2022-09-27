@@ -46,7 +46,7 @@ const DashBoard = (initialSetUpItems) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={0.5} direction="row" rowSpacing={1} columnSpacing={3}>
+      <Grid container spacing={0.5} direction={{ xs: 'column', sm: 'row' }} rowSpacing={1} columnSpacing={3}>
         <Grid item xs={9}>
           <Grid container spacing={0.5} direction="column" rowSpacing={1}>
             <Grid item xs={12}>
