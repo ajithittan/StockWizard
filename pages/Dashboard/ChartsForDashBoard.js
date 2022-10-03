@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Charting from '../../components/Charting'
 import {useAppContext} from '../../modules/state/stockstate'
 
@@ -6,7 +7,7 @@ const ChartsForDashBoard = (props) => {
 
     return(
         <>
-            <Charting stocks={stockList} duration={12} name="" />
+            <Charting stocks={stockList} duration={12} name="" callbacks={props.allCallBacks} />
         </>
     )
    }

@@ -79,18 +79,24 @@ const index = (props) => {
         }
     }
 
+    const hoverOnStk = (stkSym,state) =>{
+        if (props.callbacks){
+            props.callbacks.filter(item => item.type === "SINGLE_STOCK")[0].fn(stkSym,state)
+        }
+    }
+
     const renderChart = (factor,modal) =>{
         if (modal){
         return (
             <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} 
             indx={props.indx} keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} 
-            name={props.name} openmodal={() => setShowInModal(true)} inModal={modal} dim={1000}/>    
+            name={props.name} openmodal={() => setShowInModal(true)} inModal={modal} dim={1000} hoverOnStk={hoverOnStk}/>    
         )}
         else{
             return (
             <MultiLineChart key={stocks+duration} dur={duration} stocks={stocks} remove={removefromlst} 
             indx={props.indx} keep={keepinlst} allSect={showAllSec} labels={labels} openPrcChart={openPrcChart} 
-            name={props.name} openmodal={() => setShowInModal(true)} inModal={modal}/>    
+            name={props.name} openmodal={() => setShowInModal(true)} inModal={modal} hoverOnStk={hoverOnStk}/>    
         )
         }
     }

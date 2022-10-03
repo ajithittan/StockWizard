@@ -659,3 +659,59 @@ color: white;
 .textOnPositions{
   font-style: italic; 
 }
+
+.stockDetails-enter {
+  opacity: 0.01;  
+  transform: scale(0.9) translateY(50%);
+}
+.stockDetails-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+  transition: all 300ms ease-out;
+}
+.stockDetails-enter-done {
+  width: 95%;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.stockDetails-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+}
+.stockDetails-exit-active {
+  opacity: 0.01;
+  transform: scale(0.9) translateY(50%);
+  transition: all 300ms ease-out;
+}
+
+.companyDetails-enter {
+  opacity: 0.01;
+  transform: scale(0.9) translateY(50%);
+}
+.companyDetails-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+  transition: all 500ms ease-out;
+}
+.companyDetails-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+}
+.companyDetails-exit-active {
+  opacity: 0.01;
+  transform: scale(0.9) translateY(50%);
+  transition: all 500ms ease-out;
+}
+
+.simpleGrid{
+  color:"dimgray";
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  font:icon;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #a0b7f5;
+  border-bottom-width: "10px";
+}

@@ -271,7 +271,7 @@ const MultiLineChart = (props) =>{
                 .transition()
                 .duration(500)
             */    
-
+            let hoverout = true
             g.selectAll("line_label_x")
                 .append("g")
                 .data(sumstat)
@@ -283,9 +283,9 @@ const MultiLineChart = (props) =>{
                 .style("stroke", data => data.values[0].color)
                 .text(d => showAllSector ? props.labels.filter(item => String(item.id) === d.key)[0].desc : d.key)
                 .style("cursor", "pointer")
-                .on("click", (event,d) => {svgElement.selectAll("*").remove(),removeFrmData(d.key)})
-                .on("mouseover", (d,i) => hoveredline(i.values[0].label))
-                //.on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
+                .on("click", (event,i) => {props.hoverOnStk(i.values[0].label,true),hoverout ? hoverout=false : hoverout = true})
+                .on("mouseover", (d,i) => {hoveredline(i.values[0].label),props.hoverOnStk(i.values[0].label,true)})
+                .on("mouseout", (d,i) => {if (hoverout) {hoveredoutline(i.values[0].label),props.hoverOnStk(i.values[0].label,false)}})
                 .transition()
                 .duration(500)                
     

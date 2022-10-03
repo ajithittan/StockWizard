@@ -72,6 +72,18 @@ const checkValidStock = async (stk) =>{
     return data.data
 }
 
+const getCompanyDetails = async (stk) =>{
+    let url = "/api/v2/companydetails/" + stk
+    const data = await axios.get(url)
+    return data.data
+}
+
+const getCompanyQtrPerf = async (stk,forChart) =>{
+    let url = "/api/v2/compqtrperf/" + stk + "/" + forChart
+    const data = await axios.get(url)
+    return data.data
+}
 
 export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
-    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock}
+    SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
+    getCompanyDetails,getCompanyQtrPerf}

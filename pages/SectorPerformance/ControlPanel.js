@@ -23,7 +23,6 @@ const ControlPanel = (props) =>{
           <div className= "Controlpanel" onMouseEnter={() => setshowContent(true)} onMouseLeave={() => setshowContent(false)}>
             {showContent ? <Duration changedval={handleDurChanges} dur={initDur} ></Duration> : null}
           </div>
-            
         </>
     )
     

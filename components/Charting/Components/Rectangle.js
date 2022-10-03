@@ -4,7 +4,7 @@ const Rectangle = (g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onM
     .append("rect")
         .attr("width", domainwidth)
         .attr("height", domainheight)
-        .attr("fill", "#EAFFF1")
+        .attr("fill","#EAFFF1")
         .style("opacity","0.5")
         .on('mouseover', (event,d) => onMouseOver())
         .on('mouseout', () => onMouseOut())
