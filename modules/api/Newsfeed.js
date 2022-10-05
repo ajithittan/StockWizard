@@ -5,4 +5,9 @@ const BasicNewsFeeds  = async (feedTypes) =>{
     return data.data
 }
 
-export {BasicNewsFeeds}
+const StockNewsFeeds  = async (stksym) =>{
+    const data = await axios.get(`/api/v2/news/` + stksym)
+    return data.data
+}
+
+export {BasicNewsFeeds,StockNewsFeeds}

@@ -715,3 +715,15 @@ color: white;
   border-bottom: 1px solid #a0b7f5;
   border-bottom-width: "10px";
 }
+
+.news0{
+  background: rgb(243, 252, 244);
+  border-radius: 5px;
+  padding: 10px;
+}
+.news1{
+  background:rgb(252, 242, 242);
+  border-radius: 5px;
+  padding: 10px;
+}
+

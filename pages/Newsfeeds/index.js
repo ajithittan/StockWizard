@@ -1,11 +1,12 @@
 import { useEffect,useState } from 'react'
-import {BasicNewsFeeds} from '../../modules/api/Newsfeed'
-//import useSWR from 'swr'
-
+import {BasicNewsFeeds,StockNewsFeeds} from '../../modules/api/Newsfeed'
+import Image from 'next/image';
+import myGif from '../../public/loading-loading-forever.gif'
 
 const index = (props) =>{
 
     const [feedData,setfeedData] = useState(null)
+
 
     useEffect(async () =>{
         if (props.feedtype){
@@ -14,16 +15,19 @@ const index = (props) =>{
         }
     },[props.feedtype])
 
-    //const fetcher = (url) => fetch(url).then((res) => res.json())
-    //const address = '/newsfeed/' + props.feedtype
-    //const { data, error } = useSWR(address, fetcher,{revalidateIfStale:false})
+    useEffect(async () =>{
+        if (props.stock){
+            let retval = await StockNewsFeeds(props.stock) 
+            setfeedData(retval)
+        }
+    },[props.stock])
 
     return(
         <>
             {
-                feedData ? feedData.map(item => (
-                    <a href={item.link} target="_blank"><p>{item.title}</p></a>
-                )): null
+                feedData ? feedData.map((item,indx) => (
+                    <div className={indx%2===0 ? "news0" : "news1" }  ><a href={item.link} target="_blank">{item.title}</a></div>
+                )): <Image src={myGif} alt="wait" height={30} width={30} />
             }
         </>
     )

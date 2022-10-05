@@ -120,7 +120,10 @@ const DashBoard = (initialSetUpItems) => {
            </Grid>
         </Grid>
         <Grid item xs={3} >
-        <Item2><Newsfeeds feedtype={JSON.stringify(feedtypes)}/></Item2>
+        <Item2>{showSingleStkDetails ? 
+                    <Newsfeeds stock={singleStk} key={singleStk} /> : 
+                    <Newsfeeds feedtype={JSON.stringify(feedtypes)}/>}
+        </Item2>
         </Grid>
       </Grid>
     </Box>
