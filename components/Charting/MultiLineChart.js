@@ -76,7 +76,7 @@ const MultiLineChart = (props) =>{
            let limit = stklist.length
            for (let i=0;i < limit;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
+               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
                if (tempData !== undefined && tempData !==[]){
                    let color = generateRandomHexColor()
                    tempData.map(item => {item.color=color; return item})    

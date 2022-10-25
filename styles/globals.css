@@ -420,9 +420,11 @@ color: white;
   }
   .line1 #crosshairX {
     stroke: #c4c4ca;
+    opacity: 0.70;
   }
   .line1 #crosshairY {
     stroke: #c4c4ca;
+    opacity: 0.70;
   }
 
   .ChartHeader {
@@ -459,6 +461,20 @@ color: white;
   color: whitesmoke;
   align-items: center;
 }
+
+.SMA_DROP{
+  width: 90%;
+  height: 30px;
+  background-color: rgb(5, 43, 114);
+  color: whitesmoke;
+  align-items: center;
+}
+
+.SMA_TEXT{
+  font-size: 12px;
+  color: whitesmoke;
+}
+
 .flex-container_control {
   display: flex;
   flex-wrap: wrap;
@@ -517,6 +533,31 @@ color: white;
   border-radius: 5px;
   transition: width 0.5s;
   opacity: 90%;
+}
+
+.ControlpanelPrice{
+  background-color: #1E90FF;
+  position: fixed;
+  right: 0;
+  width: 3%;
+  height: 5%;
+  border-radius: 40%;
+  transition: width 0.5s;
+  right: 1%;
+  z-index: 100;
+}
+
+.ControlpanelPrice:hover{
+  background-color:	#1E90FF;
+  padding: 20px;
+  position: fixed;
+  right: 0;
+  width: 200px;
+  height: 90%;
+  border-radius: 5px;
+  transition: width 0.5s;
+  opacity: 90%;
+  z-index: 100;
 }
 
 .arrow-5 {

@@ -75,7 +75,7 @@ const index = (props) => {
                         allsecvals.filter(item => String(item.idstocksector) === stk)[0].sector)
         }
         else{
-            router.push({pathname: '/Layout',query: {stock:stk,list:fullList}})
+            router.push({pathname: '/PriceCharts',query: {stock:stk,list:fullList}})
         }
     }
 

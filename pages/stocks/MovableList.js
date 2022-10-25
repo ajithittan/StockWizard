@@ -3,7 +3,7 @@ import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useRouter } from 'next/router'
 import MovingAvg from './MovingAvg'
 import AddPositions from './AddPositions'
-import { responsiveFontSizes } from "@mui/material";
+import TextTransition, { presets } from "react-text-transition";
 import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 
 const MovableList = (props) => {
@@ -31,6 +31,18 @@ const MovableList = (props) => {
             window.removeEventListener('drop', drop);
         };
     },[])
+
+    /*
+    useEffect(() => {
+        const eventSource = new EventSource('/api/dashboard/realtime-price', { withCredentials: true });
+        eventSource.onmessage = (e) => {
+            let streamdt = e.data
+            if (JSON.parse(streamdt).length > 0){
+                setlistofitems(JSON.parse(streamdt))
+            }
+        }
+      }, []);
+      */
 
     const dragstart = ({target}) => {
         console.log("target-dragstart",target)
@@ -86,7 +98,7 @@ const MovableList = (props) => {
         clicked ? setClicked(false) : setClicked(true)
     }
     const showPriceChart = (stk) =>{
-        router.push({pathname: '/Layout',query: {stock:stk}})
+        router.push({pathname: '/PriceCharts',query: {stock:stk}})
     }
 
     const deleteStkPos = async (stockSym) =>{

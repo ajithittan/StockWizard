@@ -11,13 +11,13 @@ const StockPrice = async (stock,duration) =>{
     return data.data
     
 }
-const StockPerChange = async (stock,duration,rollup,unit) =>{
-    let url = "/api/v2/stocks/perchange/" + stock + "/" + duration + "/" + rollup + "/" + unit
+const StockPerChange = async (stock,duration,rollup,unit,byType) =>{
+    let url = "/api/v2/stocks/perchange/" + stock + "/" + duration + "/" + rollup + "/" + unit  + "/" + byType 
     const data = await axios.get(url)
     return data.data
 }
-const SectorStockPerChange = async (stock,duration,rollup,unit) =>{
-    let url = "/api/v2/stocks/secperchange/" + stock + "/" + duration + "/" + rollup + "/" + unit
+const SectorStockPerChange = async (stock,duration,rollup,unit,byType) =>{
+    let url = "/api/v2/stocks/secperchange/" + stock + "/" + duration + "/" + rollup + "/" + unit  + "/" + byType 
     const data = await axios.get(url)
     return data.data
 }

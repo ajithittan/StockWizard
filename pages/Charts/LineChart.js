@@ -3,19 +3,18 @@ import * as d3 from "d3";
 import moment from "moment";
 import {XScale,YScale} from '../../components/Charting/Components/Scales'
 import Rectangle from '../../components/Charting/Components/Rectangle'
-import Line from '../../components/Charting/Components/Line'
+import MultiLine from '../../components/Charting/Components/MultiLine'
 import ToolTip from '../../components/Charting/Components/ToolTip'
 import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
 import Text from '../../components/Charting/Components/Text'
+import MultiLineAggregate from './Components/MultiLineAggreate'
 
 const LineChart = (props) =>{
 
     const ref = useRef()
     const tooltipref = useRef()
     const [charData, setcharData] = useState(null)
-    const duration = 12
-    const cacheKey = props.stock + "_" + duration + "_PRICE"
 
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
@@ -30,14 +29,13 @@ const LineChart = (props) =>{
             setdomainheight(height - margin.top - margin.bottom)
         }
     },[])
-
-    useEffect(async () => {
-        if (!charData){
-            let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:12})
-            console.log(res)
-            setcharData(res)
+    
+    useEffect(() =>{
+        if (props.chartData){
+            setcharData(props.chartData)
         }
-    },[])    
+    },[props.chartData])
+
 
     useEffect (() =>{
         if (charData) {
@@ -60,10 +58,10 @@ const LineChart = (props) =>{
 
             const swapStk = () => props.swap ? props.swap(props.stock): null
             const classNameAppend = props.main ? "_M" : "_N"
-            const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk,classNameAppend,props.main)
+            const multiLineData = MultiLineAggregate(charData)
+            const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,multiLineData,swapStk,classNameAppend,props.main)
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk)
-            Line(g,charData,x,y)
-            Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,props.stock)
+            MultiLine(g,multiLineData,x,y)
         }
     },[charData])
 

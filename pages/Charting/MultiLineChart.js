@@ -86,7 +86,8 @@ const MultiLineChart = (props) =>{
             let tempData = []
             for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-            tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,'duration':duration,'rollup':1,'unit':"M"})
+            tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,
+                                                    'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
             if (tempData !== undefined && tempData !==[]){
                     let color = generateRandomHexColor()
                     tempData.map(item => {item.color=color; return item})    
@@ -101,7 +102,7 @@ const MultiLineChart = (props) =>{
            let tempData = []
            for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M"})
+               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
                if (tempData !== undefined && tempData !==[]){
                    let color = generateRandomHexColor()
                    tempData.map(item => {item.color=color; return item})    
