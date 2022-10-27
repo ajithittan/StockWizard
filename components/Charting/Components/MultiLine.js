@@ -1,5 +1,6 @@
 import moment from 'moment';
 import * as d3 from "d3";
+import MultiLineThemes from '../../../modules/themes/MultiLineThemes'
 
 const MultiLine = (g,chardata,x,y) =>{
 
@@ -16,8 +17,8 @@ const MultiLine = (g,chardata,x,y) =>{
             (d.values)
     })
     .attr("fill", "none")
-    .attr("stroke-width", (d,indx) => indx===0? 0.7 : 0.5)
-    .attr("stroke", (d,indx) => indx===0? "blue" : "purple")
+    .attr("stroke-width", (d,indx) => indx===0? 1 : 0.7)
+    .attr("stroke", (d,indx) => indx===0? "#041E42" : MultiLineThemes[indx])
     .style("cursor", "pointer")
 
 }

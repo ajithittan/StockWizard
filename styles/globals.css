@@ -768,3 +768,16 @@ color: white;
   padding: 10px;
 }
 
+.ChartSelections{
+  display: flex;
+  width: 90%;
+  height: 20px;
+}
+.ChartSelectionsDiv{
+  font-size: 12px;
+  text-align:center;
+}
+.ChartSelectionsDiv:hover{
+  background-color: wheat;
+  cursor: pointer;
+}

@@ -217,11 +217,7 @@ const MultiLineChart = (props) =>{
             .on("mouseover", (d,i) => hoveredline(i.values[0].label))
             .on("mouseout", (d,i) => setTimeout(() => hoveredoutline(i.values[0].label),3000))
             .on("click", (event, d) => {
-                if (sumstat.length > 1) 
-                    {svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)}
-                else{
-                    //ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
-                }    
+                props.openPrcChart(d.values[0].symbol)
             })
             .style("cursor", "pointer")
              
@@ -306,6 +302,7 @@ const MultiLineChart = (props) =>{
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
                         //ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
+                        props.openPrcChart(d.values[0].symbol)
                     }    
                 })
                 //.style("cursor", "pointer")

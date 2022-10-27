@@ -5,8 +5,8 @@ const getSimpleMovingAverages  = async (stock,onlyLast) =>{
     return data.data
 }
 
-const getRollingSMA  = async (stock,duration) =>{
-    const data = await axios.get(`/api/indicators/` + stock + `/SMA/` + duration)
+const getRollingSMA  = async (stock,indVal,duration) =>{
+    const data = await axios.get(`/api/indicators/` + stock + `/SMA/` + indVal + `/` + duration)
     return data.data
 }
 
