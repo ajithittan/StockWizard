@@ -16,8 +16,8 @@ import { getCookie,deleteCookie } from 'cookies-next';
 import {logout} from '../../modules/login/auth'
 import { useRouter } from 'next/router'
 
-const pages = ['Sectors','Performance','Analyze'];
-const links = ['SectorSetUp','SectorPerformance','Charting']
+const pages = ['Sectors','Performance','Analyze','Prediction'];
+const links = ['SectorSetUp','SectorPerformance','Charting','Prediction']
 const settings = ['Logout'];
 
 const ResponsiveAppBar = () => {

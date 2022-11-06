@@ -4,7 +4,8 @@ import { useRouter } from 'next/router'
 import myGif from '../../public/loading-loading-forever.gif'
 import ControlPanel from './ControlPanel'
 import getStockPriceHist from '../../modules/cache/cacheprice'
-import {getRollingSMA} from '../../modules/api/StockIndicators'
+import {getRollingSMA,} from '../../modules/api/StockIndicators'
+import {getPredictionsForStock} from '../../modules/api/StockPrediction'
 import Image from 'next/image';
 import cloneDeep from 'lodash/cloneDeep';
 import DisplaySelections from './DisplaySelections'
@@ -91,6 +92,21 @@ const index = () =>{
           adddata = await getSMAData(stock,value)
           setcharData([...charData,...adddata])    
         }
+      }else if (key === "PM"){
+        let mdData = await handleModelChanges(value)
+        if (mdData.length >0){
+          setcharData([...charData,...mdData])
+        }
+      } 
+    }
+
+    const handleModelChanges = async(value) =>{
+      let retval = await getPredictionsForStock(stock,value)
+      console.log("value - handleModelChanges",retval)
+      if (retval.length > 0){
+        return retval.map(item => ({close:item["predictedVals"],symbol:"PRED_" + value,date:item.date}))
+      }else{
+        return []
       }
     }
 

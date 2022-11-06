@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react' 
 import Duration from '../../components/Duration'
 import SimpleMovAvg from './SimpleMovAvg'
+import PredictionModels from './PredictionModels'
 
 const ControlPanel = (props) =>{
 
@@ -21,10 +22,14 @@ const ControlPanel = (props) =>{
     const handleSmaChanges = (value) =>{
         props.onChanges("sma",value)
     }
+
+    const handleModelChanges = (value) =>{
+        props.onChanges("PM",value)
+    }
     
     return(
         <> 
-          <div className= "ControlpanelPrice" onMouseEnter={() => setshowContent(true)} onMouseLeave={() => setshowContent(false)}>
+          <div className= {showContent ? "ControlpanelPriceOpen" : "ControlpanelPrice"} onMouseEnter={() => setshowContent(true)}>
             {showContent ? 
                 <>
                 <div style={{textAlign:"center",width:"100%",color:"whitesmoke"}}>{props.stock}</div>
@@ -32,6 +37,8 @@ const ControlPanel = (props) =>{
                 <Duration changedval={handleDurChanges} dur={initDur} ></Duration>  
                 <br></br><br></br>
                 <SimpleMovAvg onsmachange={handleSmaChanges}/>
+                <br></br><br></br>
+                <PredictionModels stock={props.stock} onpredictionchange={handleModelChanges}></PredictionModels>
                 </>
             : null}
           </div>
