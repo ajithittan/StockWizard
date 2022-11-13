@@ -16,8 +16,7 @@ const DisplayResults = (props) =>{
     const columns = [
         {field: 'stock', headerName: 'Stock', width: 100 , headerAlign: 'center' },
         {field: 'prediction', headerName: 'Prediction Model', width: 100  , headerAlign: 'center' },
-        {field: 'profit', headerName: 'Profit', width: 100  , headerAlign: 'center' },
-        {field: 'loss', headerName: 'Loss', width: 100  , headerAlign: 'center' },
+        {field: 'daysAhead', headerName: 'Days', width: 100  , headerAlign: 'center' },
         {
           field: 'training_error',
           headerName: 'Training Error',
@@ -37,6 +36,7 @@ const DisplayResults = (props) =>{
           headerAlign: 'center' 
         },
         { field: 'degree', headerName: 'Degree', width: 100  , headerAlign: 'center' },
+        { field: 'features', headerName: 'features', width: 100  , headerAlign: 'center' , hide: true },
         { field: 'save', headerName: 'Save', width: 150, renderCell: (row) => renderDetailsButton(row)  , headerAlign: 'center' },
       ];
 

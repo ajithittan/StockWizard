@@ -23,8 +23,7 @@ const SavedModels = (props) =>{
     const columns = [
         {field: 'symbol', headerName: 'Stock', width: 100 , headerAlign: 'center' },
         {field: 'model_type', headerName: 'Prediction Model', width: 100  , headerAlign: 'center' },
-        {field: 'profit', headerName: 'Profit', width: 100  , headerAlign: 'center' },
-        {field: 'stoploss', headerName: 'Loss', width: 100  , headerAlign: 'center' },
+        {field: 'predictiondays', headerName: 'Days', width: 100  , headerAlign: 'center' },
         {field: 'model_param', headerName: 'Add Param', width: 100  , headerAlign: 'center' },
         {field: 'create_dt', headerName: 'Created', width: 100  , headerAlign: 'center' }
       ];

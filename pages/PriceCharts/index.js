@@ -9,6 +9,7 @@ import {getPredictionsForStock} from '../../modules/api/StockPrediction'
 import Image from 'next/image';
 import cloneDeep from 'lodash/cloneDeep';
 import DisplaySelections from './DisplaySelections'
+import moment from 'moment';
 
 const index = () =>{
     const initDur = 3
@@ -95,14 +96,41 @@ const index = () =>{
       }else if (key === "PM"){
         let mdData = await handleModelChanges(value)
         if (mdData.length >0){
-          setcharData([...charData,...mdData])
+          const unqSymbols = [...new Set(charData.map(item => item.symbol))];
+          let tmpAddsToChar = normalizeAllData (unqSymbols,mdData)
+          console.log("unqSymbols",unqSymbols)
+          console.log("tmpDelta",tmpAddsToChar)
+          setcharData([...charData,...tmpAddsToChar,...mdData])
         }
       } 
     }
 
+    const normalizeAllData = (unqSymbols,mdData) =>{
+      let tmpAddsToChar = []
+      for (let j=0 ; j < unqSymbols.length ; j++){
+        let tmpLastObj = charData.filter(item => item.symbol === unqSymbols[j]).pop()
+        let tmpDelta = mdData.filter(object1 => {
+          return !charData.filter(item => item.symbol === unqSymbols[j]).some(object2 => {
+            return object1.date === object2.date;
+          })
+        })
+        for (let i=0; i< tmpDelta.length;i++){
+          if (moment(tmpLastObj.date,'YYYY-MM-DD') < moment(tmpDelta[i].date,'YYYY-MM-DD')){
+            let copyoflast = cloneDeep(tmpLastObj);
+            if (copyoflast.symbol === stock){
+              copyoflast.predictions = 1
+            }
+            copyoflast.date = tmpDelta[i].date
+            tmpAddsToChar.push(copyoflast)
+            console.log(tmpDelta[i])
+          }
+        }  
+      }
+      return tmpAddsToChar
+    }
+
     const handleModelChanges = async(value) =>{
       let retval = await getPredictionsForStock(stock,value)
-      console.log("value - handleModelChanges",retval)
       if (retval.length > 0){
         return retval.map(item => ({close:item["predictedVals"],symbol:"PRED_" + value,date:item.date}))
       }else{

@@ -25,7 +25,7 @@ const PredictionModels = (props) =>{
         <FormControl>
             <InputLabel id="pred_model">Prediction Model</InputLabel>
             <Select id="PredModelsDropDown" size="small" labelId="pred_model" label="Prediction Model"
-                                         name="uni" defaultValue={0}   onChange={changeModel}>
+                                         name="uni" defaultValue={0}  onChange={changeModel}>
                 <MenuItem value={0} selected={true}>Select Model</MenuItem>                                                
                 {
                     models ? models.map(item => <MenuItem value={item.idstockpredictionmodels}>

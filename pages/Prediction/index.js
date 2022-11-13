@@ -8,44 +8,45 @@ import Image from 'next/image';
 import PolynomialRegression from './PolynomialRegression'
 import DisplayResults from './DisplayResults'
 import SavedModels from './SavedModels'
+import FeatureSelection from './FeatureSelection'
 
 const Prediction = () =>{
 
     const [stock,setStock] = useState(null)
     const [model,setModel] = useState(null)
-    const [profit,setProfit] = useState(4)
-    const [loss,setLoss] = useState(4)
     const [daysAhead,setDaysAhead] = useState(4)
     const [waiting,setWaiting] = useState(null)
     const [disableBtn,setdisableBtn] = useState(true)
     const [addParams,setaddParams] = useState(null)
     const [results,setresults] = useState(null)
-
+    const [features,setFeatures] = useState(null)
 
     useEffect(() =>{
         enableSubmit()
-    },[stock,model,profit,loss])
+    },[stock,model,features])
 
     const generateModel = async () =>{
         setdisableBtn(true)
         if (stock && model && additionalParams()){
             let reqBody = {}
-            reqBody.profit = profit
-            reqBody.loss = loss
-            for(let i=0;i < addParams.length;i++){
-                reqBody[addParams[i].Type]=addParams[i].Val
+            if (addParams){
+                for(let i=0;i < addParams.length;i++){
+                    reqBody[addParams[i].Type]=addParams[i].Val
+                }    
             }
+            reqBody.daysAhead = daysAhead
+            reqBody.features = features
             console.log(stock,model,reqBody)
             setWaiting(1)
             let retVal = await generatePredictionModel(stock,model,reqBody)
+            console.log("retVal after generatePredictionModel",retVal)
             let consolidate = retVal.map(item => {
                 const newPropsObj = {
                   stock:stock,
                   prediction:model,
-                  profit:profit,
-                  loss:loss
-                };
-              
+                  daysAhead: daysAhead,
+                  features:features
+                };              
                 // Assign new properties and return
                 return Object.assign(item, newPropsObj);
               })
@@ -63,13 +64,14 @@ const Prediction = () =>{
             if (addParams){
                 retval = true
             }
+        }else{
+            retval = true
         }
         return retval
     }
 
     const enableSubmit = () =>{
-        console.log(stock , model , !isNaN(profit) , !isNaN(loss) , !isNaN(daysAhead) , model === "0")
-        if (stock && model && !isNaN(profit) && !isNaN(loss) && !isNaN(daysAhead) && model !== "0"){
+        if (stock && features && model && !isNaN(daysAhead) && model !== "0"){
             setdisableBtn(false)
         }else{
             setdisableBtn(true)
@@ -78,17 +80,17 @@ const Prediction = () =>{
 
     const saveModel = async (modelParams) =>{
         let retval = await savePredictionModel(stock,model,modelParams)
-        console.log("retval - saveModel",retval)
+    }
+
+    const updFeatures = (features) =>{
+        console.log("did I make it here?")
+        setFeatures(features)
     }
     
     return (
         <>
         <div className="PredictionMainDiv">
             <StockSelector updStock={setStock}></StockSelector>
-            <TextField id="outlined-basic" label="Profit" variant="outlined" size="small" 
-                                               onChange={(e) => setProfit(e.target.value)}>{profit}</TextField>
-            <TextField id="outlined-basic" label="Loss" variant="outlined" size="small" 
-                                               onChange={(e) => setLoss(e.target.value)}>{loss}</TextField>                                               
             <TextField id="outlined-basic" label="Days" variant="outlined" size="small" 
                                                onChange={(e) => setDaysAhead(e.target.value)}>{daysAhead}</TextField>                                               
 
@@ -96,6 +98,7 @@ const Prediction = () =>{
             {
                 model === "PR" ? <PolynomialRegression additionalParams={setaddParams}></PolynomialRegression> : null
             }
+            <FeatureSelection selectFeatures={updFeatures}></FeatureSelection>
             <Button  variant="contained" size="small" disabled={disableBtn} pt={1} onClick={generateModel}>Generate Model</Button> 
             {waiting ? waiting ===1 ? <Image src={myGif} alt="wait" height={30} width={30} /> : null : null}
         </div>

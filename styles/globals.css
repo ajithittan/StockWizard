@@ -788,6 +788,15 @@ color: white;
   flex-direction: row;
   gap: 10px;
 }
+
+.PredictionColDiv{
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .validStock{
   background-color: rgb(10, 139, 10);
   height: 30px;
