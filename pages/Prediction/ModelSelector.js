@@ -14,6 +14,7 @@ const ModelSelector = (props) =>{
                 <MenuItem value="PR">Polynomial Regression</MenuItem>
                 <MenuItem value="LR">Linear Regression</MenuItem>
                 <MenuItem value="SVR">Support Vector Regression</MenuItem>
+                <MenuItem value="LASSORR">Lasso Regression</MenuItem>
             </Select>
         </FormControl>
     )

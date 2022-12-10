@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import moment from 'moment';
+import MultiLineThemes from '../../../modules/themes/MultiLineThemes'
 
 const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip) =>{
     const closeToolTip = false
@@ -97,6 +98,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
       .attr("y", d => yScale(d.values.filter(item => x.isSame(item.date))[0].close))
       .attr("class","ToolTipText" + classNameAppend)
       .style("text-anchor", "middle")
+      .style("fill", (d,indx) => indx===0? "#041E42" : MultiLineThemes[indx])
       .html(d => d.values.filter(item => x.isSame(item.date))[0].close);
   }
     

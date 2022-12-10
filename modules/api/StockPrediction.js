@@ -24,4 +24,9 @@ const getPredictionsForStock = async (stock,modelId) =>{
     return data.data
 }
 
-export {generatePredictionModel,savePredictionModel,getPredictionModel,getPredictionsForStock}
+const deletePredictionModel  = async (modelId) =>{
+    const data = await axios.post("/api/predictions/delmodel/" + modelId)
+    return data.data
+}
+
+export {generatePredictionModel,savePredictionModel,getPredictionModel,getPredictionsForStock,deletePredictionModel}

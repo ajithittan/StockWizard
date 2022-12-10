@@ -8,31 +8,63 @@ const SavedModels = (props) =>{
     const [results,setResults] = useState(null)
     const [disable,setDisable] = useState(false)
 
+    const deleteModel = (params) =>{
+        setDisable(true)
+        props.delete(params.idstockpredictionmodels)
+        setTimeout(() => setDisable(false), 1000)
+    }
+
     useEffect (async () =>{
         if(props.stock){
             let retval = await getPredictionModel(props.stock)
             if (retval.length > 0){
                 setResults(retval)
             }
-
-            console.log("retval - SavedModels",retval)
         }
-
     },[])
+
+    const analyzeModel = (inpData) =>{
+        props.actionAnalyze(inpData)
+    }
+
+    const actionBtn = (inpData,actionType) => {
+        if (actionType === "DE"){
+            deleteModel(inpData)
+        }else if (actionType === "AZ") {
+            analyzeModel(inpData)
+        }
+    }
 
     const columns = [
         {field: 'symbol', headerName: 'Stock', width: 100 , headerAlign: 'center' },
         {field: 'model_type', headerName: 'Prediction Model', width: 100  , headerAlign: 'center' },
         {field: 'predictiondays', headerName: 'Days', width: 100  , headerAlign: 'center' },
         {field: 'model_param', headerName: 'Add Param', width: 100  , headerAlign: 'center' },
-        {field: 'create_dt', headerName: 'Created', width: 100  , headerAlign: 'center' }
+        {field: 'create_dt', headerName: 'Created', width: 100  , headerAlign: 'center' },
+        { field: 'analyze', headerName: 'Analyze', width: 150, renderCell: (row) => renderButton(row,"AZ","Analyze")  , headerAlign: 'center' },
+        { field: 'delete', headerName: 'Delete', width: 150, renderCell: (row) => renderButton(row,"DE","Delete")  , headerAlign: 'center' }
       ];
+
+      const renderButton = (params,type,dispName) => {
+        return (
+            <strong>
+                <Button
+                    variant="contained"
+                    disabled={disable}
+                    color="primary"
+                    size="small"
+                    style={{ marginLeft: 16 }}
+                    onClick={() => actionBtn(params.row,type)}>
+                    {dispName}
+                </Button>
+            </strong>
+        )
+    }  
 
     return(
         <div className="PredictionMainDiv">
             {results? 
-                <Box sx={{ width: 1/3,height:600 }}>
-                <legend>Saved Models</legend>
+                <Box sx={{ width: 800,height:600 }}>
                 <DataGrid
                     rows={results}
                     columns={columns}

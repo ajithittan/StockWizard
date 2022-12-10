@@ -15,9 +15,10 @@ const PredictionModels = (props) =>{
         }
     },[props.stock])
 
-    const changeModel = (e) =>{
-        if (parseInt(e.target.value) > 0){
-            props.onpredictionchange(e.target.value)
+    const changeModel = (val,name) =>{
+        console.log("eeeeeeeeeee",val,name)
+        if (parseInt(val) > 0){
+            props.onpredictionchange(val,name)
         }
     }
 
@@ -25,10 +26,12 @@ const PredictionModels = (props) =>{
         <FormControl>
             <InputLabel id="pred_model">Prediction Model</InputLabel>
             <Select id="PredModelsDropDown" size="small" labelId="pred_model" label="Prediction Model"
-                                         name="uni" defaultValue={0}  onChange={changeModel}>
+                                         name="uni" defaultValue={0} >
                 <MenuItem value={0} selected={true}>Select Model</MenuItem>                                                
                 {
-                    models ? models.map(item => <MenuItem value={item.idstockpredictionmodels}>
+                    models ? models.map(item => 
+                                    <MenuItem value={item.idstockpredictionmodels} key={item.model_name} 
+                                            onClick={() => changeModel(item.idstockpredictionmodels,item.model_name)}>
                                     {item.model_name}</MenuItem>) : null
                 }                                               
             </Select>

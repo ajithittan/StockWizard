@@ -37,6 +37,7 @@ const DisplayResults = (props) =>{
         },
         { field: 'degree', headerName: 'Degree', width: 100  , headerAlign: 'center' },
         { field: 'features', headerName: 'features', width: 100  , headerAlign: 'center' , hide: true },
+        { field: 'dispFeature', headerName: 'features', width: 200  , headerAlign: 'center' },
         { field: 'save', headerName: 'Save', width: 150, renderCell: (row) => renderDetailsButton(row)  , headerAlign: 'center' },
       ];
 
@@ -70,7 +71,7 @@ const DisplayResults = (props) =>{
     return(
         <div className="PredictionMainDiv">
             {results? 
-                <Box sx={{ width: 2/3,height:600 }}>
+                <Box sx={{ width:"80%",height:600 }}>
                 <DataGrid
                     rows={results}
                     columns={columns}

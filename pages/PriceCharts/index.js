@@ -10,6 +10,7 @@ import Image from 'next/image';
 import cloneDeep from 'lodash/cloneDeep';
 import DisplaySelections from './DisplaySelections'
 import moment from 'moment';
+import ModalBox from '../../components/ModalBox'
 
 const index = () =>{
     const initDur = 3
@@ -22,6 +23,7 @@ const index = () =>{
     const [initialSetUp,setinitialSetUp] = useState({duration:initDur})
     const [charData,setcharData] = useState(null)
     const [selections,setSelections] = useState(null)
+    const [processing,setProcessing] = useState(false)
 
     useEffect(() => {
           const calcWidth = () =>{
@@ -67,7 +69,7 @@ const index = () =>{
       setSelections([...retval])
     },[initialSetUp])
 
-    const handleChanges = async(key,value) => {
+    const handleChanges = async(key,value,dispName) => {
       let prcdata = []
       let adddata = []
       if (key === "duration"){
@@ -94,15 +96,32 @@ const index = () =>{
           setcharData([...charData,...adddata])    
         }
       }else if (key === "PM"){
-        let mdData = await handleModelChanges(value)
+        setProcessing(true)
+        let mdData = await handleModelChanges(value,dispName)
         if (mdData.length >0){
           const unqSymbols = [...new Set(charData.map(item => item.symbol))];
           let tmpAddsToChar = normalizeAllData (unqSymbols,mdData)
-          console.log("unqSymbols",unqSymbols)
-          console.log("tmpDelta",tmpAddsToChar)
+          if (tmpAddsToChar.length === 0){
+            mdData = [...mdData,...normalizeIncomingData(mdData)]
+          }
           setcharData([...charData,...tmpAddsToChar,...mdData])
         }
+        setProcessing(false)
       } 
+    }
+
+    const normalizeIncomingData = (inpData) =>{
+      let tmpAddsToChar = []
+      let lastItem = inpData[inpData.length - 1]
+      let filteredData =  charData.filter(item => item.symbol === stock).filter(item2 => 
+                          moment(item2.date,'YYYY-MM-DD') > moment(lastItem.date,'YYYY-MM-DD'))
+
+      for (let i=0;i < filteredData.length ; i++){
+        let copyoflast = cloneDeep(lastItem)
+        copyoflast.date = filteredData[i].date
+        tmpAddsToChar.push(copyoflast)
+      }                          
+      return tmpAddsToChar
     }
 
     const normalizeAllData = (unqSymbols,mdData) =>{
@@ -122,20 +141,38 @@ const index = () =>{
             }
             copyoflast.date = tmpDelta[i].date
             tmpAddsToChar.push(copyoflast)
-            console.log(tmpDelta[i])
           }
         }  
       }
       return tmpAddsToChar
     }
 
-    const handleModelChanges = async(value) =>{
+    const handleModelChanges = async(value,dispName) =>{
       let retval = await getPredictionsForStock(stock,value)
       if (retval.length > 0){
-        return retval.map(item => ({close:item["predictedVals"],symbol:"PRED_" + value,date:item.date}))
+        addToSelections("PRED",value,dispName)
+        return retval.map(item => ({close:item["predictedVals"].toFixed(2),symbol:"PRED_" + value,date:item.date}))
       }else{
         return []
       }
+    }
+
+    const addToSelections = (key,val,dispName) =>{
+      let objKeyVal = {}
+      objKeyVal.key = key
+      objKeyVal.value = val
+      objKeyVal.displayVal = dispName
+      setSelections([...selections,objKeyVal])
+    }
+
+    const removeSelections = (key,val) =>{
+      setSelections([...selections.filter(item => !(item.key === key && item.value === val))])
+      adjustDataPostSelections(key,val)
+    }
+
+    const adjustDataPostSelections = (key,val) =>{
+      let keyToFind = key + "_" + val
+      setcharData([...charData.filter(item => item.symbol !== keyToFind)])
     }
 
     const handleDurChanges = async (key,dur) =>{
@@ -181,6 +218,10 @@ const index = () =>{
       }
     }
 
+    const getProcessingContent = () =>{
+      return <Image src={myGif} alt="wait" height={30} width={30} />
+    }
+
     return (
         <>
         <title>Price Charts</title>
@@ -190,7 +231,8 @@ const index = () =>{
               {
                 stock && width > 0 ? 
                   <div>
-                    <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections}></DisplaySelections>
+                    {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
+                    <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>
                     <LineChart key={Math.round(width) + stock + charData} chartData={charData}
                               width={Math.round(width)} height={Math.round(height*.90)} margin={margin} 
                               stock={stock} main={true} /></div> : <Image src={myGif} alt="wait" height={30} width={30} />

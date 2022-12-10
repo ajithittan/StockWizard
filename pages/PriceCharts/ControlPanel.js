@@ -23,8 +23,8 @@ const ControlPanel = (props) =>{
         props.onChanges("sma",value)
     }
 
-    const handleModelChanges = (value) =>{
-        props.onChanges("PM",value)
+    const handleModelChanges = (value,name) =>{
+        props.onChanges("PM",value,name)
     }
     
     return(
