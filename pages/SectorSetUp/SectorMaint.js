@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import getStockSector from '../../modules/cache/cachesector'
 import {CreateStockSector, DeleteStockSector,UpdateStockSectors} from '../../modules/api/StockMaster'
 import { useRouter } from 'next/router'
+import StockSymbol from '../../components/StockSymbol'
+import { Button } from "@mui/material"
 
 const SectorMaint = () =>{
     const router = useRouter()
@@ -141,32 +143,36 @@ const SectorMaint = () =>{
                         {
                             item.stocks.length > 10 ? <a href="#" style={{fontSize:"12px",color:"blue"}}>Load More..</a> : null
                         }
+                        <div style={{paddingTop:"10px"}}>
                         {
                             item.newstks?
                                 item.newstks.map((newitem,index) => 
-                                        <div>
-                                            <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value.toUpperCase(),item.idstocksector,index)}/>&nbsp;&nbsp; {index === item.newstks.length -1 ? <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a> : null}
+                                        <div style={{margin:"8px"}}>
+                                            <StockSymbol add={addStockToSec} sym={newitem} callBackvals={[item.idstocksector,index]}/>{index === item.newstks.length -1 ? <>&nbsp;<Button  variant="contained" size="small" onClick={() =>addrowstosec(item.idstocksector)}>+</Button></> : null}
                                         </div>) 
                                     :<div>
-                                        <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStockToSec(e.target.value.toUpperCase(),item.idstocksector,0)}/>
-                                        <a href="#" onClick={() =>addrowstosec(item.idstocksector)}>+</a>
+                                        <StockSymbol add={addStockToSec} callBackvals={[item.idstocksector,0]}/>&nbsp;
+                                        <Button  variant="contained" size="small"  onClick={() =>addrowstosec(item.idstocksector)}>+</Button>
                                     </div>
                         }
+                        </div>
                     </fieldset>
             ) : null
         }
-            <fieldset style={{width:widthOfFieldSet}} >
+            <fieldset>
                 <legend><input type="text" name="title" className="sectorinputnew" value={inpSec} onClick={(e) => startSector()} onChange={(e) => setInpSec(e.target.value.toUpperCase())}/></legend>
-                
+                <div>
                 {
                     stks?
                         stks.map((item,index) => 
-                                <div>
-                                   <input type="text" name="stockname" style={{width:'100px'}} onChange={(e) => addStock(e.target.value.toUpperCase(),index)}/>&nbsp;&nbsp; {index === stks.length -1 ? <a href="#" onClick={() =>addrows()}>+</a> : null}
+                                <div style={{marginTop:"8px",marginBottom:"8px"}}>
+                                   <StockSymbol add={addStock} callBackvals={[index]}/>
+                                   {index === stks.length -1 ? <>&nbsp;<Button  variant="contained" size="small" onClick={() =>addrows()}>+</Button></> : null}
                                 </div>) 
                          : null
                 }
-                <input className="sectorbutton" type="button" value="Create Sector" onClick={(e) => {e.target.disable = true; sendToDb()}} />
+                <Button  variant="contained" size="small" onClick={(e) => {e.target.disable = true; sendToDb()}}>Create Sector</Button>
+                </div>    
             </fieldset>
             {
                     processing ? <div className="sectorprocessing">Updating.....</div> : <input className="sectorprocessing" type="button" name="Save Changes" value="Save Changes" onClick={() => saveUpdates()}/>

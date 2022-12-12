@@ -298,11 +298,16 @@ const MultiLineChart = (props) =>{
                 .attr("r",circSize)  
                 .attr("id", (d,i) => d.label)
                 .on("click", (event, d) => {
+                    console.log("dddddd",d)
+                    //duh!
                     if (sumstat.length > 1) 
-                        {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
+                        {
+                            props.openPrcChart(d.symbol)
+                        }
+                        //{svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
                         //ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
-                        props.openPrcChart(d.values[0].symbol)
+                        props.openPrcChart(d.symbol)
                     }    
                 })
                 //.style("cursor", "pointer")
@@ -325,6 +330,7 @@ const MultiLineChart = (props) =>{
                     .style('display', null);
                     tooltip.html( (d.label ? d.label: d.symbol)  + "<br /> " + d.change + "%" + "<br /> " + moment(d.date).format("MMM YYYY"))
                 })
+                .style("cursor", "pointer")
                 .transition()
                 .duration(500)
         }

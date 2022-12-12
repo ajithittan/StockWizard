@@ -1,7 +1,7 @@
 import { useState } from "react"
 import {TextField} from "@mui/material"
 
-const StockSelector = (props) =>{
+const StockSelector = (props) => {
 
     const [stock,setStock] = useState("Stock")
     const [valid,setValid] = useState(false)

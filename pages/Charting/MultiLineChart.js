@@ -251,7 +251,10 @@ const MultiLineChart = (props) =>{
             .on("mouseout", (d,i) => hoveredoutline(i.values[0].label))
             .on("click", (event, d) => {
                 if (sumstat.length > 1) 
-                    {svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)}
+                    {
+                        console.log("may be this?")    
+                        svgElement.selectAll("*").remove(),keepInList(d.values[0].symbol)
+                    }
                 else{
                     //ModalBox(modalref,event,true,props.openPrcChart,d.values[0].symbol)
                     props.openPrcChart(d.values[0].symbol)
@@ -334,6 +337,7 @@ const MultiLineChart = (props) =>{
                 .attr("r",circSize)  
                 .attr("id", (d,i) => d.label)
                 .on("click", (event, d) => {
+                    console.log("sumstat",sumstat)
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{

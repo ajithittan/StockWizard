@@ -1,6 +1,7 @@
-import { Button,TextField } from "@mui/material"
+import { Button } from "@mui/material"
 import { useEffect, useState } from "react"
 import {SaveNewPositions,checkValidStock} from '../../modules/api/StockMaster'
+import StockSymbol from '../../components/StockSymbol'
 
 const ProcessNewPositions = (props) =>{
 
@@ -33,10 +34,10 @@ const ProcessNewPositions = (props) =>{
         setsymbols([...tempsymbols])
     }
 
-    const AddtoList = (e,index) =>{
+    const AddtoList = (stockSym,index) =>{
         //console.log(e.target.value,index)
         let tempsymbols = [...symbols]
-        tempsymbols[index].symbol = e.target.value.toUpperCase()
+        tempsymbols[index].symbol = stockSym
         setsymbols([...tempsymbols])
     }
 
@@ -53,15 +54,7 @@ const ProcessNewPositions = (props) =>{
                 you just wanna keep an eye on. We'll keep tracking it for you.</span>
             <hr></hr>    
             {
-                symbols? 
-                symbols.map((item,index) => (
-                                            <TextField id="outlined-basic" label="Stock" 
-                                               variant="outlined" size="medium" 
-                                               onChange={(e) =>AddtoList(e,index)}
-                                               onBlur={(e) =>checkValidStk(e.target.value.toUpperCase(),index)} >{item.symbol}</TextField>
-                                    )
-
-                ):null
+                symbols ? symbols.map((item,index) => <StockSymbol add={AddtoList} sym={item} callBackvals={[index]}/>):null
             }
             <Button  variant="contained" size="small" pt={2} onClick={addMoreSymbols}>+</Button>
             <br></br><br></br><br></br>
