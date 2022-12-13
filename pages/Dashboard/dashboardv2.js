@@ -78,7 +78,7 @@ const DashBoard = (initialSetUpItems) => {
                     {showSingleStkDetails ? null :  <Stocks />}
                     <Grid container spacing={1.5} direction="row" rowSpacing={1} justifyContent="space-evenly" 
                         marginTop="5px" marginRight="5px" >
-                        <Grid item xs={3.5} backgroundColor={showSingleStkDetails ? "#EAFFF1" : null} borderRadius="5px">
+                        <Grid item xs={3.5} backgroundColor={showSingleStkDetails ? null : null} borderRadius="5px">
                         <CSSTransition
                               in={showSingleStkDetails}
                               nodeRef={nodeRef}
@@ -89,7 +89,7 @@ const DashBoard = (initialSetUpItems) => {
                             <div className="stockDetails" ref={nodeRef}><CompanyDetails stock={singleStk}/></div>
                           </CSSTransition>
                         </Grid>
-                        <Grid item xs={3.5} backgroundColor={showSingleStkDetails ? "#EAFFF1" : null} borderRadius="5px">
+                        <Grid item xs={3.5} backgroundColor={showSingleStkDetails ? null : null} borderRadius="5px">
                         <CSSTransition
                               in={showSingleStkDetails}
                               nodeRef={companyStkPrcRef}
@@ -100,7 +100,7 @@ const DashBoard = (initialSetUpItems) => {
                             <div className="stockDetails" ref={companyStkPrcRef}><CompanyStockPrice stock={singleStk}/></div>
                           </CSSTransition>
                         </Grid>
-                        <Grid item xs={3.5} backgroundColor={showSingleStkDetails ? "#EAFFF1" : null} borderRadius="5px">
+                        <Grid item xs={3.5} backgroundColor={showSingleStkDetails ? null : null} borderRadius="5px">
                         <CSSTransition
                               in={showSingleStkDetails}
                               nodeRef={companyNodeRef}

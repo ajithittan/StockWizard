@@ -7,7 +7,7 @@ import LineChartv2 from '../Charts/LineChartv2'
 const CompanyStockPrice = (props) =>{
     const [compDtls,setcompDtls] = useState(null)
     const [wait,setWait] = useState(false)
-    const margin = {top: 5, right: 5, bottom: 0, left: 10}
+    const margin = {top: 20, right: 5, bottom: 0, left: 0}
 
     useEffect(async () => {
         console.log("CompanyStockPrice",props.stock)
@@ -18,7 +18,7 @@ const CompanyStockPrice = (props) =>{
         <>
             {wait ? <Image src={myGif} alt="wait" height={30} width={30} /> : 
                 compDtls ? 
-                    <LineChartv2 key={props.stock} stock={props.stock} margin={margin} swap={false} duration={24} main={false}/>
+                    <LineChartv2 background={"none"} key={props.stock} stock={props.stock} margin={margin} swap={false} duration={24} main={false}/>
                 :null}
         </>
     )

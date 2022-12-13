@@ -79,7 +79,7 @@ const LineChartv2 = (props) =>{
             const swapStk = () => props.swap ? props.swap(props.stock): null
             const classNameAppend = props.main ? "_M" : "_N"
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk,classNameAppend,props.main)
-            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,true)
+            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,props.background)
             Line(g,charData,x,y)
             Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,"")
         }
