@@ -150,7 +150,7 @@ const SectorMaint = () =>{
                                         <div style={{margin:"8px"}}>
                                             <StockSymbol add={addStockToSec} sym={newitem} callBackvals={[item.idstocksector,index]}/>{index === item.newstks.length -1 ? <>&nbsp;<Button  variant="contained" size="small" onClick={() =>addrowstosec(item.idstocksector)}>+</Button></> : null}
                                         </div>) 
-                                    :<div>
+                                    :<div style={{margin:"8px"}}>
                                         <StockSymbol add={addStockToSec} callBackvals={[item.idstocksector,0]}/>&nbsp;
                                         <Button  variant="contained" size="small"  onClick={() =>addrowstosec(item.idstocksector)}>+</Button>
                                     </div>
