@@ -6,7 +6,7 @@ const SimpleMovAvg = (props) =>{
 
     useEffect(() =>{
         if (selSma){
-            const timeOutId = setTimeout(() => updateChart(), 300)
+            const timeOutId = setTimeout(() => updateChart(), 500)
             return () => clearTimeout(timeOutId)    
         }
     },[selSma])

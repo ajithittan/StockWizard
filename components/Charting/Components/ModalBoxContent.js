@@ -5,7 +5,7 @@ const ModalBoxContent = (props) =>{
     
     //const value = useContext(CreateChartContext)
     const value = 10
-    props.action()
+    //props.action()
 
     console.log("comntext value")
 

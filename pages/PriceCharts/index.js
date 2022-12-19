@@ -12,10 +12,10 @@ import DisplaySelections from './DisplaySelections'
 import moment from 'moment';
 import ModalBox from '../../components/ModalBox'
 
-const index = () =>{
-    const initDur = 3
+const index = (props) =>{
     const router = useRouter()
     const stock = router.query.stock
+    const initDur = router.query.dur || 3
     const margin = {top: 20, right: 0, bottom: 30, left: 50}
     const [width, setWidth]   = useState(0);
     const [height, setHeight]   = useState(0);
