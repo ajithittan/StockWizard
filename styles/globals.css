@@ -758,14 +758,22 @@ color: white;
 }
 
 .news0{
-  background: rgb(243, 252, 244);
-  border-radius: 5px;
+  background: #F0FFFF;
   padding: 10px;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #c2bff3;
+  margin: 2px;
 }
 .news1{
-  background:rgb(252, 242, 242);
-  border-radius: 5px;
+  background: #F0FFFF;
   padding: 10px;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #c2bff3;
+  margin: 2px;
 }
 
 .ChartSelections{
@@ -863,4 +871,8 @@ color: white;
 .ToolTipXLabel{
   font-size: 12px; 
   fill: rgb(0, 89, 255);
+}
+.newsHeader{
+  font-size: 15px;
+  border: 1px solid #c2bff3; 
 }

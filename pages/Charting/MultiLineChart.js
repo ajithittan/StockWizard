@@ -12,7 +12,7 @@ const MultiLineChart = (props) =>{
     const [height,setHeight] = useState(null)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(null)
-    const [circSize , setcircSize] = useState(3)
+    const [circSize , setcircSize] = useState(2)
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -63,14 +63,6 @@ const MultiLineChart = (props) =>{
             setstklist(props.stocks)
         }
     },[props.stocks])
-
-    useEffect(() =>{
-        if (36 > duration > 48){
-            setcircSize(3)
-        }else if (duration > 48){
-            setcircSize(2)
-        }
-    },[duration])
 
     useEffect(() =>{
         setshowAllSector(props.allSect)
@@ -278,7 +270,7 @@ const MultiLineChart = (props) =>{
             const hoveredline = (label) =>{
                 d3.selectAll("#" + label)
                 .style('opacity', 1)
-                .attr("stroke-width", 2)
+                .attr("stroke-width", 1.5)
                 .style('transition', "opacity 0.1s")
                 setOpacity(label,0.05)
             }
@@ -294,7 +286,8 @@ const MultiLineChart = (props) =>{
             const getRamdomVal = (max) =>{
                 return Math.floor(Math.random() * max)
             }
-    
+            
+            /* 
             g.selectAll("line_label")
                 .append("g")
                 .data(sumstat)
@@ -307,6 +300,7 @@ const MultiLineChart = (props) =>{
                 .text(d => d.key)
                 .transition()
                 .duration(500)
+            */              
 
             g.selectAll("line_label_x")
                 .append("g")
@@ -329,6 +323,14 @@ const MultiLineChart = (props) =>{
                 .attr('class', 'tooltip')
                 .style('display', 'none')
 
+            function handleMouseOver(circ,max) {       
+                d3.select(circ).transition()
+                    .duration(1)
+                    .attr("r", max ? 10 : circSize)
+                    .attr("fill", max ? "white" : null)
+                    .style("stroke", max ? "black" : null)
+                }    
+
             g.selectAll("circle")
             .data(charData)
             .join("circle")
@@ -337,7 +339,6 @@ const MultiLineChart = (props) =>{
                 .attr("r",circSize)  
                 .attr("id", (d,i) => d.label)
                 .on("click", (event, d) => {
-                    console.log("sumstat",sumstat)
                     if (sumstat.length > 1) 
                         {svgElement.selectAll("*").remove(),keepInList(d.symbol)}
                     else{
@@ -346,17 +347,15 @@ const MultiLineChart = (props) =>{
                     }    
                 })
                 .style("cursor", "pointer")
-                .on('mouseover', () => {
-                    tooltip.style('display', null)
-                })
-                .on('mouseout', () => {
+                .on('mouseout', function(event,d) {
                     tooltip
                         .transition()
                         .duration(300)
-                        .style('display', 'none')
+                        .style('display', 'none');
+                    handleMouseOver(this)    
                 })
                 .on("mouseover", function(event,d) {
-
+                    handleMouseOver(this,true)
                     tooltip.style("left", (event.clientX + 10)+"px")
                     .style("top", (event.clientY +10)+"px");  
                 tooltip.transition()

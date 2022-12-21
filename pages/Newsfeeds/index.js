@@ -23,13 +23,18 @@ const index = (props) =>{
     },[props.stock])
 
     return(
-        <>
-            {
-                feedData ? feedData.map((item,indx) => (
-                    <div className={indx%2===0 ? "news0" : "news1" }  ><a href={item.link} target="_blank">{item.title}</a></div>
-                )): <Image src={myGif} alt="wait" height={30} width={30} />
-            }
-        </>
+        <div>
+            <fieldset className="newsHeader">
+                <legend>{props.stock ? props.stock + " in the News"  : "Latest News"}</legend>
+                <div>
+                    {
+                        feedData ? feedData.map((item,indx) => (
+                            <div className={indx%2===0 ? "news0" : "news1" }><a href={item.link} target="_blank">{item.title}</a></div>
+                        )): <Image src={myGif} alt="wait" height={30} width={30} />
+                    }
+                </div>    
+            </fieldset>
+        </div>
     )
 }
 
