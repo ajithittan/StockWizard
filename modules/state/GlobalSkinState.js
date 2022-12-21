@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import StockList from './api/stocklist'
 
 const AppSkinContext = createContext();
-const allSkinState = [{header:'blk',footer:'blk',id:0},{header:'blu',footer:'blu',id:1},{header:'prpl',footer:'prpl',id:2}]
+const allSkinState = [{header:'blu',footer:'blu',id:0},{header:'blu',footer:'blu',id:1},{header:'blu',footer:'blu',id:2}]
 
 const getSessionVal = () => {
   return localStorage.getItem("theme") || 1

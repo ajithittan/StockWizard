@@ -3,7 +3,6 @@ import {useAppSkinContext} from '../../modules/state/GlobalSkinState'
 import { useRouter } from 'next/router'
 import MovingAvg from './MovingAvg'
 import AddPositions from './AddPositions'
-import TextTransition, { presets } from "react-text-transition";
 import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 
 const MovableList = (props) => {
@@ -115,7 +114,7 @@ const MovableList = (props) => {
             <div>
                 <div style={{alignItems:"center", height:'40px',cursor:'grabbing',backgroundColor:'gray'}}>
                     <div className="Row"  style={{height:'25px',width:'100%',float:"right",backgroundColor:'white',zIndex:10,cursor:'auto'}}>
-                        <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortsymbol()}>Symbol</div>
+                        <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortsymbol()}>Symbol <span style={{textalign:"left"}}><AddPositions /></span></div>
                         <div className={"Column DivHeader_" + skinVal.header} onClick={() => sortListPerChg()}>% Change</div>                        
                         <div className={"Column DivHeader_" + skinVal.header}>Close</div>
                         <div className={"Column DivHeader_" + skinVal.header}>50D Avg</div>
@@ -147,7 +146,6 @@ const MovableList = (props) => {
                         </div>
                     ):null
                 }
-                <AddPositions />
             </div>
     )
    }

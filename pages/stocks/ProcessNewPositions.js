@@ -35,17 +35,9 @@ const ProcessNewPositions = (props) =>{
     }
 
     const AddtoList = (stockSym,index) =>{
-        //console.log(e.target.value,index)
         let tempsymbols = [...symbols]
         tempsymbols[index].symbol = stockSym
         setsymbols([...tempsymbols])
-    }
-
-    const checkValidStk = async (stock,index) =>{
-        if (stock.trim() !== ""){
-            let res = await checkValidStock(stock)
-            console.log("checking if this is a valid stock....",res)    
-        }
     }
 
     return(

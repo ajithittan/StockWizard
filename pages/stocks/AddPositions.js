@@ -19,7 +19,7 @@ const AddPositions = (props) =>{
 
     return (
         <>  
-            <Button  variant="contained" size="small" pt={2} onClick={openNewPositionsModal}>+</Button>
+            <Button  variant="contained" sx={{height:20}} onClick={openNewPositionsModal}>+</Button>
             {showModal ? <ModalBox content={getContent()}  onClose={() => setshowModal(false)}></ModalBox> : null }
         </>    
     )
