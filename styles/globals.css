@@ -860,3 +860,7 @@ color: white;
   right: 0;  
   z-index: 10000;
 }
+.ToolTipXLabel{
+  font-size: 12px; 
+  fill: rgb(0, 89, 255);
+}

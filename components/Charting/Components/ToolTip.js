@@ -8,7 +8,15 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
         .attr('class', 'tooltip')
         .style("visibility", "hidden")
 
-    const bisectDate = d3.bisector(function(d) { return moment(d.date); }).left;            
+    const bisectDate = d3.bisector(function(d) { return moment(d.date); }).left;  
+    
+    function handleMouseOver(d, i) {       
+      d3.select(this).transition()
+          .duration(1)
+          .attr("r", 10)
+          .attr("fill", "white")
+
+    }
 
     const addCircle = (x) => {
         g.selectAll("circle")
@@ -17,9 +25,10 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
         .append("circle")
             .attr("cx", xScale(x))
             .attr("cy", d => yScale(d.values.filter(item => x.isSame(item.date))[0].close))
-            .attr("r",2)  
+            .attr("r",5)  
             .attr("stroke", "black")
             .attr("fill", "orange")
+            .on("mouseover", handleMouseOver)
             //.on("click",() => console.log("clicked?"))
     }
     const addCrossHairs = (x,y,event,d) => {
@@ -48,6 +57,22 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
           .attr("x2", xScale(x))
           .attr("y2", yScale(maxChng))
           .on("dblclick",dblClick)
+
+        d3.selectAll("text.ToolTipXLabel").remove()
+
+        crosshair.append("text")
+          .attr("x", xScale(x) - 35)
+          .attr("class","ToolTipXLabel")
+          .attr("id", "ToolTipXLabel")
+          .attr("y", yScale(minChng))
+          .text(d.date)
+
+        crosshair.append("text")
+          .attr("x", xScale(moment(minDt)))
+          .attr("class","ToolTipXLabel")
+          .attr("id", "ToolTipXLabel")
+          .attr("y", yScale(y))
+          .text(d.close)  
 
         crosshair.select("#crosshairY")
           .attr("x1", xScale(moment(minDt)))
@@ -95,11 +120,11 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
       .enter()
       .append("text")      // text label for the x axis
       .attr("x", xScale(x))
-      .attr("y", d => yScale(d.values.filter(item => x.isSame(item.date))[0].close))
+      .attr("y", d => yScale(d.values.filter(item => x.isSame(item.date))[0].close) - 10)
       .attr("class","ToolTipText" + classNameAppend)
       .style("text-anchor", "middle")
       .style("fill", (d,indx) => indx===0? "#041E42" : MultiLineThemes[indx])
-      .html(d => d.values.filter(item => x.isSame(item.date))[0].close);
+      .html(d => d.values.filter(item => x.isSame(item.date))[0].close)
   }
     
     return {tooltip,onMouseOver,onMouseOut,onMouseMove}

@@ -17,8 +17,8 @@ const MultiLine = (g,chardata,x,y) =>{
             (d.values)
     })
     .attr("fill", "none")
-    .attr("stroke-width", (d,indx) => indx===0? 1 : 0.7)
-    .attr("stroke", (d,indx) => indx===0? "#041E42" : MultiLineThemes[indx])
+    .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)
+    .attr("stroke", (d,indx) => indx===0? "#1E90FF" : MultiLineThemes[indx])
     .style("cursor", "pointer")
 
 }

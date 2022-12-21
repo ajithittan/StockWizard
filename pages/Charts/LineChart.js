@@ -62,8 +62,7 @@ const LineChart = (props) =>{
             const classNameAppend = props.main ? "_M" : "_N"
             const multiLineData = MultiLineAggregate(charData)
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,multiLineData,swapStk,classNameAppend,props.main)
-            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,"#EAFFF1")
-            console.log("New area for predictions",charData.filter(item => item.symbol === props.stock && item.predictions ===1))
+            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,"white")
             MultiLine(g,multiLineData,x,y)
 
             if (charData.filter(item => item.symbol === props.stock && item.predictions ===1).length > 0){
