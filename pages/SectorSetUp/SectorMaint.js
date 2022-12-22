@@ -143,7 +143,7 @@ const SectorMaint = () =>{
                         {
                             item.stocks.length > 10 ? <a href="#" style={{fontSize:"12px",color:"blue"}}>Load More..</a> : null
                         }
-                        <div style={{paddingTop:"10px"}}>
+                        <div>
                         {
                             item.newstks?
                                 item.newstks.map((newitem,index) => 

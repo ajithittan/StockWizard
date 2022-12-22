@@ -28,10 +28,7 @@ const ControlPanel = (props) =>{
     }
     
     return(
-        <> 
-          <div className= {showContent ? "ControlpanelPriceOpen" : "ControlpanelPrice"} onMouseEnter={() => setshowContent(true)}>
-            {showContent ? 
-                <>
+          <div className="ControlPanelDiv">
                 <div style={{textAlign:"center",width:"100%",color:"whitesmoke"}}>{props.stock}</div>
                 <br></br>
                 <Duration changedval={handleDurChanges} dur={initDur} ></Duration>  
@@ -39,10 +36,7 @@ const ControlPanel = (props) =>{
                 <SimpleMovAvg onsmachange={handleSmaChanges}/>
                 <br></br><br></br>
                 <PredictionModels stock={props.stock} onpredictionchange={handleModelChanges}></PredictionModels>
-                </>
-            : null}
           </div>
-        </>
     )
     
 }

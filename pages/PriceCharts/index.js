@@ -11,6 +11,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import DisplaySelections from './DisplaySelections'
 import moment from 'moment';
 import ModalBox from '../../components/ModalBox'
+import FloatController from '../../components/FloatController'
 
 const index = (props) =>{
     const router = useRouter()
@@ -222,12 +223,15 @@ const index = (props) =>{
       return <Image src={myGif} alt="wait" height={30} width={30} />
     }
 
+    const getContentForControlPanel = () =>{
+      return (<ControlPanel stock={stock} key={initialSetUp} onChanges={handleChanges} initialsetup={initialSetUp}></ControlPanel>)
+    }
+
     return (
         <>
         <title>Price Charts</title>
-        <div>
-          <div style={{display:actContPanel? "block" : "none"}}><ControlPanel stock={stock} key={initialSetUp} onChanges={handleChanges} initialsetup={initialSetUp}></ControlPanel></div>
-            <div style={{paddingLeft:"30px",paddingTop:"5px"}} onClick={() => setactContPanel(false)} onMouseLeave={() => actContPanel ? null: setactContPanel(true)}>
+          <FloatController content={getContentForControlPanel()}></FloatController>
+            <div style={{paddingLeft:"30px",paddingTop:"5px"}} onClick={() => setactContPanel(false)}>
               {
                 stock && width > 0 ? 
                   <div>
@@ -238,7 +242,6 @@ const index = (props) =>{
                               stock={stock} main={true} /></div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
-        </div>
         </>
     )
 }
