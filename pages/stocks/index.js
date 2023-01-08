@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import React from "react";
-import MovableList from './MovableList'
+import StockDetailContainer from './StockDetailContainer'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -10,8 +10,8 @@ const index = (props) =>{
 
     return (
       <>
-        <MovableList stockdetails={data} key={data}>
-        </MovableList>
+        <StockDetailContainer stockdetails={data} key={data}>
+        </StockDetailContainer>
       </>
   )
 }

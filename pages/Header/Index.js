@@ -42,7 +42,6 @@ const ResponsiveAppBar = () => {
 
   const logoutaction = async () =>{
       let logoutres = await logout()
-      console.log("logoutres",logoutres)
       if (logoutres){
         deleteCookie('initial')
         router.push({pathname: '/',query: {}})

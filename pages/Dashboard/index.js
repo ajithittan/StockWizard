@@ -1,7 +1,7 @@
 import { useEffect,useState } from 'react'
-import DashBoardv2 from './dashboardv2'
+import Dashboard from './Dashboard'
 
-const index = () =>{
+const index = () => {
 
     const [dashboard,setDashboard] = useState(false)
 
@@ -19,7 +19,7 @@ const index = () =>{
             //dashboard ? <DashBoard data={["a","b","c"]}/> : <DashboardSetUp />
             <>
             <title>Home</title>
-                <DashBoardv2 />
+                <Dashboard />
             </>
         }
         </>

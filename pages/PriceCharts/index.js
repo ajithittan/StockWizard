@@ -30,9 +30,9 @@ const index = (props) =>{
           const calcWidth = () =>{
             //Can this be moved to css? Not happy at all!
             if (window.innerWidth > 1300){
-              setWidth(window.innerWidth - 40);
+              setWidth(window.innerWidth*0.96);
             } else if (window.innerWidth > 1000 && window.innerWidth < 1300) {
-              setWidth(window.innerWidth - 40);
+              setWidth(window.innerWidth*0.96);
             }
             else{
               setWidth(window.innerWidth - 20);
@@ -40,11 +40,11 @@ const index = (props) =>{
           }
           if (width === 0){
             calcWidth();
-            setHeight(window.innerHeight);
+            setHeight(window.innerHeight*0.96);
           }
           const updateDimensions = () => {
             calcWidth();
-            setHeight(window.innerHeight);  
+            setHeight(window.innerHeight*0.96);  
         }
         window.addEventListener("resize", updateDimensions);
         return () => window.removeEventListener("resize", updateDimensions);
