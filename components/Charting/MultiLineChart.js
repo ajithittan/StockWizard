@@ -59,6 +59,19 @@ const MultiLineChart = (props) =>{
         }
     },[props.stocks])
 
+    useEffect(() => {
+        window.addEventListener('resize', updateDimensions);
+    
+        return () => {
+          window.removeEventListener('resize', updateDimensions);
+        }
+      }, [])
+
+    const updateDimensions = () => {
+        setWidth(window.innerWidth*0.75)
+        setHeight(window.innerHeight*0.75)
+    }
+
     useEffect(() =>{
         if (11 > duration > 48){
             setcircSize(1)
@@ -100,7 +113,28 @@ const MultiLineChart = (props) =>{
         var g = svgElement.append("g")
             .attr("transform", "translate(" + margin.top + "," + margin.top + ")");           
 
+        svgElement.call(d3.zoom().on("zoom", function () {
+                console.log("calling zoom...",d3.zoomTransform(this))
+                svgElement.attr("transform", d3.zoomTransform(this))
+             }))
+                    
+
         if (charData) {
+
+            function initZoom() {
+                d3.select('svg')
+                    .call(zoom);
+            }
+
+            let zoom = d3.zoom()
+                .on('zoom', handleZoom);
+
+            function handleZoom(e) {
+            d3.select('svg g')
+                .attr('transform', e.transform);
+            }
+
+            initZoom()    
 
             let yExtent = d3.extent(charData.map(item => item.change));
             const minDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
@@ -120,9 +154,6 @@ const MultiLineChart = (props) =>{
             var y = d3.scaleLinear()
                     .domain(yExtent)
                     .range([domainheight, 0]); 
-                        
-            let zoom = d3.zoom().on("zoom", (e) => handlezoom(e))       
-            //svgElement.call(zoom)
 
             let xAxis = (g, x) => g
                 .attr("class", "x axis")
@@ -145,25 +176,7 @@ const MultiLineChart = (props) =>{
                 .y1(d => y(d.value))
               (data)
             }
-
-            const handlezoom = (e) =>{
-                 // recover the new scale
-                var newX = e.transform.rescaleX(x);
-                //var newY = d3.event.transform.rescaleY(y);
-                //console.log(newX)
-                // update axes with these new boundaries
-                gx.call(xAxis,newX)
-                console.log(area(charData, newX))
-                g.selectAll("path").attr("d",area(charData, newX))
-                //yAxis.call(d3.axisLeft(newY))
-                //g.attr("transform", d3.event.transform);
-            }                    
-            /*
-            g.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + x.range()[1] + ", 0)")
-                .call(d3.axisRight(y).ticks(tickScale(height)).tickFormat(d => d + "%"))                    
-            */        
+   
             g.selectAll("rect_up")
                 .data(charData)
                 .enter()

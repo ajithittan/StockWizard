@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import {makeStyles} from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 

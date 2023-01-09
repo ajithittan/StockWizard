@@ -8,11 +8,15 @@ import { useRouter } from 'next/router'
 import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import {makeStyles} from '@mui/styles';
 
 const StockDetailCard = (props) => {
 
     const [stkDetail,setStkDetail] = useState(null)
     const router = useRouter()
+
+    const sm = useMediaQuery("(max-width: 960px)");
 
     useEffect(() =>{
         if (props.basedetails){
@@ -22,13 +26,14 @@ const StockDetailCard = (props) => {
 
     let cardStyle = {
         display: 'block',
-        width: '50vw',
+        height: sm ? "80%" : "200px",
+        width: sm ? "80%" : "300px", 
         transitionDuration: '0.3s',
-        height: '50vw',
         margin: '5px',
-        maxHeight: '170px',
-        maxWidth: '300px',
-        backgroundColor: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9"
+        paddingLeft: sm ? "20%" : "1px",
+        backgroundColor: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
+        color:'text.secondary',
+        alignItems:"center"
     }
 
     let cardOverLay ={
@@ -60,12 +65,12 @@ const StockDetailCard = (props) => {
 
     var tableStyle = {
         "border": "1px solid gray"
-     };
+     }; 
 
     return (
       <Card style={cardStyle}>
         <CardContent>
-          <Typography style={{cursor:"pointer"}} color="text.secondary" gutterBottom onClick={() => showPriceChart(stkDetail.symbol)}>
+          <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stkDetail.symbol)}>
             {stkDetail ? stkDetail.symbol : "Looking"} - {stkDetail ? "$" + stkDetail.close : "Looking"} ({stkDetail ? stkDetail.perchange.toFixed(2) : "Looking"}%) ({stkDetail ? intToString(stkDetail.volume) : "Looking"})
           </Typography>
           <Typography sx={{ mb: 1.5 }} variant="body2">
