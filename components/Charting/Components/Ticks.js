@@ -12,7 +12,7 @@ const xTicks = (g,xScale,yScale,width,height) => {
     g.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
-    .call(axisBottom(xScale).ticks().tickFormat(timeFormat("%b")))
+    .call(axisBottom(xScale).ticks(timeMonth).tickFormat(timeFormat("%b")))
 
     g.append("g")
     .attr("class", "x axis")

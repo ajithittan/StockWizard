@@ -13,7 +13,7 @@ const Dashboard = () =>{
 
         let arrComponents = []
 
-        arrComponents.push(<ChartsForDashBoard/>)
+        arrComponents.push(<ChartsForDashBoard dur={12}/>)
         arrComponents.push(<Stocks />)
         arrComponents.push(<Newsfeeds feedtype={JSON.stringify(feedtypes)}/>)
  

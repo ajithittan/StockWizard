@@ -9,7 +9,7 @@ import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {makeStyles} from '@mui/styles';
+import CompanyStockPrice from './CompanyStockPrice'
 
 const StockDetailCard = (props) => {
 
@@ -26,14 +26,15 @@ const StockDetailCard = (props) => {
 
     let cardStyle = {
         display: 'block',
-        height: sm ? "80%" : "200px",
-        width: sm ? "80%" : "300px", 
+        height: sm ? "80%" : "350px",
+        width: sm ? "80%" : "350px", 
         transitionDuration: '0.3s',
         margin: '5px',
-        paddingLeft: sm ? "20%" : "1px",
+        paddingLeft: sm ? "5%" : "1px",
         backgroundColor: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
-        alignItems:"center"
+        alignItems:"center",
+        //border: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "1px solid green" : "1px solid red"
     }
 
     let cardOverLay ={
@@ -63,10 +64,6 @@ const StockDetailCard = (props) => {
         return shortValue+suffixes[suffixNum];
     }
 
-    var tableStyle = {
-        "border": "1px solid gray"
-     }; 
-
     return (
       <Card style={cardStyle}>
         <CardContent>
@@ -78,11 +75,6 @@ const StockDetailCard = (props) => {
                   stkDetail ? <>
                                  <table>
                                      <tr >
-                                        <td>SMA</td>
-                                        <td>50D($<MovingAvg symbol = {stkDetail.symbol} type={"SMA_50"}/>)</td>
-                                        <td >200D($<MovingAvg symbol = {stkDetail.symbol} type={"SMA_200"}/>)</td>
-                                     </tr>
-                                     <tr >
                                         <td>Vol</td>
                                         <td>10D({intToString(stkDetail.avgdayvol10day)})</td>
                                         <td >3M({intToString(stkDetail.avgdayvol3mon)})</td>
@@ -91,6 +83,19 @@ const StockDetailCard = (props) => {
                                </> : null     
               }
           </Typography>
+          <Typography sx={{ mb: 1.5 }} variant="body2">
+              {
+                  stkDetail ? <>
+                                 <table>
+                                     <tr >
+                                        <td>SMA</td>
+                                        <td>50D($<MovingAvg symbol = {stkDetail.symbol} type={"SMA_50"}/>)</td>
+                                        <td >200D($<MovingAvg symbol = {stkDetail.symbol} type={"SMA_200"}/>)</td>                                     </tr>
+                                 </table>
+                               </> : null     
+              }
+          </Typography>
+          {stkDetail ? <div style={{paddingLeft:"20px"}}><CompanyStockPrice stock={stkDetail.symbol} duration={3}></CompanyStockPrice> </div>: null}
           <CardActions>
                 <IconButton aria-label="delete">
                     <DeleteIcon onClick={stopTrackingStk} />
