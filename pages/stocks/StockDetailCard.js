@@ -8,13 +8,18 @@ import { useRouter } from 'next/router'
 import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import CompanyStockPrice from './CompanyStockPrice'
+import BasicContentStockDetail from './BasicContentStockDetail'
+import CompanyQtrPerf from './CompanyQtrPerf'
+import {intToString} from '../../modules/utils/UtilFunctions'
 
 const StockDetailCard = (props) => {
 
     const [stkDetail,setStkDetail] = useState(null)
     const router = useRouter()
+    const [type,setType] = useState("Basic")
 
     const sm = useMediaQuery("(max-width: 960px)");
 
@@ -26,8 +31,8 @@ const StockDetailCard = (props) => {
 
     let cardStyle = {
         display: 'block',
-        height: sm ? "80%" : "350px",
-        width: sm ? "80%" : "350px", 
+        height: sm ? "90%" : "350px",
+        width: sm ? "90%" : "350px", 
         transitionDuration: '0.3s',
         margin: '5px',
         paddingLeft: sm ? "5%" : "1px",
@@ -54,14 +59,11 @@ const StockDetailCard = (props) => {
         let res = DeleteStkFromPositions(stkDetail.symbol)
     }
 
-    function intToString (value) {
-        var suffixes = ["", "k", "m", "b","t"];
-        var suffixNum = Math.floor((""+value).length/3);
-        var shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
-        if (shortValue % 1 != 0) {
-            shortValue = shortValue.toFixed(1);
-        }
-        return shortValue+suffixes[suffixNum];
+    const getContent = () =>{
+        let retVal = {
+            "Basic":<BasicContentStockDetail stkDetail={stkDetail}/>,
+            "Earnings": <CompanyQtrPerf stock={stkDetail ? stkDetail.symbol : null}/> }
+        return retVal[type]
     }
 
     return (
@@ -70,33 +72,16 @@ const StockDetailCard = (props) => {
           <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stkDetail.symbol)}>
             {stkDetail ? stkDetail.symbol : "Looking"} - {stkDetail ? "$" + stkDetail.close : "Looking"} ({stkDetail ? stkDetail.perchange.toFixed(2) : "Looking"}%) ({stkDetail ? intToString(stkDetail.volume) : "Looking"})
           </Typography>
-          <Typography sx={{ mb: 1.5 }} variant="body2">
-              {
-                  stkDetail ? <>
-                                 <table>
-                                     <tr >
-                                        <td>Vol</td>
-                                        <td>10D({intToString(stkDetail.avgdayvol10day)})</td>
-                                        <td >3M({intToString(stkDetail.avgdayvol3mon)})</td>
-                                     </tr>
-                                 </table>
-                               </> : null     
-              }
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} variant="body2">
-              {
-                  stkDetail ? <>
-                                 <table>
-                                     <tr >
-                                        <td>SMA</td>
-                                        <td>50D($<MovingAvg symbol = {stkDetail.symbol} type={"SMA_50"}/>)</td>
-                                        <td >200D($<MovingAvg symbol = {stkDetail.symbol} type={"SMA_200"}/>)</td>                                     </tr>
-                                 </table>
-                               </> : null     
-              }
-          </Typography>
-          {stkDetail ? <div style={{paddingLeft:"20px"}}><CompanyStockPrice stock={stkDetail.symbol} duration={3}></CompanyStockPrice> </div>: null}
+          <div style={{height:"80%"}}>
+              {getContent()}
+          </div>
           <CardActions>
+                <IconButton aria-label="reset">
+                    <SettingsBackupRestoreIcon onClick={() => setType("Basic")} />
+                </IconButton>
+                <IconButton aria-label="earnings">
+                    <AttachMoneyIcon onClick={() => setType("Earnings")} />
+                </IconButton>
                 <IconButton aria-label="delete">
                     <DeleteIcon onClick={stopTrackingStk} />
                 </IconButton>

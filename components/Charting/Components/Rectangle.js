@@ -1,12 +1,12 @@
 
-const Rectangle = (g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,onDblClk,fill) =>{
+const Rectangle = (g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,onDblClk,fill,resetOnMouseOver) =>{
     g
     .append("rect")
         .attr("width", domainwidth)
         .attr("height", domainheight)
         .attr("fill",fill)
-        .style("opacity","0.5")
-        .on('mouseover', (event,d) => onMouseOver())
+        .style("opacity","0.1")
+        .on('mouseover', (event,d) => {onMouseOver(),resetOnMouseOver()})
         .on('mouseout', () => onMouseOut())
         .on('mousemove', (event,d) => onMouseMove(event,tooltip))
         .on('dblclick',onDblClk)

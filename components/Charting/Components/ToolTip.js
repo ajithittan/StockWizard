@@ -2,7 +2,8 @@ import * as d3 from "d3";
 import moment from 'moment';
 import MultiLineThemes from '../../../modules/themes/MultiLineThemes'
 
-const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip) =>{
+const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip,arrow) =>{
+
     const closeToolTip = false
     const tooltip = d3.select(tooltipref)
         .attr('class', 'tooltip')
@@ -31,7 +32,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
             .on("mouseover", handleMouseOver)
             //.on("click",() => console.log("clicked?"))
     }
-    const addCrossHairs = (x,y,event,d) => {
+    const addCrossHairs = (x,y,d) => {
         const minDt = moment(linedata[0].values.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()
         const maxDt = moment(linedata[0].values.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toDate()
 
@@ -39,7 +40,7 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
         const maxChng = linedata[0].values.reduce((acc,item)=>{return acc&& acc > item.close ?acc:item.close},'')
 
         const crosshair = g.append("g")
-        .attr("class", "line1");
+        .attr("class", "line1")
   
       // create horizontal line
         crosshair.append("line")
@@ -107,9 +108,20 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
         d3.selectAll("line.crosshair").remove()
         d3.selectAll("circle").remove()
         addCircle(moment(d.date))
-        addCrossHairs(moment(d.date),d.close,event,d)
+        addCrossHairs(moment(d.date),d.close,d)
         closeToolTip ? d3.selectAll("text.ToolTipText" + classNameAppend).remove() : 
                        Text(moment(d.date),yScale(d.close), d.close + " - " + d.date)
+    }
+
+    const onArrMove = (x_date,y_close,d) =>{
+      tooltip.style("visibility", "visible")
+      d3.selectAll("line.crosshair").remove()
+      d3.selectAll("circle").remove()
+      addCircle(moment(x_date))
+      addCrossHairs(moment(x_date),y_close,d)
+      closeToolTip ? d3.selectAll("text.ToolTipText" + classNameAppend).remove() : 
+                     Text(moment(x_date),yScale(y_close), y_close + " - " + x_date)
+
     }
 
     const Text = (x,y,dispTxt) => {
@@ -126,6 +138,10 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
       .style("fill", (d,indx) => indx===0? "#041E42" : MultiLineThemes[indx])
       .html(d => d.values.filter(item => x.isSame(item.date))[0].close)
   }
+
+    if (arrow){
+      onArrMove(arrow.date,arrow.close,arrow)
+    }
     
     return {tooltip,onMouseOver,onMouseOut,onMouseMove}
 

@@ -3,8 +3,11 @@ import { axisLeft,axisBottom, timeMonth,timeYear,timeFormat,width,height} from "
 const noOfXTicks = (width) =>{
     if (width > 1200){
         return 2
+    }    
+    else if (width > 960){
+        return 4
     }else{
-        return 1
+        return 6
     }
 }
 
@@ -12,7 +15,7 @@ const xTicks = (g,xScale,yScale,width,height) => {
     g.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
-    .call(axisBottom(xScale).ticks(timeMonth).tickFormat(timeFormat("%b")))
+    .call(axisBottom(xScale).ticks(timeMonth.every(noOfXTicks(width))).tickFormat(timeFormat("%b")))
 
     g.append("g")
     .attr("class", "x axis")

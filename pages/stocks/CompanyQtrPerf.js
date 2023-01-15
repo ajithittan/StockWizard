@@ -3,6 +3,7 @@ import {getCompanyQtrPerf} from '../../modules/api/StockMaster'
 import Image from 'next/image';
 import myGif from '../../public/loading-loading-forever.gif'
 import BarChart from '../Charts/BarChart'
+import Typography from '@mui/material/Typography';
 
 const CompanyQtrPerf = (props) =>{
     const [compDtls,setcompDtls] = useState(null)
@@ -22,10 +23,18 @@ const CompanyQtrPerf = (props) =>{
 
     return (
         <>
+        <Typography sx={{ mb: 1.5 }} variant="body2">
+            Last Earnings - 
+        </Typography>
+        <Typography sx={{ mb: 1.5 }} variant="body2">
+            Upcoming Earnings - 
+        </Typography>
+        <Typography sx={{ mb: 1.5 }} variant="body2">
             {wait ? <Image src={myGif} alt="wait" height={30} width={30} /> : 
                 compDtls ? 
-                    <BarChart data={compDtls} margin={margin}></BarChart>
+                    <div style={{paddingLeft:"20px"}}><BarChart data={compDtls} margin={margin}></BarChart></div>
                 :null}
+        </Typography>
         </>
     )
 }
