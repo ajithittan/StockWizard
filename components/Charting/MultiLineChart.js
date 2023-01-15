@@ -59,6 +59,7 @@ const MultiLineChart = (props) =>{
         }
     },[props.stocks])
 
+    /*
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
     
@@ -71,6 +72,7 @@ const MultiLineChart = (props) =>{
         setWidth(window.innerWidth*0.75)
         setHeight(window.innerHeight*0.75)
     }
+    */
 
     useEffect(() =>{
         if (11 > duration > 48){

@@ -24,9 +24,9 @@ const index = (props) =>{
 
     return(
         <div>
-            <fieldset className="newsHeader">
+            <fieldset>
                 <legend>{props.stock ? props.stock + " in the News"  : "Latest News"}</legend>
-                <div>
+                <div className="newsHeader">
                     {
                         feedData ? feedData.map((item,indx) => (
                             <div className={indx%2===0 ? "news0" : "news1" }><a href={item.link} target="_blank">{item.title}</a></div>

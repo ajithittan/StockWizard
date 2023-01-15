@@ -8,6 +8,7 @@ import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
 import MultiLineAggregate from './Components/MultiLineAggreate'
 import moment from 'moment';
 import useMousePosition from '../../modules/utils/useMousePosition'
+//import useArrowKeys from '../../modules/utils/useArrowKeys'
 
 const LineChart = (props) =>{
 
@@ -21,10 +22,12 @@ const LineChart = (props) =>{
     const [domainwidth,setdomainwidth] = useState(null)
     const [domainheight,setdomainheight] = useState(null)
     const mousePos = useMousePosition()
+    //const keyPressed = useArrowKeys()
     const[mvOnArrow,setmvOnArrow] = useState(null)
     const [refOnChart, setrefOnChart]  = useState(null)
 
-    d3.select("body")
+    useEffect(() => {
+        d3.select("body")
         .on('keydown', function(e) {
             if (e.keyCode === 39 || e.keyCode === 37){
                 if (mvOnArrow){
@@ -37,6 +40,7 @@ const LineChart = (props) =>{
                 }
             }
         })
+    },[mousePos,refOnChart])
 
     const resetOnMouseOver = () => {setmvOnArrow(null),setrefOnChart(null)}
 
