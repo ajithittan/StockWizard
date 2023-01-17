@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import moment from "moment";
 import {XScale,YScale} from '../../components/Charting/Components/Scales'
 import Rectangle from '../../components/Charting/Components/Rectangle'
-import Line from '../../components/Charting/Components/Line'
+import {Line} from '../../components/Charting/Components/Line'
 import ToolTip from '../../components/Charting/Components/ToolTip'
 import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
@@ -14,9 +14,6 @@ const LineChartv2 = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const [charData, setcharData] = useState(null)
-    const duration = 12
-    const cacheKey = props.stock + "_" + duration + "_PRICE"
-
     const [domainwidth,setdomainwidth] = useState(null)
     const [domainheight,setdomainheight] = useState(null)
 
@@ -51,8 +48,8 @@ const LineChartv2 = (props) =>{
 
     useEffect(async () => {
         if (!charData){
+            let cacheKey = props.stock + "_" + props.duration + "_PRICE"
             let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration})
-            console.log(res)
             setcharData(res)
         }
     },[])    

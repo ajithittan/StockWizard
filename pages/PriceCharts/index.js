@@ -16,7 +16,7 @@ import FloatController from '../../components/FloatController'
 const index = (props) =>{
     const router = useRouter()
     const stock = router.query.stock
-    const initDur = router.query.dur || 3
+    const initDur = router.query.dur
     const margin = {top: 20, right: 0, bottom: 30, left: 50}
     const [width, setWidth]   = useState(0);
     const [height, setHeight]   = useState(0);
@@ -52,6 +52,7 @@ const index = (props) =>{
 
     useEffect(async() =>{
       if (!charData && stock){
+        console.log("initDurinitDurinitDur",initDur)
          let res = await getData(stock,initDur)
          setcharData([...res])
       }
@@ -188,6 +189,7 @@ const index = (props) =>{
     const getData = async(stk,dur) =>{
       const cacheKey = stk + "_" + dur + "_PRICE"
       let res = await getStockPriceHist(cacheKey,{stock:stock,duration:dur})
+      console.log("getData",stk,dur,res)
       return res
     }
 

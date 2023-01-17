@@ -9,7 +9,7 @@ import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import BasicContentStockDetail from './BasicContentStockDetail'
 import CompanyQtrPerf from './CompanyQtrPerf'
@@ -51,7 +51,7 @@ const StockDetailCard = (props) => {
     }
 
     const showPriceChart = (stk) =>{
-        router.push({pathname: '/PriceCharts',query: {stock:stk}})
+        router.push({pathname: '/PriceCharts',query: {stock:stk,dur:3}})
     }
 
     const stopTrackingStk = () =>{
@@ -77,7 +77,7 @@ const StockDetailCard = (props) => {
           </div>
           <CardActions>
                 <IconButton aria-label="reset">
-                    <SettingsBackupRestoreIcon onClick={() => setType("Basic")} />
+                    <ShowChartIcon onClick={() => setType("Basic")} />
                 </IconButton>
                 <IconButton aria-label="earnings">
                     <AttachMoneyIcon onClick={() => setType("Earnings")} />

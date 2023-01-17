@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import moment from 'moment';
 import MultiLineThemes from '../../../modules/themes/MultiLineThemes'
 
-const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip,arrow) =>{
+const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip,arrow,callbacks) =>{
 
     const closeToolTip = false
     const tooltip = d3.select(tooltipref)
@@ -11,12 +11,12 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
 
     const bisectDate = d3.bisector(function(d) { return moment(d.date); }).left;  
     
-    function handleMouseOver(d, i) {       
+    function handleMouseOver(d, i) {   
       d3.select(this).transition()
           .duration(1)
           .attr("r", 10)
           .attr("fill", "white")
-
+          .style("cursor", "pointer")
     }
 
     const addCircle = (x) => {
@@ -30,7 +30,9 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
             .attr("stroke", "black")
             .attr("fill", "orange")
             .on("mouseover", handleMouseOver)
-            //.on("click",() => console.log("clicked?"))
+            .style("cursor", "pointer")
+            .on("click",(e,d,i) => callbacks({"close":d.values.filter(item => x.isSame(item.date))[0].close,
+                                             "date":d.values.filter(item => x.isSame(item.date))[0].date}))
     }
     const addCrossHairs = (x,y,d) => {
         const minDt = moment(linedata[0].values.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()

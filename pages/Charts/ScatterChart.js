@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import moment from "moment";
 import {XScale,YScale} from '../../components/Charting/Components/Scales'
 import Rectangle from '../../components/Charting/Components/Rectangle'
-import Line from '../../components/Charting/Components/Line'
+import {Line} from '../../components/Charting/Components/Line'
 import ToolTip from '../../components/Charting/Components/ToolTip'
 import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"

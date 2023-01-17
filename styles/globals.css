@@ -876,3 +876,8 @@ color: white;
 .newsHeader{
   font-size: 15px;
 }
+
+.StraightXLine{
+  stroke: #db1949; 
+  opacity: 0.20;
+}

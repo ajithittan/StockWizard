@@ -11,7 +11,6 @@ const CompanyStockPrice = (props) =>{
     const [dur,setDur] = useState(null)
 
     useEffect(async () => {
-        console.log("CompanyStockPrice",props.stock)
         setcompDtls(props.stock)
     },[props.stock])
 
