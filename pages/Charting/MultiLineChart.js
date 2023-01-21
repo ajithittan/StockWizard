@@ -138,7 +138,7 @@ const MultiLineChart = (props) =>{
                     .domain(yExtent)
                     .range([domainheight, 0]); 
                         
-            let zoom = d3.zoom().on("zoom", (e) => handlezoom(e))       
+            //let zoom = d3.zoom().on("zoom", (e) => handlezoom(e))       
             //svgElement.call(zoom)
 
             let xAxis = (g, x) => g

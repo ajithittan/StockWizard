@@ -49,7 +49,8 @@ const ChartUserInputs = (props) =>{
     const classes = useStyles({ sm });
 
     const savePositionsToDb = async () =>{
-      let res = await saveStockPositions(referenceData)
+      let res = await saveStockPositions(referenceData,props.stock)
+      props.closeModal(false)
     }
 
     const updateInputs = (type,newVal) =>{
@@ -57,7 +58,6 @@ const ChartUserInputs = (props) =>{
       tempvals[type] = newVal
       setreferenceData(tempvals)
       if (tempvals && tempvals.close && tempvals.position){
-        console.log("enabling button")
         setbtnDisabled(false)
       }else{
         setbtnDisabled(true)

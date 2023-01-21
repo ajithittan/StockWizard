@@ -47,12 +47,12 @@ const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,sh
       // create horizontal line
         crosshair.append("line")
             .attr("id", "crosshairX")
-            .attr("class", "crosshair");
+            .attr("class", "crosshair")
   
       // create vertical line
         crosshair.append("line")
             .attr("id", "crosshairY")
-            .attr("class", "crosshair");
+            .attr("class", "crosshair")
 
         crosshair.select("#crosshairX")
           .attr("x1", xScale(x))

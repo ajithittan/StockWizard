@@ -11,6 +11,7 @@ import useMousePosition from '../../modules/utils/useMousePosition'
 import {Line,StraightXLine} from "../../components/Charting/Components/Line";
 import ModalBox from '../../components/ModalBox'
 import ChartUserInputs from './ChartUserInputs'
+import {delStockPositions} from '../../modules/api/UserPreferences'
 //import useArrowKeys from '../../modules/utils/useArrowKeys'
 
 const LineChart = (props) =>{
@@ -31,6 +32,12 @@ const LineChart = (props) =>{
     const [addLines, setAddLines] = useState(null)
     const [openModal,setOpenModal] = useState(false)
 
+    useEffect(async () =>{
+        if(props.positions && !addLines){
+            setAddLines([...props.positions])
+        }
+    },[props.positions])
+
     useEffect(() => {
         d3.select("body")
         .on('keydown', function(e) {
@@ -41,6 +48,7 @@ const LineChart = (props) =>{
                         setrefOnChart (tempval)
                     }
                 }else{
+                    console.log("mousePos",mousePos.x)
                     setmvOnArrow(mousePos.x)
                 }
             }else if (e.keyCode === 13){
@@ -66,7 +74,6 @@ const LineChart = (props) =>{
     },[props.chartData])
 
     const callBackToCreateLine = (referenceLine) => {
-        console.log(referenceLine)
         if (addLines){
             addLines.push(referenceLine)
             setAddLines([...addLines])
@@ -77,8 +84,8 @@ const LineChart = (props) =>{
     }
 
     const callBacktoRemove = (value) =>{
-        console.log("callBacktoRemove",value)
-        setAddLines([...addLines.filter(item => item.close !== value)])
+        setAddLines([...addLines.filter(item => item.close !== value.close)])
+        delStockPositions(value,props.stock)
     }
 
     useEffect (() =>{
@@ -86,7 +93,7 @@ const LineChart = (props) =>{
 
             d3.selectAll("svg > *").remove();
             
-            console.log("charData in LineChart",charData)
+            //console.log("charData in LineChart",charData)
 
             charData.sort(function(a, b) {
                 return a.date - b.date;
@@ -127,7 +134,7 @@ const LineChart = (props) =>{
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,"white",resetOnMouseOver)
             MultiLine(g,multiLineData,x,y)
             if (addLines){
-                addLines.map(val => StraightXLine(g,multiLineData,x,y,val.close,callBacktoRemove))
+                addLines.map(val => StraightXLine(g,multiLineData,x,y,val,callBacktoRemove))
             }
             
             if (charData.filter(item => item.symbol === props.stock && item.predictions ===1).length > 0){
@@ -149,7 +156,8 @@ const LineChart = (props) =>{
     },[charData,mvOnArrow,refOnChart,addLines])
 
     const getContentForModal = () => {
-        return (<ChartUserInputs referData={addLines[addLines.length - 1]} remove={callBacktoRemove} closeModal={setOpenModal}></ChartUserInputs>)
+        return (<ChartUserInputs referData={addLines[addLines.length - 1]} 
+                                 remove={callBacktoRemove} closeModal={setOpenModal} stock={props.stock}></ChartUserInputs>)
     }
 
     return (

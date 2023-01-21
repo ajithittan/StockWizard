@@ -115,10 +115,10 @@ const MultiLineChart = (props) =>{
         var g = svgElement.append("g")
             .attr("transform", "translate(" + margin.top + "," + margin.top + ")");           
 
-        svgElement.call(d3.zoom().on("zoom", function () {
-                console.log("calling zoom...",d3.zoomTransform(this))
-                svgElement.attr("transform", d3.zoomTransform(this))
-             }))
+        //svgElement.call(d3.zoom().on("zoom", function () {
+          //      console.log("calling zoom...",d3.zoomTransform(this))
+            //    svgElement.attr("transform", d3.zoomTransform(this))
+             //}))
                     
 
         if (charData) {

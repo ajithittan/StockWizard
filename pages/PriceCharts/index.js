@@ -12,6 +12,7 @@ import DisplaySelections from './DisplaySelections'
 import moment from 'moment';
 import ModalBox from '../../components/ModalBox'
 import FloatController from '../../components/FloatController'
+import {getStockPortfolioPos} from '../../modules/api/UserPreferences'
 
 const index = (props) =>{
     const router = useRouter()
@@ -20,11 +21,12 @@ const index = (props) =>{
     const margin = {top: 20, right: 0, bottom: 30, left: 50}
     const [width, setWidth]   = useState(0);
     const [height, setHeight]   = useState(0);
-    const [actContPanel,setactContPanel] = useState(false)
     const [initialSetUp,setinitialSetUp] = useState({duration:initDur})
     const [charData,setcharData] = useState(null)
     const [selections,setSelections] = useState(null)
     const [processing,setProcessing] = useState(false)
+    const [showPositions,setShowPositions] = useState(true)
+    const [allPortPositions,setAllPortPositions] = useState(null)
 
     useEffect(() => {
           const calcWidth = () =>{
@@ -50,9 +52,15 @@ const index = (props) =>{
         return () => window.removeEventListener("resize", updateDimensions);
     }, []);
 
+    useEffect (async () =>{
+      if (showPositions && stock){
+        setAllPortPositions([...await getPositions()])
+      }
+    },[showPositions,stock])
+
+
     useEffect(async() =>{
       if (!charData && stock){
-        console.log("initDurinitDurinitDur",initDur)
          let res = await getData(stock,initDur)
          setcharData([...res])
       }
@@ -229,11 +237,20 @@ const index = (props) =>{
       return (<ControlPanel stock={stock} key={initialSetUp} onChanges={handleChanges} initialsetup={initialSetUp}></ControlPanel>)
     }
 
+    const getPositions = async () =>{
+      let res = await getStockPortfolioPos(stock)
+      console.log("data from getStockPortfolioPos",res,stock)
+      if (res && res.length > 0){
+          return res[0].positions
+      }
+      return []
+  }
+
     return (
         <>
         <title>Price Charts</title>
           <FloatController content={getContentForControlPanel()}></FloatController>
-            <div style={{paddingLeft:"30px",paddingTop:"5px"}} onClick={() => setactContPanel(false)}>
+            <div style={{paddingLeft:"30px",paddingTop:"5px"}}>
               {
                 stock && width > 0 ? 
                   <div>
@@ -241,7 +258,7 @@ const index = (props) =>{
                     <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>
                     <LineChart key={Math.round(width) + stock + charData} chartData={charData}
                               width={Math.round(width)} height={Math.round(height*.90)} margin={margin} 
-                              stock={stock} main={true} /></div> : <Image src={myGif} alt="wait" height={30} width={30} />
+                              stock={stock} main={true} positions={allPortPositions}/></div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
         </>

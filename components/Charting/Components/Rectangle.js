@@ -6,9 +6,9 @@ const Rectangle = (g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onM
         .attr("height", domainheight)
         .attr("fill",fill)
         .style("opacity","0.1")
-        .on('mouseover', (event,d) => {onMouseOver(),resetOnMouseOver()})
+        .on('mouseover', (event,d) => {onMouseOver()})
         .on('mouseout', () => onMouseOut())
-        .on('mousemove', (event,d) => onMouseMove(event,tooltip))
+        .on('mousemove', (event,d) => {onMouseMove(event,tooltip),resetOnMouseOver()})
         .on('dblclick',onDblClk)
 }
 
