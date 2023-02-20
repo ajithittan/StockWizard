@@ -32,22 +32,14 @@ const StockDetailCard = (props) => {
     let cardStyle = {
         display: 'block',
         height: sm ? "90%" : "350px",
-        width: sm ? "90%" : "350px", 
+        width: sm ? "90%" : "400px", 
         transitionDuration: '0.3s',
-        margin: '5px',
+        marginLeft: sm ? "10px" : "30px",
+        marginTop: sm ? "10px" : "15px",
         paddingLeft: sm ? "5%" : "1px",
         backgroundColor: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
         alignItems:"center",
-        //border: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "1px solid green" : "1px solid red"
-    }
-
-    let cardOverLay ={
-            position: 'relative',
-            top: '20px',
-            left: '20px',
-            color: 'black',
-            backgroundColor: 'white'
     }
 
     const showPriceChart = (stk) =>{

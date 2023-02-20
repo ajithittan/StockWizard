@@ -12,7 +12,7 @@ const MultiLineChart = (props) =>{
     const [height,setHeight] = useState(null)
     var margin = {top: 20, right: 20, bottom: 30, left: 50}
     const [stklist,setstklist] = useState(null)
-    const [circSize , setcircSize] = useState(2)
+    const [circSize , setCircSize] = useState(2)
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
@@ -75,16 +75,17 @@ const MultiLineChart = (props) =>{
 
     const getSectorData = async () => {
         if (!charData && stklist){
-            let tempData = []
             for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-            tempData = await getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,
-                                                    'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
-            if (tempData !== undefined && tempData !==[]){
-                    let color = generateRandomHexColor()
-                    tempData.map(item => {item.color=color; return item})    
-                }
-                setstkPrcData(tempData)    
+            getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,
+                                                    'duration':duration,'rollup':1,'unit':"M",'byType':"C"}).then(retVal =>
+                            {
+                                if (retVal !== undefined && retVal !==[]){
+                                    let color = generateRandomHexColor()
+                                    retVal.map(item => {item.color=color; return item})    
+                                    setstkPrcData(retVal)    
+                                }
+                            })
             }     
         }
     }

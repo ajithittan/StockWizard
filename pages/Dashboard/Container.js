@@ -10,15 +10,16 @@ const Container = (props) =>{
 
     const useStyles = makeStyles({
         mainLeft: ({ sm }) => ({
-          //backgroundColor: "white",
-          height: sm ? "90vh" : "60vh",
-          marginTop: sm ? "5vh" : "40px",
-          marginLeft: sm ? "5vh" : "40px",
-          marginRight: sm ? "5vh" : "60px"
+          //backgroundColor: "white",'
+          marginLeft:sm ? "15vh" : "15vh",
+          marginRight:sm ? "15vh" : "15vh",
+          marginTop:sm ? "5vh" : "5vh",
+          height: sm ? "80vh" : "50vh",
+          marginBottom: sm ? "5vh" : "5vh",
         }),
         mainRight: ({ sm }) => ({
             backgroundColor: "white",
-            height: sm ? "90vh" : "60vh",
+            height: sm ? "90vh" : "90vh",
             overflow:"auto",
             marginTop: sm ? "5vh" : "20px",
             marginRight: sm ? "5vh" : "20px"
@@ -31,7 +32,6 @@ const Container = (props) =>{
       });
 
     useEffect(() =>{
-        console.log(props.components)
         if (props.components) {
             setComponents(props.components)
         }
@@ -42,11 +42,13 @@ const Container = (props) =>{
 
     return(
       <>  
-          <div>
-            <Grid container direction="row">
-                <Grid item md={9} lg={9} xl={9} sm={12} xs={12}>
+            <Grid container direction="row" sx={{marginBottom:"10vh"}}>
+                <Grid item md={9} lg={9} xl={9} sm={12} xs={12}>             
                 <div className={classes.mainLeft}>
                     {components ? <>{components[0]}</> : null}
+                </div>
+                <div>
+                    {components ? <>{components[1]}</> : null}
                 </div>
                 </Grid>
                 <Grid item md={3} lg={3} xl={3} sm={12} xs={12}>
@@ -55,14 +57,6 @@ const Container = (props) =>{
                 </div>
                 </Grid>
               </Grid>
-              <Grid container direction="row">
-                <Grid item md={12} lg={12} xl={12} sm={12} xs={12}>
-                <div className={classes.Bottom}>
-                    {components ? <span>{components[1]}</span> : null}
-                </div>
-                </Grid>
-            </Grid>
-        </div>
       </>
     )
 }

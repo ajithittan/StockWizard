@@ -1,33 +1,29 @@
-import useSWR from 'swr'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StockDetailContainer from './StockDetailContainer'
-
-const fetcher = (url) => fetch(url).then((res) => res.json())
+import {getStockDetailsForStks} from '../../modules/api/StockMaster'
 
 const index = (props) =>{
-    const address = '/api/stocks/v2'
-    const { data, error } = useSWR(address, fetcher,{revalidateIfStale:false})
+    const [stkDetails, setStkDetails] = useState(null)
+
+    useEffect(() =>{
+      if (props.stocks){
+        getStkDetails(props.stocks)
+      }
+    },[props.stocks])
+
+    const getStkDetails = async (stkList) =>{
+      let res = await getStockDetailsForStks(stkList)
+      if (res && res.length > 0 ){
+        setStkDetails(res)
+      }
+    }
 
     return (
       <>
-        <StockDetailContainer stockdetails={data} key={data}>
+        <StockDetailContainer key={stkDetails} stockdetails={stkDetails}>
         </StockDetailContainer>
       </>
   )
 }
 
 export default index
-
-/*
-export async function getServerSideProps (){
-    //let data = await ListOfStocks()
-    //console.log("data in getServerSideProps",data)
-
-    console.log("am I getting called getServerSideProps?")
-    let data = [{symbol:'AAPL'},{symbol:'MSFT'},{symbol:'GOOGL'}]
-
-    return (
-        {props:{data}}
-    )
-}
-*/

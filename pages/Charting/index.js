@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
-import SliderForCharts from './SliderForCharts'
-import AuthWrapper from '../../modules/state/authState'
+import myGif from "../../public/loading-loading-forever.gif"
+import Image from 'next/image';
 
 const index = () => {
     const defHeader = "My Positions"
@@ -23,6 +23,7 @@ const index = () => {
     const [showContent,setshowContent] = useState(false)
     const [width, setWidth]   = useState(null);
     const [height, setHeight] = useState(null);
+    const [wait,setWait] = useState(false)
 
     useEffect(() =>{
         if (!lstOfStcks){
@@ -66,7 +67,11 @@ const index = () => {
     }
 
     const clickedAllSector = async () =>{
+        setWait(true)
+        //setfullList(null)
+        //setlstOfStcks(null)
         let res = await getStockSector()
+        setshowAllSec(true)        
         setallsecvals(res)
         setHeader("All Sectors")
         setPostions(false)
@@ -74,7 +79,7 @@ const index = () => {
         setfullList(res.map(item => item.sector))
         setlstOfStcks(res.map(item => item.sector))
         setLabels(res.map(item => ({"id":item.idstocksector,"desc":item.sector})))
-        setshowAllSec(true)
+        setWait(false)
     }
 
     const openPrcChart = (stk) =>{
@@ -93,9 +98,10 @@ const index = () => {
             <div className="flex-container">
                 <title>Performance</title>
                 <div>
-                    <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} 
+                    {wait ? <Image src={myGif} alt="wait" height={300} width={300} /> : <MultiLineChart key={duration+showAllSec+lstOfStcks+labels}  dur={duration} stocks={lstOfStcks} 
                             remove={removefromlst} keep={keepinlst} allSect={showAllSec} labels={labels} 
                             openPrcChart={openPrcChart} width={width} height={height}/>
+                    }        
                 </div>
                 <div className= "Controlpanel" onMouseEnter={() => setshowContent(true)} onMouseLeave={() => setshowContent(false)}>
                 {

@@ -5,6 +5,13 @@ const ListOfStocks  = async () =>{
     return data.data
 }
 
+const getStockDetailsForStks  = async (inpList) =>{
+    const data = await axios.get(`/api/stocks`,{
+        params: { stkList: inpList + ''}
+        })
+    return data.data
+}
+
 const StockPrice = async (stock,duration) =>{
     let url = "/api/stocks/" + stock + "/" + duration
     const data = await axios.get(url)
@@ -84,6 +91,11 @@ const getCompanyQtrPerf = async (stk,forChart) =>{
     return data.data
 }
 
+const StockList = async () =>{
+    const data = await axios.get(`/api/stocks/v2`)
+    return data.data
+}
+
 export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
     SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
-    getCompanyDetails,getCompanyQtrPerf}
+    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks}
