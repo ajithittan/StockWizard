@@ -32,7 +32,8 @@ const BarChartHorizontal = (props) =>{
         if (props.data){
             let tempData = props.data
             tempData.sort((a,b) => {return Math.abs(b.xAxis) - Math.abs(a.xAxis)})
-            setcharData(props.data)
+            //below selection of only 20 is temporary till I figure out how to load all.
+            setcharData(props.data.slice(0,20))
         }
     },[props.data])
 
