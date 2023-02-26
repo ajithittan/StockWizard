@@ -10,4 +10,12 @@ const StockNewsFeeds  = async (stksym) =>{
     return data.data
 }
 
-export {BasicNewsFeeds,StockNewsFeeds}
+const MultipleStockNews = async (arrStks) =>{
+    console.log("in MultipleStockNews?",arrStks)
+    const data = await axios.get(`/api/v2/multinews/`,{
+        params: { stkList: arrStks + ''}
+        })
+    return data.data
+}
+
+export {BasicNewsFeeds,StockNewsFeeds,MultipleStockNews}

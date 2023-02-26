@@ -28,7 +28,9 @@ const index = (props) =>{
             marginLeft={2}
         >
         {
-            stockDetails ? stockDetails.map(item => <StockDetailCard key={item.symbol} basedetails={item} remove={removeFromList}/>) : null
+            stockDetails ? stockDetails.map(item => <StockDetailCard key={item.symbol} 
+                                                     basedetails={item} remove={removeFromList}/>) 
+                                    : null
         }
         <AddPositions></AddPositions>
       </Grid>

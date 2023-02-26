@@ -20,9 +20,9 @@ const Container = (props) =>{
         mainRight: ({ sm }) => ({
             backgroundColor: "white",
             height: sm ? "90vh" : "90vh",
-            overflow:"auto",
             marginTop: sm ? "5vh" : "20px",
-            marginRight: sm ? "5vh" : "20px"
+            marginRight: sm ? "5vh" : "20px",
+            marginLeft: sm ? "5vh" : "20px"
         }),
         Bottom: ({ sm }) => ({
           backgroundColor: "white",
