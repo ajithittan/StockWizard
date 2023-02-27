@@ -5,13 +5,14 @@ import Container from './Container'
 import { useState,useEffect } from 'react'
 import BottomNav from './BottomNav'
 import {useAppContext} from '../../modules/state/stockstate'
-import {StockList} from '../../modules/api/StockMaster'
+import {StockList,PrioritizeStockList} from '../../modules/api/StockMaster'
 
 const Dashboard = () =>{
 
     const feedtypes = [3,4,2,6]
     const [layoutType, setLayoutType] = useState(3)
     const [stockList,setStockList] = useState(null)
+    const [limitStks,setLimitStks] = useState(20)
 
     useEffect(() =>{
         if (!stockList){
@@ -19,10 +20,19 @@ const Dashboard = () =>{
         }
     },[])
 
+    const validateAndSetStks = async (stkList) =>{
+        if (stkList && stkList.length > limitStks){
+            let priorList = await PrioritizeStockList(stkList,limitStks)
+            setStockList(priorList)
+        }else{
+            setStockList(stkList)
+        }
+    }
+
     const getPorfolioStks = async () =>{
         let stklist = await StockList()
-        const arrStks = Array.from(Object.values(stklist), item => item.symbol)
-        setStockList(arrStks)    
+        let arrStks = Array.from(Object.values(stklist), item => item.symbol)
+        validateAndSetStks(arrStks)
     }
 
     const getAllComponents = () =>{
@@ -41,7 +51,7 @@ const Dashboard = () =>{
         if (!stks) {
             await getPorfolioStks()
         }else{
-            setStockList(stks.stocks)
+            validateAndSetStks(stks.stocks)
         }
     }
 

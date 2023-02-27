@@ -9,13 +9,12 @@ const index = (props) =>{
 
     useEffect(() =>{
         if (props.stockdetails){
-            console.log("props.stockdetails",props.stockdetails)
             setstockDetails(props.stockdetails)
         }
     },[])
 
     const removeFromList = (stkSym) => {
-        setstockDetails([...stockDetails.filter(item => item.symbol !== stkSym)])
+        setstockDetails([...stockDetails.filter(item => item !== stkSym)])
     }
 
     return (
@@ -28,8 +27,8 @@ const index = (props) =>{
             marginLeft={2}
         >
         {
-            stockDetails ? stockDetails.map(item => <StockDetailCard key={item.symbol} 
-                                                     basedetails={item} remove={removeFromList}/>) 
+            stockDetails ? stockDetails.map(item => <StockDetailCard key={item} 
+                                                     stock={item} remove={removeFromList}/>) 
                                     : null
         }
         <AddPositions></AddPositions>

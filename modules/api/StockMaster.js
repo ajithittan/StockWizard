@@ -96,6 +96,14 @@ const StockList = async () =>{
     return data.data
 }
 
+const PrioritizeStockList = async (inpList,numberofstks) =>{
+    const data = await axios.get("/api/stocks/limit/" + numberofstks ,{
+        params: { stkList: inpList + ''}
+        })
+    return data.data
+}
+
+
 export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
     SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
-    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks}
+    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList}
