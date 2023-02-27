@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StockDetailContainer from './StockDetailContainer'
+import {getStockDetailsForStks} from '../../modules/api/StockMaster'
 
 const index = (props) =>{
     const [stkDetails, setStkDetails] = useState(null)

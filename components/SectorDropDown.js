@@ -14,7 +14,9 @@ const SectorDropDown = (props) =>{
     useEffect(async () =>{
         if (!selSec){
             let res = await getStockSector()
-            setSectors(res)    
+            if (res && res.length > 0){
+                setSectors(res.sort((a,b) => a.sector.toLowerCase().localeCompare(b.sector.toLowerCase())))
+            }
         }
     },[])
 

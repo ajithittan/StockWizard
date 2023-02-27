@@ -9,7 +9,7 @@ const index = (props) =>{
 
     useEffect(() =>{
         if (props.stockdetails){
-            setstockDetails(props.stockdetails)
+            setstockDetails([...props.stockdetails])
         }
     },[])
 

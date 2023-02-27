@@ -4,8 +4,8 @@ import ChartsForDashBoard from './ChartsForDashBoard'
 import Container from './Container'
 import { useState,useEffect } from 'react'
 import BottomNav from './BottomNav'
-import {useAppContext} from '../../modules/state/stockstate'
 import {StockList,PrioritizeStockList} from '../../modules/api/StockMaster'
+import WaitingForResonse from '../../components/WaitingForResponse'
 
 const Dashboard = () =>{
 
@@ -13,6 +13,7 @@ const Dashboard = () =>{
     const [layoutType, setLayoutType] = useState(3)
     const [stockList,setStockList] = useState(null)
     const [limitStks,setLimitStks] = useState(20)
+    const [waiting,setWaiting] = useState(true)
 
     useEffect(() =>{
         if (!stockList){
@@ -27,6 +28,7 @@ const Dashboard = () =>{
         }else{
             setStockList(stkList)
         }
+        setWaiting(false)
     }
 
     const getPorfolioStks = async () =>{
@@ -48,6 +50,7 @@ const Dashboard = () =>{
     }
 
     const stockChanges = async (stks) =>{
+        setWaiting(true)
         if (!stks) {
             await getPorfolioStks()
         }else{
@@ -57,7 +60,11 @@ const Dashboard = () =>{
 
     return (
         <>
-            <Container key={stockList} layout={layoutType} components={getAllComponents()}></Container>
+            {
+                waiting ? 
+                <WaitingForResonse /> : 
+                <Container key={stockList} layout={layoutType} components={getAllComponents()}></Container>              
+            }
             <BottomNav callBackSectorChange={stockChanges}></BottomNav>
         </> 
     )
