@@ -14,7 +14,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import BasicContentStockDetail from './BasicContentStockDetail'
 import CompanyQtrPerf from './CompanyQtrPerf'
 import {intToString} from '../../modules/utils/UtilFunctions'
-import {getStockDetailsForStks} from '../../modules/api/StockMaster'
 
 const StockDetailCard = (props) => {
 
@@ -25,10 +24,10 @@ const StockDetailCard = (props) => {
     const sm = useMediaQuery("(max-width: 960px)");
 
     useEffect(() =>{
-        if (props.stock){
-            getStkDetails(props.stock)
+        if (props.stockdetails){
+            setStkDetail(props.stockdetails)
         }
-    },[props.stock])
+    },[props.stockdetails])
 
     const getStkDetails = async (stkList) =>{
         let res = await getStockDetailsForStks(stkList)
