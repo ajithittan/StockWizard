@@ -28,7 +28,7 @@ const index = (props) =>{
                     let tempCard = <StockDetailCard key={item[0].perchange.toFixed(2)} 
                                             stockdetails={item[0]} remove={removeFromList}/>
                     stockDetails.push(tempCard)
-                    stockDetails.sort((a,b) => b.key - a.key)
+                    stockDetails.sort((a,b) => Math.abs(b.key) - Math.abs(a.key))
                     setstockDetails([...stockDetails])
                 }).catch(err => console.log("ERROR - createStockDetailscard",err))
             }    
