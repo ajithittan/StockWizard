@@ -15,10 +15,11 @@ import Link from '@mui/material/Link';
 import { getCookie,deleteCookie } from 'cookies-next';
 import {logout} from '../../modules/login/auth'
 import { useRouter } from 'next/router'
+import BadgeNotification from '../../components/BadgeNotification'
 
-const pages = ['Sectors','Performance','Analyze','Prediction'];
+const pages = ['Sectors','Performance','Analyze','Prediction']
 const links = ['SectorSetUp','SectorPerformance','Charting','Prediction']
-const settings = ['Logout'];
+const settings = ['Logout']
 
 const ResponsiveAppBar = () => {
   const router = useRouter()
@@ -165,6 +166,11 @@ const ResponsiveAppBar = () => {
                 </MenuItem>
               ))}
             </Menu>
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Notifications">
+              <BadgeNotification></BadgeNotification>
+            </Tooltip>
           </Box>
         </Toolbar>
       </Container>

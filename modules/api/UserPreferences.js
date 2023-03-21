@@ -18,4 +18,10 @@ const getStockPortfolioPos = async (stkSym) =>{
     return data.data
 }
 
-export {saveStockPositions,delStockPositions,getStockPortfolioPos}
+const getUserNotifications = async (inpType) =>{
+    let url = "/api/usernotifications/" + inpType
+    const data = await axios.get(url)
+    return data.data
+}
+
+export {saveStockPositions,delStockPositions,getStockPortfolioPos,getUserNotifications}
