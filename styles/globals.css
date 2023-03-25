@@ -918,3 +918,7 @@ color: white;
   transition: width 0.5s;
   z-index: 1000;
 }
+.Imagegallery{
+  margin: auto;
+  width: 95%;
+}

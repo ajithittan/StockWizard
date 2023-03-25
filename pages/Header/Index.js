@@ -17,8 +17,8 @@ import {logout} from '../../modules/login/auth'
 import { useRouter } from 'next/router'
 import BadgeNotification from '../../components/BadgeNotification'
 
-const pages = ['Sectors','Performance','Analyze','Prediction']
-const links = ['SectorSetUp','SectorPerformance','Charting','Prediction']
+const pages = ['Sectors','Performance','Analyze','Prediction','Art']
+const links = ['SectorSetUp','SectorPerformance','Charting','Prediction','Art']
 const settings = ['Logout']
 
 const ResponsiveAppBar = () => {
