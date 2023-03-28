@@ -1,44 +1,43 @@
 import { useEffect,useState } from "react"
-import {getAllImages} from '../../modules/api/UserImages'
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import WaitingForResonse from '../../components/WaitingForResponse'
-import SpeedDialComp from './SpeedDialComp'
 
+const MosaicView = (props) =>{
+    const [imgContent,setImgContent] = useState(null)
+    const [colCount,setColCount] = useState(4)
+    const [variantTp,setVariantTp] = useState("masonry")
+  
+    useEffect(()=>{
+      if(props.content && props.content.length > 0){
+          setImgContent(props.content)
+      }
+    },[props.content])  
 
-const MosaicView = () =>{
-    const listOfVariants = ["masonry","quilted","woven"]
-    const [variant,setVariant] = useState(0)
-    const [colsForImages,setColsForImages] = useState(5)
-    const [imageUrls,setImageUrls] = useState(null)
-    const [waiting,setWaiting] = useState(true)
+    useEffect(() => {
+      if(props.columns){
+          setColCount(props.columns)
+      }
+    },[props.columns])
 
     useEffect(() =>{
-        retrieveImages()
-    },[])
-
-    const retrieveImages = () =>{
-        getAllImages().then(resp => {setImageUrls(resp),setWaiting(false)})
-    }
-
-    const addColumns = () => setColsForImages(colsForImages + 1)
-    const redColumns = () => setColsForImages(colsForImages - 1)
-    const changeVariant = () => variant === listOfVariants.length ? setVariant(0) : setVariant(variant + 1)
+      if (props.type){
+        setVariantTp(props.type)
+      }
+    },[props.type])
 
     return (
           <div className="Imagegallery">
-              <ImageList key={colsForImages} variant={listOfVariants[variant||0]} cols={colsForImages} gap={8} >
-                  {!waiting && imageUrls && imageUrls.map((item) => (
+              <ImageList key={colCount} variant={variantTp} cols={colCount} gap={8} >
+                  {imgContent && imgContent.map((item) => (
                     <ImageListItem key={item}>
                       <img
-                        src={`${item}`}
+                        src={`${item}?w=162&auto=format`}
+                        srcSet={`${item}?w=162&auto=format&dpr=2 2x`}
                         loading="lazy"
                       />
                     </ImageListItem>
                   ))}
             </ImageList>
-            <SpeedDialComp plusOne={addColumns} reduceOne={redColumns} changeMode={changeVariant}></SpeedDialComp>
-            {waiting ? <WaitingForResonse></WaitingForResonse> : null}
         </div>
     )
 }

@@ -24,15 +24,17 @@
     "js-cookie": "^3.0.1",
     "lodash.memoize": "^4.1.2",
     "lru-cache": "^6.0.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "next": "12.0.7",
     "rc-slider": "^10.0.1",
     "react": "17.0.2",
     "react-content-loader": "^6.1.0",
     "react-dom": "17.0.2",
+    "react-photo-album": "^2.0.3",
     "react-transition-group": "^4.4.5",
     "styled-components": "^5.3.5",
-    "swr": "^1.1.1"
+    "swr": "^1.1.1",
+    "yet-another-react-lightbox": "^3.2.0"
   },
   "devDependencies": {
     "eslint": "8.5.0",
