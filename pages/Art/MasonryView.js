@@ -32,14 +32,20 @@ const MasonryView = (props) => {
     }
   },[props.columns])
 
+  const handleImageClick = (imgId) =>{
+    console.log("item.id",imgId)
+    props.clickedImage(imgId)
+    props.slideShow()
+  }
+
   return (
     <Box>
       <Masonry columns={{lg:colCount, md: colCount-1, xs: colCount-3, sm: colCount-2 }} spacing={2}>
         {imgContent && imgContent.map((item, index) => (
-          <div key={index}>
+          <div key={index} style={{cursor:"pointer"}}>
             <img
-              src={`${item}?w=162&auto=format`}
-              srcSet={`${item}?w=162&auto=format&dpr=2 2x`}
+              src={`${item.url}?w=162&auto=format`}
+              srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
               //alt={item.title}
               loading="lazy"
               style={{
@@ -48,6 +54,7 @@ const MasonryView = (props) => {
                 display: 'block',
                 width: '100%',
               }}
+              onClick={() => handleImageClick(item.id)}
             />
           </div>
         ))}

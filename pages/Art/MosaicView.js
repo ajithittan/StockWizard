@@ -25,15 +25,22 @@ const MosaicView = (props) =>{
       }
     },[props.type])
 
+    const handleImageClick = (imgId) =>{
+      console.log("item.id",imgId)
+      props.clickedImage(imgId)
+      props.slideShow()
+    }
+
     return (
           <div className="Imagegallery">
               <ImageList key={colCount} variant={variantTp} cols={colCount} gap={8} >
                   {imgContent && imgContent.map((item) => (
-                    <ImageListItem key={item}>
+                    <ImageListItem key={item} style={{cursor:"pointer"}}>
                       <img
-                        src={`${item}?w=162&auto=format`}
-                        srcSet={`${item}?w=162&auto=format&dpr=2 2x`}
+                        src={`${item.url}?w=162&auto=format`}
+                        srcSet={`${item.url}?w=162&auto=format&dpr=2 2x`}
                         loading="lazy"
+                        onClick={() => handleImageClick(item.id)}
                       />
                     </ImageListItem>
                   ))}
