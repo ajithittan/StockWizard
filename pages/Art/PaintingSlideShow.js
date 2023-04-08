@@ -9,8 +9,10 @@ const PaintingSlideShow = (props) =>{
   const [selectedImg,setSelectedImg] = useState(null)
 
   useEffect(() => {
-    getPaintings().then(items => setPaintings(items))
-  },[])
+    if(props.allPaintings){
+      getPaintings(props.allPaintings)
+    }
+  },[props.allPaintings])
 
   useEffect(() =>{
     setSelectedImg(props.imageSel)
@@ -23,25 +25,29 @@ const PaintingSlideShow = (props) =>{
     `https://res.cloudinary.com/dnhhmbzqx/image/upload/v1679764493/${id}.${format}`;
     //`https://res.cloudinary.com/dnhhmbzqx/image/upload/v1679764493/${id}.${format}/${width}x${height}`;
 
-    const getPaintings = () => getAllImages().then(items => items.map((photo) => {
-      const width = breakpoints[0];
-      const height = (photo.height / photo.width) * width;
-
-      return {
-        src: unsplashLink(photo.id,photo.format, width, height),
-        id: photo.id,
-        width,
-        height,
-        images: breakpoints.map((breakpoint) => {
-          const height = Math.round((photo.height / photo.width) * breakpoint);
-          return {
-            src: unsplashLink(photo.id, photo.format,breakpoint, height),
-            width: breakpoint,
-            height,
-          };
-        }),
-      };
-    }));
+    const getPaintings = (allImages) => {
+      let retval = allImages.map((photo) => {
+      
+        const width = breakpoints[0];
+        const height = (photo.height / photo.width) * width;
+  
+        return {
+          src: unsplashLink(photo.id,photo.format, width, height),
+          id: photo.id,
+          width,
+          height,
+          images: breakpoints.map((breakpoint) => {
+            const height = Math.round((photo.height / photo.width) * breakpoint);
+            return {
+              src: unsplashLink(photo.id, photo.format,breakpoint, height),
+              width: breakpoint,
+              height,
+            };
+          }),
+        };
+      })
+      setPaintings(retval)
+    }
 
     const getIndexOfImg = () =>{
       if (Paintings){

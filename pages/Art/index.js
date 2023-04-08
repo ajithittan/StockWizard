@@ -42,7 +42,7 @@ const index = () =>{
 
     return (
         <div className="Imagegallery">
-            {slideShow ? <PaintingSlideShow show={true} slideOff={setSlideShowOff} imageSel={selectedImage}></PaintingSlideShow> : getImageView()}
+            {slideShow ? <PaintingSlideShow show={true} slideOff={setSlideShowOff} imageSel={selectedImage} allPaintings={imageUrls}></PaintingSlideShow> : getImageView()}
             {waiting ? <WaitingForResonse></WaitingForResonse> : null}
             <SpeedDialComp plusOne={addColumns} reduceOne={redColumns} changeMode={changeVariant}></SpeedDialComp>
         </div>
