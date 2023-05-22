@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import StockList from './api/stocklist'
 
 const AppSkinContext = createContext();
 const allSkinState = [{header:'blu',footer:'blu',id:0},{header:'blu',footer:'blu',id:1},{header:'blu',footer:'blu',id:2}]

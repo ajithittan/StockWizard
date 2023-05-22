@@ -13,7 +13,7 @@ const Line = (g,chardata,x,y) =>{
       .y(d => y(d.close)))
 }
 
-const StraightXLine = (g,chardata,xScale,yScale,inpVals,callback) =>{
+const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) =>{
   let textToDisplay = inpVals.close + (inpVals.position ? "(" + inpVals.position + ")" : "")
   console.log("inpVals",inpVals,textToDisplay)
   const minDt = moment(chardata[0].values.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()

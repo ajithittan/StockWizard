@@ -11,6 +11,18 @@ module.exports = {
         destination: 'http://localhost:5100/newsfeed/:path*' // Proxy to Backend
       },
       {
+        source: '/personalize/:path*',
+        destination: 'http://localhost:5550/personalize/:path*' // Proxy to Backend
+      },
+      {
+        source: '/stream/:path*',
+        destination: 'http://localhost:5551/stream/:path*' // Proxy to Backend
+      },
+      {
+        source: '/realtime/:path*',
+        destination: 'http://localhost:5551/realtime/:path*' // Proxy to Backend
+      },
+      {
         source: '/auth/google',
         destination: 'http://localhost:5100/auth/google' // Proxy to Backend
       },

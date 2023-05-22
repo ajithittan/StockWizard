@@ -20,7 +20,7 @@ const index = (props) =>{
 
     return (
       <>
-        <StockDetailContainer key={stkDetails} stockdetails={stkDetails}>
+        <StockDetailContainer key={stkDetails} stocks={stkDetails}>
         </StockDetailContainer>
       </>
   )

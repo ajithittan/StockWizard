@@ -33,10 +33,14 @@ const LineChart = (props) =>{
     const [openModal,setOpenModal] = useState(false)
 
     useEffect(async () =>{
+        console.log("props.line",props.line)
         if(props.positions && !addLines){
             setAddLines([...props.positions])
         }
-    },[props.positions])
+        if (props.line){
+            setAddLines([...props.line])
+        }
+    },[props.positions,props.line])
 
     useEffect(() => {
         d3.select("body")

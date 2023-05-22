@@ -6,6 +6,8 @@ import { useEffect,useState } from "react"
 import {getAllImages} from '../../modules/api/UserImages'
 import PaintingSlideShow from './PaintingSlideShow'
 
+const URL_WEB_SOCKET = 'ws://localhost:5551/';
+
 const index = () =>{
     const listOfVariants = ["MasonryView","MosaicView","MosaicQuiltted","MosaicWoven"]
     const [imageUrls,setImageUrls] = useState(null)
@@ -16,6 +18,23 @@ const index = () =>{
     const [waiting,setWaiting] = useState(true)
     const [slideShow,setSlideShow] = useState(false)
     const [selectedImage,setSelectedImage] = useState(null)
+
+    const [ws, setWs] = useState(null);
+    const [trades, setTrades] = useState([]);
+  
+    useEffect(() => {
+      const wsClient = new WebSocket(URL_WEB_SOCKET);
+      
+      wsClient.onopen = () => {
+        
+        setWs(wsClient);
+        wsClient.send(JSON.stringify("hahaha"));
+      };
+      wsClient.onclose = () => console.log('ws closed');
+      return () => {
+        wsClient.close();
+      };
+    }, []);
     
     useEffect(() =>{
         retrieveImages()

@@ -18,6 +18,7 @@ import {intToString} from '../../modules/utils/UtilFunctions'
 const StockDetailCard = (props) => {
 
     const [stkDetail,setStkDetail] = useState(null)
+    const [stkQuote,setStkQuote] = useState(null)
     const router = useRouter()
     const [type,setType] = useState("Basic")
 
@@ -28,13 +29,6 @@ const StockDetailCard = (props) => {
             setStkDetail(props.stockdetails)
         }
     },[props.stockdetails])
-
-    const getStkDetails = async (stkList) =>{
-        let res = await getStockDetailsForStks(stkList)
-        if (res && res.length > 0 ){
-            setStkDetail(res[0])
-        }  
-    }
 
     let cardStyle = {
         display: 'block',
@@ -69,7 +63,9 @@ const StockDetailCard = (props) => {
       <Card style={cardStyle}>
         <CardContent>
           <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stkDetail.symbol)}>
-            {stkDetail ? stkDetail.symbol : "Looking"} - {stkDetail ? "$" + stkDetail.close : "Looking"} ({stkDetail ? stkDetail.perchange.toFixed(2) : "Looking"}%) ({stkDetail ? intToString(stkDetail.volume) : "Looking"})
+            {stkDetail ? stkDetail.symbol : "Looking"} - {stkDetail ? "$" + stkDetail.close : "Looking"} 
+            ({stkDetail ? stkDetail.perchange.toFixed(2) : "Looking"}%) 
+            ({stkDetail ? intToString(stkDetail.volume) : "Looking"})
           </Typography>
           <div style={{height:"80%"}}>
               {getContent()}

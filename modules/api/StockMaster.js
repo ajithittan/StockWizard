@@ -1,10 +1,5 @@
 import axios from "axios";
 
-const ListOfStocks  = async () =>{
-    const data = await axios.get(`/api/stocks/v2`)
-    return data.data
-}
-
 const getStockDetailsForStks  = async (inpList) =>{
     const data = await axios.get(`/api/stocks`,{
         params: { stkList: inpList + ''}
@@ -18,6 +13,14 @@ const StockPrice = async (stock,duration) =>{
     return data.data
     
 }
+
+const StockPriceV2  = async (inpList) =>{
+    const data = await axios.get(`/realtime/stockquotes`,{
+        params: { stkList: inpList + ''}
+        })
+    return data.data
+}
+
 const StockPerChange = async (stock,duration,rollup,unit,byType) =>{
     let url = "/api/v2/stocks/perchange/" + stock + "/" + duration + "/" + rollup + "/" + unit  + "/" + byType 
     const data = await axios.get(url)
@@ -104,6 +107,6 @@ const PrioritizeStockList = async (inpList,numberofstks) =>{
 }
 
 
-export {ListOfStocks,StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
+export {StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
     SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
-    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList}
+    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList,StockPriceV2}

@@ -5,6 +5,7 @@ import Container from './Container'
 import { useState,useEffect } from 'react'
 import BottomNav from './BottomNav'
 import {StockList,PrioritizeStockList} from '../../modules/api/StockMaster'
+import {getUserStocks}  from '../../modules/api/UserPreferences'
 import WaitingForResonse from '../../components/WaitingForResponse'
 
 const Dashboard = () =>{
@@ -32,12 +33,16 @@ const Dashboard = () =>{
     }
 
     const getPorfolioStks = async () =>{
-        let stklist = await StockList()
-        let arrStks = Array.from(Object.values(stklist), item => item.symbol)
-        validateAndSetStks(arrStks)
+        let stklist = await getUserStocks()
+        console.log("stklist",stklist)
+        //let arrStks = Array.from(Object.values(stklist), item => item.symbol)
+        //console.log("finally what is in the list",arrStks)
+        validateAndSetStks(stklist)
     }
 
     const getAllComponents = () =>{
+
+        console.log("stockList - getAllComponents",stockList)
 
         let arrComponents = []
 

@@ -13,6 +13,7 @@ import moment from 'moment';
 import ModalBox from '../../components/ModalBox'
 import FloatController from '../../components/FloatController'
 import {getStockPortfolioPos} from '../../modules/api/UserPreferences'
+import StreamStockPrice from '../../components/StreamStockPrice'
 
 const index = (props) =>{
     const router = useRouter()
@@ -27,6 +28,7 @@ const index = (props) =>{
     const [processing,setProcessing] = useState(false)
     const [showPositions,setShowPositions] = useState(true)
     const [allPortPositions,setAllPortPositions] = useState(null)
+    const [realtimeStkPrc,setRealtimeStkPrc] = useState(null)
 
     useEffect(() => {
           const calcWidth = () =>{
@@ -51,6 +53,12 @@ const index = (props) =>{
         window.addEventListener("resize", updateDimensions);
         return () => window.removeEventListener("resize", updateDimensions);
     }, []);
+
+    useEffect(() =>{
+      if (realtimeStkPrc){
+        //setcharData([...charData.filter(item => item.date !== realtimeStkPrc[0].date),...realtimeStkPrc])
+      }
+    },[realtimeStkPrc])
 
     useEffect (async () =>{
       if (showPositions && stock){
@@ -246,6 +254,10 @@ const index = (props) =>{
       return []
   }
 
+  const addStreamData = (inpval) =>{
+    setRealtimeStkPrc(inpval)
+  }
+
     return (
         <>
         <title>Price Charts</title>
@@ -256,9 +268,10 @@ const index = (props) =>{
                   <div>
                     {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
                     <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>
+                    <StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>
                     <LineChart key={Math.round(width) + stock + charData} chartData={charData}
                               width={Math.round(width)} height={Math.round(height*.90)} margin={margin} 
-                              stock={stock} main={true} positions={allPortPositions}/></div> : <Image src={myGif} alt="wait" height={30} width={30} />
+                              stock={stock} main={true} positions={allPortPositions} line={realtimeStkPrc}/></div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
         </>
