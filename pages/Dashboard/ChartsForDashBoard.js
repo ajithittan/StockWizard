@@ -20,7 +20,6 @@ const ChartsForDashBoard = (props) => {
     },[])
 
     useEffect(() =>{
-        console.log("props.newStocks",props.stocks)
         if (props.stocks){
             setstockList(props.stocks)
         }
@@ -28,19 +27,13 @@ const ChartsForDashBoard = (props) => {
 
     useEffect (() =>{
         if(duration && stockList && stockList.length > 0){
-            for(let i=0;i < stockList.length; i++){
-                getStkDataFromBackEnd(stockList[i],duration).then(result => {
-                    if (chartData){
-                        chartData.push(transformData(result))
-                        setChartData([...chartData])
-                    }})
-            }
+            retrieveChartData(duration)
         }
     },[stockList])
 
     const transformData = (resultFromDb) =>{
         let retVal = {}
-        if(resultFromDb){
+        if(resultFromDb?.length > 0){
             retVal.yAxis = resultFromDb[resultFromDb.length - 1].symbol
             retVal.xAxis = resultFromDb[resultFromDb.length - 1].change
         }
@@ -52,23 +45,31 @@ const ChartsForDashBoard = (props) => {
         return getStockPerChange(cacheKey,{'stock':stkSym,'duration':dur,'rollup':1,'unit':"M",'byType':"C"})
     }
 
+    const retrieveChartData = (duration) =>{
+        chartData = []
+        for(let i=0;i < stockList.length; i++){
+            getStkDataFromBackEnd(stockList[i],duration).then(result => {
+                if (chartData){
+                    let tempval = transformData(result)
+                    Object.keys(tempval).length === 0 ? null : chartData.push(tempval)
+                    setChartData([...chartData])
+                }})
+        }
+    }
+
     const changeDuration = (duration) =>{
         setDuration(parseInt(duration))
         let tempval = []
         if (stockList && stockList.length > 0){
-            for(let i=0;i < stockList.length; i++){
-                getStkDataFromBackEnd(stockList[i],duration).then(result => {
-                    if (tempval){
-                        tempval.push(transformData(result))
-                        setChartData([...tempval])
-                    }})
-            }
+            retrieveChartData(duration)
         }
     }
 
     const onBarChartClick = (val) =>{
         router.push({pathname: '/PriceCharts',query: {stock:val.yAxis,dur:duration}})
     }
+
+    const addToList = (stks) => props.actionChangeList(stks)
 
     return(
         <>
@@ -77,7 +78,7 @@ const ChartsForDashBoard = (props) => {
                     <><BarChartHorizontal data={chartData} margin={margin} callBackOnClick={onBarChartClick}></BarChartHorizontal> </>
                     <><DurationSlider size="small" callBackOnChange={changeDuration} initialval={12} color="gray"></DurationSlider></>
                 </>
-                : <AddPositions></AddPositions>}
+                : <AddPositions actionAdd={addToList}></AddPositions>}
             {/*{stockList && stockList.length > 0 ? <Charting stocks={stockList} duration={duration} name="" callbacks={props.allCallBacks} /> : <AddPositions></AddPositions>}*/}
         </>
     )

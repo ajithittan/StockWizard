@@ -3,25 +3,21 @@ import StockDetailContainer from './StockDetailContainer'
 import {getStockDetailsForStks} from '../../modules/api/StockMaster'
 
 const index = (props) =>{
-    const [stkDetails, setStkDetails] = useState(null)
+    const [stocks, setStocks] = useState(null)
 
     useEffect(() =>{
       if (props.stocks){
-        setStkDetails(props.stocks)
+        setStocks(props.stocks)
       }
     },[props.stocks])
 
-    const getStkDetails = async (stkList) =>{
-      let res = await getStockDetailsForStks(stkList)
-      if (res && res.length > 0 ){
-        setStkDetails(res)
-      }
-    }
+    const removeStock = (stock) => props.actionChangeList([...stocks.filter(item => item !== stock)])
+
+    const addStock = (newStocks) => props.actionChangeList(stocks? [...newStocks,...stocks] : [...newStocks])
 
     return (
       <>
-        <StockDetailContainer key={stkDetails} stocks={stkDetails}>
-        </StockDetailContainer>
+        <StockDetailContainer key={stocks} stocks={stocks} actionRemove={removeStock} actionAdd={addStock}/>
       </>
   )
 }

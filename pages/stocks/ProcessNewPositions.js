@@ -19,7 +19,7 @@ const ProcessNewPositions = (props) =>{
                 forDb = Array.from(new Set([...forDb]))
                 let retval = await SaveNewPositions(forDb)
                 if (retval){
-                    props.onceSuccess()
+                    props.onceSuccess(forDb)
                 }
                 else{
                     setError(true)

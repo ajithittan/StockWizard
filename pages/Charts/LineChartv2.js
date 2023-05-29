@@ -50,7 +50,7 @@ const LineChartv2 = (props) =>{
         if (!charData){
             let cacheKey = props.stock + "_" + props.duration + "_PRICE"
             let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration})
-            setcharData(res)
+            res?.length ? setcharData(res) : null
         }
     },[])    
 

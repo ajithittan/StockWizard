@@ -17,7 +17,6 @@ export function AuthWrapper({ children }) {
   },[])
 
   const changeAuthStatus = (newvalue) =>{
-    console.log("changed auth status to - ",newvalue)
     setauthStatus(newvalue)
   }
 

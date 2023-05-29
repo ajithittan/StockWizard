@@ -1,19 +1,20 @@
 import { useEffect,useState } from "react"
-import {getSimpleMovingAverages} from '../../modules/api/StockIndicators'
+import getCachedSimpleMovAvgs from '../../modules/cache/cacheindicators'
 
 const MovingAvg = (props) =>{
 
     const [movAvgs, setmovAvgs] = useState(null)
 
     useEffect(async () =>{
-        (props.symbol)
-        let res = await getSimpleMovingAverages(props.symbol,1)
-        if (res.SMA_20){
-            setmovAvgs(res[props.type])
-        }else{
-            setmovAvgs("-")
-        }
-        
+        if (props.symbol){
+            const cacheKey = "SMA" + props.symbol + "_" + 1
+            let res = await getCachedSimpleMovAvgs(cacheKey,{'stock':props.symbol,'last':1})
+            if (res.SMA_20){
+                setmovAvgs(res[props.type])
+            }else{
+                setmovAvgs("-")
+            }    
+        }        
     },[props.symbol])
 
     return(

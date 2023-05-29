@@ -1,5 +1,5 @@
 import { createContext, useContext,useState,useEffect } from 'react';
-import StockList from './api/stocklist'
+import {getUserStocks} from '../../modules/api/UserPreferences'
 
 const AppContext = createContext();
 
@@ -8,9 +8,9 @@ export function AppWrapper({ children }) {
   const [stkList,setStkList] = useState(null)
 
   useEffect(async () =>{
-      let stklist = await StockList()
-      const arrStks = Array.from(Object.values(stklist), item => item.symbol)
-      setStkList(arrStks)
+      let stklist = await getUserStocks()
+      //const arrStks = Array.from(Object.values(stklist), item => item.symbol)
+      setStkList(stklist)
   },[])
 
   return (

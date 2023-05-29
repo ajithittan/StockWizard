@@ -16,19 +16,11 @@ import CompanyQtrPerf from './CompanyQtrPerf'
 import {intToString} from '../../modules/utils/UtilFunctions'
 
 const StockDetailCard = (props) => {
-
-    const [stkDetail,setStkDetail] = useState(null)
     const [stkQuote,setStkQuote] = useState(null)
+    const [stock,setStock] = useState(null)
     const router = useRouter()
     const [type,setType] = useState("Basic")
-
     const sm = useMediaQuery("(max-width: 960px)");
-
-    useEffect(() =>{
-        if (props.stockdetails){
-            setStkDetail(props.stockdetails)
-        }
-    },[props.stockdetails])
 
     let cardStyle = {
         display: 'block',
@@ -38,34 +30,46 @@ const StockDetailCard = (props) => {
         marginLeft: sm ? "10px" : "30px",
         marginTop: sm ? "10px" : "15px",
         paddingLeft: sm ? "5%" : "1px",
-        backgroundColor: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
+        backgroundColor: stkQuote?.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
         alignItems:"center",
     }
+
+    useEffect(() => {
+        if(props.stock){
+            setStock(props.stock)
+        }
+    },[props.stock])
+
+    useEffect(() => {
+       if (props.stockQuote){
+            setStkQuote(props.stockQuote)
+       } 
+    },[props.stockQuote])
 
     const showPriceChart = (stk) =>{
         router.push({pathname: '/PriceCharts',query: {stock:stk,dur:3}})
     }
 
     const stopTrackingStk = () =>{
-        props.remove(stkDetail.symbol)
-        let res = DeleteStkFromPositions(stkDetail.symbol)
+        props.remove(stock)
+        let res = DeleteStkFromPositions(stock)
     }
 
     const getContent = () =>{
         let retVal = {
-            "Basic":<BasicContentStockDetail stkDetail={stkDetail}/>,
-            "Earnings": <CompanyQtrPerf stock={stkDetail ? stkDetail.symbol : null}/> }
+            "Basic":<BasicContentStockDetail stock={stock}/>,
+            "Earnings": <CompanyQtrPerf stock={stock}/> }
         return retVal[type]
     }
 
     return (
       <Card style={cardStyle}>
         <CardContent>
-          <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stkDetail.symbol)}>
-            {stkDetail ? stkDetail.symbol : "Looking"} - {stkDetail ? "$" + stkDetail.close : "Looking"} 
-            ({stkDetail ? stkDetail.perchange.toFixed(2) : "Looking"}%) 
-            ({stkDetail ? intToString(stkDetail.volume) : "Looking"})
+          <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stock)}>
+            {stock ? stock : "Looking"} - {stkQuote ? "$" + stkQuote.close : "Looking"} 
+            ({stkQuote ? stkQuote.perchange.toFixed(2) : "Looking"}%) 
+            ({stkQuote ? intToString(stkQuote.volume) : "Looking"})
           </Typography>
           <div style={{height:"80%"}}>
               {getContent()}

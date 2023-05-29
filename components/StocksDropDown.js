@@ -17,7 +17,6 @@ const StocksDropDown = (props) =>{
     },[props.stocks])
 
     useEffect(() =>{
-        console.log("props.selStock",props.selStock)
         setSelStk(props.selStock)
     },[props.selStock])
 

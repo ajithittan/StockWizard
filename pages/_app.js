@@ -8,12 +8,12 @@ import Header from './Header/Index'
 function MyApp({ Component, pageProps }) {
   return (  
           <AppWrapper>
-          <AuthWrapper>
-            <AppSkinWrapper>
-                  <Header />
-                  <Component {...pageProps} />   
-            </AppSkinWrapper>
-          </AuthWrapper>
+            <AuthWrapper>
+              <AppSkinWrapper>
+                    <Header />
+                    <Component {...pageProps} />   
+              </AppSkinWrapper>
+            </AuthWrapper>
           </AppWrapper>
   )
 }

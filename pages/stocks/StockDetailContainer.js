@@ -7,43 +7,31 @@ import {StockPriceV2} from '../../modules/api/StockMaster'
 
 const index = (props) =>{
 
-    const [stockDetails,setstockDetails] = useState(null)
+    const [stocks,setStocks] = useState(null)
+    const [stkQuotes,setStkQuote] = useState(null)
 
     useEffect(() =>{
         if (props.stocks){
-            createStockDetails(props.stocks)
-            getStkQuotes(props.stocks)
+            setStocks(props.stocks)
+            setTimeout(() => getStkQuotes(props.stocks),1000) 
         }
     },[props.stocks])
 
-    const removeFromList = (stkSym) => {
-        setstockDetails([...stockDetails.filter(item => item !== stkSym)])
-    }
-
-    const getStkQuotes = async (stock) =>{
-        let res = await StockPriceV2(stock)
-        console.log("getStkQuotes",res)
-        if (res && res.length > 0 ){
-            setStkQuote(res[0])
-        }  
-    }
-
-    const createStockDetails = async (listStks) =>{
-
-        //console.log("listStks",listStks)
-
-        if (listStks && listStks.length > 0){
-            let stkDetails = []
-            for (let i=0;i<listStks.length;i++){
-                getStockDetailsForStks(listStks[i]).then(item => {
-                    let tempCard = {comp:<StockDetailCard key={item[0].symbol + item[0].perchange.toFixed(2)} 
-                                            stockdetails={item[0]} remove={removeFromList}/>,val:item[0].perchange.toFixed(2)}
-                    stkDetails.push(tempCard)
-                    stkDetails.sort((a,b) => Math.abs(b.val) - Math.abs(a.val))
-                    setstockDetails([...stkDetails.map(item => item.comp)])
-                }).catch(err => console.log("ERROR - createStockDetailscard",err))
-            }
+    useEffect(() =>{
+        if(stkQuotes){
+            setStocks([...stkQuotes.map(item => item.symbol)])
         }
+    },[stkQuotes])
+
+    const removeFromList = (stkSym) => setStocks([...stocks.filter(stk => stk !==stkSym)])
+
+    const addToList = (stkSym) => props.actionAdd(stkSym)
+
+    const getStkQuotes = async (stock) => {
+        let res = await StockPriceV2(stock)
+        if (res && res.length > 0 ){
+            setStkQuote(res)
+        }  
     }
 
     return (
@@ -56,9 +44,11 @@ const index = (props) =>{
             marginLeft={2}
         >
         {
-            stockDetails ? stockDetails.map(item => item) : null
+            stocks?.map(item => <StockDetailCard key={item} stock={item} 
+                                   stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}>
+                                </StockDetailCard>) 
         }
-        <AddPositions></AddPositions>
+        <AddPositions actionAdd={addToList}></AddPositions>
       </Grid>
   )
 }

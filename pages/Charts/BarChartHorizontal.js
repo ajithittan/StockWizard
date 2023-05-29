@@ -33,7 +33,8 @@ const BarChartHorizontal = (props) =>{
             let tempData = props.data
             tempData.sort((a,b) => {return Math.abs(b.xAxis) - Math.abs(a.xAxis)})
             //below selection of only 20 is temporary till I figure out how to load all.
-            setcharData(props.data.slice(0,20))
+            setcharData(props.data)
+            //setcharData(props.data.slice(0,20))
         }
     },[props.data])
 
@@ -46,10 +47,7 @@ const BarChartHorizontal = (props) =>{
         return color;
     }
 
-    const clickBarInChart = (e,val) =>{
-        console.log("charvalue clicked",val)
-        props.callBackOnClick(val)
-    }
+    const clickBarInChart = (e,val) => props.callBackOnClick(val)
 
     useEffect (() =>{
         if (charData) {
