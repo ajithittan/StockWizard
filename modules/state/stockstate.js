@@ -9,6 +9,7 @@ export function AppWrapper({ children }) {
 
   useEffect(async () =>{
       let stklist = await getUserStocks()
+      console.log("global state invocation?",stklist)
       //const arrStks = Array.from(Object.values(stklist), item => item.symbol)
       setStkList(stklist)
   },[])
