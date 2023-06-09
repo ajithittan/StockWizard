@@ -4,11 +4,13 @@ import Grid from '@mui/material/Grid';
 import AddPositions from './AddPositions'
 import {getStockDetailsForStks} from '../../modules/api/StockMaster'
 import {StockPriceV2} from '../../modules/api/StockMaster'
+import StreamStockPrice from '../../components/StreamStockPrice'
 
 const index = (props) =>{
 
     const [stocks,setStocks] = useState(null)
     const [stkQuotes,setStkQuote] = useState(null)
+    const [stkStreamedQuotes,setStkStreamedQuotes] = useState(null)
 
     useEffect(() =>{
         if (props.stocks){
@@ -34,6 +36,14 @@ const index = (props) =>{
         }  
     }
 
+    let counter = 0
+
+    const streamedQuotes = async (quotes) => {
+        quotes? setStkStreamedQuotes(quotes) : null
+        counter++
+        counter/5 === 0 ? setStkQuote(quotes) : null
+    }
+
     return (
         <Grid
             container
@@ -45,10 +55,12 @@ const index = (props) =>{
         >
         {
             stocks?.map(item => <StockDetailCard key={item} stock={item} 
-                                   stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}>
+                                   stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}
+                                   streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
                                 </StockDetailCard>) 
         }
         <AddPositions actionAdd={addToList}></AddPositions>
+        <StreamStockPrice add={streamedQuotes} stocks={stocks}></StreamStockPrice>
       </Grid>
   )
 }

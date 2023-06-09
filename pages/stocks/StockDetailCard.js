@@ -1,7 +1,6 @@
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import MovingAvg from './MovingAvg'
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router'
@@ -30,7 +29,7 @@ const StockDetailCard = (props) => {
         marginLeft: sm ? "10px" : "30px",
         marginTop: sm ? "10px" : "15px",
         paddingLeft: sm ? "5%" : "1px",
-        backgroundColor: stkQuote?.perchange.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
+        backgroundColor: stkQuote?.perchange?.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
         alignItems:"center",
     }
@@ -42,10 +41,13 @@ const StockDetailCard = (props) => {
     },[props.stock])
 
     useEffect(() => {
-       if (props.stockQuote){
+        if (props.streamedQuotes){
+            setStkQuote(props.streamedQuotes)
+        }
+       else if (props.stockQuote){
             setStkQuote(props.stockQuote)
        } 
-    },[props.stockQuote])
+    },[props.stockQuote,props.streamedQuotes])
 
     const showPriceChart = (stk) =>{
         router.push({pathname: '/PriceCharts',query: {stock:stk,dur:3}})
@@ -66,11 +68,11 @@ const StockDetailCard = (props) => {
     return (
       <Card style={cardStyle}>
         <CardContent>
-          <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stock)}>
-            {stock ? stock : "Looking"} - {stkQuote ? "$" + stkQuote.close : "Looking"} 
-            ({stkQuote ? stkQuote.perchange.toFixed(2) : "Looking"}%) 
-            ({stkQuote ? intToString(stkQuote.volume) : "Looking"})
-          </Typography>
+            <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stock)}>
+                {stock ? stock : "Looking"} - {stkQuote ? "$" + stkQuote.close : "Looking"} 
+                ({stkQuote ? stkQuote?.perchange?.toFixed(2) : "Looking"}%) 
+                ({stkQuote ? intToString(stkQuote.volume) : "Looking"})
+            </Typography>
           <div style={{height:"80%"}}>
               {getContent()}
           </div>

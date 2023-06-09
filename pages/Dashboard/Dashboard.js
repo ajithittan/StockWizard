@@ -7,6 +7,7 @@ import BottomNav from './BottomNav'
 import {PrioritizeStockList} from '../../modules/api/StockMaster'
 import {useAppContext} from '../../modules/state/stockstate'
 import WaitingForResonse from '../../components/WaitingForResponse'
+import {initiateStreaming} from '../../modules/api/StockStream'
 
 const Dashboard = () =>{
 
@@ -35,7 +36,12 @@ const Dashboard = () =>{
         setWaiting(false)
     }
 
-    const changesToStkList = (newStk) => validateAndSetStks(newStk)
+    const changesToStkList = (newStk) => {
+        validateAndSetStks(newStk).then(item => initiateStreaming(newStk))
+    }
+
+
+
 
     const getAllComponents = () =>{
 

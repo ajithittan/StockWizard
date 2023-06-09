@@ -1,9 +1,8 @@
 import React, { useState,useEffect,useContext } from 'react'
 
-const StreamStkPriceButton = (props) => {
-
+const StreamStockPrice = (props) => {
   const [stocks,setStocks] = useState(null)
-  const [streamdata, setstreamdata] = useState(null);
+  //const [streamdata, setstreamdata] = useState(null);
   const [streamObj,setstreamObj] = useState(null)
 
   useEffect(() => {
@@ -23,12 +22,13 @@ const StreamStkPriceButton = (props) => {
     //console.log("starteventsource",stocks)
     if (stocks){
       var filteredArray = stocks
-      //console.log(JSON.stringify(filteredArray))
+      console.log(JSON.stringify(filteredArray))
       const eventSource = new EventSource('/stream/stockprice?inpdata=' + JSON.stringify(filteredArray))  
       eventSource.onmessage = e => {
           var stkprcdata = JSON.parse(e.data)
-          setstreamdata(stkprcdata)
-          props.add(stkprcdata)
+          console.log("streamed data is",stkprcdata)
+          //setstreamdata(stkprcdata)
+          stkprcdata ? props.add(stkprcdata) : null
           //props.onChangeStmStkPrc(stkprcdata)
       }
       eventSource.onerror = (e) => {
@@ -38,9 +38,8 @@ const StreamStkPriceButton = (props) => {
   }
 
   return (
-      <>
-     </>
+      <></>
   )
 };
 
-export default StreamStkPriceButton;
+export default StreamStockPrice;

@@ -1,5 +1,6 @@
 import { createContext, useContext,useState,useEffect } from 'react';
 import {getUserStocks} from '../../modules/api/UserPreferences'
+import {initiateStreaming} from '../../modules/api/StockStream'
 
 const AppContext = createContext();
 
@@ -10,8 +11,8 @@ export function AppWrapper({ children }) {
   useEffect(async () =>{
       let stklist = await getUserStocks()
       console.log("global state invocation?",stklist)
-      //const arrStks = Array.from(Object.values(stklist), item => item.symbol)
       setStkList(stklist)
+      initiateStreaming(stklist)
   },[])
 
   return (
