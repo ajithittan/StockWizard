@@ -18,20 +18,7 @@ const BasicContentStockDetail = (props) =>{
 
     return (
         <>
-            <Typography sx={{ mb: 1.5 }} variant="body2">
-                {
-                    props.stkDetail ? <>
-                                <table>
-                                    <tr >
-                                        <td>Vol</td>
-                                        <td>10D({intToString(stkBasicDtls?.avgdayvol10day)})</td>
-                                        <td >3M({intToString(stkBasicDtls?.avgdayvol3mon)})</td>
-                                    </tr>
-                                </table>
-                                </> : null     
-                }
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} variant="body2">
+                <Typography>
                 {
                     props.stock ? <>
                                 <table>

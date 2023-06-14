@@ -92,6 +92,12 @@ const LineChart = (props) =>{
         delStockPositions(value,props.stock)
     }
 
+    useEffect(() =>{
+        if (charData && props.streamdata){
+            setcharData([...charData.filter(item => item !== props.streamdata.date),props.streamdata])
+        }
+    },[props.streamdata])
+
     useEffect (() =>{
         if (charData) {
 

@@ -36,32 +36,21 @@ const Dashboard = () =>{
         setWaiting(false)
     }
 
-    const changesToStkList = (newStk) => {
-        validateAndSetStks(newStk).then(item => initiateStreaming(newStk))
-    }
-
-
-
+    const changesToStkList = (newStk) => setStocksAndStream(newStk)
 
     const getAllComponents = () =>{
-
         let arrComponents = []
-
         arrComponents.push(<ChartsForDashBoard key={stockList} dur={12} stocks={stockList} actionChangeList={changesToStkList}/>)
         arrComponents.push(<Stocks key={stockList} stocks={stockList} actionChangeList={changesToStkList}/>)
         arrComponents.push(<Newsfeeds key={stockList} stocks={stockList}/>)
- 
         return arrComponents
-
     }
+
+    const setStocksAndStream = async (stks) => validateAndSetStks(stks).then(item => initiateStreaming(stks))
 
     const stockChanges = async (stks) =>{
         setWaiting(true)
-        if (!stks) {
-            validateAndSetStks(stklist)
-        }else{
-            validateAndSetStks(stks.stocks)
-        }
+        stks ? setStocksAndStream (stks.stocks) : setStocksAndStream (stklist)
     }
 
     return (

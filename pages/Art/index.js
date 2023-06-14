@@ -21,7 +21,7 @@ const index = () =>{
 
     const [ws, setWs] = useState(null);
     const [trades, setTrades] = useState([]);
-  
+    /** 
     useEffect(() => {
       const wsClient = new WebSocket(URL_WEB_SOCKET);
       
@@ -35,6 +35,7 @@ const index = () =>{
         wsClient.close();
       };
     }, []);
+    **/
     
     useEffect(() =>{
         retrieveImages()

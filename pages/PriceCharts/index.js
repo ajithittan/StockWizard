@@ -54,12 +54,6 @@ const index = (props) =>{
         return () => window.removeEventListener("resize", updateDimensions);
     }, []);
 
-    useEffect(() =>{
-      if (realtimeStkPrc){
-        //setcharData([...charData.filter(item => item.date !== realtimeStkPrc[0].date),...realtimeStkPrc])
-      }
-    },[realtimeStkPrc])
-
     useEffect (async () =>{
       if (showPositions && stock){
         setAllPortPositions([...await getPositions()])
@@ -268,10 +262,10 @@ const index = (props) =>{
                   <div>
                     {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
                     <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>
-                    <StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>
+                    {/*<StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>*/}
                     <LineChart key={Math.round(width) + stock + charData} chartData={charData}
                               width={Math.round(width)} height={Math.round(height*.90)} margin={margin} 
-                              stock={stock} main={true} positions={allPortPositions} line={realtimeStkPrc}/></div> : <Image src={myGif} alt="wait" height={30} width={30} />
+                              stock={stock} main={true} positions={allPortPositions} line={undefined} streamdata={realtimeStkPrc}/></div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
         </>

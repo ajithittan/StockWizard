@@ -19,7 +19,7 @@ const MovingAvg = (props) =>{
 
     return(
         <>
-            {movAvgs ? <span>{movAvgs}</span> : <span>loading...</span> }
+            {movAvgs ? <>{movAvgs}</> : <>loading...</> }
         </>
     )
 

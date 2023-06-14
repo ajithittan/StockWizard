@@ -11,11 +11,12 @@ const noOfXTicks = (width) =>{
     }
 }
 
-const xTicks = (g,xScale,yScale,width,height) => {
+const xTicks = (g,xScale,yScale,width,height,allticks) => {
+    let no_of_ticks = allticks ? 1 : noOfXTicks(width)
     g.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
-    .call(axisBottom(xScale).ticks(timeMonth.every(noOfXTicks(width))).tickFormat(timeFormat("%b")))
+    .call(axisBottom(xScale).ticks(timeMonth.every(no_of_ticks)).tickFormat(timeFormat("%b")))
 
     g.append("g")
     .attr("class", "x axis")

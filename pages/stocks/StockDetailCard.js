@@ -10,9 +10,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import BasicContentStockDetail from './BasicContentStockDetail'
 import CompanyQtrPerf from './CompanyQtrPerf'
-import {intToString} from '../../modules/utils/UtilFunctions'
+import CardHeader from '@mui/material/CardHeader'
+import CompanyStockPrice from './CompanyStockPrice'
+import MovingAvg from './MovingAvg'
+import CompanyQtrPerfBarChart from './CompanyQtrPerfBarChart'
 
 const StockDetailCard = (props) => {
     const [stkQuote,setStkQuote] = useState(null)
@@ -22,11 +24,15 @@ const StockDetailCard = (props) => {
     const sm = useMediaQuery("(max-width: 960px)");
 
     let cardStyle = {
-        display: 'block',
-        height: sm ? "90%" : "350px",
-        width: sm ? "90%" : "400px", 
+        height:"90%",
+        //width: '10vw',
         transitionDuration: '0.3s',
-        marginLeft: sm ? "10px" : "30px",
+        //height: '20vw',
+        //display: 'block',
+        //height: sm ? "80%" : "300px",
+        //width: sm ? "80%" : "300px", 
+        transitionDuration: '0.3s',
+        marginLeft: sm ? "10px" : "15px",
         marginTop: sm ? "10px" : "15px",
         paddingLeft: sm ? "5%" : "1px",
         backgroundColor: stkQuote?.perchange?.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
@@ -60,20 +66,28 @@ const StockDetailCard = (props) => {
 
     const getContent = () =>{
         let retVal = {
-            "Basic":<BasicContentStockDetail stock={stock}/>,
-            "Earnings": <CompanyQtrPerf stock={stock}/> }
+            "Basic":<CompanyStockPrice stock={stock} duration={3}></CompanyStockPrice>,
+            "Earnings": <CompanyQtrPerfBarChart stock={stock}/> }
         return retVal[type]
     }
 
+    const getsubheader = () => <>
+        <MovingAvg symbol = {props.stock} type={"SMA_50"}/>(50D)&nbsp;&nbsp;&nbsp;
+        <MovingAvg symbol = {props.stock} type={"SMA_200"}/>(200D)
+    </>
+
+    const gettitle = () => <>{stock ? stock + " - " + (stkQuote ? stkQuote.close : "Looking..") + 
+                              (stkQuote ? " (" + stkQuote?.perchange?.toFixed(2) + "%)" : "..") : "Looking"}</>
+    
     return (
       <Card style={cardStyle}>
+          <CardHeader title={gettitle()}
+                      subheader = {getsubheader()}
+                      onClick={() => showPriceChart(stock)}
+                      style={{cursor:"pointer"}}
+          />
         <CardContent>
-            <Typography style={{cursor:"pointer"}} gutterBottom onClick={() => showPriceChart(stock)}>
-                {stock ? stock : "Looking"} - {stkQuote ? "$" + stkQuote.close : "Looking"} 
-                ({stkQuote ? stkQuote?.perchange?.toFixed(2) : "Looking"}%) 
-                ({stkQuote ? intToString(stkQuote.volume) : "Looking"})
-            </Typography>
-          <div style={{height:"80%"}}>
+          <div style={{height:"90%"}}>
               {getContent()}
           </div>
           <CardActions>

@@ -70,7 +70,7 @@ const LineChartv2 = (props) =>{
             const g = svgElement.append("g")
                 .attr("transform", "translate(" + 5 + "," + 5 + ")");   
             
-            xTicks(g,x,y,width,height)    
+            xTicks(g,x,y,width,height,props.allticks)    
             yTicks(g,x,y,width,height)                
 
             const swapStk = () => props.swap ? props.swap(props.stock): null

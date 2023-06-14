@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import StockDetailCard from './StockDetailCard'
 import Grid from '@mui/material/Grid';
 import AddPositions from './AddPositions'
-import {getStockDetailsForStks} from '../../modules/api/StockMaster'
 import {StockPriceV2} from '../../modules/api/StockMaster'
 import StreamStockPrice from '../../components/StreamStockPrice'
 
@@ -49,15 +48,15 @@ const index = (props) =>{
             container
             direction="row"
             justify="space-evenly"
-            alignItems="stretch"
-            marginTop={2}
+            align="stretch"
+            marginTop={1}
             marginLeft={2}
         >
         {
-            stocks?.map(item => <StockDetailCard key={item} stock={item} 
+            stocks?.map(item => <Grid xs={10} sm={10} md={6} lg={4} xl={3}><StockDetailCard key={item} stock={item} 
                                    stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}
                                    streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
-                                </StockDetailCard>) 
+                                </StockDetailCard></Grid>) 
         }
         <AddPositions actionAdd={addToList}></AddPositions>
         <StreamStockPrice add={streamedQuotes} stocks={stocks}></StreamStockPrice>
