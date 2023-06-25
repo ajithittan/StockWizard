@@ -18,11 +18,12 @@ import StreamStockPrice from '../../components/StreamStockPrice'
 const index = (props) =>{
     const router = useRouter()
     const stock = router.query.stock
-    const initDur = router.query.dur
+    const initDur = 120 || router.query.dur
     const margin = {top: 20, right: 0, bottom: 30, left: 50}
+    const [fullsetdur, setFullSetDur]   = useState(120);
     const [width, setWidth]   = useState(0);
     const [height, setHeight]   = useState(0);
-    const [initialSetUp,setinitialSetUp] = useState({duration:initDur})
+    const [initialSetUp,setinitialSetUp] = useState({duration:router.query.dur})
     const [charData,setcharData] = useState(null)
     const [selections,setSelections] = useState(null)
     const [processing,setProcessing] = useState(false)
@@ -80,6 +81,7 @@ const index = (props) =>{
       }
       setSelections([...retval])
     },[initialSetUp])
+
 
     const handleChanges = async(key,value,dispName) => {
       let prcdata = []
@@ -192,19 +194,18 @@ const index = (props) =>{
       tempChng[key] = dur
       initialSetUp[key]=dur
       setinitialSetUp(initialSetUp)
-      let prcdata = await getData(stock,dur)
+      let prcdata = await getData(stock,fullsetdur)
       return prcdata
     }
 
     const getData = async(stk,dur) =>{
       const cacheKey = stk + "_" + dur + "_PRICE"
       let res = await getStockPriceHist(cacheKey,{stock:stock,duration:dur})
-      console.log("getData",stk,dur,res)
       return res
     }
 
     const getSMAData = async(stk,indval) =>{
-      let res = await getRollingSMA(stk,indval,initialSetUp.duration)
+      let res = await getRollingSMA(stk,indval,fullsetdur)
       return res.map(item => ({close:item["SMA_" + indval],symbol:"SMA_" + indval,date:item.date}))
     }
 
@@ -241,7 +242,6 @@ const index = (props) =>{
 
     const getPositions = async () =>{
       let res = await getStockPortfolioPos(stock)
-      console.log("data from getStockPortfolioPos",res,stock)
       if (res && res.length > 0){
           return res[0].positions
       }
@@ -256,16 +256,18 @@ const index = (props) =>{
         <>
         <title>Price Charts</title>
           <FloatController content={getContentForControlPanel()}></FloatController>
-            <div style={{paddingLeft:"30px",paddingTop:"5px"}}>
+            <div style={{paddingLeft:"30px",paddingTop:"20px",height:"90%"}}>
               {
                 stock && width > 0 ? 
                   <div>
                     {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
-                    <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>
                     {/*<StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>*/}
-                    <LineChart key={Math.round(width) + stock + charData} chartData={charData}
+                    <LineChart key={Math.round(width) + stock + charData + initialSetUp?.duration} chartData={charData}
                               width={Math.round(width)} height={Math.round(height*.90)} margin={margin} 
-                              stock={stock} main={true} positions={allPortPositions} line={undefined} streamdata={realtimeStkPrc}/></div> : <Image src={myGif} alt="wait" height={30} width={30} />
+                              stock={stock} main={true} positions={allPortPositions} line={undefined} 
+                              streamdata={realtimeStkPrc} displayfrom={initialSetUp?.duration}/>
+                    <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>                                
+                  </div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
         </>

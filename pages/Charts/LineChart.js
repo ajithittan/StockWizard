@@ -21,6 +21,7 @@ const LineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const [charData, setcharData] = useState(null)
+    const [origCharData,setOrigCharData] = useState(null)
     const [width,setWidth] = useState(props.width)
     const [height,setHeight] = useState(props.height)
     const [domainwidth,setdomainwidth] = useState(null)
@@ -33,7 +34,6 @@ const LineChart = (props) =>{
     const [openModal,setOpenModal] = useState(false)
 
     useEffect(async () =>{
-        console.log("props.line",props.line)
         if(props.positions && !addLines){
             setAddLines([...props.positions])
         }
@@ -52,7 +52,7 @@ const LineChart = (props) =>{
                         setrefOnChart (tempval)
                     }
                 }else{
-                    console.log("mousePos",mousePos.x)
+                    //console.log("mousePos",mousePos.x)
                     setmvOnArrow(mousePos.x)
                 }
             }else if (e.keyCode === 13){
@@ -73,9 +73,14 @@ const LineChart = (props) =>{
     
     useEffect(() =>{
         if (props.chartData){
-            setcharData(props.chartData)
-        }
-    },[props.chartData])
+            setOrigCharData(props.chartData)
+            if (props.displayfrom){
+                setcharData(props.chartData.filter(item => moment(item.date) >= moment().subtract(props.displayfrom, 'months')))
+            }else{
+                setcharData(props.chartData)
+            }
+        }        
+    },[props.chartData,props.displayfrom])
 
     const callBackToCreateLine = (referenceLine) => {
         if (addLines){
@@ -102,17 +107,33 @@ const LineChart = (props) =>{
         if (charData) {
 
             d3.selectAll("svg > *").remove();
-            
-            //console.log("charData in LineChart",charData)
 
             charData.sort(function(a, b) {
                 return a.date - b.date;
             });          
             
             const svgElement = d3.select(ref.current)
+
+            let zoom = d3.zoom().on("zoom",handleZoom)
+
+            function handleZoom(e) {
+                let zoomedScaleY = e.transform.rescaleY(y);
+                let zoomedScaleX = e.transform.rescaleX(x);
+                d3.selectAll("#xScale").remove();
+                d3.selectAll("#yScale").remove();
+                xTicks(g,zoomedScaleX,zoomedScaleY,width,height)    
+                yTicks(g,zoomedScaleX,zoomedScaleY,width,height)  
+                //g.attr("transform", "translate(" + e.translate + ")scale(" + e.scale + ")");
+                //g.translate([((width*e.scale/2)+e.translate[0]),((height*e.scale/2)+e.translate[1])]);  
+                var startDate = zoomedScaleX.invert(0);
+                var endDate = zoomedScaleX.invert(width); 
+                let resetvals = origCharData.filter(item => moment(item.date) >= moment(startDate) && moment(item.date) <= moment(endDate))
+                //console.log("post zoom and pan values...",resetvals)
+                resetvals.length === charData.length ? null : (d3.selectAll("#multilines").remove(),setcharData([...resetvals]))
+              }
             
-            const g = svgElement.append("g")
-                                .attr("transform", "translate(" + 5 + "," + 5 + ")")
+            const g = svgElement.append("g").call(zoom)
+                                .attr("transform", "translate(" + 5 + "," + 5 + ")")                         
             
             svgElement.attr("width",width).attr("height",height)
     
@@ -142,7 +163,8 @@ const LineChart = (props) =>{
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,multiLineData,
                                                 swapStk,classNameAppend,props.main,d,callBackToCreateLine)
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,"white",resetOnMouseOver)
-            MultiLine(g,multiLineData,x,y)
+            MultiLine(g,multiLineData,x,y)        
+
             if (addLines){
                 addLines.map(val => StraightXLine(g,multiLineData,x,y,val,callBacktoRemove))
             }
@@ -161,7 +183,6 @@ const LineChart = (props) =>{
                     .style("fill", "none")
     
             }
-
         }
     },[charData,mvOnArrow,refOnChart,addLines])
 

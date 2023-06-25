@@ -12,15 +12,15 @@ module.exports = {
       },
       {
         source: '/personalize/:path*',
-        destination: 'http://192.168.1.197:5550/personalize/:path*' // Proxy to Backend
+        destination: 'http://localhost:5550/personalize/:path*' // Proxy to Backend
       },
       {
         source: '/stream/:path*',
-        destination: 'http://192.168.1.197:5551/stream/:path*' // Proxy to Backend
+        destination: 'http://localhost:5551/stream/:path*' // Proxy to Backend
       },
       {
         source: '/realtime/:path*',
-        destination: 'http://192.168.1.197:5551/realtime/:path*' // Proxy to Backend
+        destination: 'http://localhost:5551/realtime/:path*' // Proxy to Backend
       },
       {
         source: '/auth/google',

@@ -14,17 +14,20 @@ const noOfXTicks = (width) =>{
 const xTicks = (g,xScale,yScale,width,height,allticks) => {
     let no_of_ticks = allticks ? 1 : noOfXTicks(width)
     g.append("g")
-    .attr("class", "x axis")
+    .attr("id", "xScale")
+    .attr("class", "xaxis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
     .call(axisBottom(xScale).ticks(timeMonth.every(no_of_ticks)).tickFormat(timeFormat("%b")))
 
     g.append("g")
+    .attr("id", "xScale")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
     .call(axisBottom(xScale).ticks(timeYear).tickFormat(timeFormat("%Y")).tickPadding([20]))
 }
 const yTicks = (g,xScale,yScale,width,height) => {
     g.append("g")
+    .attr("id", "yScale")
     .attr("class", "y axis")
     .attr("transform", "translate(" + xScale.range()[0] / 2 + ", 0)")
     .call(axisLeft(yScale).ticks(5))
