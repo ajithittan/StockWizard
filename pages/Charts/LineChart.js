@@ -12,6 +12,7 @@ import {Line,StraightXLine} from "../../components/Charting/Components/Line";
 import ModalBox from '../../components/ModalBox'
 import ChartUserInputs from './ChartUserInputs'
 import {delStockPositions} from '../../modules/api/UserPreferences'
+import WaitingForResonse from '../../components/WaitingForResponse'
 //import useArrowKeys from '../../modules/utils/useArrowKeys'
 
 const LineChart = (props) =>{
@@ -32,6 +33,7 @@ const LineChart = (props) =>{
     const [refOnChart, setrefOnChart]  = useState(null)
     const [addLines, setAddLines] = useState(null)
     const [openModal,setOpenModal] = useState(false)
+    const [waiting,setWaiting] = useState(true)
 
     useEffect(async () =>{
         if(props.positions && !addLines){
@@ -104,6 +106,7 @@ const LineChart = (props) =>{
     },[props.streamdata])
 
     useEffect (() =>{
+
         if (charData) {
 
             d3.selectAll("svg > *").remove();
@@ -163,7 +166,8 @@ const LineChart = (props) =>{
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,multiLineData,
                                                 swapStk,classNameAppend,props.main,d,callBackToCreateLine)
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,"white",resetOnMouseOver)
-            MultiLine(g,multiLineData,x,y)        
+            MultiLine(g,multiLineData,x,y)     
+            setWaiting(false)   
 
             if (addLines){
                 addLines.map(val => StraightXLine(g,multiLineData,x,y,val,callBacktoRemove))
@@ -171,7 +175,7 @@ const LineChart = (props) =>{
             
             if (charData.filter(item => item.symbol === props.stock && item.predictions ===1).length > 0){
                 let vertLineXCoord = x(moment(charData.filter(item => item.symbol === props.stock && !item.predictions).pop().date))
-                let vertLineXCoord2 = x(moment(charData.filter(item => item.symbol === props.stock && item.predictions === 1).pop().date))
+                //let vertLineXCoord2 = x(moment(charData.filter(item => item.symbol === props.stock && item.predictions === 1).pop().date))
 
                 g.append('line')
                     .attr('x1', vertLineXCoord)
@@ -193,6 +197,7 @@ const LineChart = (props) =>{
 
     return (
         <div style={{position:'relative'}}>
+            {waiting ?  <WaitingForResonse /> : null }
             {openModal ? <ModalBox content={getContentForModal()} onClose={() => setOpenModal(false)}></ModalBox> : null}
             <svg ref={ref} className="SVG_1"/>
             {
