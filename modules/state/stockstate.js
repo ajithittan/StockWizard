@@ -8,11 +8,8 @@ export function AppWrapper({ children }) {
 
   const [stkList,setStkList] = useState(null)
 
-  useEffect(async () =>{
-      let stklist = await getUserStocks()
-      console.log("global state invocation?",stklist)
-      setStkList(stklist)
-      initiateStreaming(stklist)
+  useEffect(() =>{
+      getUserStocks().then(stklist => {setStkList(stklist),initiateStreaming(stklist)})
   },[])
 
   return (

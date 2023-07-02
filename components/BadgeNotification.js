@@ -10,11 +10,14 @@ const BadgeNotification = () => {
     const [notifications, setNotifications] = useState(null)
     const [openDetails, setOpenDetails] = useState(false)
 
-    useEffect(async () =>{
-        let retval = await getUserNotifications("ALL")
-        if (retval && retval.length > 0 ){
-            setNotifications([...retval])
+    useEffect(() =>{
+        const tempFn = async () => {
+            let retval = await getUserNotifications("ALL")
+            if (retval && retval.length > 0 ){
+                setNotifications([...retval])
+            }    
         }
+        tempFn()
     },[])
 
     const openNotifications = () =>{

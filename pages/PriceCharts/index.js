@@ -55,17 +55,16 @@ const index = (props) =>{
         return () => window.removeEventListener("resize", updateDimensions);
     }, []);
 
-    useEffect (async () =>{
+    useEffect (() =>{
       if (showPositions && stock){
-        setAllPortPositions([...await getPositions()])
+        getPositions().then(result => setAllPortPositions([...result]))
       }
     },[showPositions,stock])
 
 
-    useEffect(async() =>{
+    useEffect(() =>{
       if (!charData && stock){
-         let res = await getData(stock,initDur)
-         setcharData([...res])
+         getData(stock,initDur).then(res => setcharData([...res]))
       }
     },[stock])
 

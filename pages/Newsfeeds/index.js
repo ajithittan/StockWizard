@@ -2,7 +2,7 @@ import { useEffect,useState } from 'react'
 import {BasicNewsFeeds} from '../../modules/api/Newsfeed'
 import Image from 'next/image';
 import myGif from '../../public/loading-loading-forever.gif'
-import {makeStyles} from '@mui/styles';
+//import {makeStyles} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import IconButton from '@mui/material/IconButton';
@@ -18,16 +18,16 @@ const index = (props) =>{
     const [listOfStks,setListOfStks] = useState(null)
     const [singleStk,setSingleStk] = useState(null)
 
-    useEffect(async () =>{
+    useEffect( () =>{
         if (props.stocks){
             processMultipleStks(props.stocks.slice(0,20),1000)
             setListOfStks(props.stocks)
         }
     },[props.stocks])
 
-    useEffect(async () =>{
+    useEffect( () =>{
         if (props.feedtype){
-            let retval = await BasicNewsFeeds(props.feedtype) 
+            let retval =  BasicNewsFeeds(props.feedtype) 
             setfeedData(retval)
         }
     },[props.feedtype])
@@ -83,7 +83,7 @@ const index = (props) =>{
         setFilterRemove(true)
         setSingleStk(null)
     }
-
+    /*
     const useStyles = makeStyles({
         Bottom: ({ sm }) => ({
             overflow: sm ? "none" : "auto",
@@ -91,9 +91,10 @@ const index = (props) =>{
             marginBottom:"100px"
         })
       });
+      */
 
     const sm = useMediaQuery("(max-width: 960px)");
-    const classes = useStyles({ sm });
+    //const classes = useStyles({ sm });
 
     return(
             <div style={{display:"flex",flexDirection:"column"}}>
@@ -105,7 +106,7 @@ const index = (props) =>{
                         <FilterListOffIcon onClick={removeFilter}></FilterListOffIcon>
                     </IconButton>
                 </div>
-                <div className={classes.Bottom}>
+                <div>
                 {
                     feedData ? feedData.map((item,indx) => (
                         <fieldset className="newsClip">

@@ -9,11 +9,14 @@ export function AuthWrapper({ children }) {
   const router = useRouter()
   const [authStatus,setauthStatus] = useState(false)
 
-  useEffect(async () =>{
-      let authStatus = await getLoggedInStatus()
-      if (authStatus.data === false){
-        router.push("/Login")
+  useEffect(() =>{
+      const tempFn = async () =>{
+        let authStatus = await getLoggedInStatus()
+        if (authStatus.data === false){
+          router.push("/Login")
+        }  
       }
+      tempFn()
   },[])
 
   const changeAuthStatus = (newvalue) =>{

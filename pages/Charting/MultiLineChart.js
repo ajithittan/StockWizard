@@ -16,7 +16,7 @@ const MultiLineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const [charData, setcharData] = useState(null)
+    const [charData, setcharData] = useState([])
     const [stkPrcData, setstkPrcData] = useState(null)
     const [duration,setDuration] = useState(props.dur)
     const svgElement = d3.select(ref.current)
@@ -90,23 +90,31 @@ const MultiLineChart = (props) =>{
         }
     }
 
-    useEffect (async () =>{
-        if (!charData && stklist && showAllSector===false){
-           let tempData = []
-           for (let i=0;i < stklist.length;i++){
-            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
-               if (tempData !== undefined && tempData !==[]){
-                   let color = generateRandomHexColor()
-                   tempData.map(item => {item.color=color; return item})    
-                }
-                setstkPrcData(tempData)    
-           } 
+    useEffect (() =>{
+        async function tempfn () {
+            if (!charData && stklist && showAllSector===false){
+                let tempData = []
+                for (let i=0;i < stklist.length;i++){
+                    const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
+                    tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
+                    if (tempData !== undefined && tempData !==[]){
+                        //console.log("tempData",tempData)
+                        let color = generateRandomHexColor()
+                        tempData.map(item => {item.color=color; return item})   
+                        charData.push(tempData)
+                        setcharData([...charData])
+                        //charData && charData.length > 0 ? setcharData([...charData,...tempData]) : setcharData(tempData) 
+                        //setstkPrcData(tempData)    
+                     }
+                } 
+             }     
         }
+        tempfn()
     },[stklist])
 
     useEffect(() =>{
-        charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
+        //console.log("just before setting",stkPrcData,charData)
+        //charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
     },[stkPrcData])
 
     useEffect (() => {  
@@ -117,7 +125,7 @@ const MultiLineChart = (props) =>{
         svgElement.selectAll("*").remove()
         var g = svgElement.append("g")
             .attr("transform", "translate(" + margin.top + "," + margin.top + ")");           
-
+        console.log("charData",charData,charData.length)
         if (charData) {
 
             let yExtent = d3.extent(charData.map(item => item.change));

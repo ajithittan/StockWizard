@@ -14,12 +14,9 @@ const SectorMaint = () =>{
     const [processing,setProcessing] = useState(false)
     const [modifysect, setmodifysect] = useState(null)
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!sectors){
-            let res = await getStockSector()
-            console.log("resresresres",res)
-            setSectors(res)
-            setmodifysect(res)
+            getStockSector().then(res => {setSectors(res),setmodifysect(res)})
         }
     },[])
 

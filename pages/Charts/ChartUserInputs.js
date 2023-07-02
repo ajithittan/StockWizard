@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import { CardHeader } from "@mui/material"
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import CloseIcon from '@mui/icons-material/Close';
-import {makeStyles} from '@mui/styles';
+//import {makeStyles} from '@mui/styles';
 import {saveStockPositions} from '../../modules/api/UserPreferences'
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -38,15 +38,18 @@ const ChartUserInputs = (props) =>{
       alignItems:"center",
       //border: stkDetail && stkDetail.perchange.toFixed(2) > 0 ? "1px solid green" : "1px solid red"
     }
-    const useStyles = makeStyles({
+    /**
+     const useStyles = makeStyles({
       header: ({ sm }) => ({
         color: 'text.secondary',
         fontFamily: 'cursive',
         fontSize: 9,
       })
     });
-
-    const classes = useStyles({ sm });
+     * 
+     */
+    
+    //const classes = useStyles({ sm });
 
     const savePositionsToDb = async () =>{
       let res = await saveStockPositions(referenceData,props.stock)

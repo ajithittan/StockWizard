@@ -11,12 +11,13 @@ const SectorDropDown = (props) =>{
     const [sectors, setSectors] = useState(null);
     const [selSec,setSelSec] = useState(null)
 
-    useEffect(async () =>{
+    useEffect(() =>{
         if (!selSec){
-            let res = await getStockSector()
-            if (res && res.length > 0){
-                setSectors(res.sort((a,b) => a.sector.toLowerCase().localeCompare(b.sector.toLowerCase())))
-            }
+            getStockSector().then(res =>{
+                if (res && res.length > 0){
+                    setSectors(res.sort((a,b) => a.sector.toLowerCase().localeCompare(b.sector.toLowerCase())))
+                }    
+            })
         }
     },[])
 

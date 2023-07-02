@@ -7,9 +7,9 @@ const CompanyDetails = (props) =>{
     const [compDtls,setcompDtls] = useState(null)
     const [wait,setWait] = useState(true)
 
-    useEffect(async () => {
+    useEffect(() => {
         if (props.stock){
-            let res = await getCompanyDetails(props.stock)
+            let res = getCompanyDetails(props.stock)
             if (res) {
                 setcompDtls(res)
                 setWait(false)

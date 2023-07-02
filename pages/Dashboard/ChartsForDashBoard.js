@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 const ChartsForDashBoard = (props) => {
     const [stockList,setstockList] = useState(null)
-    const [chartData,setChartData] = useState([])
+    let [chartData,setChartData] = useState([])
     const [duration,setDuration] = useState(null)
     const margin = {top: 5, right: 5, bottom: 10, left: 15}
     const router = useRouter()

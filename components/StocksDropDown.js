@@ -10,7 +10,7 @@ const StocksDropDown = (props) =>{
     const [stocks, setStocks] = useState(null);
     const [selStk,setSelStk] = useState(null)
 
-    useEffect(async () =>{
+    useEffect(() =>{
         if (props.stocks){
             setStocks(props.stocks.sort((a,b) => a > b))
         }

@@ -4,7 +4,7 @@ import MultiLineThemes from '../../../modules/themes/MultiLineThemes'
 
 const ToolTip = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,showToolTip,arrow,callbacks) =>{
 
-    const closeToolTip = false
+    let closeToolTip = false
     const tooltip = d3.select(tooltipref)
         .attr('class', 'tooltip')
         .style("visibility", "hidden")

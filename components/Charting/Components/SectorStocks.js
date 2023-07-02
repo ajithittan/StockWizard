@@ -4,9 +4,9 @@ import getStockSector from '../../../modules/cache/cachesector'
 const SectorStocks = (props) =>{
     const [sectors,setSectors] = useState(null)
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!sectors){
-            let res = await getStockSector()
+            let res = getStockSector()
             setSectors(res)
         }
     },[])

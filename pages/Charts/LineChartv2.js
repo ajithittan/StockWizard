@@ -46,17 +46,15 @@ const LineChartv2 = (props) =>{
         }
     },[width])
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!charData){
             let cacheKey = props.stock + "_" + props.duration + "_PRICE"
-            let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration})
-            res?.length ? setcharData(res) : null
+            getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration}).then(res => res?.length ? setcharData(res) : null)
         }
     },[])    
 
     useEffect (() =>{
         if (charData) {
-
             charData.sort(function(a, b) {
                 return a.date - b.date;
             });

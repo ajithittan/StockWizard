@@ -25,6 +25,7 @@ const Dashboard = () =>{
     },[stklist])
 
     const validateAndSetStks = async (stkList) =>{
+        console.log("stkList",stkList)
         if (stkList && stkList.length > limitStks){
             //needs optimization.....
             //let priorList = await PrioritizeStockList(stkList,limitStks)

@@ -6,9 +6,9 @@ const PredictionModels = (props) =>{
 
     const [models,setModels] = useState(null)
 
-    useEffect(async () =>{
+    useEffect(() =>{
         if (!models){
-            let retval = await getPredictionModel(props.stock)
+            let retval = getPredictionModel(props.stock)
             if (retval.length > 0){
                 setModels(retval)
             }

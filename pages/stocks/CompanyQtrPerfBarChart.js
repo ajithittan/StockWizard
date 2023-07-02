@@ -10,9 +10,9 @@ const CompanyQtrPerfBarChart = (props) =>{
     const [wait,setWait] = useState(true)
     const margin = {top: 5, right: 5, bottom: 10, left: 15}
 
-    useEffect(async () => {
+    useEffect(() => {
         if (props.stock){
-            let res = await getCompanyQtrPerf(props.stock,1)
+            let res = getCompanyQtrPerf(props.stock,1)
             if (res) {
                 formatXaxis(res)
                 setcompDtls(res)

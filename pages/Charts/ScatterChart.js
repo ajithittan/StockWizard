@@ -30,9 +30,9 @@ const LineChart = (props) =>{
         }
     },[])
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!charData){
-            let res = await getStockPriceHist(cacheKey,{stock:props.stock,duration:12})
+            let res = getStockPriceHist(cacheKey,{stock:props.stock,duration:12})
             console.log(res)
             setcharData(res)
         }

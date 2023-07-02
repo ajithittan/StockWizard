@@ -35,7 +35,7 @@ const LineChart = (props) =>{
     const [openModal,setOpenModal] = useState(false)
     const [waiting,setWaiting] = useState(true)
 
-    useEffect(async () =>{
+    useEffect(() =>{
         if(props.positions && !addLines){
             setAddLines([...props.positions])
         }

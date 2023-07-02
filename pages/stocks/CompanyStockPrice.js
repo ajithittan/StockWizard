@@ -9,7 +9,7 @@ const CompanyStockPrice = (props) =>{
     const margin = {top: 20, right: 5, bottom: 0, left: 0}
     const [dur,setDur] = useState(null)
 
-    useEffect(async () => {
+    useEffect(() => {
         setcompDtls(props.stock)
     },[props.stock])
 

@@ -14,9 +14,9 @@ const SavedModels = (props) =>{
         setTimeout(() => setDisable(false), 1000)
     }
 
-    useEffect (async () =>{
+    useEffect (() =>{
         if(props.stock){
-            let retval = await getPredictionModel(props.stock)
+            let retval = getPredictionModel(props.stock)
             if (retval.length > 0){
                 setResults(retval)
             }

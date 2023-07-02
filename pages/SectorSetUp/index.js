@@ -1,4 +1,5 @@
 import SectorMaint from "./SectorMaint"
+import Sector from './Sector'
 const index = () =>{
 
     return (

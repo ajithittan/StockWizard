@@ -23,9 +23,9 @@ const ModelPerformance = (props) =>{
         {field: 'perChange', headerName: 'Change%', width: 100  , headerAlign: 'center' },
       ];
 
-    useEffect (async () =>{
+    useEffect (() =>{
         if(props.modelObj){
-            let retval = await getPredictionsForStock(props.modelObj.symbol,props.modelObj.idstockpredictionmodels)
+            let retval = getPredictionsForStock(props.modelObj.symbol,props.modelObj.idstockpredictionmodels)
             console.log("predictionssssss",retval)
             if (retval.length > 0){
                 setResults(retval)
