@@ -16,11 +16,11 @@ const MultiLineChart = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const modalref = useRef()
-    const [charData, setcharData] = useState([])
-    const [stkPrcData, setstkPrcData] = useState(null)
+    const [charData, setcharData] = useState(null)
     const [duration,setDuration] = useState(props.dur)
     const svgElement = d3.select(ref.current)
     const [showAllSector, setshowAllSector] = useState(null)
+    let aggregateOfData = []
 
     const keepInList = (stk) => {
         if (showAllSector){
@@ -78,44 +78,37 @@ const MultiLineChart = (props) =>{
             for (let i=0;i < stklist.length;i++){
             const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
             getSectorStockPerChange(cacheKey,{'stock':props.labels.filter(item => item.desc === stklist[i])[0].id,
-                                                    'duration':duration,'rollup':1,'unit':"M",'byType':"C"}).then(retVal =>
-                            {
-                                if (retVal !== undefined && retVal !==[]){
-                                    let color = generateRandomHexColor()
-                                    retVal.map(item => {item.color=color; return item})    
-                                    setstkPrcData(retVal)    
-                                }
-                            })
+                        'duration':duration,'rollup':1,'unit':"M",'byType':"C"}).then(retVal =>
+                {
+                    if (retVal !== undefined && retVal !==[]){
+                        let color = generateRandomHexColor()
+                        retVal.map(item => {item.color=color; return item})    
+                        updateChart(retVal)    
+                    }
+                })
             }     
         }
     }
 
     useEffect (() =>{
-        async function tempfn () {
-            if (!charData && stklist && showAllSector===false){
-                let tempData = []
-                for (let i=0;i < stklist.length;i++){
-                    const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-                    tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
+        if (!charData && stklist && showAllSector===false){
+            for (let i=0;i < stklist.length;i++){
+                const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
+                getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"}).then(tempData =>{
                     if (tempData !== undefined && tempData !==[]){
-                        //console.log("tempData",tempData)
                         let color = generateRandomHexColor()
-                        tempData.map(item => {item.color=color; return item})   
-                        charData.push(tempData)
-                        setcharData([...charData])
-                        //charData && charData.length > 0 ? setcharData([...charData,...tempData]) : setcharData(tempData) 
-                        //setstkPrcData(tempData)    
-                     }
-                } 
-             }     
-        }
-        tempfn()
+                        tempData.map(item => {item.color=color; return item})
+                        updateChart(tempData)
+                    }    
+                })
+            } 
+        }     
     },[stklist])
 
-    useEffect(() =>{
-        //console.log("just before setting",stkPrcData,charData)
-        //charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
-    },[stkPrcData])
+    const updateChart = (tempData) =>{
+        aggregateOfData = aggregateOfData.concat(tempData)
+        charData ? setcharData([...charData,...aggregateOfData]) : setcharData(aggregateOfData)
+    }
 
     useEffect (() => {  
         var domainwidth = width - margin.left - margin.right,
@@ -125,8 +118,7 @@ const MultiLineChart = (props) =>{
         svgElement.selectAll("*").remove()
         var g = svgElement.append("g")
             .attr("transform", "translate(" + margin.top + "," + margin.top + ")");           
-        console.log("charData",charData,charData.length)
-        if (charData) {
+        if (charData && charData.length>0) {
 
             let yExtent = d3.extent(charData.map(item => item.change));
             const minDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
