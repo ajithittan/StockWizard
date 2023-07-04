@@ -14,37 +14,25 @@ const LineChartv2 = (props) =>{
     const ref = useRef()
     const tooltipref = useRef()
     const [charData, setcharData] = useState(null)
-    const [domainwidth,setdomainwidth] = useState(null)
-    const [domainheight,setdomainheight] = useState(null)
-
-    const [width,setWidth] = useState(null)
-    const [height,setHeight] = useState(null)
-
-    useEffect(() =>{
-        setWidth(ref.current.parentElement.offsetWidth)
-        setHeight(ref.current.parentElement.offsetHeight)   
-    },[])
+    const margin = {top: 20, right: 5, bottom: 0, left: 0}
+    let width = ref.current?.parentElement.offsetWidth
+    let height = ref.current?.parentElement.offsetHeight
+    let domainwidth = width - margin.left - margin.right
+    let domainheight = height - margin.top - margin.bottom
 
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
-    
         return () => {
           window.removeEventListener('resize', updateDimensions);
         }
       }, [])
 
     const updateDimensions = () => {
-        setWidth(window.innerWidth*0.90)
-        setHeight(window.innerHeight*0.90)
+        width = window.innerWidth*0.90
+        height = window.innerHeight*0.90
+        domainwidth = width - 20 
+        domainheight = height - 20
     }
-
-    useEffect(() =>{
-        if (props.margin){
-            let margin = props.margin
-            setdomainwidth(width - margin.left - margin.right)
-            setdomainheight(height - margin.top - margin.bottom)
-        }
-    },[width])
 
     useEffect(() => {
         if (!charData){
@@ -74,7 +62,7 @@ const LineChartv2 = (props) =>{
             const swapStk = () => props.swap ? props.swap(props.stock): null
             const classNameAppend = props.main ? "_M" : "_N"
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk,classNameAppend,props.main)
-            Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,props.background)
+            Rectangle(g,289,184,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,props.background)
             Line(g,charData,x,y)
             Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,"")
         }

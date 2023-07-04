@@ -62,7 +62,7 @@ const Container = (props) =>{
       <>  
             <Grid container direction="row" sx={{marginBottom:"10vh"}}>
                 <Grid item md={9} lg={9} xl={9} sm={12} xs={12}>             
-                <div style={{height: sm ? "80vh" : "50vh",marginLeft:"15vh",marginTop:"5vh",marginBottom:"5vh"}}>
+                <div style={{marginRight:"15vh",height: sm ? "80vh" : "50vh",marginLeft:"15vh",marginTop:"5vh",marginBottom:"5vh"}}>
                     {components ? <>{components[0]}</> : null}
                 </div>
                 <div>

@@ -20,6 +20,7 @@ const MultiLineChart = (props) =>{
     const [showAllSector, setshowAllSector] = useState(null)
     const [showspinner,setshowspinner] = useState(true)
     const [inModal,setInModal] = useState(false)
+    let aggregateOfData = []
 
     const keepInList = (stk) => {
         if (showAllSector){
@@ -85,29 +86,25 @@ const MultiLineChart = (props) =>{
     const generateRandomHexColor = () => 'hsla(' + Math.floor(Math.random()*360) + ', 100%, 70%, 1)'
 
     useEffect (() =>{
-        async function tempfn () {
         if (!charData && stklist){
-           let tempData = []
-           //let limit = stklist.length > 10 ? 10 : stklist.length
-           let limit = stklist.length
-           for (let i=0;i < limit;i++){
-            const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
-               tempData = await getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"})
-               if (tempData !== undefined && tempData !==[]){
-                   let color = generateRandomHexColor()
-                   tempData.map(item => {item.color=color; return item})    
-                }
-                setstkPrcData(tempData)
-                setshowspinner(false)    
-           } 
-        }
-        }
-        tempfn()
+            for (let i=0;i < stklist.length;i++){
+                const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
+                getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"}).then(tempData =>{
+                    if (tempData !== undefined && tempData !==[]){
+                        let color = generateRandomHexColor()
+                        tempData.map(item => {item.color=color; return item})
+                        updateChart(tempData)
+                    }    
+                    setshowspinner(false)       
+                })
+            } 
+        }     
     },[stklist])
 
-    useEffect(() =>{
-        charData ? setcharData([...charData,...stkPrcData]) : setcharData(stkPrcData)
-    },[stkPrcData])
+    const updateChart = (tempData) =>{
+        aggregateOfData = aggregateOfData.concat(tempData)
+        charData ? setcharData([...charData,...aggregateOfData]) : setcharData(aggregateOfData)
+    }
 
     useEffect (() => {  
         var domainwidth = width - margin.left - margin.right,
@@ -142,6 +139,7 @@ const MultiLineChart = (props) =>{
             initZoom()    
 
             let yExtent = d3.extent(charData.map(item => item.change));
+            console.log("which stock is problem?",charData,moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate())
             const minDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
             const maxDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
     

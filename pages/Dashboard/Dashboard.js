@@ -30,7 +30,7 @@ const Dashboard = () =>{
             //needs optimization.....
             //let priorList = await PrioritizeStockList(stkList,limitStks)
             //setStockList(priorList)
-            setStockList([...stkList])
+            setStockList([...stkList.slice(0,limitStks)])
         }else{
             setStockList([...stkList])
         }
