@@ -8,12 +8,13 @@ const MovingAvg = (props) =>{
     useEffect(() =>{
         if (props.symbol){
             const cacheKey = "SMA" + props.symbol + "_" + 1
-            let res = getCachedSimpleMovAvgs(cacheKey,{'stock':props.symbol,'last':1})
-            if (res.SMA_20){
-                setmovAvgs(res[props.type])
-            }else{
-                setmovAvgs("-")
-            }    
+            getCachedSimpleMovAvgs(cacheKey,{'stock':props.symbol,'last':1}).then(res =>{
+                if (res.SMA_20){
+                    setmovAvgs(res[props.type])
+                }else{
+                    setmovAvgs("-")
+                }        
+            })
         }        
     },[props.symbol])
 

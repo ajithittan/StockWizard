@@ -26,7 +26,9 @@
     "lodash.memoize": "^4.1.2",
     "lru-cache": "^6.0.0",
     "moment": "^2.29.4",
+    "mysql2": "^3.4.5",
     "next": "^13.4.7",
+    "next-auth": "^4.22.1",
     "rc-slider": "^10.0.1",
     "react": "^18.2.0",
     "react-content-loader": "^6.1.0",
@@ -35,6 +37,7 @@
     "react-photo-album": "^2.0.3",
     "react-transition-group": "^4.4.5",
     "react-use-websocket": "^3.0.0",
+    "sequelize": "^6.32.1",
     "styled-components": "^5.3.5",
     "swr": "^1.1.1",
     "yet-another-react-lightbox": "^3.2.0"

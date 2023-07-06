@@ -1,13 +1,36 @@
-import SectorMaint from "./SectorMaint"
-import Sector from './Sector'
-const index = () =>{
+import { getSession } from 'next-auth/react';
+import { dbConnect } from '../../modules/DbConnect'
+import SectorMaint from './SectorMaint'
 
-    return (
-        <div style={{padding:'10px'}}>
-            <title>Sector Set Up</title>
-            <SectorMaint />
-        </div>
+function Sector({sectors}) {
+    return(
+        <SectorMaint sectors={sectors}></SectorMaint>
     )
 }
-
-export default index
+// Triggered on each request
+export async function getServerSideProps(context) {
+	// Fetching data from an API
+	//console.log("in function getServerSideProps",context)
+	var session = await getSession(context);
+	// Pass the data to the page via props
+	var initModels = require("../../models/init-models"); 
+	var models = initModels(dbConnect);
+	const { Op } = require("sequelize");
+	var stocksector = models.stocksector
+	let dbresponse
+	try {
+		  await stocksector.findAll({  
+		  attributes: ['sector','stocks','idstocksector'],
+		  where: {
+			iduserprofile: {
+				  [Op.eq] : session.sessionUserId
+		  }
+		  }
+		}).then(data => dbresponse=(data))
+	  } catch (error) {
+		console.log("getStockSectorsfromDB - Error",error)
+	  }
+	  console.log(dbresponse,typeof dbresponse)
+	return {props: {sectors:JSON.parse(JSON.stringify(dbresponse))}};
+}
+export default Sector;

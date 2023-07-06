@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
-import getStockSector from '../../modules/cache/cachesector'
 import {CreateStockSector, DeleteStockSector,UpdateStockSectors} from '../../modules/api/StockMaster'
 import { useRouter } from 'next/router'
 import StockSymbol from '../../components/StockSymbol'
 import { Button } from "@mui/material"
 
-const SectorMaint = () =>{
+const SectorMaint = (props) =>{
     const router = useRouter()
     const [sectors,setSectors] = useState(null)
     const [inpSec, setInpSec] = useState("Add Sector")
@@ -15,10 +14,11 @@ const SectorMaint = () =>{
     const [modifysect, setmodifysect] = useState(null)
 
     useEffect(() => {
-        if (!sectors){
-            getStockSector().then(res => {setSectors(res),setmodifysect(res)})
+        if (!sectors && props.sectors){
+            setSectors(props.sectors)
+            setmodifysect(props.sectors)
         }
-    },[])
+    },[props.sectors])
 
     const startSector = () =>{
         setInpSec("")
