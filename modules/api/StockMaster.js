@@ -41,7 +41,7 @@ const StockSector = async () =>{
 const CreateStockSector = async (sector) =>{
     let url = "/api/v2/sectors"
     const data = await axios.post(url,sector)
-    return data
+    return data.data
 }
 
 const DeleteStockSector = async (sectorId) =>{
@@ -106,7 +106,12 @@ const PrioritizeStockList = async (inpList,numberofstks) =>{
     return data.data
 }
 
+const FullStockList = async () =>{
+    const data = await axios.get(`/api/allstocks`)
+    return data.data
+}
+
 
 export {StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
     SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
-    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList,StockPriceV2}
+    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList,StockPriceV2,FullStockList}

@@ -30,7 +30,6 @@ export async function getServerSideProps(context) {
 	  } catch (error) {
 		console.log("getStockSectorsfromDB - Error",error)
 	  }
-	  console.log(dbresponse,typeof dbresponse)
 	return {props: {sectors:JSON.parse(JSON.stringify(dbresponse))}};
 }
 export default Sector;
