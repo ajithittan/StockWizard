@@ -9,6 +9,8 @@ import { useTheme, styled } from '@mui/material/styles';
 import { VariableSizeList } from 'react-window';
 import Typography from '@mui/material/Typography';
 import getFullStockList from '../modules/cache/cachestocklist'
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
 
 
 export default function StockSymbolSelector(props) {
@@ -147,28 +149,68 @@ export default function StockSymbolSelector(props) {
     children: PropTypes.node,
   };
 
-  const onTagsChange = (event,values) => props.updates(values.map(item => item.split("-")[0].trim()))
-  
+  const onTagsChange = (event,item) => {
+    if (item){
+      initialSetUp.push(item.split("-")[0].trim())
+      setInitialSetUp([...initialSetUp])
+      props.updates(initialSetUp)  
+    }
+  }
+
+  const handleDelete = (chipToDelete) => () => {
+    let filArr = initialSetUp.filter(item => item !== chipToDelete)
+    setInitialSetUp([...filArr])
+    props.updates(filArr)
+  };
 
   return (
+    <>
+
     <Autocomplete
-      multiple
       limitTags={props.limitToShow}
-      id="virtualize-demo"
-      sx={{ width: props.width }}
+      id="virtualize-stockpicker"
+      sx={{ width: props.width,marginTop:"10px" }}
       disableListWrap
       PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
       filterSelectedOptions
       //options={initialSetUp}
-      defaultValue={initialSetUp}
+      //defaultValue={initialSetUp}
       options={allStks ? allStks : []}
       //groupBy={(option) => option[0].toUpperCase()}
-      renderInput={(params) => <TextField {...params} disabled={props.disable}/>}
+      renderInput={(params) => <TextField label="Stock" {...params} disabled={props.disable}/>}
       renderOption={(props, option, state) => [props, option, state.index]}
-      // TODO: Post React 18 update - validate this conversion, look like a hidden bug
       renderGroup={(params) => params}
       onChange={onTagsChange}
     />
+    <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection:'row',
+          marginTop:"10px",
+          maxWidth: 250,
+          height: 200,
+          borderRadius: 1,
+          overflow:'auto',
+          m:0.5
+        }}
+      >
+        {initialSetUp.map((data) => {
+          return (
+              <div style={{marginRight:"5px"}}>
+              <Chip
+                variant="outlined"
+                label={data}
+                onDelete={handleDelete(data)}
+                color="primary"
+                size="small"
+              />
+              </div>
+          );
+        })}
+    </Box>
+    </>
+    
   );
 }
