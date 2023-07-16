@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import StockSymbolSelector from '../../components/StockSymbolSelector'
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 const Sector = (props) =>{
 
@@ -46,6 +47,8 @@ const Sector = (props) =>{
 
     const sendToDb = () => props.update(sectorObj)
 
+    const openInModal = () => props.openModal(sectorObj)
+
     return (
         <>
             <Card style={cardStyle}>
@@ -53,9 +56,13 @@ const Sector = (props) =>{
                     <div style={{height:"90%"}}>
                     <TextField inputProps={{style: {fontWeight:"bold"}}} InputLabelProps={{shrink: false}} 
                                id="standard-basic" variant="standard" value={name} onChange={updName}/>           
-                        <StockSymbolSelector key={stocks} limitToShow={4} width={250} updates={updStks} initialset={stocks || []} />
+                        <StockSymbolSelector dispProps={props.dispProps} limitToShow={4}
+                            updates={updStks} initialset={stocks || []} />
                     </div>
                     <CardActions>
+                        <IconButton aria-label="expand">
+                            <OpenInFullIcon onClick={openInModal}></OpenInFullIcon>
+                        </IconButton>
                         <IconButton aria-label="delete">
                             <DeleteIcon onClick={() => props.remove(id)} />
                         </IconButton>

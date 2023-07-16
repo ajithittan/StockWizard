@@ -10,14 +10,14 @@ import { VariableSizeList } from 'react-window';
 import Typography from '@mui/material/Typography';
 import getFullStockList from '../modules/cache/cachestocklist'
 import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-
+import Grid from '@mui/material/Grid';
 
 export default function StockSymbolSelector(props) {
 
   const LISTBOX_PADDING = 8; // px
   const [allStks,setAllStks] = useState(null)
   let [initialSetUp,setInitialSetUp] = useState(props.initialset)
+  let [newlyAdded,setNewlyAdded] = useState([])
 
   useEffect(() =>{
       if (!allStks){
@@ -151,7 +151,10 @@ export default function StockSymbolSelector(props) {
 
   const onTagsChange = (event,item) => {
     if (item){
-      initialSetUp.push(item.split("-")[0].trim())
+      let itemClipped = item.split("-")[0].trim()
+      newlyAdded.push(itemClipped)
+      setNewlyAdded([...newlyAdded])
+      initialSetUp.unshift(itemClipped)
       setInitialSetUp([...initialSetUp])
       props.updates(initialSetUp)  
     }
@@ -165,51 +168,45 @@ export default function StockSymbolSelector(props) {
 
   return (
     <>
-
-    <Autocomplete
-      limitTags={props.limitToShow}
-      id="virtualize-stockpicker"
-      sx={{ width: props.width,marginTop:"10px" }}
-      disableListWrap
-      PopperComponent={StyledPopper}
-      ListboxComponent={ListboxComponent}
-      filterSelectedOptions
-      //options={initialSetUp}
-      //defaultValue={initialSetUp}
-      options={allStks ? allStks : []}
-      //groupBy={(option) => option[0].toUpperCase()}
-      renderInput={(params) => <TextField label="Stock" {...params} disabled={props.disable}/>}
-      renderOption={(props, option, state) => [props, option, state.index]}
-      renderGroup={(params) => params}
-      onChange={onTagsChange}
+      
+      <Grid
+          container
+          wrap='wrap'
+          sx={{
+            ...props.dispProps
+          }}
+        >
+          {initialSetUp.map((data) => {
+            return (
+                <div style={{marginRight:"5px"}}>
+                <Chip
+                  variant={newlyAdded.includes(data) ? "filled" : "outlined"}
+                  label={data}
+                  onDelete={handleDelete(data)}
+                  color= {newlyAdded.includes(data) ? "success" : "primary"}
+                  size="small"
+                />
+                </div>
+            );
+          })}
+      </Grid>
+      <Autocomplete
+        limitTags={props.limitToShow}
+        id="virtualize-stockpicker"
+        sx={{ width: props.width > 300? 300 : props.width ,marginTop:"10px" }}
+        disableListWrap
+        PopperComponent={StyledPopper}
+        ListboxComponent={ListboxComponent}
+        filterSelectedOptions
+        //options={initialSetUp}
+        //defaultValue={initialSetUp}
+        options={allStks ? allStks : []}
+        //groupBy={(option) => option[0].toUpperCase()}
+        renderInput={(params) => <TextField label="Stock" {...params} disabled={props.disable}/>}
+        renderOption={(props, option, state) => [props, option, state.index]}
+        renderGroup={(params) => params}
+        onChange={onTagsChange}
     />
-    <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          flexDirection:'row',
-          marginTop:"10px",
-          maxWidth: 250,
-          height: 200,
-          borderRadius: 1,
-          overflow:'auto',
-          m:0.5
-        }}
-      >
-        {initialSetUp.map((data) => {
-          return (
-              <div style={{marginRight:"5px"}}>
-              <Chip
-                variant="outlined"
-                label={data}
-                onDelete={handleDelete(data)}
-                color="primary"
-                size="small"
-              />
-              </div>
-          );
-        })}
-    </Box>
     </>
     
   );
