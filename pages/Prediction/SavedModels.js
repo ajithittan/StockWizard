@@ -16,10 +16,11 @@ const SavedModels = (props) =>{
 
     useEffect (() =>{
         if(props.stock){
-            let retval = getPredictionModel(props.stock)
-            if (retval.length > 0){
-                setResults(retval)
-            }
+            getPredictionModel(props.stock).then(retval =>{
+                if (retval.length > 0){
+                    setResults(retval)
+                }    
+            })
         }
     },[])
 

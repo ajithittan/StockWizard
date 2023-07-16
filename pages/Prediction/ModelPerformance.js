@@ -25,14 +25,13 @@ const ModelPerformance = (props) =>{
 
     useEffect (() =>{
         if(props.modelObj){
-            let retval = getPredictionsForStock(props.modelObj.symbol,props.modelObj.idstockpredictionmodels)
-            console.log("predictionssssss",retval)
-            if (retval.length > 0){
-                setResults(retval)
-            }
+            getPredictionsForStock(props.modelObj.symbol,props.modelObj.idstockpredictionmodels).then(retval => {
+                if (retval.length > 0){
+                    setResults(retval)
+                }    
+            })
         }
     },[])
-    
 
     return(
         <div className="PredictionMainDiv">

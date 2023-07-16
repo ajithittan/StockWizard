@@ -8,15 +8,15 @@ const PredictionModels = (props) =>{
 
     useEffect(() =>{
         if (!models){
-            let retval = getPredictionModel(props.stock)
-            if (retval.length > 0){
-                setModels(retval)
-            }
+            getPredictionModel(props.stock).then(retval =>{
+                if (retval.length > 0){
+                    setModels(retval)
+                }    
+            })
         }
     },[props.stock])
 
     const changeModel = (val,name) =>{
-        console.log("eeeeeeeeeee",val,name)
         if (parseInt(val) > 0){
             props.onpredictionchange(val,name)
         }
