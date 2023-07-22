@@ -154,9 +154,9 @@ export default function StockSymbolSelector(props) {
       let itemClipped = item.split("-")[0].trim()
       newlyAdded.push(itemClipped)
       setNewlyAdded([...newlyAdded])
-      initialSetUp.unshift(itemClipped)
+      initialSetUp ? initialSetUp.unshift(itemClipped) : initialSetUp = [itemClipped]
       setInitialSetUp([...initialSetUp])
-      props.updates(initialSetUp)  
+      props.onlyNewOnes ? props.updates(newlyAdded) :props.updates(initialSetUp)  
     }
   }
 
@@ -176,7 +176,7 @@ export default function StockSymbolSelector(props) {
             ...props.dispProps
           }}
         >
-          {initialSetUp.map((data) => {
+          {initialSetUp?.map((data) => {
             return (
                 <div style={{marginRight:"5px"}}>
                 <Chip
@@ -184,6 +184,7 @@ export default function StockSymbolSelector(props) {
                   label={data}
                   onDelete={handleDelete(data)}
                   color= {newlyAdded.includes(data) ? "success" : "primary"}
+                  disabled={props.nodelete}
                   size="small"
                 />
                 </div>

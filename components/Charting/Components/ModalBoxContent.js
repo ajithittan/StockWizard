@@ -7,8 +7,6 @@ const ModalBoxContent = (props) =>{
     const value = 10
     //props.action()
 
-    console.log("comntext value")
-
     return(        
         <div>
             <p>This is the modal box, {value}</p>

@@ -28,7 +28,6 @@ const BadgeNotificationContent = (props) => {
     const getMappedType = (alertTp) => arrType[alertTp] || alertTp
 
     const getIconForDisPlay = (inpVal) => {
-        console.log("inpVal",inpVal)
         if (inpVal.includes("+")){
             return <><TrendingUpIcon style={{ color: '#adf802' }}></TrendingUpIcon><span>{inpVal}</span></>
         }else if (inpVal.includes("-")){

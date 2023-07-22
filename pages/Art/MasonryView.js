@@ -33,7 +33,6 @@ const MasonryView = (props) => {
   },[props.columns])
 
   const handleImageClick = (imgId) =>{
-    console.log("item.id",imgId)
     props.clickedImage(imgId)
     props.slideShow()
   }

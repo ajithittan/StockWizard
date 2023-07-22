@@ -7,20 +7,32 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {SaveNewPositions} from '../../modules/api/StockMaster'
 
 const AddPositions = (props) =>{
+    let symbols = []
     const [showModal, setshowModal] = useState(false)
 
     const openNewPositionsModal = () =>{
         setshowModal(true)
     }
-    const successToDB = (stocks) =>{
+
+    const saveNewPositions = async () => {
         setshowModal(false)
-        props.actionAdd(stocks)
+        if (symbols && symbols.length > 0){
+            symbols = Array.from(new Set([...symbols]))
+            SaveNewPositions(symbols).then(retval => {
+                if (retval){
+                    props.actionAdd(symbols)
+                }
+            })
+        }
     }
 
+    const addStks = (stock) => symbols = stock
+
     const getContent = () =>{
-        return <ProcessNewPositions onceSuccess={successToDB} />
+        return <ProcessNewPositions initialSetOfStocks={props.initialSetOfStocks} addStks={addStks}/>
     }
     const sm = useMediaQuery("(max-width: 960px)");
 
@@ -49,7 +61,7 @@ const AddPositions = (props) =>{
                 </CardActions>
                 </CardContent>
             </Card>  
-            {showModal ? <ModalBox content={getContent()}  onClose={() => setshowModal(false)}></ModalBox> : null }
+            {showModal ? <ModalBox content={getContent()}  onClose={saveNewPositions}></ModalBox> : null }
         </>    
     )
 }

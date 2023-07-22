@@ -39,7 +39,6 @@ const BarChart = (props) =>{
 
     useEffect (() =>{
         if (props.data){
-            console.log("props.data",props.data)
             setcharData(props.data)
         }
     },[props.data])

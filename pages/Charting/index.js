@@ -88,7 +88,6 @@ const index = () => {
                         allsecvals.filter(item => String(item.idstocksector) === stk)[0].sector)
         }
         else{
-            console.log("openPrcChart - here to open charts",duration)
             router.push({pathname: '/PriceCharts',query: {stock:stk,dur:duration,list:fullList}})
         }
     }

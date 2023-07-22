@@ -7,7 +7,6 @@ const Circle = (g,charData) => {
             .attr("cy",d => y(d.change))
             .attr("r",5)  
             .on("click", (event, d) => {
-                console.log(sumstat.length);
                 if (sumstat.length > 1) 
                     {svgElement.selectAll("*").remove(),removeFromList(d.symbol)}
                 else{

@@ -26,7 +26,6 @@ const MosaicView = (props) =>{
     },[props.type])
 
     const handleImageClick = (imgId) =>{
-      console.log("item.id",imgId)
       props.clickedImage(imgId)
       props.slideShow()
     }

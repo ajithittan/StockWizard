@@ -24,9 +24,6 @@ const PhotoAlbumView = (props) => {
 
     return (
         <>
-            {
-                console.log("imgContent",imgContent)
-            }
             <PhotoAlbum layout="masonry" photos={imgContent} columns={colCount}/>
         </>
     )

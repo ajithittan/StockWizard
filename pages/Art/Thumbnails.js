@@ -48,8 +48,6 @@ const Thumbnails = () => {
   .rotate(byAngle(10))  // Rotate the result.
   .format('png');   // Deliver as PNG. */
 
-  console.log("myImage",myImage)
-
   // Render the transformed image in a React component.
   return (
     <div>

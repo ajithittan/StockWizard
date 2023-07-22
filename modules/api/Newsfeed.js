@@ -11,7 +11,6 @@ const StockNewsFeeds  = async (stksym) =>{
 }
 
 const MultipleStockNews = async (arrStks) =>{
-    console.log("in MultipleStockNews?",arrStks)
     const data = await axios.get(`/api/v2/multinews/`,{
         params: { stkList: arrStks + ''}
         })

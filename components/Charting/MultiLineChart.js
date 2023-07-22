@@ -139,7 +139,6 @@ const MultiLineChart = (props) =>{
             initZoom()    
 
             let yExtent = d3.extent(charData.map(item => item.change));
-            console.log("which stock is problem?",charData,moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate())
             const minDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
             const maxDt = moment(new Date(charData.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toISOString().slice(0, 10)).toDate()
     
@@ -314,8 +313,6 @@ const MultiLineChart = (props) =>{
                 .attr("r",circSize)  
                 .attr("id", (d,i) => d.label)
                 .on("click", (event, d) => {
-                    console.log("dddddd",d)
-                    //duh!
                     if (sumstat.length > 1) 
                         {
                             props.openPrcChart(d.symbol)

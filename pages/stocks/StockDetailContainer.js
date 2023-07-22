@@ -29,10 +29,11 @@ const index = (props) =>{
     const addToList = (stkSym) => props.actionAdd(stkSym)
 
     const getStkQuotes = async (stock) => {
-        let res = await StockPriceV2(stock)
-        if (res && res.length > 0 ){
-            setStkQuote(res)
-        }  
+        StockPriceV2(stock).then(res => {
+            if (res && res.length > 0 ){
+                setStkQuote(res)
+            }      
+        })
     }
 
     let counter = 0
@@ -58,7 +59,7 @@ const index = (props) =>{
                                    streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
                                 </StockDetailCard></Grid>) 
         }
-        <AddPositions actionAdd={addToList}></AddPositions>
+        <AddPositions actionAdd={addToList} initialSetOfStocks={stocks}></AddPositions>
         <StreamStockPrice add={streamedQuotes} stocks={stocks}></StreamStockPrice>
       </Grid>
   )
