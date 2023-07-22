@@ -10,7 +10,7 @@ const MultiLineChart = (props) =>{
     const [height,setHeight] = useState(null)
     var margin = {top: 2, right: 2, bottom: 2, left: 2}
     const [stklist,setstklist] = useState(null)
-    const [circSize , setcircSize] = useState(1.5)
+    const [circSize , setcircSize] = useState(1)
     const ref = useRef()
     const tooltipref = useRef()
     const [charData, setcharData] = useState(null)
@@ -46,11 +46,11 @@ const MultiLineChart = (props) =>{
 
     useEffect(() =>{
         if(props.dim){
-            setWidth(window.innerWidth*0.75)
-            setHeight(window.innerHeight*0.75)
+            setWidth(window.innerWidth*0.8)
+            setHeight(window.innerHeight*0.8)
         }else{
-            setWidth(ref.current.parentElement.offsetWidth)
-            setHeight(ref.current.parentElement.offsetHeight)    
+            setWidth(ref.current.parentElement.offsetWidth*0.90)
+            setHeight(ref.current.parentElement.offsetHeight*0.90)    
         }
     },[props.dim])
 
@@ -60,7 +60,7 @@ const MultiLineChart = (props) =>{
         }
     },[props.stocks])
 
-    /*
+    
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
     
@@ -70,14 +70,13 @@ const MultiLineChart = (props) =>{
       }, [])
 
     const updateDimensions = () => {
-        setWidth(window.innerWidth*0.75)
-        setHeight(window.innerHeight*0.75)
+        setWidth(ref.current.parentElement.offsetWidth*0.90)
+        setHeight(ref.current.parentElement.offsetHeight*0.90)  
     }
-    */
-
+    
     useEffect(() =>{
         if (11 > duration > 48){
-            setcircSize(1)
+            setcircSize(0.5)
         }else if (duration > 48){
             setcircSize(0.5)
         }
@@ -90,7 +89,7 @@ const MultiLineChart = (props) =>{
             for (let i=0;i < stklist.length;i++){
                 const cacheKey = stklist[i] + "_" + duration + "_" + 1 + "_" + "M"   
                 getStockPerChange(cacheKey,{'stock':stklist[i],'duration':duration,'rollup':1,'unit':"M",'byType':"C"}).then(tempData =>{
-                    if (tempData !== undefined && tempData !==[]){
+                    if (tempData !== undefined && tempData.length > 0){
                         let color = generateRandomHexColor()
                         tempData.map(item => {item.color=color; return item})
                         updateChart(tempData)
@@ -157,10 +156,12 @@ const MultiLineChart = (props) =>{
                     .domain(yExtent)
                     .range([domainheight, 0]); 
 
+            let noofticks = () => duration <= 6 ? 1 : duration         
+            
             let xAxis = (g, x) => g
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + y.range()[0] + ")")
-                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat("%b")))
+                .call(d3.axisBottom(x).ticks(d3.timeMonth.every(noofticks())).tickFormat(d3.timeFormat("%b")))
 
             const gx = g.append("g")
                 .call(xAxis, x);
@@ -312,18 +313,7 @@ const MultiLineChart = (props) =>{
                 .attr("cy",d => y(d.change))
                 .attr("r",circSize)  
                 .attr("id", (d,i) => d.label)
-                .on("click", (event, d) => {
-                    if (sumstat.length > 1) 
-                        {
-                            props.openPrcChart(d.symbol)
-                        }
-                        //{svgElement.selectAll("*").remove(),keepInList(d.symbol)}
-                    else{
-                        //ModalBox(modalref,event,true,props.openPrcChart,d.symbol)
-                        props.openPrcChart(d.symbol)
-                    }    
-                })
-                //.style("cursor", "pointer")
+                .on("click", (event, d) => props.openPrcChart(d.symbol))
                 .on('mouseover', (e) => {
                     tooltip.style('display', null)
                 })

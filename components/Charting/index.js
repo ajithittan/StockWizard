@@ -104,7 +104,9 @@ const index = (props) => {
     return (
             <>
                 {
-                    showInModal ? <ModalBox content={renderChart(3.5,true)} onClose={() => setShowInModal(false)}></ModalBox> : renderChart(1,false) 
+                    showInModal ? 
+                        <ModalBox content={renderChart(3.5,true)} onClose={() => setShowInModal(false)}></ModalBox> 
+                        : renderChart(1,false) 
             
                 }
             </>

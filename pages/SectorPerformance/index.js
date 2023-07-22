@@ -14,7 +14,6 @@ const SectorPerformance = () =>{
     const [chartItems,setchartItems] = useState(null)
     const [actContPanel,setactContPanel] = useState(false)
     const [initialSetUp,setinitialSetUp] = useState({duration:initDur})
-    const styleOfControlPanel = {padding:"10px"}
 
     useEffect(() =>{
         if (!sector){
@@ -23,14 +22,14 @@ const SectorPerformance = () =>{
     },[])
 
     const getSectors = async () =>{
-        let res = await getStockSector()
-        console.log("res",res)
-        if (res.length > 0){
-            let tempcharitems = res.map((sector,indx) => <Charting stocks={sector.stocks} size={5} indx={indx} 
-                                duration={initDur} name={sector.sector}/>)
-            setSector(res)
-            setchartItems(tempcharitems)
-        }
+        await getStockSector().then(res => {
+            if (res.length > 0){
+                let tempcharitems = res.map((sector,indx) => <Charting stocks={sector.stocks} size={5} indx={indx} 
+                                                                duration={initDur} name={sector.sector}/>)
+                setSector(res)
+                setchartItems(tempcharitems)
+            }    
+        })
     }
 
     const handleControlPanel = (key,value) =>{
@@ -59,7 +58,7 @@ const SectorPerformance = () =>{
           <div style={{display:actContPanel? "block" : "none"}}>
                 <ControlPanel key={initialSetUp} onChanges={handleControlPanel} initialsetup={initialSetUp} onChanges={changeInitVals}></ControlPanel>
           </div>   
-          <div onClick={() => setactContPanel(false)}>
+          <div onClick={() => setactContPanel(false)} style={{margin:"25px"}}>
                 <MainGrid key={chartItems} items = {chartItems}/>
           </div>
         </>
