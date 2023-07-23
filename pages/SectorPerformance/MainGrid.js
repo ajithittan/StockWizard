@@ -20,7 +20,7 @@ const MainGrid = (props) => {
     <Box sx={{ flexGrow: 1,margin:"40px" }}>
       <Grid container spacing={{ xs: 2, md: 3 }}>
         {props.items?.map((chart, index) => ( 
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
+          <Grid item xs={12} sm={6} md={4} lg={3-props.adjust} xl={3-props.adjust} key={index}>
             <Item>
             <Typography variant="h10">{chart.props.name}</Typography>
             {chart}</Item>

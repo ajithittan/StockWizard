@@ -60,7 +60,7 @@ const MultiLineChart = (props) =>{
         }
     },[props.stocks])
 
-    
+    /**
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
     
@@ -68,11 +68,13 @@ const MultiLineChart = (props) =>{
           window.removeEventListener('resize', updateDimensions);
         }
       }, [])
+   
 
     const updateDimensions = () => {
         setWidth(ref.current.parentElement.offsetWidth*0.90)
         setHeight(ref.current.parentElement.offsetHeight*0.90)  
     }
+    */  
     
     useEffect(() =>{
         if (11 > duration > 48){
