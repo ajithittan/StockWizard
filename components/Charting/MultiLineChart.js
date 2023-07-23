@@ -306,6 +306,14 @@ const MultiLineChart = (props) =>{
                 .attr('class', 'tooltip')
                 .style('display', 'none')
 
+            function handleMouseOver(circ,max) {       
+                d3.select(circ).transition()
+                    .duration(1)
+                    .attr("r", max ? 10 : circSize)
+                    .attr("fill", max ? "white" : null)
+                    .style("stroke", max ? "black" : null)
+                }                   
+
             g.selectAll("circle")
             .data(charData)
             .join("circle")
@@ -317,13 +325,15 @@ const MultiLineChart = (props) =>{
                 .on('mouseover', (e) => {
                     tooltip.style('display', null)
                 })
-                .on('mouseout', () => {
+                .on('mouseout', function(event,d) {
                     tooltip
                         .transition()
                         .duration(300)
-                        .style('display', 'none')
+                        .style('display', 'none');
+                    handleMouseOver(this,false)    
                 })
                 .on("mouseover", function(event,d) {
+                    handleMouseOver(this,true)
                     let left = (inModal ? event.offsetX + 45 : event.clientX + 10)
                     let top = (inModal ? event.offsetY + 40 : event.clientY + 10) 
                     tooltip.style("left", left +"px")

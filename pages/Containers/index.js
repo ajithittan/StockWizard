@@ -1,4 +1,3 @@
-import { useState } from 'react' 
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -12,6 +11,7 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   margin:"15px",
   color: theme.palette.text.secondary,
+  height: "100%",
 }));
 
 const MainGrid = (props) => {
@@ -20,7 +20,7 @@ const MainGrid = (props) => {
     <Box sx={{ flexGrow: 1,margin:"40px" }}>
       <Grid container spacing={{ xs: 2, md: 3 }}>
         {props.items?.map((chart, index) => ( 
-          <Grid item xs={10} sm={6} md={4} lg={3} xl={2} key={index}>
+          <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
             <Item>
             <Typography variant="h10">{chart.props.name}</Typography>
             {chart}</Item>
