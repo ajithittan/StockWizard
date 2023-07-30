@@ -74,7 +74,7 @@ const ChartsForDashBoard = (props) => {
 
     return(
         <Box border={0.1} borderColor="primary.main" component="fieldset" 
-            sx={{ p: 3,minHeight:"40vh",maxHeight:"70vh",height:"auto",borderRadius: 1}}>
+            sx={{ p: 3,minHeight:"40vh",maxHeight:"70vh",borderRadius: 1}}>
             <legend align="center" ><h4>&nbsp;&nbsp;{duration} - Month Peformance&nbsp;&nbsp;</h4></legend>
             {stockList && stockList.length > 0 ? 
                 <>

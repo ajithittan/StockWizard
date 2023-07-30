@@ -15,6 +15,7 @@ const BarChartHorizontal = (props) =>{
         setHeight(ref.current.parentElement.offsetHeight)   
     },[])
 
+    /**
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
     
@@ -27,6 +28,7 @@ const BarChartHorizontal = (props) =>{
         setWidth(ref.current.parentElement.offsetWidth)
         setHeight(ref.current.parentElement.offsetHeight)
     }
+     */
 
     useEffect (() =>{
         if (props.data){
