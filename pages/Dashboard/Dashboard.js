@@ -15,7 +15,7 @@ const Dashboard = () =>{
     const stklist = useAppContext()
     const [layoutType, setLayoutType] = useState(3)
     const [stockList,setStockList] = useState(null)
-    const [limitStks,setLimitStks] = useState(25)
+    const [limitStks,setLimitStks] = useState(30)
     const [waiting,setWaiting] = useState(true)
 
     useEffect(() =>{

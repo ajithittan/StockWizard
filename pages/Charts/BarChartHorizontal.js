@@ -11,7 +11,7 @@ const BarChartHorizontal = (props) =>{
     const [height,setHeight] = useState(null)
 
     useEffect(() =>{
-        setWidth(ref.current.parentElement.offsetWidth)
+        setWidth(ref.current.parentElement.offsetWidth*0.90)
         setHeight(ref.current.parentElement.offsetHeight)   
     },[])
 
@@ -59,24 +59,26 @@ const BarChartHorizontal = (props) =>{
             
             const getMin = d3.min(charData, function(d) { return d.xAxis}) > 0 ? 0 : d3.min(charData, function(d) { return d.xAxis;})
             const getMax = d3.max(charData, function(d) { return d.xAxis}) < 0 ? 0 : d3.max(charData, function(d) { return d.xAxis;})
+            const adjustDomain =  (Math.abs(getMin) + Math.abs(getMax))/6
     
-            const xScale = d3.scaleLinear().range ([getMin, width])
+            const xScale = d3.scaleLinear().range ([0, width])
             const yScale = d3.scaleBand().range ([0,height]);
             
             const svg = svgElement.append("g")
                 .attr("transform", "translate(" + 5 + "," + 5 + ")");   
             
-            xScale.domain([getMin, getMax])
+            xScale.domain([getMin-adjustDomain, getMax+adjustDomain])
             yScale.domain(charData.map(function(d) { return d.yAxis;})).padding(0.2)
             
-
+            /**
             svg.append("g")
-                .attr("transform", "translate(0," + 0 + ")")
+                .attr("transform", "translate(0," + height + ")")
                 .call(
                     d3.axisTop(xScale)
                     .ticks(5)
                     .tickFormat(d => d + "%")
                 )
+             */    
 
             svg.append("g")
                 .attr("transform", `translate(${xScale(0)},0)`)

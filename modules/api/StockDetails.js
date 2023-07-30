@@ -5,4 +5,9 @@ const getBasicStockDetails  = async (stock) =>{
     return data.data
 }
 
-export {getBasicStockDetails}
+const getTopStockMovers = async () =>{
+    const data = await axios.get(`/realtime/topstocks`) 
+    return data.data
+}
+
+export {getBasicStockDetails,getTopStockMovers}

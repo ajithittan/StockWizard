@@ -50,11 +50,9 @@ const index = (props) =>{
             direction="row"
             justify="space-evenly"
             align="stretch"
-            marginTop={1}
-            marginLeft={2}
         >
         {
-            stocks?.map(item => <Grid xs={10} sm={10} md={6} lg={4} xl={3}><StockDetailCard key={item} stock={item} 
+            stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3}><StockDetailCard key={item} stock={item} 
                                    stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}
                                    streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
                                 </StockDetailCard></Grid>) 

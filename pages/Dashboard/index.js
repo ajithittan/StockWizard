@@ -1,5 +1,6 @@
 import { useEffect,useState } from 'react'
 import Dashboard from './Dashboard'
+import {getTopStockMovers} from '../../modules/api/StockDetails'
 
 const index = () => {
 
@@ -11,6 +12,7 @@ const index = () => {
                 setDashboard(true)
             }
         }
+        //getTopStockMovers().then(retval => console.log("top movers",retval))
     },[])
 
     return (
