@@ -3,7 +3,6 @@ import {getCompanyQtrPerf} from '../../modules/api/StockMaster'
 import Image from 'next/image';
 import myGif from '../../public/loading-loading-forever.gif'
 import BarChart from '../Charts/BarChart'
-import Typography from '@mui/material/Typography';
 
 const CompanyQtrPerfBarChart = (props) =>{
     const [compDtls,setcompDtls] = useState(null)
@@ -12,12 +11,13 @@ const CompanyQtrPerfBarChart = (props) =>{
 
     useEffect(() => {
         if (props.stock){
-            let res = getCompanyQtrPerf(props.stock,1)
-            if (res) {
-                formatXaxis(res)
-                setcompDtls(res)
-                setWait(false)
-            }
+            getCompanyQtrPerf(props.stock,1).then (res => {
+                if (res) {
+                    formatXaxis(res)
+                    setcompDtls(res)
+                    setWait(false)
+                } 
+            })
         }
 
     },[props.stock])

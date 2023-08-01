@@ -8,28 +8,24 @@ const DurationSlider = (props) =>{
 
     const marks = [
         {
-          value: 1,
-          label: '1 M',
+          value: 3,
+          label: '3',
         },
         {
-            value: 6,
-            label: '6 M',
-          },
-          {
             value: 12,
-            label: '12 M',
+            label: '12',
           },
           {
             value: 24,
-            label: '24 M',
+            label: '24',
           },
           {
             value: 60,
-            label: '60 M',
+            label: '60',
           },
           {
             value: 120,
-            label: '120 M',
+            label: '120',
           },
           
       ];
