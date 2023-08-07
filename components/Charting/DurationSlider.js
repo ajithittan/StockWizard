@@ -40,7 +40,7 @@ const DurationSlider = (props) =>{
                         marks={marks}
                         step={1} 
                         onChangeCommitted={changeDuration}
-                        valueLabelDisplay="auto"
+                        valueLabelDisplay="on"
                         colorPrimary={props.color}
                     />
     )

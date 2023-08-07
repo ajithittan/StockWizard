@@ -73,13 +73,11 @@ const ChartsForDashBoard = (props) => {
     const addToList = (stks) => props.actionChangeList(stks)
 
     return(
-        <Box border={0.1} borderColor="primary.main" component="fieldset" 
-            sx={{ p: 3, minHeight:"40vh", maxHeight:"70vh", borderRadius: 1}}>
-            <legend align="center" ><h4>&nbsp;&nbsp;{duration} - Month Peformance&nbsp;&nbsp;</h4></legend>
+        <Box sx={{ p: 3, minHeight:"40vh", maxHeight:"70vh", borderRadius: 1}}>
             {stockList && stockList.length > 0 ? 
                 <>
                     <><BarChartHorizontal data={chartData} margin={margin} callBackOnClick={onBarChartClick}></BarChartHorizontal> </>
-                    <div style={{marginTop:"20px"}}><DurationSlider size="small" callBackOnChange={changeDuration} initialval={12} color="secondary"></DurationSlider></div>
+                    <div style={{marginTop:"30px"}}><DurationSlider size="small" callBackOnChange={changeDuration} initialval={12} color="secondary"></DurationSlider></div>
                 </>
                 : <AddPositions actionAdd={addToList}></AddPositions>}
             {/*{stockList && stockList.length > 0 ? <Charting stocks={stockList} duration={duration} name="" callbacks={props.allCallBacks} /> : <AddPositions></AddPositions>}*/}

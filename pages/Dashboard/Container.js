@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 const Container = (props) =>{
 
@@ -22,7 +23,16 @@ const Container = (props) =>{
                     let widthOfGrid = 12/eachComp.components.length;
                     return eachComp.components.map(listOfItems => 
                       <Grid key={widthOfGrid+listOfItems.key} item md={widthOfGrid} lg={widthOfGrid} xl={widthOfGrid} sm={12} xs={12}>          
-                          {listOfItems}
+                          {listOfItems.props.header?
+                            <Paper component="fieldset"
+                                  elevation={0} sx={{ p: 3, height: "100%" }}>
+                                  <legend align="center" ><h4>&nbsp;&nbsp;{listOfItems.props.header}&nbsp;&nbsp;</h4></legend>
+                                  {listOfItems}
+                            </Paper> : 
+                            <Paper elevation={0} sx={{ p: 3, height: "100%"}}>
+                                  {listOfItems}
+                            </Paper>
+                          }
                       </Grid>
                     )
                   }

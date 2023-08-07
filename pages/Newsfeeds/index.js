@@ -9,6 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import retrieveNewsFromSource from '../../modules/cache/cacheNews'
 import StocksDropDown from '../../components/StocksDropDown'
 import Delay from '../../components/Delay'
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 const index = (props) =>{
 
@@ -17,11 +19,13 @@ const index = (props) =>{
     const [filterRemove,setFilterRemove] = useState(true)
     const [listOfStks,setListOfStks] = useState(null)
     const [singleStk,setSingleStk] = useState(null)
+    const [colorAssigned,setColorAssigned] = useState(null)
 
     useEffect( () =>{
         if (props.stocks){
             processMultipleStks(props.stocks.slice(0,20),1000)
             setListOfStks(props.stocks)
+            setColorAssigned(assignColor(props.stocks))
         }
     },[props.stocks])
 
@@ -31,6 +35,24 @@ const index = (props) =>{
             setfeedData(retval)
         }
     },[props.feedtype])
+
+    const  getRandomColor = () => {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++ ) {
+             color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    const assignColor = (inpStks) => 
+        inpStks.map(item => {
+            let retval ={}
+            retval.stock = item
+            retval.color = getRandomColor()
+            return retval 
+            }
+    )
 
     const processMultipleStks = async (arrStks,wait) => {
         for (let i=0;i<arrStks.length;i++) {
@@ -97,7 +119,7 @@ const index = (props) =>{
     //const classes = useStyles({ sm });
 
     return(
-            <div style={{display:"flex",flexDirection:"column"}}>
+            <>
                 <div style={{position:"relative",float:"left",display:"flex",flexDirection:"row",marginBottom:"10px"}}>
                     <StocksDropDown key={singleStk} stocks={listOfStks} 
                         callBackStockChange={getSingleStockNews} selStock={singleStk}>
@@ -108,19 +130,31 @@ const index = (props) =>{
                 </div>
                 <div>
                 {
-                    feedData ? feedData.map((item,indx) => (
-                        <fieldset className="newsClip">
-                            {filterRemove ? 
-                                    <legend className="legendNews">
-                                        <a href="#" onClick={() => filterNews(item.stock)}>{item.stock}</a>
-                                    </legend> 
-                            : null }
-                            <a href={item.link} target="_blank">{item.title}</a>
-                        </fieldset>    
-                    )): <Image src={myGif} alt="wait" height={30} width={30} />
+                    feedData ? 
+                    <>
+                    <Grid container direction="row" alignItems="stretch">
+                        {feedData.map((item,indx) => (
+                            <Grid item xs={true}>
+                                <Paper elevation={0} sx={{height: "100%", display: "flex"}}>
+                                    <fieldset className="newsClip" style={{borderColor:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color}}>
+                                        {filterRemove ? 
+                                                <>
+                                                <legend style={{color:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color}}>
+                                                    <a href="javascript:void();" onClick={() => filterNews(item.stock)}>{item.stock}</a>
+                                                </legend> 
+                                                </>
+                                        : null }
+                                            <a href={item.link} target="_blank">{item.title}</a>
+                                    </fieldset>    
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+                    </>
+                    : <Image src={myGif} alt="wait" height={30} width={30} />
                 }
                 </div>
-            </div>    
+            </>    
     )
 }
 

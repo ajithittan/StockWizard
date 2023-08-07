@@ -9,6 +9,7 @@ import {useAppContext} from '../../modules/state/stockstate'
 import WaitingForResonse from '../../components/WaitingForResponse'
 import {initiateStreaming} from '../../modules/api/StockStream'
 import TopMovers from './TopMovers'
+import TopNews from './TopNews'
 
 const Dashboard = () =>{
     const defaultLayout = [{layoutId:1,compId:[1]},{layoutId:2,compId:[2]},{layoutId:3,compId:[3]}]
@@ -49,10 +50,11 @@ const Dashboard = () =>{
     }
 
     const getComponentToDisplay = (arrLayoutId) =>{
-        const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard key={stockList} dur={12} stocks={stockList} actionChangeList={changesToStkList}/>},
+        const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard key={stockList} dur={12} stocks={stockList} actionChangeList={changesToStkList} header="Monthly Performance"/>},
                                 {itemId:2,component:<Stocks key={stockList} stocks={stockList} actionChangeList={changesToStkList}/>},
-                                {itemId:3,component:<Newsfeeds key={stockList} stocks={stockList}/>},
-                                {itemId:4,component:<TopMovers />}]
+                                {itemId:3,component:<></>},
+                                {itemId:4,component:<TopMovers header="Movers & Shakers"/>},
+                                {itemId:5,component:<TopNews stocks={stockList} header="Top News"/>}]
 
         return mappingOfItems.filter(item => arrLayoutId.includes(item.itemId)).map(item => item.component)                         
     }
@@ -75,7 +77,6 @@ const Dashboard = () =>{
                     return item
                 }
             )
-        console.log("layoutMap",layoutMap)    
         setLayoutMap([...layoutMap])
     }      
 

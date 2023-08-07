@@ -41,10 +41,7 @@ const TopMovers = (props) =>{
     ]
 
     return(
-        <Box border={0.1} borderColor="primary.main" component="fieldset" 
-                    sx={{ p: 3, minHeight:"40vh", maxHeight:"70vh", borderRadius: 1,overflow: "auto"}} >
-            <legend align="center" ><h4>&nbsp;&nbsp;Top Movers&nbsp;&nbsp;</h4></legend>
-            {console.log("topGainers",topGainers)}
+        <Box sx={{ p: 3, minHeight:"40vh", maxHeight:"70vh", borderRadius: 1,overflow: "auto"}} >
             <Grid container display="flex" spacing={2} direction="row" justify="center" alignItems="stretch">
                 <Grid item xs={4} md={4}>
                     <List dense={true} subheader={<ListSubheader sx={{color:"green"}}>Gainers</ListSubheader>}>
