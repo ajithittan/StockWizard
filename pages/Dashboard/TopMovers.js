@@ -6,9 +6,11 @@ import ListItem from '@mui/material/ListItem';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
 import {getTopStockMovers} from '../../modules/api/StockDetails'
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const TopMovers = (props) =>{
-    const LIMIT_ITEMS = 7
+    const sm = useMediaQuery("(max-width: 1200px)");
+    let LIMIT_ITEMS = 100
     let [topGainers,setTopGainers] = useState(null)
     let [topLosers,setTopLosers] = useState(null)
     let [topActTraded,setTopActTraded] = useState(null)
@@ -41,7 +43,7 @@ const TopMovers = (props) =>{
     ]
 
     return(
-        <Box sx={{ p: 3, minHeight:"40vh", maxHeight:"70vh", borderRadius: 1,overflow: "auto"}} >
+        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight: sm ? "50vh" : "70vh", borderRadius: 1,overflow: "auto"}} >
             <Grid container display="flex" spacing={2} direction="row" justify="center" alignItems="stretch">
                 <Grid item xs={4} md={4}>
                     <List dense={true} subheader={<ListSubheader sx={{color:"green"}}>Gainers</ListSubheader>}>

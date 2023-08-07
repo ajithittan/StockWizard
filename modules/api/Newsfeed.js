@@ -1,4 +1,5 @@
 import axios from "axios";
+import uniq from 'lodash/uniq';
 
 const BasicNewsFeeds  = async (feedTypes) =>{
     const data = await axios.get(`/newsfeed/` + (feedTypes))
@@ -7,7 +8,13 @@ const BasicNewsFeeds  = async (feedTypes) =>{
 
 const StockNewsFeeds  = async (stksym) =>{
     const data = await axios.get(`/api/v2/news/` + stksym)
-    return data.data
+    let retval = null
+    //remove duplicates
+    if(data.data){
+        console.log("data.data",uniq(data.data,"title"))
+        retval = uniq(data.data,"title")
+    }
+    return retval
 }
 
 const MultipleStockNews = async (arrStks) =>{

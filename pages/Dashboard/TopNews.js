@@ -6,15 +6,14 @@ import Newsfeeds from '../Newsfeeds'
 const TopMovers = (props) =>{
 
     return(
-        <Box sx={{ p: 3, minHeight:"40vh", maxHeight:"50vh", borderRadius: 1,overflow: "auto"}} >
-            <Grid container display="flex" spacing={2} direction="row" justify="center" alignItems="stretch">
+        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight:"60vh", borderRadius: 1,overflow: "auto"}} >
+            <Grid container display="flex" spacing={2} direction="row" justify="center">
                 <Grid item>
                         <Newsfeeds key={props.stocks} stocks={props.stocks}></Newsfeeds>
                 </Grid>
             </Grid>
         </Box>
     )
-
 }
 
 export default TopMovers

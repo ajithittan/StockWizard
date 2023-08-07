@@ -7,8 +7,6 @@ const Container = (props) =>{
 
     const [components,setComponents] = useState(null)
 
-    const sm = useMediaQuery("(max-width: 960px)");
-
     useEffect(() =>{
         if (props.components) {
             setComponents(props.components)
@@ -25,11 +23,11 @@ const Container = (props) =>{
                       <Grid key={widthOfGrid+listOfItems.key} item md={widthOfGrid} lg={widthOfGrid} xl={widthOfGrid} sm={12} xs={12}>          
                           {listOfItems.props.header?
                             <Paper component="fieldset"
-                                  elevation={0} sx={{ p: 3, height: "100%" }}>
+                                  elevation={0} sx={{height: "100%" }}>
                                   <legend align="center" ><h4>&nbsp;&nbsp;{listOfItems.props.header}&nbsp;&nbsp;</h4></legend>
                                   {listOfItems}
                             </Paper> : 
-                            <Paper elevation={0} sx={{ p: 3, height: "100%"}}>
+                            <Paper elevation={0} sx={{height: "100%"}}>
                                   {listOfItems}
                             </Paper>
                           }

@@ -120,32 +120,25 @@ const index = (props) =>{
 
     return(
             <>
-                <div style={{position:"relative",float:"left",display:"flex",flexDirection:"row",marginBottom:"10px"}}>
-                    <StocksDropDown key={singleStk} stocks={listOfStks} 
-                        callBackStockChange={getSingleStockNews} selStock={singleStk}>
-                    </StocksDropDown>
-                    <IconButton disabled={filterRemove}>
-                        <FilterListOffIcon onClick={removeFilter}></FilterListOffIcon>
-                    </IconButton>
-                </div>
-                <div>
+               <>
                 {
                     feedData ? 
                     <>
                     <Grid container direction="row" alignItems="stretch">
                         {feedData.map((item,indx) => (
-                            <Grid item xs={true}>
-                                <Paper elevation={0} sx={{height: "100%", display: "flex"}}>
-                                    <fieldset className="newsClip" style={{borderColor:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color}}>
+                            <Grid item  md={6} lg={4} xl={4} sm={6} xs={6}>
+                                <Paper elevation={0} sx={{height: "100%", display: "flex",width:"100%"}}>
+                                    <fieldset className="newsClip">
                                         {filterRemove ? 
-                                                <>
-                                                <legend style={{color:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color}}>
+                                                <legend style={{float:"right",border:"1px solid", marginLeft:"5px",
+                                                                borderColor:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color,
+                                                                color:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color,
+                                                                borderRadius:"5px"}}>
                                                     <a href="javascript:void();" onClick={() => filterNews(item.stock)}>{item.stock}</a>
                                                 </legend> 
-                                                </>
                                         : null }
-                                            <a href={item.link} target="_blank">{item.title}</a>
-                                    </fieldset>    
+                                        <a href={item.link} target="_blank">{item.title}</a>
+                                    </fieldset> 
                                 </Paper>
                             </Grid>
                         ))}
@@ -153,7 +146,19 @@ const index = (props) =>{
                     </>
                     : <Image src={myGif} alt="wait" height={30} width={30} />
                 }
+                </>
+                {
+                    /**
+                <div style={{position:"fixed",float:"left"}}>
+                    <StocksDropDown key={singleStk} stocks={listOfStks} 
+                        callBackStockChange={getSingleStockNews} selStock={singleStk}>
+                    </StocksDropDown>
+                    <IconButton disabled={filterRemove}>
+                        <FilterListOffIcon onClick={removeFilter}></FilterListOffIcon>
+                    </IconButton>
                 </div>
+                 */
+                }
             </>    
     )
 }
