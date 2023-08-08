@@ -11,7 +11,6 @@ const StockNewsFeeds  = async (stksym) =>{
     let retval = null
     //remove duplicates
     if(data.data){
-        console.log("data.data",uniq(data.data,"title"))
         retval = uniq(data.data,"title")
     }
     return retval
