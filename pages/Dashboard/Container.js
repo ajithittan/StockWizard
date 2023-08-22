@@ -20,14 +20,15 @@ const Container = (props) =>{
                 components?.map (eachComp =>{
                     let widthOfGrid = 12/eachComp.components.length;
                     return eachComp.components.map(listOfItems => 
-                      <Grid key={widthOfGrid+listOfItems.key} item md={widthOfGrid} lg={widthOfGrid} xl={widthOfGrid} sm={12} xs={12}>          
+                      <Grid key={listOfItems.key} item md={widthOfGrid} lg={widthOfGrid} xl={widthOfGrid} sm={12} xs={12}>          
                           {listOfItems.props.header?
                             <Paper component="fieldset"
+                                  key={widthOfGrid}
                                   elevation={0} sx={{height: "100%" }}>
                                   <legend align="center" ><h4>&nbsp;&nbsp;{listOfItems.props.header}&nbsp;&nbsp;</h4></legend>
                                   {listOfItems}
                             </Paper> : 
-                            <Paper elevation={0} sx={{height: "100%"}}>
+                            <Paper key={widthOfGrid} elevation={0} sx={{height: "100%"}}>
                                   {listOfItems}
                             </Paper>
                           }

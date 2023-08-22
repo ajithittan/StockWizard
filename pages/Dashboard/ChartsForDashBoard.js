@@ -73,7 +73,7 @@ const ChartsForDashBoard = (props) => {
     const addToList = (stks) => props.actionChangeList(stks)
 
     return(
-        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight:"60vh", borderRadius: 1}}>
+        <Box sx={{ p: 0.5, minHeight:"50vh", maxHeight:"70vh", borderRadius: 1,margin:"auto", width:"95%"}} >
             {stockList && stockList.length > 0 ? 
                 <>
                     <><BarChartHorizontal data={chartData} margin={margin} callBackOnClick={onBarChartClick}></BarChartHorizontal> </>

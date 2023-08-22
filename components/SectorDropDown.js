@@ -23,7 +23,7 @@ const SectorDropDown = (props) =>{
 
     const handleChange = (e) => {
         setSelSec(e.target.value)
-        props.callBackSectorChange(e.target.value)
+        props.callBackSectorChange(sectors.filter(item => item.idstocksector === e.target.value)[0])
     }
 
     return (
@@ -34,12 +34,12 @@ const SectorDropDown = (props) =>{
                 size="small"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={selSec}
+                value={props.selectedVal}
                 label="Sectors"
                 onChange={handleChange}
                 >
                 {
-                    sectors ? sectors.map(item => <MenuItem value={item}>{item.sector}</MenuItem>) : null
+                    sectors ? sectors.map(item => <MenuItem value={item.idstocksector}>{item.sector}</MenuItem>) : null
                 }
             </Select>
           </FormControl>

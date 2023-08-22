@@ -154,7 +154,7 @@ export default function StockSymbolSelector(props) {
       let itemClipped = item.split("-")[0].trim()
       newlyAdded.push(itemClipped)
       setNewlyAdded([...newlyAdded])
-      initialSetUp ? initialSetUp.unshift(itemClipped) : initialSetUp = [itemClipped]
+      initialSetUp && initialSetUp.length > 0 ? initialSetUp.unshift(itemClipped) : initialSetUp = [itemClipped]
       setInitialSetUp([...initialSetUp])
       props.onlyNewOnes ? props.updates(newlyAdded) :props.updates(initialSetUp)  
     }

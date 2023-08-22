@@ -4,12 +4,14 @@ import Grid from '@mui/material/Grid';
 import AddPositions from './AddPositions'
 import {StockPriceV2} from '../../modules/api/StockMaster'
 import StreamStockPrice from '../../components/StreamStockPrice'
+import { useSelector} from 'react-redux'
 
 const index = (props) =>{
 
     const [stocks,setStocks] = useState(null)
     const [stkQuotes,setStkQuote] = useState(null)
     const [stkStreamedQuotes,setStkStreamedQuotes] = useState(null)
+    const {dashboardsector} = useSelector((state) => state.dashboardlayout)
 
     useEffect(() =>{
         if (props.stocks){
@@ -25,8 +27,6 @@ const index = (props) =>{
     },[stkQuotes])
 
     const removeFromList = (stkSym) => setStocks([...stocks.filter(stk => stk !==stkSym)])
-
-    const addToList = (stkSym) => props.actionAdd(stkSym)
 
     const getStkQuotes = async (stock) => {
         StockPriceV2(stock).then(res => {
@@ -52,12 +52,13 @@ const index = (props) =>{
             align="stretch"
         >
         {
+
             stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3}><StockDetailCard key={item} stock={item} 
                                    stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}
                                    streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
                                 </StockDetailCard></Grid>) 
         }
-        <AddPositions actionAdd={addToList} initialSetOfStocks={stocks}></AddPositions>
+        {dashboardsector ? null : <AddPositions initialSetOfStocks={stocks}></AddPositions>}
         <StreamStockPrice add={streamedQuotes} stocks={stocks}></StreamStockPrice>
       </Grid>
   )

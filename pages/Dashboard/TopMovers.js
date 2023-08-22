@@ -43,7 +43,8 @@ const TopMovers = (props) =>{
     ]
 
     return(
-        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight: sm ? "50vh" : "70vh", borderRadius: 1,overflow: "auto"}} >
+        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight: sm ? "50vh" : "70vh", borderRadius: 1,overflow: "hidden"}} >
+               
             <Grid container display="flex" spacing={2} direction="row" justify="center" alignItems="stretch">
                 <Grid item xs={4} md={4}>
                     <List dense={true} subheader={<ListSubheader sx={{color:"green"}}>Gainers</ListSubheader>}>

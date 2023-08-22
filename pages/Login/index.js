@@ -8,7 +8,7 @@ const Login = () =>{
     const redirect = () =>{
         router.push({pathname: '/Dashboard',query: {}})
     }
-
+    
     const loginStatus = () =>{
         redirect()
     }

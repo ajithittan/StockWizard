@@ -2,14 +2,14 @@ import MultiLineChart from './MultiLineChart';
 import ControlPlane from './ControlPlane'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
-import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
 import myGif from "../../public/loading-loading-forever.gif"
 import Image from 'next/image';
+import { useSelector} from 'react-redux'
 
 const index = () => {
     const defHeader = "My Positions"
-    const stklist = useAppContext()
+    const {stockList} = useSelector((state) => state.porfoliostock)
     const [fullList,setfullList] = useState(null)
     const [lstOfStcks,setlstOfStcks] = useState(null)
     const [duration,setDuration] = useState(3)
@@ -27,13 +27,13 @@ const index = () => {
 
     useEffect(() =>{
         if (!lstOfStcks){
-            setlstOfStcks(stklist)
+            setlstOfStcks(stockList)
         }
         if (!fullList){
-            setfullList(stklist)
+            setfullList(stockList)
         }
         setHeader(defHeader)
-    },[stklist])
+    },[stockList])
 
     useEffect(() =>{
         setWidth(window.innerWidth*0.90)
@@ -54,8 +54,8 @@ const index = () => {
         if (sector === 0){
             setPostions(true)
             setHeader(defHeader)
-            setfullList(stklist)
-            setlstOfStcks(stklist)
+            setfullList(stockList)
+            setlstOfStcks(stockList)
             setshowAllSec(false)
         }else{
             setPostions(false)

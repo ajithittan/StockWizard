@@ -11,17 +11,25 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import Link from '@mui/material/Link';
+import Link from "next/link"; 
 import { getCookie,deleteCookie } from 'cookies-next';
 import {logout} from '../../modules/login/auth'
 import { useRouter } from 'next/router'
 import BadgeNotification from '../../components/BadgeNotification'
+import {useDispatch} from 'react-redux'
+import {getPortfolioStocks} from '../../redux/reducers/portfolioStockSlice'
 
 const pages = ['Sectors','Performance','Analyze','Prediction','Art']
 const links = ['SectorSetUp','SectorPerformance','Charting','Prediction','Art']
 const settings = ['Logout']
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = () => {  
+  const dispatch = useDispatch()
+
+  React.useEffect(() =>{
+    dispatch(getPortfolioStocks())
+  },[])
+
   const router = useRouter()
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -56,8 +64,6 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/Dashboard"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -68,7 +74,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            Dashboard
+             <Link href="/Dashboard">Dashboard</Link>  
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -110,8 +116,6 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/Dashboard"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -123,7 +127,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            Dashboard
+            <Link href="/Dashboard">Dashboard</Link>  
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page,index) => (
@@ -132,6 +136,7 @@ const ResponsiveAppBar = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 href={links[index]}
+                LinkComponent={Link} 
               >
                 {page}
               </Button>
@@ -162,7 +167,7 @@ const ResponsiveAppBar = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center"><Link onClick={logoutaction} underline="hover">{setting}</Link></Typography>
+                  <Typography textAlign="center"><Link href="#" onClick={logoutaction} underline="hover">{setting}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>

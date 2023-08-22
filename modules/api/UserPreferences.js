@@ -18,6 +18,13 @@ const getStockPortfolioPos = async (stkSym) =>{
     return data.data
 }
 
+const updStockPortfolioPos = async (stkPos) =>{
+    let url = "/personalize/userstockportfolio"
+    const data = await axios.post(url,stkPos)
+    return data.data
+}
+
+
 const getUserNotifications = async (inpType) =>{
     let url = "/personalize/usernotifications/" + inpType
     const data = await axios.get(url)
@@ -30,4 +37,25 @@ const getUserStocks = async () =>{
     return data.data
 }
 
-export {saveStockPositions,delStockPositions,getStockPortfolioPos,getUserNotifications,getUserStocks}
+const getUserDashBoardLayout = async () =>{
+    let url = "/personalize/dashboard"
+    let data = {}
+    try{
+        await axios.get(url).then(res => data = res.data)
+    }catch (err){
+    }
+    return data
+}
+
+const updateUserDashBoardLayout = async (dashopts) =>{
+    let url = "/personalize/dashboard"
+    let data = []
+    try{
+        data = await axios.post(url,dashopts)
+    }catch (err){
+    }
+    return data
+}
+
+export {saveStockPositions,delStockPositions,getStockPortfolioPos,updStockPortfolioPos,getUserNotifications,
+    getUserStocks,getUserDashBoardLayout,updateUserDashBoardLayout}

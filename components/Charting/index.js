@@ -1,13 +1,14 @@
 import MultiLineChart from './MultiLineChart';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
-import {useAppContext} from '../../modules/state/stockstate'
+//import {useAppContext} from '../../modules/state/stockstate'
 import getStockSector from '../../modules/cache/cachesector'
+import { useSelector} from 'react-redux'
 import ModalBox from '../ModalBox'
 
 const index = (props) => {
     const defHeader = "My Positions"
-    const stklist = useAppContext()
+    const {stockList} = useSelector((state) => state.porfoliostock)
     const [fullList,setfullList] = useState(null)
     const [lstOfStcks,setlstOfStcks] = useState(null)
     const [duration,setDuration] = useState(5)
@@ -25,13 +26,13 @@ const index = (props) => {
 
     useEffect(() =>{
         if (!lstOfStcks){
-            setlstOfStcks(stklist)
+            setlstOfStcks(stockList)
         }
         if (!fullList){
-            setfullList(stklist)
+            setfullList(stockList)
         }
         setHeader(defHeader)
-    },[stklist])
+    },[stockList])
 
     useEffect(() =>{
         if (props.stocks ){setStocks(props.stocks)}
@@ -57,8 +58,8 @@ const index = (props) => {
         if (sector === 0){
             setPostions(true)
             setHeader(defHeader)
-            setfullList(stklist)
-            setlstOfStcks(stklist)
+            setfullList(stockList)
+            setlstOfStcks(stockList)
             setshowAllSec(false)
         }else{
             setPostions(false)

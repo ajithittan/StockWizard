@@ -7,32 +7,22 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {SaveNewPositions} from '../../modules/api/StockMaster'
+import {useDispatch} from 'react-redux'
+import {updPortfolioStocks} from '../../redux/reducers/portfolioStockSlice'
 
 const AddPositions = (props) =>{
-    let symbols = []
+    const dispatch = useDispatch()
     const [showModal, setshowModal] = useState(false)
+    const [stocksel,setStockSel] = useState(null)
 
     const openNewPositionsModal = () =>{
         setshowModal(true)
     }
 
-    const saveNewPositions = async () => {
-        setshowModal(false)
-        if (symbols && symbols.length > 0){
-            symbols = Array.from(new Set([...symbols]))
-            SaveNewPositions(symbols).then(retval => {
-                if (retval){
-                    props.actionAdd(symbols)
-                }
-            })
-        }
-    }
-
-    const addStks = (stock) => symbols = stock
+    const saveNewPositions = () => {setshowModal(false),dispatch(updPortfolioStocks(stocksel))}
 
     const getContent = () =>{
-        return <ProcessNewPositions initialSetOfStocks={props.initialSetOfStocks} addStks={addStks}/>
+        return <ProcessNewPositions initialSetOfStocks={props.initialSetOfStocks} updates={setStockSel}/>
     }
     const sm = useMediaQuery("(max-width: 960px)");
 
@@ -49,19 +39,19 @@ const AddPositions = (props) =>{
         alignItems:"center",
     }
 
-    return (
+     return (
         <>
             <Card style={cardStyle}>
                 <CardContent>
                 <Typography color="text.secondary">
-                    Add Stocks you wish to track
+                    Add Stocks in your portfolio
                 </Typography>
                 <CardActions>
                     <Button  variant="contained" onClick={openNewPositionsModal}>Add Stocks</Button>
                 </CardActions>
                 </CardContent>
             </Card>  
-            {showModal ? <ModalBox content={getContent()}  onClose={saveNewPositions}></ModalBox> : null }
+            {showModal ? <ModalBox content={getContent()} onClose={saveNewPositions}></ModalBox> : null }
         </>    
     )
 }
