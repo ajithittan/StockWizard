@@ -7,6 +7,7 @@ import WaitingForResonse from '../../components/WaitingForResponse'
 import {initiateStreaming} from '../../modules/api/StockStream'
 import TopMovers from './TopMovers'
 import TopNews from './TopNews'
+import LayoutController from './LayoutController'
 import { useSelector, useDispatch} from 'react-redux'
 import {getDashboardLayout,SET_DASH_STOCKS,SET_SECTOR} from '../../redux/reducers/profileDashSlice'
 
@@ -16,7 +17,7 @@ const Dashboard = () =>{
     const {dashboardlayout,loading} = useSelector((state) => state.dashboardlayout)
     const {stockList} = useSelector((state) => state.porfoliostock)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
-    
+ 
     useEffect(() =>{
         if (!dashboardstocks){
             setStocksAndStream(stockList)

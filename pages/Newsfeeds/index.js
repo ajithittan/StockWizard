@@ -26,9 +26,9 @@ const index = (props) =>{
 
     useEffect( () =>{
         if (props.stocks){
-            processMultipleStks(props.stocks.slice(0,20),1000)
-            setListOfStks(props.stocks)
             setColorAssigned(assignColor(props.stocks))
+            setListOfStks(props.stocks)
+            processMultipleStks(props.stocks.slice(0,20),1000)
         }
     },[props.stocks])
 
@@ -51,6 +51,7 @@ const index = (props) =>{
     )
 
     const processMultipleStks = async (arrStks,wait) => {
+        await Delay(500)
         for (let i=0;i<arrStks.length;i++) {
             getNewsForStock(arrStks[i]).then(newsRes => addToList(newsRes)
                                                         .then(retval => sortNews())

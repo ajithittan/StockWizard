@@ -43,7 +43,11 @@ const TopMovers = (props) =>{
     ]
 
     return(
-        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight: sm ? "50vh" : "70vh", borderRadius: 1,overflow: "hidden"}} >
+        <Box sx={{ p: 0.5, minHeight:"40vh", maxHeight: sm ? "50vh" : "70vh", borderRadius: 1,overflow: "auto"
+        ,scrollbarWidth: "none", // Hide the scrollbar for firefox
+        '&::-webkit-scrollbar': {
+            display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+        },}} >
                
             <Grid container display="flex" spacing={2} direction="row" justify="center" alignItems="stretch">
                 <Grid item xs={4} md={4}>
