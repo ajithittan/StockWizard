@@ -107,8 +107,8 @@ const index = (props) =>{
                                     <fieldset className="newsClip">
                                         {filterRemove ? 
                                                 <legend style={{float:"right",border:"1px solid", marginLeft:"5px",
-                                                                borderColor:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color,
-                                                                color:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0].color,
+                                                                borderColor:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0]?.color,
+                                                                color:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0]?.color,
                                                                 borderRadius:"5px"}}>
                                                     <a href="javascript:void();" onClick={() => {setShowStks(true),removeStks(listOfStks.filter(stk => stk !== item.stock))}}> {item.stock}</a>
                                                 </legend> 

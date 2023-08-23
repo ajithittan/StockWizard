@@ -52,7 +52,7 @@ const Dashboard = () =>{
                                 {itemId:2,component:<Stocks key={dashboardstocks} stocks={dashboardstocks} actionChangeList={changesToStkList}/>},
                                 {itemId:3,component:<></>},
                                 {itemId:4,component:<TopMovers header="Movers & Shakers"/>},
-                                {itemId:5,component:<TopNews stocks={dashboardstocks} header="Top News"/>}]
+                                {itemId:5,component:<TopNews key={dashboardstocks} stocks={dashboardstocks} header="Top News"/>}]
 
         return mappingOfItems.filter(item => arrLayoutId.includes(item.itemId)).map(item => item.component)                         
     }
