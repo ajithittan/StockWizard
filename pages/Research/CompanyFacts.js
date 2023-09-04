@@ -10,6 +10,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 const CompanyFacts = (props) =>{
     const [compFacts,setCompFacts] = useState(null)
     const [waiting,setWaiting] = useState(false) 
+    const [quarter,setQuarter] = useState(false)
     const margin = {top: 5, right: 5, bottom: 10, left: 15}
 
     useEffect (() =>{
@@ -18,10 +19,15 @@ const CompanyFacts = (props) =>{
         }
     },[props.facts])
 
+    useEffect(() =>{
+        console.log("props.quarter",props.quarter)
+        if (props.quarter) {setQuarter(props.quarter)}
+    },[props.quarter])
+
     const columns = [
-        { field: '', headerName: 'Actions', width: 100,renderCell: (row) => addToDashboard(row,"Q")},
+        { field: '', headerName: 'Actions', width: 100,renderCell: (row) => addToDashboard(row,quarter)},
         { field: 'label', headerName: 'Type', width: 300},
-        { field: 'units', headerName: 'units', width: 300 , renderCell: (row) => renderDetailsButton(row,"Q")},
+        { field: 'units', headerName: 'units', width: 300 , renderCell: (row) => renderDetailsButton(row,quarter)},
         { field: 'description', headerName: 'Description', width: 500}
       ];
 
@@ -56,19 +62,19 @@ const CompanyFacts = (props) =>{
     const formatToFitChart = (inpData,period) =>{
         let extData = []
         let retval = []
-        if(period === "Q"){
+        if(period){
             extData = inpData.filter(each => each.form === "10-Q")
-        }else if(period === "A"){
+        }else{
             extData = inpData.filter(each => each.form === "10-K")
         }
         if (extData.length > 0){
             for(let i=0; i < extData.length ; i++){
                 let tempData = {}
-                if (extData[i].quarter){
+                if (period){
                     tempData.xAxis = extData[i].quarter.slice(0,2) + "'" + extData[i].year % 100
                 }
                 else{
-                    tempData.xAxis = "Q'" + extData[i].year % 100
+                    tempData.xAxis = "'" + extData[i].year % 100
                 }
                 tempData.yAxis1 = extData[i].val
                 retval.push(tempData)

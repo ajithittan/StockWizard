@@ -6,12 +6,15 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const ViewOfFacts = (props) =>{
+    const DefaultYears = 5
     const [compFacts,setCompFacts] = useState(null)
     const [waiting,setWaiting] = useState(true) 
     const [keyToContent,setKeyToContent] = useState(null)
-    const [defYears, setDefYears] = useState(2)
+    const [defYears, setDefYears] = useState(DefaultYears)
+    const [showQtr,setShowQtr] = useState(false)
 
     useEffect (() =>{
         if(props.stock && defYears){
@@ -19,9 +22,21 @@ const ViewOfFacts = (props) =>{
         }
     },[props.stock,defYears])
 
-    const handleYearChange = () => defYears === "ALL" ? setDefYears(2) : setDefYears("ALL")
+    const handleYearChange = () => defYears === "ALL" ? setDefYears(DefaultYears) : setDefYears("ALL")
 
-    const getSwitchComp = () => <Switch name="All" onChange={handleYearChange}/> 
+    const handlShowQuarter = () => {
+        if (showQtr === false){
+                console.log("show quarter"), 
+                setShowQtr(true)
+            }else{ 
+                console.log("show year"), 
+                setShowQtr(false)}
+        }
+
+    const label = { inputProps: { 'aria-label': 'Size switch demo' } };
+
+    const getSwitchComp = (inplabel,handleChange) => <FormControlLabel control={<Switch name="All" {...label} onChange={handleChange}/>} 
+                                label={inplabel}/> 
 
     const selStock = (stk,years) => {
         setWaiting(true)
@@ -46,6 +61,7 @@ const ViewOfFacts = (props) =>{
         }
         <br></br>
         {
+            console.log("showQtr",showQtr),
             compFacts ? 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs aria-label="Company Facts">
@@ -56,10 +72,11 @@ const ViewOfFacts = (props) =>{
                         )
                     }
                 )}
-                <Tab label={getSwitchComp()}></Tab>
+                <Tab label={getSwitchComp("Show All",handleYearChange)}></Tab>
+                <Tab label={getSwitchComp("Quarter",handlShowQuarter)}></Tab>
               </Tabs>
-              {keyToContent && compFacts ? <CompanyFacts facts={compFacts.filter(item => item[keyToContent])[0][keyToContent]} 
-                                category={keyToContent}></CompanyFacts> : null}
+              {keyToContent && compFacts ? <CompanyFacts key={showQtr} facts={compFacts.filter(item => item[keyToContent])[0][keyToContent]} 
+                                category={keyToContent} quarter={showQtr}></CompanyFacts> : null}
             </Box>
             : null
         }   
