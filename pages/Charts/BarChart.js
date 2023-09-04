@@ -58,8 +58,13 @@ const BarChart = (props) =>{
                 .attr("transform", "translate(" + 5 + "," + 5 + ")");   
             
             xScale.domain(charData.map(function(d) { return d.xAxis; }),domainwidth);
-            yScale.domain([0, d3.max(charData, function(d) { return d.yAxis;})],domainheight);
+            if (charData[0]?.yAxis){
+                yScale.domain([0, d3.max(charData, function(d) { return d.yAxis;})],domainheight);
+            }else if(charData[0]?.yAxis1){
+                yScale.domain([0, d3.max(charData, function(d) { return Math.abs(d.yAxis1);})],domainheight);
+            }
 
+            let NoOfTicks = charData.length > 5 ? 5 : charData.length
 
             g.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -67,7 +72,8 @@ const BarChart = (props) =>{
    
            g.append("g")
             .call(d3.axisLeft(yScale).tickFormat(function(d){
-                if (d/1000000 < 1000)
+                if (d < 1000) { return d}
+                else if (d/1000000 < 1000)
                     { return d/1000000 + "M"}
                 else if (d/1000000 >= 1000){
                     { return d/1000000000 + "B"}

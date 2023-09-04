@@ -18,11 +18,18 @@ export default function StockSymbolSelector(props) {
   const [allStks,setAllStks] = useState(null)
   let [initialSetUp,setInitialSetUp] = useState(props.initialset)
   let [newlyAdded,setNewlyAdded] = useState([])
+  let [noShowSelections, setNoShowSelections] = useState(false)
 
+  useEffect(() =>{
+    setNoShowSelections(props.noSelections)
+  },[props.noSelections])
+ 
   useEffect(() =>{
       if (!allStks){
           getFullStockList().then(res => {
-            setAllStks(res.map(item => item.symbol + " - " + item.companyname))
+            if (res && res.length >0 ){
+              setAllStks(res.map(item => item.symbol + " - " + item.companyname))
+            }
           })
       }
   },[])
@@ -176,7 +183,7 @@ export default function StockSymbolSelector(props) {
             ...props.dispProps
           }}
         >
-          {initialSetUp?.map((data) => {
+          {!noShowSelections && initialSetUp?.map((data) => {
             return (
                 <div style={{marginRight:"5px"}}>
                 <Chip

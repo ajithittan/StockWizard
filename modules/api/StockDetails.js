@@ -10,4 +10,11 @@ const getTopStockMovers = async () =>{
     return data.data
 }
 
-export {getBasicStockDetails,getTopStockMovers}
+const getFullCompanyFacts = async (stksym,years) =>{
+    let yearsToSend = years
+    if (yearsToSend === "ALL") {yearsToSend = 0}
+    const data = await axios.get(`/api/v2/completecompanyfacts/` + stksym + `/` + yearsToSend) 
+    return data.data
+}
+
+export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts}
