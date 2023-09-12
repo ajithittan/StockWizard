@@ -56,7 +56,7 @@ const StockDetailCard = (props) => {
     },[props.stockQuote,props.streamedQuotes])
 
     const showPriceChart = (stk) =>{
-        router.push({pathname: '/PriceCharts',query: {stock:stk,dur:3}})
+        router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
     }
 
     const stopTrackingStk = () =>{

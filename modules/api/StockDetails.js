@@ -17,4 +17,11 @@ const getFullCompanyFacts = async (stksym,years) =>{
     return data.data
 }
 
-export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts}
+const getCompanyRevenue = async (stksym,years,repType) =>{
+    let yearsToSend = years
+    if (yearsToSend === "ALL") {yearsToSend = 0}
+    const data = await axios.get(`/api/v2/companyrevenues/` + stksym + `/` + yearsToSend + `/` + repType) 
+    return data.data
+}
+
+export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyRevenue}
