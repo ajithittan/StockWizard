@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import * as d3 from "d3";
+import {getConciseValuesForLargeNums} from '../../modules/utils/UtilFunctions'
 
 const BarChart = (props) =>{
 
@@ -72,12 +73,7 @@ const BarChart = (props) =>{
    
            g.append("g")
             .call(d3.axisLeft(yScale).tickFormat(function(d){
-                if (d < 1000) { return d}
-                else if (d/1000000 < 1000)
-                    { return d/1000000 + "M"}
-                else if (d/1000000 >= 1000){
-                    { return d/1000000000 + "B"}
-                }    ;
+                return getConciseValuesForLargeNums(d)
             }).ticks(5))
             .append("text")
             .attr("y", 6)
@@ -94,6 +90,14 @@ const BarChart = (props) =>{
                 .attr("width", xScale.bandwidth())
                 .attr("height", function(d) { return height - yScale(d.yAxis); });
 
+                let tooltip = d3.select("body")
+                        .append("div")
+                        .style("position", "absolute")
+                        .style("z-index", "10")
+                        .style("visibility", "hidden")
+                        .style("background", "white")
+                        .text("a simple tooltip");    
+
             g.selectAll(".bar1")
                 .data(charData)
                 .enter().append("rect")
@@ -102,17 +106,21 @@ const BarChart = (props) =>{
                 .attr("x", function(d) { return xScale(d.xAxis); })
                 .attr("y", function(d) { return yScale(d.yAxis1 < 0 ? d.yAxis1*-1 : d.yAxis1); })
                 .attr("width", xScale.bandwidth())
-                .attr("height", function(d) { return height - yScale(d.yAxis1 < 0 ? d.yAxis1*-1 : d.yAxis1); });
+                .attr("height", function(d) { return height - yScale(d.yAxis1 < 0 ? d.yAxis1*-1 : d.yAxis1); })
+                .on("mouseover", function(event,data){tooltip.text(getConciseValuesForLargeNums(data.yAxis1)); return tooltip.style("visibility", "visible");})
+                .on("mousemove", function(event,data){ console.log("event is",getConciseValuesForLargeNums(data.yAxis1)); 
+                                        return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")})
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden")})
         }
     },[charData])
 
     return (
-        <div style={{position:'relative'}}>
+        <>
             <svg ref={ref} className="SVG_1"/>
             {
                 props.main ? <div ref={tooltipref} style={{position:"absolute"}}></div> : null
             }
-        </div>
+        </>
     )
 }
 export default BarChart

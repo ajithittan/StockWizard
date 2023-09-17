@@ -2,16 +2,42 @@ import { useEffect, useState } from "react"
 import CompanyRevenue from './CompanyRevenue'
 import { useRouter } from 'next/router'
 import WaitingForResonse from '../../components/WaitingForResponse'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { useSelector, useDispatch} from 'react-redux'
+import {getCompanyStats} from '../../redux/reducers/companyStatsSlice'
+import CompanyDetailsContainer from "./CompanyDetailsContainer"
 
 const index = (props) =>{
     const router = useRouter()
+    const dispatch = useDispatch()
+    const {companystats} = useSelector((state) => state.companystats)
     const stock = router.query.stock
-    const [initialSetUp,setinitialSetUp] = useState({duration:router.query.dur})
+
+    useEffect(() =>{
+        if(!companystats){
+            dispatch(getCompanyStats())
+        }
+    },[])
+
+    const getComponentToRender = (inpData) =>{
+        let newData = {...inpData,"stock":stock}
+        return (<CompanyDetailsContainer {...newData}></CompanyDetailsContainer>)
+    }
+
     return (
-        <div style={{margin:"5%"}}>
-            {stock ? <CompanyRevenue stock={stock} period={"A"}></CompanyRevenue> : <WaitingForResonse></WaitingForResonse>}
-            {stock ? <CompanyRevenue stock={stock} period={"Q"}></CompanyRevenue> : <WaitingForResonse></WaitingForResonse>}
-        </div>
+            <Box sx={{ flexGrow: 1,margin:"1%" }}>
+                <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {
+                        companystats?.map(item => 
+                            <Grid item key={index} xs={12} sm={12} md={4} lg={3} xl={3}>
+                                {stock ? getComponentToRender(item) : <WaitingForResonse></WaitingForResonse>}
+                            </Grid>        
+                        )
+                    }
+                </Grid>
+            </Box>         
     )
 }
 

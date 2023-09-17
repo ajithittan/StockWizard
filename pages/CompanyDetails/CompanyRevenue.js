@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
-import {getCompanyRevenue} from '../../modules/api/StockDetails'
 import BarChart from '../../pages/Charts/BarChart'
-import WaitingForResonse from '../../components/WaitingForResponse'
+import myGif from "../../public/loading-loading-forever.gif"
+import Image from 'next/image';
 
 const CompanyRevenue = (props) =>{
 
     let [chartdata,setChartData] = useState(null)
     const margin = {top: 5, right: 5, bottom: 10, left: 15}
+    let [wait,setWait] = useState(true)
 
     useEffect(() =>{
-        if (props.stock && props.period){
-            getCompanyRevenue(props.stock,"ALL",props.period).then(retval => formatChartData(retval))
+        if (props.inpData){
+            formatChartData(props.inpData)
         }
-    },[props.stock, props.period])
+    },[props.inpData])
 
     const formatChartData = (inpData) =>{
         let retval = []
@@ -27,14 +28,19 @@ const CompanyRevenue = (props) =>{
             retval.push(tempData)
         }
         if (retval.length > 0 ){
-            console.log("retval",retval)
-            setChartData(retval)
+            retval.reverse()
+            if (props.period === "A"){
+                setChartData(retval.slice(-10))
+            }else{
+                setChartData(retval.slice(-8))
+            }
         }
+        setWait(false)
     }
 
    return(
         <>
-            {chartdata ? <BarChart data={chartdata} margin={margin}></BarChart> : <WaitingForResonse></WaitingForResonse>}
+            {wait ? <Image src={myGif} alt="wait" height={100} width={100} /> : <BarChart data={chartdata}></BarChart>}
         </>
     )
 

@@ -8,4 +8,13 @@ const intToString = (value) => {
     return shortValue+suffixes[suffixNum];
 }
 
-export {intToString}
+const getConciseValuesForLargeNums = (inpVal) =>{
+    if (Math.abs(inpVal) < 1000) { return inpVal}
+    else if (Math.abs(inpVal/1000000) < 1000)
+        { return parseFloat(inpVal/1000000).toFixed(2) + "M"}
+    else if (Math.abs(inpVal/1000000) >= 1000){
+        { return parseFloat(inpVal/1000000000).toFixed(2) + "B"}
+    }    
+}
+
+export {intToString,getConciseValuesForLargeNums}
