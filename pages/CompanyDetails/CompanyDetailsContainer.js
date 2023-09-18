@@ -22,7 +22,7 @@ const CompanyDetailsContainer = (props) =>{
 
     const getHeader = (type) =>{
         const header = {"revenue":"Revenue","income":"Income/Loss","earningspershare":"Earning Per Share",
-            "assets" : "Assets","cashandcasheqv":"Cash In Hand","dividends":"Dividends"}
+            "assets" : "Assets","cashandcasheqv":"Cash In Hand","dividends":"Dividends","grossprofit":"Gross Profit"}
         return header[type] || type
 
     }
@@ -39,6 +39,7 @@ const CompanyDetailsContainer = (props) =>{
     return (
         <>
         {
+            console.log("NetIncomeLoss",inpVals),
             wait && !inpVals ? 
                 <Image src={myGif} alt="wait" height={100} width={100} /> : 
                 <>

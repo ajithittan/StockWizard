@@ -9,6 +9,7 @@ export const updCompanyStats = createAsyncThunk("companystats/updCompStats",asyn
 export const getCompanyStats = createAsyncThunk("companystats/getCompStats",async(obj,thunkAPI)=>{
     let defaultLayout = [
         {type:"revenue",limit:0,period:"A"},
+        {type:"grossprofit",limit:0,period:"A"},
         {type:"income",limit:0,period:"A"},
         {type:"earningspershare",limit:0,period:"A"},
         {type:"cashandcasheqv",limit:0,period:"A"},

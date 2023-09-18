@@ -24,7 +24,11 @@ const CompanyRevenue = (props) =>{
             }else if (props.period === "Q"){
                 tempData.xAxis = inpData[i].fp + "'" + inpData[i].end.slice(2,4)
             }
-            tempData.yAxis1 = inpData[i].val
+            if (inpData[i].val === 0){
+                tempData.yAxis1 = inpData[i].val + 0.001
+            }else{
+                tempData.yAxis1 = inpData[i].val
+            }
             retval.push(tempData)
         }
         if (retval.length > 0 ){

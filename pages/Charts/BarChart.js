@@ -108,8 +108,7 @@ const BarChart = (props) =>{
                 .attr("width", xScale.bandwidth())
                 .attr("height", function(d) { return height - yScale(d.yAxis1 < 0 ? d.yAxis1*-1 : d.yAxis1); })
                 .on("mouseover", function(event,data){tooltip.text(getConciseValuesForLargeNums(data.yAxis1)); return tooltip.style("visibility", "visible");})
-                .on("mousemove", function(event,data){ console.log("event is",getConciseValuesForLargeNums(data.yAxis1)); 
-                                        return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")})
+                .on("mousemove", function(event,data){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden")})
         }
     },[charData])
