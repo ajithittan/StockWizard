@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import { useSelector, useDispatch} from 'react-redux'
 import {getCompanyStats} from '../../redux/reducers/companyStatsSlice'
 import CompanyDetailsContainer from "./CompanyDetailsContainer"
+import CompanyFacts from './CompanyFacts'
 
 const index = (props) =>{
     const router = useRouter()
@@ -36,6 +37,9 @@ const index = (props) =>{
                             </Grid>        
                         )
                     }
+                        <Grid item key={index} xs={12} sm={12} md={4} lg={3} xl={3}>
+                            <CompanyFacts></CompanyFacts>
+                        </Grid>        
                 </Grid>
             </Box>         
     )

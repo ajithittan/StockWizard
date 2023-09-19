@@ -8,7 +8,6 @@ export const getPortfolioStocks = createAsyncThunk("porfoliostock/getstocks",asy
 
 export const updPortfolioStocks = createAsyncThunk("porfoliostock/upd",async(obj,thunkAPI)=>{
     thunkAPI.dispatch(ADD_STOCKS_TO_PORTFOLIO(obj))
-    console.log("updPortfolioStocks",thunkAPI.getState()?.porfoliostock?.stockList)
     updStockPortfolioPos(thunkAPI.getState()?.porfoliostock?.stockList)
 }) 
 

@@ -57,5 +57,25 @@ const updateUserDashBoardLayout = async (dashopts) =>{
     return data
 }
 
+const getUserCompanyStats = async () =>{
+    let url = "/personalize/companystats"
+    let data = {}
+    try{
+        await axios.get(url).then(res => data = res.data)
+    }catch (err){
+    }
+    return data
+}
+
+const updateUserCompanyStats = async (compstats) =>{
+    let url = "/personalize/companystats"
+    let data = []
+    try{
+        data = await axios.post(url,compstats)
+    }catch (err){
+    }
+    return data
+}
+
 export {saveStockPositions,delStockPositions,getStockPortfolioPos,updStockPortfolioPos,getUserNotifications,
-    getUserStocks,getUserDashBoardLayout,updateUserDashBoardLayout}
+    getUserStocks,getUserDashBoardLayout,updateUserDashBoardLayout,getUserCompanyStats,updateUserCompanyStats}

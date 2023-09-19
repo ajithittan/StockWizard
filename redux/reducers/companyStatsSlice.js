@@ -1,24 +1,29 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
-import {updateUserDashBoardLayout,getUserDashBoardLayout} from '../../modules/api/UserPreferences'
+import {getUserCompanyStats,updateUserCompanyStats} from '../../modules/api/UserPreferences'
 
 export const updCompanyStats = createAsyncThunk("companystats/updCompStats",async(obj,thunkAPI)=>{
-    //thunkAPI.dispatch(SET_DASHLAYOUT(obj))
-    //updateUserDashBoardLayout(thunkAPI.getState()?.dashboardlayout?.dashboardlayout)
+    thunkAPI.dispatch(ADD_STATS_TO_LIST(obj))
+    updateUserCompanyStats(thunkAPI.getState()?.companystats?.companystats)
   })
+
+export const delCompanyStats = createAsyncThunk("companystats/updCompStats",async(obj,thunkAPI)=>{
+    thunkAPI.dispatch(DEL_STATS_FROM_LIST(obj))
+    updateUserCompanyStats(thunkAPI.getState()?.companystats?.companystats)
+  })  
 
 export const getCompanyStats = createAsyncThunk("companystats/getCompStats",async(obj,thunkAPI)=>{
     let defaultLayout = [
         {type:"revenue",limit:0,period:"A"},
         {type:"grossprofit",limit:0,period:"A"},
         {type:"income",limit:0,period:"A"},
-        {type:"earningspershare",limit:0,period:"A"},
-        {type:"cashandcasheqv",limit:0,period:"A"},
-        {type:"assets",limit:0,period:"A"},
-        {type:"dividends",limit:0,period:"A"},
+        {type:"earningspershare",limit:0,period:"A"}
     ]
-    //let res = await getUserDashBoardLayout()
-    //res?.length > 0 ? null : res = defaultLayout
-    return defaultLayout
+    let res = await getUserCompanyStats()
+    if (!res || res?.length === 0){
+        updateUserCompanyStats(defaultLayout)
+    }
+    res?.length > 0 ? null : res = defaultLayout
+    return res
 }) 
 
 const companyStatsSlice = createSlice({
@@ -28,20 +33,12 @@ const companyStatsSlice = createSlice({
         loading:true
     },
     reducers: {
-        SET_COMP_STATS: (state=initialState, action) => {
-            state.dashboardlayout.map(item => {
-                if (item.layoutId === action.payload.layoutId) {
-                    let temparr = item.compId
-                    temparr.includes(action.payload.compId) ? temparr = temparr.filter(item => item !== action.payload.compId) : temparr.push(action.payload.compId)
-                    item.compId = temparr
-                    return item;
-                }
-                return item
-              }
-            )
+        ADD_STATS_TO_LIST: (state=initialState, action) => {
+            state.companystats.push(action.payload)
         },
-        SET_COMP_INITIAL: (state=initialState, action) => {
-            state.dashboardlayout = action.payload || [{layoutId:1,compId:[1]},{layoutId:2,compId:[2]},{layoutId:3,compId:[3]}]
+        DEL_STATS_FROM_LIST:(state=initialState, action) => {
+            let filteredArr = state.companystats.filter(item => item.type !== action.payload)
+            state.companystats = filteredArr
         }},
     extraReducers:(builder)=>{
         builder
@@ -59,5 +56,5 @@ const companyStatsSlice = createSlice({
     }        
 }) 
 
-export const {SET_COMP_STATS,SET_COMP_INITIAL} = companyStatsSlice.actions;
+export const {ADD_STATS_TO_LIST,DEL_STATS_FROM_LIST} = companyStatsSlice.actions;
 export default companyStatsSlice.reducer;
