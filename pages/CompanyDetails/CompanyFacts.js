@@ -36,8 +36,9 @@ const CompanyFacts = () => {
         backgroundColor: '#F0F8FF',
         opacity: 0.8,
         margin: 'auto',
-        paddingBottom:"5%"
-        };
+        paddingBottom:"5%",
+        height: '100%'
+    };
     
         return (
             <>

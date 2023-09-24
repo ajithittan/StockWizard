@@ -29,17 +29,18 @@ const index = (props) =>{
 
     return (
             <Box sx={{ flexGrow: 1,margin:"1%" }}>
-                <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid direction="row" alignItems="stretch" container spacing={{ xs: 1, md: 1 }}>
                     {
                         companystats?.map(item => 
-                            <Grid item key={index} xs={12} sm={12} md={4} lg={3} xl={3}>
-                                {stock ? getComponentToRender(item) : <WaitingForResonse></WaitingForResonse>}
+                            <Grid item key={index} xs={12} sm={12} md={6} lg={4} xl={4}>
+                                {stock ? 
+                                    getComponentToRender(item) : <WaitingForResonse></WaitingForResonse>}
                             </Grid>        
                         )
                     }
-                        <Grid item key={index} xs={12} sm={12} md={4} lg={3} xl={3}>
-                            <CompanyFacts></CompanyFacts>
-                        </Grid>        
+                    <Grid item key={index} xs={12} sm={12} md={4} lg={3} xl={3}>
+                        <CompanyFacts></CompanyFacts>
+                    </Grid>        
                 </Grid>
             </Box>         
     )

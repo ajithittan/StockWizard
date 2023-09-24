@@ -16,18 +16,28 @@ const CompanyDetailsContainer = (props) =>{
     const dispatch = useDispatch()
     const [inpVals,setInpVals] = useState(null)
     let [wait,setWait] = useState(true)
+    const [showNoData,setShowNoData] = useState(false)
 
     useEffect(() =>{
         if (props){
             getCompanyKeyStats(props.type,props.stock,props.limit,
-                props.period).then(retval => setInpVals(retval),setWait(false)
+                props.period).then(retval => {
+                    if (retval && retval.length > 0){
+                        setInpVals(retval)
+                    }else{
+                        setShowNoData(true)
+                    }
+                    setWait(false)
+                }
             )
         }
     },[props])
 
     const getHeader = (type) =>{
-        const header = {"revenue":"Revenue","income":"Income/Loss","earningspershare":"Earning Per Share",
-            "assets" : "Assets","cashandcasheqv":"Cash In Hand","dividends":"Dividends","grossprofit":"Gross Profit"}
+        const header = 
+            {"revenue":"Revenue", "operatingincome":"Operating Income", "income":"Net Income/Loss","costofgoodsandservices":"Cost of Goods and Services",
+            "earningspershare":"Earning Per Share","assets" : "Assets","cashandcasheqv":"Cash In Hand","dividends":"Dividends",
+            "grossprofit":"Gross Profit"}
         return header[type] || type
 
     }
@@ -38,7 +48,9 @@ const CompanyDetailsContainer = (props) =>{
     backgroundColor: '#F0F8FF',
     opacity: 0.8,
     margin: 'auto',
-    paddingBottom:"5%"
+    paddingBottom:"5%",
+    opacity: showNoData? "0.5" : "1.0",
+    height: '100%'
     };
 
     const removeItemFromList = (delTp) => dispatch(delCompanyStats(delTp))
@@ -54,7 +66,7 @@ const CompanyDetailsContainer = (props) =>{
                                 style={{cursor:"pointer"}}
                     />
                     <CardContent>
-                        <CompanyRevenue inpData={inpVals} period={props.period}/>
+                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue inpData={inpVals} period={props.period}/>}
                     </CardContent>
                     <CardActions>
                         <IconButton aria-label="delete">

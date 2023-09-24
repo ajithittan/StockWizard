@@ -16,15 +16,17 @@ const BarChart = (props) =>{
         setWidth(ref.current.parentElement.offsetWidth*0.80)
         setHeight(ref.current.parentElement.offsetHeight)   
     },[])
-
-    useEffect(() => {
-        window.addEventListener('resize', updateDimensions);
-    
-        return () => {
-          window.removeEventListener('resize', updateDimensions);
-        }
-      }, [])
-
+    {
+        /**
+        useEffect(() => {
+            window.addEventListener('resize', updateDimensions);
+        
+            return () => {
+            window.removeEventListener('resize', updateDimensions);
+            }
+        }, [])
+        * */
+    }
     const updateDimensions = () => {
         setWidth(window.innerWidth*0.90)
         setHeight(window.innerHeight*0.90)
