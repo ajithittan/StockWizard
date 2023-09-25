@@ -42,7 +42,6 @@ const ViewOfFacts = (props) =>{
         setWaiting(true)
         getFullCompanyFacts(stk,years).then(retval => {if (retval)
         {
-          console.log("retval",retval)
           setCompFacts(Object.values(retval))
           setKeyToContent(Object.keys(retval[0])[0])
           setWaiting(false)
@@ -61,7 +60,6 @@ const ViewOfFacts = (props) =>{
         }
         <br></br>
         {
-            console.log("showQtr",showQtr),
             compFacts ? 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs aria-label="Company Facts">
@@ -76,7 +74,7 @@ const ViewOfFacts = (props) =>{
                 <Tab label={getSwitchComp("Quarter",handlShowQuarter)}></Tab>
               </Tabs>
               {keyToContent && compFacts ? <CompanyFacts key={showQtr} facts={compFacts.filter(item => item[keyToContent])[0][keyToContent]} 
-                                category={keyToContent} quarter={showQtr}></CompanyFacts> : null}
+                                category={keyToContent} quarter={showQtr} stock={props.stock}></CompanyFacts> : null}
             </Box>
             : null
         }   

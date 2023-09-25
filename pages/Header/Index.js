@@ -19,7 +19,7 @@ import BadgeNotification from '../../components/BadgeNotification'
 import {useDispatch} from 'react-redux'
 import {getPortfolioStocks} from '../../redux/reducers/portfolioStockSlice'
 
-const pages = ['Sectors','Performance','Analyze','Research','Prediction','Art']
+const pages = ['Sectors','Performance','Analyze','SEC Data','Prediction','Art']
 const links = ['SectorSetUp','SectorPerformance','Charting','Research','Prediction','Art']
 const settings = ['Logout']
 

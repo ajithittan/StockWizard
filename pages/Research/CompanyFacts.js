@@ -6,12 +6,16 @@ import BarChart from '../Charts/BarChart'
 import IconButton from '@mui/material/IconButton';
 import DatasetIcon from '@mui/icons-material/Dataset';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ModalBox from '../../components/ModalBox'
+import EachFactDetailed from './EachFactDetailed'
 
 const CompanyFacts = (props) =>{
     const [compFacts,setCompFacts] = useState(null)
     const [waiting,setWaiting] = useState(false) 
     const [quarter,setQuarter] = useState(false)
     const margin = {top: 5, right: 5, bottom: 10, left: 15}
+    const [showInModal,setShowInModal] = useState(false)
+    const [inpForModal,setInpForModal] = useState(null)
 
     useEffect (() =>{
         if(props.facts){
@@ -20,13 +24,13 @@ const CompanyFacts = (props) =>{
     },[props.facts])
 
     useEffect(() =>{
-        console.log("props.quarter",props.quarter)
         if (props.quarter) {setQuarter(props.quarter)}
     },[props.quarter])
 
     const columns = [
         { field: '', headerName: 'Actions', width: 100,renderCell: (row) => addToDashboard(row,quarter)},
-        { field: 'label', headerName: 'Type', width: 300},
+        { field: 'label', headerName: 'Label', width: 300},
+        { field: 'type', headerName: 'Type', width: 300},
         { field: 'units', headerName: 'units', width: 300 , renderCell: (row) => renderDetailsButton(row,quarter)},
         { field: 'description', headerName: 'Description', width: 500}
       ];
@@ -53,10 +57,19 @@ const CompanyFacts = (props) =>{
     const getDataSet = (row) =>{
         return (
             <IconButton aria-label="Add To Dashboard">
-                <DatasetIcon onClick={() => console.log("addToDashboard",row)} />
+                <DatasetIcon onClick={() => {
+                    let tempVal = {type:row.row.type,stock:props.stock,repType:quarter?"Q":"A"}
+                    setInpForModal(tempVal);setShowInModal(true)
+                    }} />
             </IconButton>
         )
+    }
 
+    const getDataFromBackend = () => {
+        console.log("setInpForModal",inpForModal)
+        return (
+            <EachFactDetailed inpVals={inpForModal}></EachFactDetailed>
+        )
     }
 
     const formatToFitChart = (inpData,period) =>{
@@ -137,6 +150,13 @@ const CompanyFacts = (props) =>{
                     </Box>
                     :null
                 }
+                <>
+                {
+                    showInModal ? 
+                    <ModalBox content={getDataFromBackend()} onClose={() => setShowInModal(false)}></ModalBox> 
+                    : null     
+                }
+                </>
         </>
     )
 }

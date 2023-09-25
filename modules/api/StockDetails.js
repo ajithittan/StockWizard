@@ -27,4 +27,9 @@ const getMasterListOfCompanyFacts = async () =>{
     return data.data
 }
 
-export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,getMasterListOfCompanyFacts}
+const getRawCompanyStatsByType = async (statType,stksym,repType) =>{
+    const data = await axios.get(`/api/v2/rawcompanystats/` + statType + `/` + stksym + `/` + repType) 
+    return data.data
+}
+
+export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,getMasterListOfCompanyFacts,getRawCompanyStatsByType}

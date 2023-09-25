@@ -35,9 +35,9 @@ const CompanyDetailsContainer = (props) =>{
 
     const getHeader = (type) =>{
         const header = 
-            {"revenue":"Revenue", "operatingincome":"Operating Income", "income":"Net Income/Loss","costofgoodsandservices":"Cost of Goods and Services",
+            {"revenue":"Revenue", "operatingincome":"Operating Income (EBIT)", "income":"Net Income/Loss","costofgoodsandservices":"COGS/Expenses",
             "earningspershare":"Earning Per Share","assets" : "Assets","cashandcasheqv":"Cash In Hand","dividends":"Dividends",
-            "grossprofit":"Gross Profit"}
+            "grossprofit":"Gross Profit","oprexpensesga":"Sales and General expenses"}
         return header[type] || type
 
     }
