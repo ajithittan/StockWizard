@@ -32,4 +32,11 @@ const getRawCompanyStatsByType = async (statType,stksym,repType) =>{
     return data.data
 }
 
-export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,getMasterListOfCompanyFacts,getRawCompanyStatsByType}
+const updMasterListOfCompanyFacts  = async (updsection) =>{
+    let url = "/api/v2/companystats/updfacts"
+    const data = await axios.post(url,updsection)
+    return data.data
+}
+
+export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,
+    getMasterListOfCompanyFacts,getRawCompanyStatsByType,updMasterListOfCompanyFacts}

@@ -30,7 +30,8 @@ const EachFactDetailed = (props) =>{
         <>
             {
                  dataForCompany ? 
-                    <Box sx={{ height: '70vh', width: '100vh'}}>
+                    <Box sx={{ height: '60vh', width: '100vh'}} component="fieldset">
+                        <legend>{props.inpVals.type}</legend>
                         <DataGrid
                             getRowHeight={() => 'auto'}
                             rows={dataForCompany}

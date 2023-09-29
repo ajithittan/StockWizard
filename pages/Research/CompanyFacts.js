@@ -8,6 +8,7 @@ import DatasetIcon from '@mui/icons-material/Dataset';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ModalBox from '../../components/ModalBox'
 import EachFactDetailed from './EachFactDetailed'
+import AddModifyCompanyMapping from './AddModifyCompanyMapping'
 
 const CompanyFacts = (props) =>{
     const [compFacts,setCompFacts] = useState(null)
@@ -28,10 +29,8 @@ const CompanyFacts = (props) =>{
     },[props.quarter])
 
     const columns = [
-        { field: '', headerName: 'Actions', width: 100,renderCell: (row) => addToDashboard(row,quarter)},
-        { field: 'label', headerName: 'Label', width: 300},
-        { field: 'type', headerName: 'Type', width: 300},
         { field: 'units', headerName: 'units', width: 300 , renderCell: (row) => renderDetailsButton(row,quarter)},
+        { field: 'label', headerName: 'Label', width: 300},
         { field: 'description', headerName: 'Description', width: 500}
       ];
 
@@ -57,7 +56,7 @@ const CompanyFacts = (props) =>{
     const getDataSet = (row) =>{
         return (
             <IconButton aria-label="Add To Dashboard">
-                <DatasetIcon onClick={() => {
+                <DashboardIcon onClick={() => {
                     let tempVal = {type:row.row.type,stock:props.stock,repType:quarter?"Q":"A"}
                     setInpForModal(tempVal);setShowInModal(true)
                     }} />
@@ -68,7 +67,11 @@ const CompanyFacts = (props) =>{
     const getDataFromBackend = () => {
         console.log("setInpForModal",inpForModal)
         return (
-            <EachFactDetailed inpVals={inpForModal}></EachFactDetailed>
+            <>
+                <AddModifyCompanyMapping selType={inpForModal.type}></AddModifyCompanyMapping>
+                <br></br><br></br>
+                <EachFactDetailed inpVals={inpForModal}></EachFactDetailed>
+            </>
         )
     }
 
