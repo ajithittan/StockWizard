@@ -30,6 +30,7 @@ const CompanyFacts = (props) =>{
 
     const columns = [
         { field: 'units', headerName: 'units', width: 300 , renderCell: (row) => renderDetailsButton(row,quarter)},
+        { field: 'type', headerName: 'Type', width: 300},
         { field: 'label', headerName: 'Label', width: 300},
         { field: 'description', headerName: 'Description', width: 500}
       ];
