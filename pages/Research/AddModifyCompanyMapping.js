@@ -24,7 +24,7 @@ const AddModifyCompanyMapping = (props) =>{
     useEffect(() =>{
         getMasterListOfCompanyFacts().then(retval => {
                 setAllFacts(retval)
-                setMainTypes(Object.keys(retval))
+                setMainTypes(Object.keys(retval).sort())
             }
         )
     },[])
