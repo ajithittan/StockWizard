@@ -15,7 +15,7 @@ const CompanyFacts = () => {
 
     useEffect(() =>{
         getMasterListOfCompanyFacts().then(retval => {
-                setAllFacts(removeSelectedOptions(Object.keys(retval)))
+                setAllFacts(removeSelectedOptions(Object.keys(retval).sort()))
             }
         )
     },[companystats])

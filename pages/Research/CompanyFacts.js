@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import BarChart from '../Charts/BarChart'
 import IconButton from '@mui/material/IconButton';
-import DatasetIcon from '@mui/icons-material/Dataset';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ModalBox from '../../components/ModalBox'
 import EachFactDetailed from './EachFactDetailed'
@@ -30,7 +29,7 @@ const CompanyFacts = (props) =>{
 
     const columns = [
         { field: 'units', headerName: 'units', width: 300 , renderCell: (row) => renderDetailsButton(row,quarter)},
-        { field: 'type', headerName: 'Type', width: 300},
+        //{ field: 'type', headerName: 'Type', width: 300},
         { field: 'label', headerName: 'Label', width: 300},
         { field: 'description', headerName: 'Description', width: 500}
       ];

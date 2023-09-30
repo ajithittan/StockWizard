@@ -32,7 +32,7 @@ const AddModifyCompanyMapping = (props) =>{
     const handleChange = (event,data) => {
       if (data){
         setSelType(data);
-        setCurrMaps([...allFacts[data].DataKey])  
+        setCurrMaps([...allFacts[data].DataKey.sort()])  
         setShowFilter(true)
       }else{
         setSelType(null);
