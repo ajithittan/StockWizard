@@ -20,7 +20,7 @@ import {useDispatch} from 'react-redux'
 import {getPortfolioStocks} from '../../redux/reducers/portfolioStockSlice'
 
 const pages = ['Sectors','Performance','Analyze','SEC Data','Prediction','Art']
-const links = ['SectorSetUp','SectorPerformance','Charting','Research','Prediction','Art']
+const links = ['SectorSetUp','SectorPerformance','Charting','SecData','Prediction','Art']
 const settings = ['Logout']
 
 const ResponsiveAppBar = () => {  

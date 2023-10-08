@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-import {getFullCompanyFacts} from '../../modules/api/StockDetails'
+import {getFullCompanyFacts,uploadSecDatatoDB} from '../../modules/api/StockDetails'
 import CompanyFacts from './CompanyFacts'
 import WaitingForResonse from '../../components/WaitingForResponse'
 import Tabs from '@mui/material/Tabs';
@@ -53,6 +53,8 @@ const ViewOfFacts = (props) =>{
 
     const changeKey = (chngVal) => setKeyToContent(chngVal)
 
+    const addSecDataToDB = () => uploadSecDatatoDB(props.stock)
+
     return(
         <>
         {
@@ -72,6 +74,7 @@ const ViewOfFacts = (props) =>{
                 )}
                 <Tab label={getSwitchComp("Show All",handleYearChange)}></Tab>
                 <Tab label={getSwitchComp("Quarter",handlShowQuarter)}></Tab>
+                <Tab label={getSwitchComp("Add to DB",addSecDataToDB)}></Tab>
               </Tabs>
               {keyToContent && compFacts ? <CompanyFacts key={showQtr} facts={compFacts.filter(item => item[keyToContent])[0][keyToContent]} 
                                 category={keyToContent} quarter={showQtr} stock={props.stock}></CompanyFacts> : null}

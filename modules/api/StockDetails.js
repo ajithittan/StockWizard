@@ -38,5 +38,11 @@ const updMasterListOfCompanyFacts  = async (updsection) =>{
     return data.data
 }
 
+const uploadSecDatatoDB  = async (stksym) =>{
+    let url = "/api/v2/companystats/addsecdata" + `/` + stksym
+    const data = await axios.post(url)
+    return data.data
+}
+
 export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,
-    getMasterListOfCompanyFacts,getRawCompanyStatsByType,updMasterListOfCompanyFacts}
+    getMasterListOfCompanyFacts,getRawCompanyStatsByType,updMasterListOfCompanyFacts,uploadSecDatatoDB}
