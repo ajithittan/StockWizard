@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react"
-import CompanyRevenue from './CompanyRevenue'
+import { useEffect} from "react"
 import { useRouter } from 'next/router'
 import WaitingForResonse from '../../components/WaitingForResponse'
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { useSelector, useDispatch} from 'react-redux'
-import {getCompanyStats} from '../../redux/reducers/companyStatsSlice'
+import {getCompanyStats,modifyCompanyStats} from '../../redux/reducers/companyStatsSlice'
 import CompanyDetailsContainer from "./CompanyDetailsContainer"
 import CompanyFacts from './CompanyFacts'
+import ModeChanger from './ModeChanger'
 
 const index = (props) =>{
     const router = useRouter()
@@ -27,7 +26,17 @@ const index = (props) =>{
         return (<CompanyDetailsContainer {...newData}></CompanyDetailsContainer>)
     }
 
+    const changePeriod = () => {
+        console.log("period change",companystats[0]["period"])
+        if (companystats[0]["period"] === "A"){
+            dispatch(modifyCompanyStats({"period":"Q"}))
+        }else{
+            dispatch(modifyCompanyStats({"period":"A"}))
+        }
+    }
+
     return (
+            <>
             <Box sx={{ flexGrow: 1,margin:"1%" }}>
                 <Grid direction="row" alignItems="stretch" container spacing={{ xs: 1, md: 1 }}>
                     {
@@ -42,7 +51,9 @@ const index = (props) =>{
                         <CompanyFacts></CompanyFacts>
                     </Grid>        
                 </Grid>
-            </Box>         
+            </Box>     
+            <ModeChanger changePeriod={changePeriod}></ModeChanger>    
+            </>
     )
 }
 

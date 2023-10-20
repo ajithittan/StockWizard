@@ -11,6 +11,11 @@ export const delCompanyStats = createAsyncThunk("companystats/updCompStats",asyn
     updateUserCompanyStats(thunkAPI.getState()?.companystats?.companystats)
   })  
 
+export const modifyCompanyStats = createAsyncThunk("companystats/updCompStats",async(obj,thunkAPI)=>{
+    thunkAPI.dispatch(MODIFY_COMPANY_STATS(obj))
+    updateUserCompanyStats(thunkAPI.getState()?.companystats?.companystats)
+})    
+
 export const getCompanyStats = createAsyncThunk("companystats/getCompStats",async(obj,thunkAPI)=>{
     let defaultLayout = [
         {type:"revenue",limit:0,period:"A"},
@@ -39,6 +44,15 @@ const companyStatsSlice = createSlice({
         DEL_STATS_FROM_LIST:(state=initialState, action) => {
             let filteredArr = state.companystats.filter(item => item.type !== action.payload)
             state.companystats = filteredArr
+        },        
+        MODIFY_COMPANY_STATS: (state=initialState, action) => {
+            console.log("action.payload",Object.keys(action.payload))
+            let keyToUpd = Object.keys(action.payload)[0]
+            state.companystats.map(item => {
+                item[keyToUpd] = action.payload[keyToUpd]
+                return item
+              }
+            )
         }},
     extraReducers:(builder)=>{
         builder
@@ -56,5 +70,5 @@ const companyStatsSlice = createSlice({
     }        
 }) 
 
-export const {ADD_STATS_TO_LIST,DEL_STATS_FROM_LIST} = companyStatsSlice.actions;
+export const {ADD_STATS_TO_LIST,DEL_STATS_FROM_LIST,MODIFY_COMPANY_STATS} = companyStatsSlice.actions;
 export default companyStatsSlice.reducer;

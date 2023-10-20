@@ -36,7 +36,7 @@ const CompanyRevenue = (props) =>{
             if (props.period === "A"){
                 setChartData(retval.slice(-10))
             }else{
-                setChartData(retval.slice(-8))
+                setChartData(retval.slice(-12))
             }
         }
         setWait(false)
