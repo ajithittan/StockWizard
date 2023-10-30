@@ -923,3 +923,15 @@ color: white;
   width: 95%;
   margin-top: 10px;
 }
+
+.axisBlue line{
+  stroke: blue;
+}
+
+.axisBlue path{
+  stroke: blue;
+}
+
+.axisBlue text{
+  fill: blue;
+}  

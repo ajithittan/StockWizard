@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import * as d3 from "d3";
 import {getConciseValuesForLargeNums} from '../../modules/utils/UtilFunctions'
+import {yTicksRight} from '../../components/Charting/Components/Ticks'
+import {XScale,YScale} from '../../components/Charting/Components/Scales'
 
 const BarChart = (props) =>{
 
     const ref = useRef()
     const tooltipref = useRef()
     const [charData, setcharData] = useState(null)
+    const [lineData,setLineData] = useState(null)
     const [width,setWidth] = useState(null)
     const [height,setHeight] = useState(null)
     const [domainwidth,setdomainwidth] = useState(null)
@@ -47,6 +50,21 @@ const BarChart = (props) =>{
     },[props.data])
 
     useEffect (() =>{
+        if (props.addLineChart && charData){
+            let normalizeddata = props.addLineChart.filter(item => charData.filter(innerdata => innerdata.xAxis === item.xAxis).length)
+            setLineData(normalizeddata)
+        }
+    },[props.addLineChart,charData])
+
+    const getTextValue = (yAxis,xAxis) => {
+        if (lineData){
+            return getConciseValuesForLargeNums(yAxis) + "(" + lineData.filter(item => item.xAxis === xAxis)[0]?.close + ")"
+        }else{
+            return   getConciseValuesForLargeNums(yAxis)
+        }
+    }
+
+    useEffect (() =>{
         if (charData) {
 
             const svgElement = d3.select(ref.current)
@@ -61,6 +79,7 @@ const BarChart = (props) =>{
                 .attr("transform", "translate(" + 5 + "," + 5 + ")");   
             
             xScale.domain(charData.map(function(d) { return d.xAxis; }),domainwidth);
+
             if (charData[0]?.yAxis){
                 yScale.domain([0, d3.max(charData, function(d) { return d.yAxis;})],domainheight);
             }else if(charData[0]?.yAxis1){
@@ -82,6 +101,30 @@ const BarChart = (props) =>{
             .attr("dy", "0.71em")
             .attr("text-anchor", "end")
 
+            if (lineData){
+                const yLineScale = d3.scaleLinear().range ([height, 0]);
+                yLineScale.domain([0, d3.max(lineData, function(d) { return Math.abs(d.close);})],domainheight);
+                
+                g.append("g")
+                    .call(d3.axisRight(yLineScale).tickFormat(function(d){
+                        return getConciseValuesForLargeNums(d)
+                    }).ticks(5))
+                .attr("transform", "translate(" + width + ",0)")
+                .attr("class", "axisBlue")
+
+                let linesOfChart = d3.line().curve(d3.curveCardinal)
+                    .x(function(d) { return xScale(d.xAxis)*1.05 })
+                    .y(function(d) { return yLineScale(d.close)});
+
+                svgElement.append("path")
+                    .datum(lineData)
+                    .attr("fill", "none")
+                    .attr("stroke", "steelblue")
+                    .attr("stroke-width", 1.5)              
+                    .attr("d", linesOfChart)
+                
+           }
+            
             g.selectAll(".bar")
                 .data(charData)
                 .enter().append("rect")
@@ -109,11 +152,12 @@ const BarChart = (props) =>{
                 .attr("y", function(d) { return yScale(d.yAxis1 < 0 ? d.yAxis1*-1 : d.yAxis1); })
                 .attr("width", xScale.bandwidth())
                 .attr("height", function(d) { return height - yScale(d.yAxis1 < 0 ? d.yAxis1*-1 : d.yAxis1); })
-                .on("mouseover", function(event,data){tooltip.text(getConciseValuesForLargeNums(data.yAxis1)); return tooltip.style("visibility", "visible");})
+                .on("mouseover", function(event,data){tooltip.text(getTextValue(data.yAxis1,data.xAxis)); return tooltip.style("visibility", "visible");})
                 .on("mousemove", function(event,data){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden")})
+                 
         }
-    },[charData])
+    },[charData,lineData])
 
     return (
         <>

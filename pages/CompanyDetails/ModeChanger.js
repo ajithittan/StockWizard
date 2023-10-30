@@ -1,16 +1,15 @@
 import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import PlusOneIcon from '@mui/icons-material/PlusOne';
+import SpeedDialAction from '@mui/material/SpeedDialAction'
+import SpeedDialIcon from '@mui/material/SpeedDialIcon'
 import RotateRightIcon from '@mui/icons-material/RotateRight';
-import RemoveIcon from '@mui/icons-material/Remove';
-import SaveIcon from '@mui/icons-material/Save';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 
 const ModeChanger = (props) => {
 
   const actions = [
-    { icon: <RotateRightIcon onClick={props.changePeriod}/>, name: 'A/Q' },
+    { icon: <RotateRightIcon onClick={() => props.changeAction("PERIOD")}/>, name: 'A/Q' },
+    { icon: <ShowChartIcon onClick={() => props.changeAction("PRICECHART")}/>, name: 'Price Chart' },
   ];
   
   return (

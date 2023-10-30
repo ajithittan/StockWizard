@@ -6,6 +6,7 @@ import Image from 'next/image';
 const CompanyRevenue = (props) =>{
 
     let [chartdata,setChartData] = useState(null)
+    let [lineChartData,setLineChartData] = useState(null)
     const margin = {top: 5, right: 5, bottom: 10, left: 15}
     let [wait,setWait] = useState(true)
 
@@ -14,6 +15,12 @@ const CompanyRevenue = (props) =>{
             formatChartData(props.inpData)
         }
     },[props.inpData])
+
+    useEffect(() =>{
+        if (props.lineChartData){
+            setLineChartData(props.lineChartData)
+        }
+    },[props.lineChartData])
 
     const formatChartData = (inpData) =>{
         let retval = []
@@ -44,7 +51,7 @@ const CompanyRevenue = (props) =>{
 
    return(
         <>
-            {wait ? <Image src={myGif} alt="wait" height={100} width={100} /> : <BarChart data={chartdata}></BarChart>}
+            {wait ? <Image src={myGif} alt="wait" height={100} width={100} /> : <BarChart data={chartdata} addLineChart={lineChartData}></BarChart>}
         </>
     )
 

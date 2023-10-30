@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {getCompanyKeyStats} from '../../modules/api/StockDetails'
+import getStockPerChange from '../../modules/cache/cacheperchange'
 import CompanyRevenue from './CompanyRevenue'
 import myGif from "../../public/loading-loading-forever.gif"
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import {useDispatch} from 'react-redux'
 const CompanyDetailsContainer = (props) =>{
     const dispatch = useDispatch()
     const [inpVals,setInpVals] = useState(null)
+    const [lineChartData,setLineChartData] = useState(null)
     let [wait,setWait] = useState(true)
     const [showNoData,setShowNoData] = useState(false)
 
@@ -30,8 +32,24 @@ const CompanyDetailsContainer = (props) =>{
                     setWait(false)
                 }
             )
+            if (props.addPriceChart){
+                getLineChartData()
+            }
         }
     },[props])
+
+
+    const getLineChartData = () =>{
+        const cacheKey = props.stock + "_" + 120 + "_" + 12 + "_" + "Y"   
+        getStockPerChange(cacheKey,{'stock':props.stock,'duration':120,'rollup':12,'unit':"Y",'byType':"C"}).then(tempData =>{
+            if (tempData !== undefined && tempData !==[]){
+                if (props.period === "A"){
+                    tempData = tempData.map(item => ({ ...item, xAxis: ((new Date(item.date)).getFullYear()).toString()}))
+                    setLineChartData(tempData)
+                }
+            }    
+        })
+    }
 
     const getHeader = (type) =>{
         const header = 
@@ -66,7 +84,7 @@ const CompanyDetailsContainer = (props) =>{
                                 style={{cursor:"pointer"}}
                     />
                     <CardContent>
-                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue inpData={inpVals} period={props.period}/>}
+                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue inpData={inpVals} period={props.period} lineChartData={lineChartData}/>}
                     </CardContent>
                     <CardActions>
                         <IconButton aria-label="delete">

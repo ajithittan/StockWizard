@@ -26,12 +26,35 @@ const index = (props) =>{
         return (<CompanyDetailsContainer {...newData}></CompanyDetailsContainer>)
     }
 
-    const changePeriod = () => {
-        console.log("period change",companystats[0]["period"])
-        if (companystats[0]["period"] === "A"){
-            dispatch(modifyCompanyStats({"period":"Q"}))
+    const dispatchTypeChange = (typeOfChange) => dispatch(modifyCompanyStats(typeOfChange))
+
+    const changeAction = (changeType) =>{
+        if (changeType === "PERIOD"){
+            changePeriod()
+        }else if (changeType === "PRICECHART"){
+            addPriceChart()
+        }
+    }
+
+    const addPriceChart = () =>{
+        let typeToChange = {}
+        if (companystats[0]["addPriceChart"] === true){
+            typeToChange.addPriceChart = false
+            dispatchTypeChange(typeToChange)
         }else{
-            dispatch(modifyCompanyStats({"period":"A"}))
+            typeToChange.addPriceChart = true
+            dispatchTypeChange(typeToChange)        
+        }
+    }
+
+    const changePeriod = () => {
+        let typeToChange = {}
+        if (companystats[0]["period"] === "A"){
+            typeToChange.period="Q"
+            dispatchTypeChange(typeToChange)
+        }else{
+            typeToChange.period="A"
+            dispatchTypeChange(typeToChange)
         }
     }
 
@@ -52,7 +75,7 @@ const index = (props) =>{
                     </Grid>        
                 </Grid>
             </Box>     
-            <ModeChanger changePeriod={changePeriod}></ModeChanger>    
+            <ModeChanger changeAction={changeAction}></ModeChanger>    
             </>
     )
 }
