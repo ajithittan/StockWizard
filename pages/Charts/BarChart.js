@@ -19,7 +19,7 @@ const BarChart = (props) =>{
         setWidth(ref.current.parentElement.offsetWidth*0.80)
         setHeight(ref.current.parentElement.offsetHeight)   
     },[])
-    
+    /**
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
     
@@ -32,6 +32,7 @@ const BarChart = (props) =>{
         setWidth(window.innerWidth*0.90)
         setHeight(window.innerHeight*0.90)
     }
+     */
 
     useEffect(() =>{
         if (props.margin){
