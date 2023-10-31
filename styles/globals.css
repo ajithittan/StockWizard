@@ -935,3 +935,15 @@ color: white;
 .axisBlue text{
   fill: blue;
 }  
+
+.axisRed line{
+  stroke: #CB6D51;
+}
+
+.axisRed path{
+  stroke: #CB6D51;
+}
+
+.axisRed text{
+  fill: #CB6D51;
+} 

@@ -12,6 +12,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {delCompanyStats} from '../../redux/reducers/companyStatsSlice'
 import {useDispatch} from 'react-redux'
+import ExpandIcon from '@mui/icons-material/Expand';
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 
 const CompanyDetailsContainer = (props) =>{
     const dispatch = useDispatch()
@@ -19,8 +21,10 @@ const CompanyDetailsContainer = (props) =>{
     const [lineChartData,setLineChartData] = useState(null)
     let [wait,setWait] = useState(true)
     const [showNoData,setShowNoData] = useState(false)
+    const [resize,setResize] = useState(0)
 
     useEffect(() =>{
+        console.log("in here for props change?",props)
         if (props){
             getCompanyKeyStats(props.type,props.stock,props.limit,
                 props.period).then(retval => {
@@ -34,6 +38,8 @@ const CompanyDetailsContainer = (props) =>{
             )
             if (props.addPriceChart){
                 getLineChartData()
+            }else{
+                setLineChartData([])
             }
         }
     },[props])
@@ -73,6 +79,10 @@ const CompanyDetailsContainer = (props) =>{
 
     const removeItemFromList = (delTp) => dispatch(delCompanyStats(delTp))
 
+    const expandType = (expTp) => {props.expand(2), props.expandType(expTp), setResize(1)}
+
+    const collapseType = (expTp) => {props.expand(1),setResize(0)}
+
     return (
         <>
         {
@@ -84,11 +94,18 @@ const CompanyDetailsContainer = (props) =>{
                                 style={{cursor:"pointer"}}
                     />
                     <CardContent>
-                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue inpData={inpVals} period={props.period} lineChartData={lineChartData}/>}
+                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue key={resize} inpData={inpVals} period={props.period} lineChartData={lineChartData} />}
                     </CardContent>
                     <CardActions>
                         <IconButton aria-label="delete">
                             <DeleteIcon onClick={() => removeItemFromList(props.type)}/>
+                        </IconButton>
+                        <IconButton aria-label="Resize">
+                            {
+                            resize ? 
+                                <CloseFullscreenIcon onClick={() => collapseType(props.type)}/>:
+                                <ExpandIcon onClick={() => expandType(props.type)}/>
+                            }
                         </IconButton>
                 </CardActions>
                 </Card>

@@ -19,17 +19,15 @@ const BarChart = (props) =>{
         setWidth(ref.current.parentElement.offsetWidth*0.80)
         setHeight(ref.current.parentElement.offsetHeight)   
     },[])
-    {
-        /**
-        useEffect(() => {
-            window.addEventListener('resize', updateDimensions);
-        
-            return () => {
-            window.removeEventListener('resize', updateDimensions);
-            }
-        }, [])
-        * */
-    }
+    
+    useEffect(() => {
+        window.addEventListener('resize', updateDimensions);
+    
+        return () => {
+        window.removeEventListener('resize', updateDimensions);
+        }
+    }, [])
+
     const updateDimensions = () => {
         setWidth(window.innerWidth*0.90)
         setHeight(window.innerHeight*0.90)
@@ -41,7 +39,7 @@ const BarChart = (props) =>{
             setdomainwidth(width - margin.left - margin.right)
             setdomainheight(height - margin.top - margin.bottom)
         }
-    },[width])
+    },[width,height])
 
     useEffect (() =>{
         if (props.data){
@@ -101,7 +99,7 @@ const BarChart = (props) =>{
             .attr("dy", "0.71em")
             .attr("text-anchor", "end")
 
-            if (lineData){
+            if (lineData && lineData.length > 0){
                 const yLineScale = d3.scaleLinear().range ([height, 0]);
                 yLineScale.domain([0, d3.max(lineData, function(d) { return Math.abs(d.close);})],domainheight);
                 
@@ -110,7 +108,7 @@ const BarChart = (props) =>{
                         return getConciseValuesForLargeNums(d)
                     }).ticks(5))
                 .attr("transform", "translate(" + width + ",0)")
-                .attr("class", "axisBlue")
+                .attr("class", "axisRed")
 
                 let linesOfChart = d3.line().curve(d3.curveCardinal)
                     .x(function(d) { return xScale(d.xAxis)*1.05 })
@@ -119,7 +117,7 @@ const BarChart = (props) =>{
                 svgElement.append("path")
                     .datum(lineData)
                     .attr("fill", "none")
-                    .attr("stroke", "steelblue")
+                    .attr("stroke", "#CB6D51")
                     .attr("stroke-width", 1.5)              
                     .attr("d", linesOfChart)
                 

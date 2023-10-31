@@ -55,14 +55,14 @@ const CompanyFacts = () => {
                             {allFacts?.map((data) => {
                                 return (
                                     <div style={{marginRight:"5px"}}>
-                                    <Chip
-                                    variant={"outlined"}
-                                    label={data}
-                                    color= {"primary"}
-                                    size="small"
-                                    cursor="pointer"
-                                    onClick={() => addNewDataFeed(data)}
-                                    />
+                                        <Chip
+                                        variant={"outlined"}
+                                        label={data}
+                                        color= {"primary"}
+                                        size="small"
+                                        cursor="pointer"
+                                        onClick={() => addNewDataFeed(data)}
+                                        />
                                     </div>
                                 );
                             })}
