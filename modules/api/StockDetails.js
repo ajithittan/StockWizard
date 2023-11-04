@@ -44,5 +44,11 @@ const uploadSecDatatoDB  = async (stksym) =>{
     return data.data
 }
 
-export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,
+const getCompanyProfile = async (stksym) =>{
+    let url = "/realtime/stockinfo" + `/` + stksym
+    const data = await axios.get(url)
+    return data.data
+}
+
+export {getBasicStockDetails,getTopStockMovers,getFullCompanyFacts,getCompanyKeyStats,getCompanyProfile,
     getMasterListOfCompanyFacts,getRawCompanyStatsByType,updMasterListOfCompanyFacts,uploadSecDatatoDB}

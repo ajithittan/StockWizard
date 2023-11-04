@@ -936,14 +936,14 @@ color: white;
   fill: blue;
 }  
 
-.axisRed line{
-  stroke: #CB6D51;
+.axisOrange line{
+  stroke: #FFA500;
 }
 
-.axisRed path{
-  stroke: #CB6D51;
+.axisOrange path{
+  stroke: #FFA500;
 }
 
-.axisRed text{
-  fill: #CB6D51;
+.axisOrange text{
+  fill: #FFA500;
 } 

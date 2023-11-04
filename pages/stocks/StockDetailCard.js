@@ -1,20 +1,19 @@
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router'
 import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import CompanyQtrPerf from './CompanyQtrPerf'
 import CardHeader from '@mui/material/CardHeader'
 import CompanyStockPrice from './CompanyStockPrice'
 import MovingAvg from './MovingAvg'
-import CompanyQtrPerfBarChart from './CompanyQtrPerfBarChart'
+import CompanyInformation from '../CompanyDetails/CompanyInformation'
+import InfoIcon from '@mui/icons-material/Info';
 
 const StockDetailCard = (props) => {
     const [stkQuote,setStkQuote] = useState(null)
@@ -55,9 +54,9 @@ const StockDetailCard = (props) => {
        } 
     },[props.stockQuote,props.streamedQuotes])
 
-    const showPriceChart = (stk) =>{
-        router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
-    }
+    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:3}})
+    
+    const showAllCompanyStats = (stk) => router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
 
     const stopTrackingStk = () =>{
         props.remove(stock)
@@ -67,7 +66,7 @@ const StockDetailCard = (props) => {
     const getContent = () =>{
         let retVal = {
             "Basic":<CompanyStockPrice stock={stock} duration={3}></CompanyStockPrice>,
-            "Earnings": <CompanyQtrPerfBarChart stock={stock}/> }
+            "Companyinfo": <CompanyInformation stock={stock}/> }
         return retVal[type]
     }
 
@@ -94,11 +93,14 @@ const StockDetailCard = (props) => {
                 <IconButton aria-label="reset">
                     <ShowChartIcon onClick={() => setType("Basic")} />
                 </IconButton>
-                <IconButton aria-label="earnings">
-                    <AttachMoneyIcon onClick={() => setType("Earnings")} />
+                <IconButton aria-label="Information">
+                    <InfoIcon onClick={() => setType("Companyinfo")} />
                 </IconButton>
                 <IconButton aria-label="delete">
                     <DeleteIcon onClick={stopTrackingStk} />
+                </IconButton>
+                <IconButton aria-label="More Information">
+                    <ReadMoreIcon onClick={() => showAllCompanyStats(stock)} />
                 </IconButton>
           </CardActions>
         </CardContent>

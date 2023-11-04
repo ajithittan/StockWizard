@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {getCompanyKeyStats} from '../../modules/api/StockDetails'
+import getCacheCompanyKeyStats from '../../modules/cache/cachecompanystats'
 import getStockPerChange from '../../modules/cache/cacheperchange'
 import CompanyRevenue from './CompanyRevenue'
 import myGif from "../../public/loading-loading-forever.gif"
@@ -12,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {delCompanyStats} from '../../redux/reducers/companyStatsSlice'
 import {useDispatch} from 'react-redux'
-import ExpandIcon from '@mui/icons-material/Expand';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 
 const CompanyDetailsContainer = (props) =>{
@@ -24,10 +25,10 @@ const CompanyDetailsContainer = (props) =>{
     const [resize,setResize] = useState(0)
 
     useEffect(() =>{
-        console.log("in here for props change?",props)
         if (props){
-            getCompanyKeyStats(props.type,props.stock,props.limit,
-                props.period).then(retval => {
+            const cacheKey = "compstats_" + props.stock+props.type+props.limit+props.period
+            getCacheCompanyKeyStats(cacheKey,{'type':props.type,'stock':props.stock,'limit':props.limit,
+                'period':props.period}).then(retval => {
                     if (retval && retval.length > 0){
                         setInpVals(retval)
                     }else{
@@ -40,6 +41,11 @@ const CompanyDetailsContainer = (props) =>{
                 getLineChartData()
             }else{
                 setLineChartData([])
+            }
+            if (props.type === props.expandTpVal){
+                setResize(1)
+            }else{
+                setResize(0)
             }
         }
     },[props])
@@ -79,9 +85,9 @@ const CompanyDetailsContainer = (props) =>{
 
     const removeItemFromList = (delTp) => dispatch(delCompanyStats(delTp))
 
-    const expandType = (expTp) => {props.expand(2), props.expandType(expTp), setResize(1)}
+    const expandType = (expTp) => {props.expand(2), props.expandType(expTp)}
 
-    const collapseType = (expTp) => {props.expand(1),setResize(0)}
+    const collapseType = (expTp) => {props.expand(1),props.expandType(null)}
 
     return (
         <>
@@ -94,7 +100,7 @@ const CompanyDetailsContainer = (props) =>{
                                 style={{cursor:"pointer"}}
                     />
                     <CardContent>
-                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue key={resize} inpData={inpVals} period={props.period} lineChartData={lineChartData} />}
+                        {showNoData ? <div><p>NO DATA</p></div> :<CompanyRevenue key={resize} showAll={resize} inpData={inpVals} period={props.period} lineChartData={lineChartData} />}
                     </CardContent>
                     <CardActions>
                         <IconButton aria-label="delete">
@@ -104,7 +110,7 @@ const CompanyDetailsContainer = (props) =>{
                             {
                             resize ? 
                                 <CloseFullscreenIcon onClick={() => collapseType(props.type)}/>:
-                                <ExpandIcon onClick={() => expandType(props.type)}/>
+                                <OpenInFullIcon onClick={() => expandType(props.type)}/>
                             }
                         </IconButton>
                 </CardActions>

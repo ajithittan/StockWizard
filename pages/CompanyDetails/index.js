@@ -24,7 +24,7 @@ const index = (props) =>{
     },[])
 
     const getComponentToRender = (inpData) =>{
-        let newData = {...inpData,"stock":stock,"expand":setSizeMul,"expandType":setExpandType}
+        let newData = {...inpData,"stock":stock,"expand":setSizeMul,"expandType":setExpandType,"expandTpVal":expandType}
         return (<CompanyDetailsContainer {...newData}></CompanyDetailsContainer>)
     }
 

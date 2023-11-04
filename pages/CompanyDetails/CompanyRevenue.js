@@ -12,9 +12,9 @@ const CompanyRevenue = (props) =>{
 
     useEffect(() =>{
         if (props.inpData){
-            formatChartData(props.inpData)
+            formatChartData(props.inpData,props.showAll)
         }
-    },[props.inpData])
+    },[props.inpData,props.showAll])
 
     useEffect(() =>{
         if (props.lineChartData){
@@ -22,7 +22,7 @@ const CompanyRevenue = (props) =>{
         }
     },[props.lineChartData])
 
-    const formatChartData = (inpData) =>{
+    const formatChartData = (inpData,showAll) =>{
         let retval = []
         for(let i=0; i < inpData.length ; i++){
             let tempData = {}
@@ -40,10 +40,18 @@ const CompanyRevenue = (props) =>{
         }
         if (retval.length > 0 ){
             retval.reverse()
-            if (props.period === "A"){
-                setChartData(retval.slice(-10))
+            if (showAll){
+                if (props.period === "A"){
+                    setChartData(retval.slice(-25))
+                }else{
+                    setChartData(retval.slice(-25))
+                }    
             }else{
-                setChartData(retval.slice(-12))
+                if (props.period === "A"){
+                    setChartData(retval.slice(-10))
+                }else{
+                    setChartData(retval.slice(-12))
+                }    
             }
         }
         setWait(false)
@@ -51,7 +59,7 @@ const CompanyRevenue = (props) =>{
 
    return(
         <>
-            {wait ? <Image src={myGif} alt="wait" height={100} width={100} /> : <BarChart data={chartdata} addLineChart={lineChartData}></BarChart>}
+            {wait ? <Image src={myGif} alt="wait" height={100} width={100} /> : <BarChart key={chartdata} data={chartdata} addLineChart={lineChartData}></BarChart>}
         </>
     )
 

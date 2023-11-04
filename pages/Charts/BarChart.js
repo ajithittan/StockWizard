@@ -109,7 +109,7 @@ const BarChart = (props) =>{
                         return getConciseValuesForLargeNums(d)
                     }).ticks(5))
                 .attr("transform", "translate(" + width + ",0)")
-                .attr("class", "axisRed")
+                .attr("class", "axisOrange")
 
                 let linesOfChart = d3.line().curve(d3.curveCardinal)
                     .x(function(d) { return xScale(d.xAxis)*1.05 })
@@ -118,7 +118,7 @@ const BarChart = (props) =>{
                 svgElement.append("path")
                     .datum(lineData)
                     .attr("fill", "none")
-                    .attr("stroke", "#CB6D51")
+                    .attr("stroke", "#FFA500")
                     .attr("stroke-width", 1.5)              
                     .attr("d", linesOfChart)
                 
