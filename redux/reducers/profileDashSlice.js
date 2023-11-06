@@ -6,6 +6,12 @@ export const updDashboardLayout = createAsyncThunk("dashboardlayout/updDashLay",
     updateUserDashBoardLayout(thunkAPI.getState()?.dashboardlayout?.dashboardlayout)
   })
 
+//this needs to be fixed....fucked up the data structures....
+export const updDashboardSlider = createAsyncThunk("dashboardlayout/updDashSlider",async(obj,thunkAPI)=>{
+    thunkAPI.dispatch(SET_DASH_SLIDER_DUR(obj))
+    updateUserDashBoardLayout(thunkAPI.getState()?.dashboardlayout?.dashboardlayout)
+})  
+
 export const getDashboardLayout = createAsyncThunk("dashboardlayout/getDashLay",async(obj,thunkAPI)=>{
     let defaultLayout = [{layoutId:1,compId:[1]},{layoutId:2,compId:[2]},{layoutId:3,compId:[3]}]
     let res = await getUserDashBoardLayout()
@@ -20,6 +26,7 @@ const profileDashSlice = createSlice({
         dashboardstocks: null,
         dashboardsector: false,
         dashboardselsector: 0,
+        dashboardsliderdur:3,
         loading:true
     },
     reducers: {
@@ -46,6 +53,9 @@ const profileDashSlice = createSlice({
         },
         SET_DASH_STOCKS: (state=initialState, action) => {
             state.dashboardstocks = action.payload?.slice(0,30)
+        },
+        SET_DASH_SLIDER_DUR: (state=initialState, action) => {
+            state.dashboardsliderdur = action.payload
         }},
     extraReducers:(builder)=>{
         builder
@@ -63,5 +73,5 @@ const profileDashSlice = createSlice({
     }        
 }) 
 
-export const {SET_DASHLAYOUT,SET_INITIAL,SET_DASH_STOCKS,SET_SECTOR,SET_DASH_SECTOR} = profileDashSlice.actions;
+export const {SET_DASHLAYOUT,SET_INITIAL,SET_DASH_STOCKS,SET_SECTOR,SET_DASH_SECTOR,SET_DASH_SLIDER_DUR} = profileDashSlice.actions;
 export default profileDashSlice.reducer;

@@ -4,10 +4,11 @@ import Grid from '@mui/material/Grid';
 import AddPositions from './AddPositions'
 import {StockPriceV2} from '../../modules/api/StockMaster'
 import StreamStockPrice from '../../components/StreamStockPrice'
-import { useSelector} from 'react-redux'
+import { useSelector, useDispatch} from 'react-redux'
+import {UPD_STOCK_QUOTES} from '../../redux/reducers/portfolioStockSlice'
 
 const index = (props) =>{
-
+    const dispatch = useDispatch()
     const [stocks,setStocks] = useState(null)
     const [stkQuotes,setStkQuote] = useState(null)
     const [stkStreamedQuotes,setStkStreamedQuotes] = useState(null)
@@ -32,6 +33,7 @@ const index = (props) =>{
         StockPriceV2(stock).then(res => {
             if (res && res.length > 0 ){
                 setStkQuote(res)
+                dispatch(UPD_STOCK_QUOTES(res))
             }      
         })
     }

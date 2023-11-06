@@ -15,7 +15,8 @@ const portfolioStockSlice = createSlice({
     name: 'porfoliostock',
     initialState: {
         stockList: null,
-        loading:true
+        loading:true,
+        stockquotes:null
     },
     reducers: {
         ADD_STOCKS_TO_PORTFOLIO: (state=initialState, action) => {
@@ -25,6 +26,9 @@ const portfolioStockSlice = createSlice({
             }else{
                 state.stockList = action.payload
             }
+        },
+        UPD_STOCK_QUOTES: (state=initialState, action) => {
+            state.stockquotes = action.payload
         }},
     extraReducers:(builder)=>{
         builder
@@ -42,5 +46,5 @@ const portfolioStockSlice = createSlice({
     }        
 }) 
 
-export const {ADD_STOCKS_TO_PORTFOLIO} = portfolioStockSlice.actions;
+export const {ADD_STOCKS_TO_PORTFOLIO,UPD_STOCK_QUOTES} = portfolioStockSlice.actions;
 export default portfolioStockSlice.reducer;

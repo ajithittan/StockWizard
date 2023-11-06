@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 

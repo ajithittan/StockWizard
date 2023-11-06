@@ -8,6 +8,14 @@ const DurationSlider = (props) =>{
 
     const marks = [
         {
+          value: -1,
+          label: 'T',
+        },
+        {
+          value: 0,
+          label: 'W',
+        },
+        {
           value: 3,
           label: '3',
         },
@@ -35,7 +43,7 @@ const DurationSlider = (props) =>{
                         size={props.size}
                         defaultValue={props.initialval}
                         aria-label="Small"
-                        min={1}
+                        min={-1}
                         max={120}
                         marks={marks}
                         step={1} 
