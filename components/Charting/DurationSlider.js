@@ -12,10 +12,6 @@ const DurationSlider = (props) =>{
           label: 'T',
         },
         {
-          value: 0,
-          label: 'W',
-        },
-        {
           value: 3,
           label: '3',
         },

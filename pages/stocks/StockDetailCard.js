@@ -20,6 +20,7 @@ const StockDetailCard = (props) => {
     const [stock,setStock] = useState(null)
     const router = useRouter()
     const [type,setType] = useState("Basic")
+    const [companySubHeader, setCompanySubHeader] = useState(null)
     const sm = useMediaQuery("(max-width: 960px)");
 
     let cardStyle = {
@@ -66,14 +67,18 @@ const StockDetailCard = (props) => {
     const getContent = () =>{
         let retVal = {
             "Basic":<CompanyStockPrice stock={stock} duration={3}></CompanyStockPrice>,
-            "Companyinfo": <CompanyInformation stock={stock}/> }
+            "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }
 
-    const getsubheader = () => <>
-        <MovingAvg symbol = {props.stock} type={"SMA_50"}/>(50D)&nbsp;&nbsp;&nbsp;
-        <MovingAvg symbol = {props.stock} type={"SMA_200"}/>(200D)
-    </>
+    const getsubheader = () => {
+        let retVal = {
+            "Basic": <><MovingAvg symbol = {props.stock} type={"SMA_50"}/>(50D)&nbsp;&nbsp;&nbsp;
+                        <MovingAvg symbol = {props.stock} type={"SMA_200"}/>(200D)</>,
+            "Companyinfo": companySubHeader
+        }
+        return retVal[type]    
+    }
 
     const gettitle = () => <>{stock ? stock + " - " + (stkQuote ? stkQuote.close : "Looking..") + 
                               (stkQuote ? " (" + stkQuote?.perchange?.toFixed(2) + "%)" : "..") : "Looking"}</>

@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import {getConciseValuesForLargeNums} from '../../modules/utils/UtilFunctions'
 import Grid from '@mui/material/Grid';
+import moment from 'moment';
 
 const CompanyInformation = (props) =>{
 
@@ -22,7 +23,9 @@ const CompanyInformation = (props) =>{
     useEffect(() =>{
         getCompanyProfile(props.stock).then(retval =>{
             if (retval){
-                setCompanyInfo(retval)
+                setCompanyInfo(retval)               
+                const timestampObj = moment.unix(retval?.tradetime).format('MM-DD-YYYY HH:mm:ss');
+                props.setSubHeader(<>{retval?.companyname}<br/><div style={{fontSize:12}}>{timestampObj}</div></>)
             }
         })
     },[props.stock])
