@@ -16,10 +16,11 @@ const StockNewsFeeds  = async (stksym) =>{
     return retval
 }
 
-const MultipleStockNews = async (arrStks) =>{
+const MultipleStockNews = async (arrStks,limitOfNews) => {
     const data = await axios.get(`/api/v2/multinews/`,{
-        params: { stkList: arrStks + ''}
+        params: { stkList: arrStks + '',limit:limitOfNews}
         })
+        console.log("data",data)
     return data.data
 }
 

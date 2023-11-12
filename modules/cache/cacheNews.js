@@ -1,8 +1,8 @@
 import memoize from "lodash.memoize";
-import {StockNewsFeeds} from '../api/Newsfeed'
+import {MultipleStockNews} from '../api/Newsfeed'
 
 const retrieveNewsFromSource = async (key,args) => {
-  let res = await StockNewsFeeds(args.stock)
+  let res = await MultipleStockNews(args.stock,args.limit)
   return res
 }
 

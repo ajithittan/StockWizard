@@ -1,21 +1,15 @@
 import { useEffect,useState } from 'react'
-import {BasicNewsFeeds} from '../../modules/api/Newsfeed'
-import Image from 'next/image';
-import myGif from '../../public/loading-loading-forever.gif'
-//import {makeStyles} from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import FilterListOffIcon from '@mui/icons-material/FilterListOff';
-import IconButton from '@mui/material/IconButton';
 import retrieveNewsFromSource from '../../modules/cache/cacheNews'
-import StocksDropDown from '../../components/StocksDropDown'
-import Delay from '../../components/Delay'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import SelectionStocks from './SelectionStocks'
+import SingleNewsCard from './SingleNewsCard'
+import WaitingForResonse from '../../components/WaitingForResponse'
 
 const index = (props) =>{
 
     const [feedData,setfeedData] = useState([])
+    const [newsLimit,setNewsLimit] = useState(10)
     const [origfeedData,setOrigfeedData] = useState([])
     const [sortType,setSortType] = useState("dt")
     const [filterRemove,setFilterRemove] = useState(true)
@@ -28,7 +22,7 @@ const index = (props) =>{
         if (props.stocks){
             setColorAssigned(assignColor(props.stocks))
             setListOfStks(props.stocks)
-            processMultipleStks(props.stocks.slice(0,20),1000)
+            processMultipleStks(props.stocks.slice(0,30))
         }
     },[props.stocks])
 
@@ -50,49 +44,27 @@ const index = (props) =>{
             }
     )
 
-    const processMultipleStks = async (arrStks,wait) => {
-        await Delay(500)
-        for (let i=0;i<arrStks.length;i++) {
-            getNewsForStock(arrStks[i]).then(newsRes => addToList(newsRes)
-                                                        .then(retval => sortNews())
-                                                            .catch(error => console.log("ERROR in sorting News",error))
-                                                        .then(retval => commitFeed())
-                                                        )                                                        
-                .catch(error => console.log("ERROR in processMultipleStks",arrStks[i],error))
-
-            i%2 === 0 ? await Delay(wait) : null
-        }
-        
+    const processMultipleStks = async (arrStks) => {
+        getNewsForStock(arrStks).then(retval => {setfeedData(retval),setOrigfeedData(retval)})
     }
 
     const getNewsForStock = async (stkSym) => {
         let cacheKey = "NEWS_CACHE_KEY_" + stkSym
-        return retrieveNewsFromSource(cacheKey,{stock:stkSym})
+        return retrieveNewsFromSource(cacheKey,{stock:stkSym,limit:newsLimit||5})
     }
 
-    const addToList = async (objNews) => feedData.push(...objNews)
-
-    const sortNews = async () =>{
+    const sortNews = async (inpNews) =>{
         if (sortType === "dt"){
-            feedData.sort((a,b) => new Date(b.date) - new Date(a.date))
+            return inpNews.sort((a,b) => new Date(b.date) - new Date(a.date))
         }
     }
-
-    const filterNews = async (stkSym) => {
-        setfeedData([...feedData.filter(item => item.stock === stkSym)])
-        setFilterRemove(false)
-        setSingleStk(stkSym)
-    }
-
-    const commitFeed = async () => {setfeedData([...feedData]),setOrigfeedData([...feedData])}
 
     const removeStks = async (lstToRemove) => setfeedData([...origfeedData.filter(item => !lstToRemove.includes(item.stock))])
     
     return(
             <>
-               
                 {
-                    feedData ? 
+                    feedData.length > 0 ? 
                     <>
                     {
                         showStks? 
@@ -102,40 +74,19 @@ const index = (props) =>{
                     }
                     <Grid container direction="row" alignItems="stretch">
                         {feedData.map((item,indx) => (
-                            <Grid item  md={6} lg={4} xl={4} sm={6} xs={6}>
+                            <Grid item  md={6} lg={6} xl={6} sm={12} xs={12}>
                                 <Paper elevation={0} sx={{height: "100%", display: "flex",width:"100%"}}>
-                                    <fieldset className="newsClip">
-                                        {filterRemove ? 
-                                                <legend style={{float:"right",border:"1px solid", marginLeft:"5px",
-                                                                borderColor:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0]?.color,
-                                                                color:colorAssigned?.filter(clrs => clrs.stock === item.stock)[0]?.color,
-                                                                borderRadius:"5px"}}>
-                                                    <a href="javascript:void();" onClick={() => {setShowStks(true),removeStks(listOfStks.filter(stk => stk !== item.stock))}}> {item.stock}</a>
-                                                </legend> 
-                                        : null }
-                                        <a href={item.link} target="_blank">{item.title}</a>
-                                    </fieldset> 
+                                    <SingleNewsCard key={item} newscontent={item}/>
                                 </Paper>
                             </Grid>
                         ))}
                     </Grid>
                     </>
-                    : <Image src={myGif} alt="wait" height={30} width={30} />
-                }
-                {
-                    /**
-                <div style={{position:"fixed",float:"left"}}>
-                    <StocksDropDown key={singleStk} stocks={listOfStks} 
-                        callBackStockChange={getSingleStockNews} selStock={singleStk}>
-                    </StocksDropDown>
-                    <IconButton disabled={filterRemove}>
-                        <FilterListOffIcon onClick={removeFilter}></FilterListOffIcon>
-                    </IconButton>
-                </div>
-                 */
+                    : <WaitingForResonse></WaitingForResonse>
                 }
             </>    
     )
 }
 
 export default index
+
