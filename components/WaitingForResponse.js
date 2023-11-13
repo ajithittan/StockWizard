@@ -11,7 +11,7 @@ const WaitingForResonse = (props) =>{
     },[props.position])
 
     return (
-        <div style={{position:"absolute",top:"50%",left:"50%"}}><Image src={myGif} alt="wait" height={100} width={100} /></div>
+        <div style={{position:"relative",top:"50%",left:"50%"}}><Image src={myGif} alt="wait" height={props.height || 100} width={props.width || 100} /></div>
     )
 }
 

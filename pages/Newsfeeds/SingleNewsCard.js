@@ -3,11 +3,13 @@ import CardContent from '@mui/material/CardContent';
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router'
 import CardHeader from '@mui/material/CardHeader'
-
+import Link from "next/link"; 
+import WaitingForResonse from '../../components/WaitingForResponse'
 
 const SingleNewsCard = (props) => {
 
     const [newsContent,setNewsContent] = useState(null)
+    const router = useRouter()
 
     useEffect(() =>{
         if (props.newscontent){
@@ -15,6 +17,12 @@ const SingleNewsCard = (props) => {
         }
 
     },[props.newscontent])
+
+    const redirecttosource = (url) => 
+    {
+        console.log(url)
+        //router.push({pathname: url})
+    }
 
     let cardStyle = {
         //height:"100%",
@@ -34,22 +42,28 @@ const SingleNewsCard = (props) => {
         alignItems:"center",
     }
 
-    const getHeader = () => <> <hr></hr> {newsContent?.summary?.substring(0,400-newsContent?.title?.length) + "..."} </>
+    const getHeader = () => <> <hr style={{borderColor:"#F0F0F0",height:"0.5px"}}></hr> {newsContent?.summary?.substring(0,400-newsContent?.title?.length) + "..."} </>
 
     return (
-        <Card style={cardStyle}>
-            <CardHeader title={newsContent?.title + "  (" + newsContent?.stock + ")"}
+        <>
+        {
+            newsContent?.link ?         
+            <Card style={cardStyle}>
+                <Link href={newsContent?.link || '/'} target="_blank">
+                    <CardHeader title={newsContent?.title + "  (" + newsContent?.stock + ")"}
                         titleTypographyProps={{variant:'h9' }}
                         subheader = {getHeader()}
-                        onClick={() => router.push({pathname: newsContent?.link})}
                         style={{cursor:"pointer"}}/>
+                </Link>
                 <CardContent>
-                    <div height="90%" style={{fontSize:"12px",position:"relative",bottom:0}}>
-                        {newsContent?.source}<br></br>
-                        {newsContent?.date}
-                    </div>
-            </CardContent>
-        </Card>
+                <div height="90%" style={{fontSize:"12px",position:"relative",bottom:0}}>
+                    {newsContent?.source}<br></br>
+                    {newsContent?.date}
+                </div>
+                </CardContent>
+            </Card> : <WaitingForResonse height={25} width={25}/>
+        }
+        </>
     )
 }
 

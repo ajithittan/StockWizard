@@ -82,7 +82,7 @@ const index = (props) =>{
                         ))}
                     </Grid>
                     </>
-                    : <WaitingForResonse></WaitingForResonse>
+                    : <WaitingForResonse height={50} width={50}/>
                 }
             </>    
     )
