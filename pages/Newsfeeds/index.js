@@ -65,7 +65,7 @@ const index = (props) =>{
                     <>
                     <Grid container direction="row" alignItems="stretch">
                         {feedData.map((item,indx) => (
-                            <Grid item  md={6} lg={6} xl={6} sm={12} xs={12}>
+                            <Grid item  md={12} lg={6} xl={6} sm={12} xs={12}>
                                 <Paper elevation={0} sx={{height: "100%", display: "flex",width:"100%"}}>
                                     <SingleNewsCard key={item} newscontent={item} 
                                                     onSelectSingleStk={showOnlySelectStock} 
