@@ -1,60 +1,87 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useEffect, useState } from "react"
-import { useRouter } from 'next/router'
 import CardHeader from '@mui/material/CardHeader'
 import Link from "next/link"; 
 import WaitingForResonse from '../../components/WaitingForResponse'
+import Chip from '@mui/material/Chip';
 
 const SingleNewsCard = (props) => {
 
     const [newsContent,setNewsContent] = useState(null)
-    const router = useRouter()
+    const [selected,setSelected] = useState(false)
 
     useEffect(() =>{
         if (props.newscontent){
             setNewsContent(props.newscontent)
         }
-
     },[props.newscontent])
 
-    const redirecttosource = (url) => 
-    {
-        console.log(url)
-        //router.push({pathname: url})
-    }
+    useEffect(() =>{
+        if (props.selStock && props.newscontent){
+            if (props.selStock === props.newscontent.stock){
+                setSelected(true)
+            }else{
+                setSelected(false)
+            }
+        }
+    },[props.selStock])
 
     let cardStyle = {
-        //height:"100%",
-        //width: '10vw',
         transitionDuration: '0.3s',
-        //height: '20vw',
-        //display: 'block',
-        //height: sm ? "80%" : "300px",
-        //width: sm ? "80%" : "300px", 
         transitionDuration: '0.3s',
         margin:"5px",
-        //marginLeft: sm ? "10px" : "15px",
-        //marginTop: sm ? "10px" : "15px",
-        //paddingLeft: sm ? "5%" : "1px",
-        //backgroundColor: "#FAF9F6",
         color:'text.secondary',
         alignItems:"center",
     }
 
-    const getHeader = () => <> <hr style={{borderColor:"#F0F0F0",height:"0.5px"}}></hr> {newsContent?.summary?.substring(0,400-newsContent?.title?.length) + "..."} </>
+    const selectOneStock = (stock) => {
+        if (selected){
+            setSelected(false)
+            props.onShowAll(stock)
+        }else
+        {
+            props.onSelectSingleStk(stock)
+            setSelected(true)
+        }
+    }
 
+    const getTitle = (title,stock) =>{
+        return(
+            <>
+                <Link href={newsContent?.link || '/'} target="_blank">{title}</Link>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Chip
+                        variant={selected ? "filled" : "outlined"}
+                        label={stock}
+                        onClick={() => selectOneStock(stock)}
+                        color= {"success"}
+                        size="small"
+                    />
+            </>    
+        )
+    }
+
+    const getHeader = () => 
+    {
+        return(
+            <> 
+                <hr style={{borderColor:"#F0F0F0",height:"0.5px"}}></hr> 
+                <Link href={newsContent?.link || '/'} target="_blank">
+                    {newsContent?.summary?.substring(0,400-newsContent?.title?.length) + "..."}
+                </Link>
+            </>
+        )
+    }
+    
     return (
         <>
         {
             newsContent?.link ?         
             <Card style={cardStyle}>
-                <Link href={newsContent?.link || '/'} target="_blank">
-                    <CardHeader title={newsContent?.title + "  (" + newsContent?.stock + ")"}
+                    <CardHeader title={getTitle(newsContent?.title,newsContent?.stock)}
                         titleTypographyProps={{variant:'h9' }}
                         subheader = {getHeader()}
                         style={{cursor:"pointer"}}/>
-                </Link>
                 <CardContent>
                 <div height="90%" style={{fontSize:"12px",position:"relative",bottom:0}}>
                     {newsContent?.source}<br></br>

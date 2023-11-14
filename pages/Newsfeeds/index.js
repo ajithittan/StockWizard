@@ -11,16 +11,14 @@ const index = (props) =>{
     const [feedData,setfeedData] = useState([])
     const [newsLimit,setNewsLimit] = useState(10)
     const [origfeedData,setOrigfeedData] = useState([])
-    const [sortType,setSortType] = useState("dt")
-    const [filterRemove,setFilterRemove] = useState(true)
     const [listOfStks,setListOfStks] = useState(null)
-    const [singleStk,setSingleStk] = useState(null)
+    const [singleStk,setSingleStk] = useState(666)
     const [colorAssigned,setColorAssigned] = useState(null)
     const [showStks,setShowStks] = useState(false)
 
     useEffect( () =>{
         if (props.stocks){
-            setColorAssigned(assignColor(props.stocks))
+            //setColorAssigned(assignColor(props.stocks))
             setListOfStks(props.stocks)
             processMultipleStks(props.stocks.slice(0,30))
         }
@@ -53,30 +51,25 @@ const index = (props) =>{
         return retrieveNewsFromSource(cacheKey,{stock:stkSym,limit:newsLimit||5})
     }
 
-    const sortNews = async (inpNews) =>{
-        if (sortType === "dt"){
-            return inpNews.sort((a,b) => new Date(b.date) - new Date(a.date))
-        }
-    }
+    const showOnlySelectStock = async (keepInList) => {setSingleStk(keepInList),setfeedData([...origfeedData.filter(item => keepInList === item.stock)])}
 
-    const removeStks = async (lstToRemove) => setfeedData([...origfeedData.filter(item => !lstToRemove.includes(item.stock))])
+    const showAll = async () => {
+        setfeedData([...origfeedData]),
+        setSingleStk(666)
+    }
     
     return(
             <>
                 {
                     feedData.length > 0 ? 
                     <>
-                    {
-                        showStks? 
-                        <div style={{marginBottom:"10px"}}>
-                            <SelectionStocks stocks={colorAssigned} removeStocksFromNews={removeStks} showSts={setShowStks}/>
-                        </div>    : null                
-                    }
                     <Grid container direction="row" alignItems="stretch">
                         {feedData.map((item,indx) => (
                             <Grid item  md={6} lg={6} xl={6} sm={12} xs={12}>
                                 <Paper elevation={0} sx={{height: "100%", display: "flex",width:"100%"}}>
-                                    <SingleNewsCard key={item} newscontent={item}/>
+                                    <SingleNewsCard key={item} newscontent={item} 
+                                                    onSelectSingleStk={showOnlySelectStock} 
+                                                    onShowAll={showAll} selStock={singleStk}/>
                                 </Paper>
                             </Grid>
                         ))}
