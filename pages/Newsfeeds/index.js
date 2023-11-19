@@ -11,15 +11,12 @@ const index = (props) =>{
     const [feedData,setfeedData] = useState([])
     const [newsLimit,setNewsLimit] = useState(10)
     const [origfeedData,setOrigfeedData] = useState([])
-    const [listOfStks,setListOfStks] = useState(null)
     const [singleStk,setSingleStk] = useState(666)
-    const [colorAssigned,setColorAssigned] = useState(null)
-    const [showStks,setShowStks] = useState(false)
 
     useEffect( () =>{
         if (props.stocks){
             //setColorAssigned(assignColor(props.stocks))
-            setListOfStks(props.stocks)
+            //setListOfStks(props.stocks)
             processMultipleStks(props.stocks.slice(0,30))
         }
     },[props.stocks])

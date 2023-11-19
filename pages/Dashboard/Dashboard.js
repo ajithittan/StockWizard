@@ -1,13 +1,11 @@
 import Stocks from '../stocks' 
 import ChartsForDashBoard from './ChartsForDashBoard'
 import Container from './Container'
-import { useEffect, useState } from 'react'
-import BottomNav from './BottomNav'
+import { useEffect} from 'react'
 import WaitingForResonse from '../../components/WaitingForResponse'
 import {initiateStreaming} from '../../modules/api/StockStream'
 import TopMovers from './TopMovers'
 import TopNews from './TopNews'
-import LayoutController from './LayoutController'
 import { useSelector, useDispatch} from 'react-redux'
 import {getDashboardLayout,SET_DASH_STOCKS,SET_SECTOR} from '../../redux/reducers/profileDashSlice'
 
@@ -48,7 +46,7 @@ const Dashboard = () =>{
     }
 
     const getComponentToDisplay = (arrLayoutId) =>{
-        const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard key={dashboardstocks} stocks={dashboardstocks} actionChangeList={changesToStkList} header="Performance"/>},
+        const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard stocks={dashboardstocks} actionChangeList={changesToStkList} header="Performance"/>},
                                 {itemId:2,component:<Stocks key={dashboardstocks} stocks={dashboardstocks} actionChangeList={changesToStkList}/>},
                                 {itemId:3,component:<></>},
                                 {itemId:4,component:<TopMovers header="Movers & Shakers"/>},
@@ -75,7 +73,6 @@ const Dashboard = () =>{
                     <Container key={dashboardstocks+dashboardlayout} components={getAllComponents}></Container> 
                 : <WaitingForResonse />              
             }
-            <BottomNav callBackSectorChange={stockChanges}></BottomNav>
         </> 
     )
 }
