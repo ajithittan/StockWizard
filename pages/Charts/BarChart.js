@@ -56,7 +56,7 @@ const BarChart = (props) =>{
     },[props.addLineChart,charData])
 
     const getTextValue = (yAxis,xAxis) => {
-        if (lineData){
+        if (lineData && lineData.filter(item => item.xAxis === xAxis)[0]?.close){
             return getConciseValuesForLargeNums(yAxis) + "(" + lineData.filter(item => item.xAxis === xAxis)[0]?.close + ")"
         }else{
             return   getConciseValuesForLargeNums(yAxis)
