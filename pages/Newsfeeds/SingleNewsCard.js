@@ -55,6 +55,7 @@ const SingleNewsCard = (props) => {
                         label={stock}
                         onClick={() => selectOneStock(stock)}
                         color= {"success"}
+                        sx={{ color: selected ? "none" : props?.color}}
                         size="small"
                     />
             </>    
@@ -65,7 +66,7 @@ const SingleNewsCard = (props) => {
     {
         return(
             <> 
-                <hr style={{borderColor:"#F0F0F0",height:"0.5px"}}></hr> 
+                <hr style={{height:"0.5px"}}></hr> 
                 <Link href={newsContent?.link || '/'} target="_blank">
                     {newsContent?.summary?.substring(0,400-newsContent?.title?.length) + "..."}
                 </Link>
