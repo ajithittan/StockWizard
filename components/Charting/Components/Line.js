@@ -1,16 +1,17 @@
 import moment from 'moment';
 import * as d3 from "d3";
 
-const Line = (g,chardata,x,y) =>{
+const Line = (g,chardata,x,y,color) =>{
     //console.log("tooltip",tooltip)
     g.append("path")
+      .attr("class", "line")
       .datum(chardata)
       .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
+      .attr("stroke", color ? color : "#1E90FF")
       .attr("d", d3.line()
       .x(d => x(moment(d.date)))
       .y(d => y(d.close)))
+      .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)  
 }
 
 const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) =>{

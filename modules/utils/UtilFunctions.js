@@ -17,4 +17,11 @@ const getConciseValuesForLargeNums = (inpVal) =>{
     }    
 }
 
-export {intToString,getConciseValuesForLargeNums}
+const getColorFromPreDefinedSeq = (inpSeq) => {
+    const colorList = [{"seq":0,"color":"red"},{"seq":1,"color":"black"},{"seq":2,"color":"#a7d129"},
+        {"seq":3,"color":"brown"},{"seq":4,"color":"orange"},{"seq":5,"color":"purple"},{"seq":6,"color":"green"}]
+        console.log("inpSeq",colorList.filter(item => item.seq === inpSeq))
+    return colorList.filter(item => item.seq === inpSeq)[0].color || "gray"        
+}
+
+export {intToString,getConciseValuesForLargeNums,getColorFromPreDefinedSeq}

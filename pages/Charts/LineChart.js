@@ -2,7 +2,6 @@ import { useEffect, useRef, useState} from "react"
 import * as d3 from "d3";
 import {XScale,YScale} from '../../components/Charting/Components/Scales'
 import Rectangle from '../../components/Charting/Components/Rectangle'
-import MultiLine from '../../components/Charting/Components/MultiLine'
 import ToolTip from '../../components/Charting/Components/ToolTip'
 import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
 import MultiLineAggregate from './Components/MultiLineAggreate'
@@ -34,6 +33,7 @@ const LineChart = (props) =>{
     const [addLines, setAddLines] = useState(null)
     const [openModal,setOpenModal] = useState(false)
     const [waiting,setWaiting] = useState(true)
+    const [paths,setPaths] = useState(null)
 
     useEffect(() =>{
         if(props.positions && !addLines){
@@ -72,6 +72,12 @@ const LineChart = (props) =>{
             setdomainheight(height - margin.top - margin.bottom)
         }
     },[])
+
+    useEffect(() => {
+        if (props.addOns){
+            setPaths(props.addOns)
+        }
+    },[props.addOns])
     
     useEffect(() =>{
         if (props.chartData){
@@ -104,6 +110,26 @@ const LineChart = (props) =>{
             setcharData([...charData.filter(item => item !== props.streamdata.date),props.streamdata])
         }
     },[props.streamdata])
+
+    const getScaledDataForUniformity = (inpData) =>{
+        let startdt = moment(inpData[0].date)
+        let enddt = moment(inpData[inpData.length - 1].date)
+        let retval = paths.map(eachPath => {return {...eachPath,"data": eachPath.data.filter(item => moment(item.date).isBetween(startdt, enddt, null, '[]'))}})
+        return retval
+    }
+
+    const getScaledDataDomain = (inpData, dataToCheck) =>{
+        let tempval = [...dataToCheck]
+        inpData.sort((a,b) => b.close - a.close)
+        dataToCheck.sort((a,b) => b.close - a.close)
+        if (dataToCheck[0].close < inpData[0].close){
+            tempval.push(inpData[0])
+        }
+        if (dataToCheck[dataToCheck.length - 1].close > inpData[inpData.length - 1].close){
+            tempval.push(inpData[inpData.length - 1])
+        }
+        return tempval 
+    }
 
     useEffect (() =>{
 
@@ -140,8 +166,18 @@ const LineChart = (props) =>{
             
             svgElement.attr("width",width).attr("height",height)
     
-            const x = XScale(charData,domainwidth,"date")
-            const y = YScale(charData,domainheight,"close")  
+            let x = XScale(charData,domainwidth,"date")
+            let y = YScale(charData,domainheight,"close")  
+            
+            if (paths?.length > 0){
+                let scaledval = getScaledDataForUniformity([...charData])
+                scaledval.map(item => {
+                    let tempval = item.data
+                    tempval.sort((a,b) => new Date(a.date) - new Date(b.date))
+                    y = YScale(getScaledDataDomain([...tempval],[...charData]),domainheight,"close")
+                    Line(g,tempval,x,y,item.color);
+                })    
+            } 
             
             xTicks(g,x,y,width,height)    
             yTicks(g,x,y,width,height)    
@@ -166,7 +202,7 @@ const LineChart = (props) =>{
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,multiLineData,
                                                 swapStk,classNameAppend,props.main,d,callBackToCreateLine)
             Rectangle(g,domainwidth,domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,"white",resetOnMouseOver)
-            MultiLine(g,multiLineData,x,y)     
+            Line(g,charData,x,y)    
             setWaiting(false)   
 
             if (addLines){
@@ -188,7 +224,7 @@ const LineChart = (props) =>{
     
             }
         }
-    },[charData,mvOnArrow,refOnChart,addLines])
+    },[charData,mvOnArrow,refOnChart,addLines,paths])
 
     const getContentForModal = () => {
         return (<ChartUserInputs referData={addLines[addLines.length - 1]} 

@@ -14,6 +14,8 @@ import ModalBox from '../../components/ModalBox'
 import FloatController from '../../components/FloatController'
 import {getStockPortfolioPos} from '../../modules/api/UserPreferences'
 import StreamStockPrice from '../../components/StreamStockPrice'
+import BottomNav from './BottomNav'
+import {getColorFromPreDefinedSeq} from '../../modules/utils/UtilFunctions'
 
 const index = (props) =>{
     const router = useRouter()
@@ -30,6 +32,7 @@ const index = (props) =>{
     const [showPositions,setShowPositions] = useState(true)
     const [allPortPositions,setAllPortPositions] = useState(null)
     const [realtimeStkPrc,setRealtimeStkPrc] = useState(null)
+    const [addLines,setAddLines] = useState([])
 
     useEffect(() => {
           const calcWidth = () =>{
@@ -106,7 +109,7 @@ const index = (props) =>{
           tempSetUp.sma = objsma
           setinitialSetUp(tempSetUp)
           adddata = await getSMAData(stock,value)
-          setcharData([...charData,...adddata])    
+          setDataColorIdentifier(adddata,key,value)
         }
       }else if (key === "PM"){
         setProcessing(true)
@@ -121,6 +124,16 @@ const index = (props) =>{
         }
         setProcessing(false)
       } 
+    }
+
+    const setDataColorIdentifier = async (inpData,key,value) => {
+      let tempObj = {}
+      tempObj.data = inpData
+      tempObj.color = getColorFromPreDefinedSeq(addLines.length)
+      tempObj.key = key
+      tempObj.value = value
+      addLines.push(tempObj)
+      setAddLines([...addLines])
     }
 
     const normalizeIncomingData = (inpData) =>{
@@ -227,7 +240,8 @@ const index = (props) =>{
       }
       setinitialSetUp(tempSetUp)
       if (type === "sma"){
-        setcharData([...charData.filter(item => item.symbol !== "SMA_" + value)])
+        let tempval = addLines.filter(item => !(item.key===type && item.value ===value))
+        setAddLines([...tempval])
       }
     }
 
@@ -262,13 +276,18 @@ const index = (props) =>{
                     {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
                     {/*<StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>*/}
                     <LineChart key={Math.round(width) + stock + charData + initialSetUp?.duration} chartData={charData}
-                              width={Math.round(width)} height={Math.round(height*.90)} margin={margin} 
+                              width={Math.round(width)} height={Math.round(height*.85)} margin={margin} 
                               stock={stock} main={true} positions={allPortPositions} line={undefined} 
-                              streamdata={realtimeStkPrc} displayfrom={initialSetUp?.duration}/>
-                    <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>                                
+                              streamdata={realtimeStkPrc} displayfrom={initialSetUp?.duration} addOns={addLines}/>
+                              {
+                                /***
+                                 <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>                                
+                                 */
+                              }
                   </div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
+              <BottomNav onChanges={handleChanges} adjSelections={adjustSelections}></BottomNav>
         </>
     )
 }
