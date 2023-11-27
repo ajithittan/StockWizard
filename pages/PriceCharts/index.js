@@ -287,7 +287,9 @@ const index = (props) =>{
                   </div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
-              <BottomNav onChanges={handleChanges} adjSelections={adjustSelections}></BottomNav>
+            {
+              stock ? <BottomNav onChanges={handleChanges} adjSelections={adjustSelections} stock={stock}></BottomNav> : null
+            }
         </>
     )
 }

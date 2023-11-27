@@ -111,7 +111,13 @@ const FullStockList = async () =>{
     return data.data
 }
 
+const initiateCaching = async (stock,identifiers) =>{
+    let url = "/api/v2/initiatecaching/" + stock
+    const data = await axios.post(url,identifiers)
+    return data.data
+}
 
 export {StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
     SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
-    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList,StockPriceV2,FullStockList}
+    getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList,StockPriceV2,FullStockList,
+    initiateCaching}
