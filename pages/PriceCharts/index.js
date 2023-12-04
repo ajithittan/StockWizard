@@ -20,7 +20,7 @@ import {getColorFromPreDefinedSeq} from '../../modules/utils/UtilFunctions'
 const index = (props) =>{
     const router = useRouter()
     const stock = router.query.stock
-    const initDur = 120 || router.query.dur
+    const initDur = router.query.dur
     const margin = {top: 20, right: 0, bottom: 30, left: 50}
     const [fullsetdur, setFullSetDur]   = useState(120);
     const [width, setWidth]   = useState(0);
@@ -33,6 +33,7 @@ const index = (props) =>{
     const [allPortPositions,setAllPortPositions] = useState(null)
     const [realtimeStkPrc,setRealtimeStkPrc] = useState(null)
     const [addLines,setAddLines] = useState([])
+    const [fullData,setFullData] = useState(null)
 
     useEffect(() => {
           const calcWidth = () =>{
@@ -68,6 +69,7 @@ const index = (props) =>{
     useEffect(() =>{
       if (!charData && stock){
          getData(stock,initDur).then(res => setcharData([...res]))
+         getData(stock,fullsetdur).then(res => setFullData([...res]))
       }
     },[stock])
 
@@ -275,7 +277,7 @@ const index = (props) =>{
                   <div>
                     {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
                     {/*<StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>*/}
-                    <LineChart key={Math.round(width) + stock + charData + initialSetUp?.duration} chartData={charData}
+                    <LineChart key={Math.round(width) + stock + charData + initialSetUp?.duration} chartData={charData} fullData={fullData}
                               width={Math.round(width)} height={Math.round(height*.85)} margin={margin} 
                               stock={stock} main={true} positions={allPortPositions} line={undefined} 
                               streamdata={realtimeStkPrc} displayfrom={initialSetUp?.duration} addOns={addLines}/>

@@ -74,6 +74,12 @@ const LineChart = (props) =>{
     },[])
 
     useEffect(() => {
+        if (props.fullData){
+            setOrigCharData(props.fullData)
+        }
+    },[props.fullData])
+
+    useEffect(() => {
         if (props.addOns){
             setPaths(props.addOns)
         }
@@ -81,7 +87,7 @@ const LineChart = (props) =>{
     
     useEffect(() =>{
         if (props.chartData){
-            setOrigCharData(props.chartData)
+            //setOrigCharData(props.chartData)
             if (props.displayfrom){
                 setcharData(props.chartData.filter(item => moment(item.date) >= moment().subtract(props.displayfrom, 'months')))
             }else{
@@ -160,10 +166,15 @@ const LineChart = (props) =>{
                 //console.log("post zoom and pan values...",resetvals)
                 resetvals.length === charData.length ? null : (d3.selectAll("#multilines").remove(),setcharData([...resetvals]))
               }
-            
-            const g = svgElement.append("g").call(zoom)
-                                .attr("transform", "translate(" + 5 + "," + 5 + ")")                         
-            
+
+            let g = svgElement.append("g")
+              .attr("transform", "translate(" + 5 + "," + 5 + ")")                         
+
+            if (origCharData){
+                g = svgElement.append("g").call(zoom)
+                .attr("transform", "translate(" + 5 + "," + 5 + ")")                         
+            }
+
             svgElement.attr("width",width).attr("height",height)
     
             let x = XScale(charData,domainwidth,"date")
@@ -224,7 +235,7 @@ const LineChart = (props) =>{
     
             }
         }
-    },[charData,mvOnArrow,refOnChart,addLines,paths])
+    },[charData,mvOnArrow,refOnChart,addLines,paths,origCharData])
 
     const getContentForModal = () => {
         return (<ChartUserInputs referData={addLines[addLines.length - 1]} 
