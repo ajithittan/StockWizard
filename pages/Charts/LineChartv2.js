@@ -8,6 +8,7 @@ import ToolTip from '../../components/Charting/Components/ToolTip'
 import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
 import Text from '../../components/Charting/Components/Text'
+import WaitingForResonse from '../../components/WaitingForResponse'
 
 const LineChartv2 = (props) =>{
 
@@ -19,6 +20,7 @@ const LineChartv2 = (props) =>{
     let height = ref.current?.parentElement.offsetHeight
     let domainwidth = width - margin.left - margin.right
     let domainheight = height - margin.top - margin.bottom
+    const [waiting,setWaiting] = useState(true) 
 
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
@@ -37,7 +39,7 @@ const LineChartv2 = (props) =>{
     useEffect(() => {
         if (!charData){
             let cacheKey = props.stock + "_" + props.duration + "_PRICE"
-            getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration}).then(res => res?.length ? setcharData(res) : null)
+            getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration}).then(res => res?.length ? (setcharData(res),setWaiting(false)) : null)
         }
     },[])    
 
@@ -56,25 +58,27 @@ const LineChartv2 = (props) =>{
             const g = svgElement.append("g")
                 .attr("transform", "translate(" + 5 + "," + 5 + ")");   
             
-            xTicks(g,x,y,width,height,props.allticks)    
+            xTicks(g,x,y,width,height,props.allticks,props.noofticks)    
             yTicks(g,x,y,width,height)                
 
             const swapStk = () => props.swap ? props.swap(props.stock): null
             const classNameAppend = props.main ? "_M" : "_N"
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTip(g,tooltipref.current,x,y,charData,swapStk,classNameAppend,props.main)
             Rectangle(g,289,184,tooltip,onMouseOver,onMouseOut,onMouseMove,swapStk,props.background)
-            Line(g,charData,x,y)
+            Line(g,charData,x,y,"#1E90FF",true)
             Text(g,x(moment(charData[Math.round(charData.length/2)].date)),0,"")
         }
     },[charData])
 
     return (
+        <>
         <div style={{position:'relative'}}>
             <svg ref={ref} className="SVG_1"/>
             {
-                props.main ? <div ref={tooltipref} style={{position:"absolute"}}></div> : null
+                props.main ? <div ref={tooltipref} style={{position:"absolute"}}> </div> : null
             }
         </div>
+        </>
     )
 }
 export default LineChartv2

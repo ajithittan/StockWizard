@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as d3 from "d3";
 
-const Line = (g,chardata,x,y,color) =>{
+const Line = (g,chardata,x,y,color,animate) =>{
     //console.log("tooltip",tooltip)
     g.append("path")
       .attr("class", "line")
@@ -11,7 +11,9 @@ const Line = (g,chardata,x,y,color) =>{
       .attr("d", d3.line()
       .x(d => x(moment(d.date)))
       .y(d => y(d.close)))
-      .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)  
+      .transition()
+      .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)
+      .duration(animate?800:50)
 }
 
 const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) =>{

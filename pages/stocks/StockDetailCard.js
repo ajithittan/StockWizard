@@ -14,6 +14,7 @@ import CompanyStockPrice from './CompanyStockPrice'
 import MovingAvg from './MovingAvg'
 import CompanyInformation from '../CompanyDetails/CompanyInformation'
 import InfoIcon from '@mui/icons-material/Info';
+import {useSelector} from 'react-redux'
 
 const StockDetailCard = (props) => {
     const [stkQuote,setStkQuote] = useState(null)
@@ -22,6 +23,7 @@ const StockDetailCard = (props) => {
     const [type,setType] = useState("Basic")
     const [companySubHeader, setCompanySubHeader] = useState(null)
     const sm = useMediaQuery("(max-width: 960px)");
+    const {dashboardsliderdur} = useSelector((state) => state.dashboardlayout)
 
     let cardStyle = {
         height:"90%",
@@ -55,7 +57,7 @@ const StockDetailCard = (props) => {
        } 
     },[props.stockQuote,props.streamedQuotes])
 
-    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:3}})
+    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:dashboardsliderdur > 0 ? dashboardsliderdur : 3}})
     
     const showAllCompanyStats = (stk) => router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
 
@@ -66,7 +68,7 @@ const StockDetailCard = (props) => {
 
     const getContent = () =>{
         let retVal = {
-            "Basic":<CompanyStockPrice stock={stock} duration={3}></CompanyStockPrice>,
+            "Basic":<CompanyStockPrice stock={stock} duration={dashboardsliderdur > 0 ? dashboardsliderdur : 3} key={dashboardsliderdur}></CompanyStockPrice>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }

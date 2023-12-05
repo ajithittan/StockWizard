@@ -149,23 +149,7 @@ const LineChart = (props) =>{
             
             const svgElement = d3.select(ref.current)
 
-            let zoom = d3.zoom().on("zoom",handleZoom)
-
-            function handleZoom(e) {
-                let zoomedScaleY = e.transform.rescaleY(y);
-                let zoomedScaleX = e.transform.rescaleX(x);
-                d3.selectAll("#xScale").remove();
-                d3.selectAll("#yScale").remove();
-                xTicks(g,zoomedScaleX,zoomedScaleY,width,height)    
-                yTicks(g,zoomedScaleX,zoomedScaleY,width,height)  
-                //g.attr("transform", "translate(" + e.translate + ")scale(" + e.scale + ")");
-                //g.translate([((width*e.scale/2)+e.translate[0]),((height*e.scale/2)+e.translate[1])]);  
-                var startDate = zoomedScaleX.invert(0);
-                var endDate = zoomedScaleX.invert(width); 
-                let resetvals = origCharData.filter(item => moment(item.date) >= moment(startDate) && moment(item.date) <= moment(endDate))
-                //console.log("post zoom and pan values...",resetvals)
-                resetvals.length === charData.length ? null : (d3.selectAll("#multilines").remove(),setcharData([...resetvals]))
-              }
+            let zoom = d3.zoom().on("zoom", handleZoom)
 
             let g = svgElement.append("g")
               .attr("transform", "translate(" + 5 + "," + 5 + ")")                         
@@ -192,6 +176,22 @@ const LineChart = (props) =>{
             
             xTicks(g,x,y,width,height)    
             yTicks(g,x,y,width,height)    
+
+            function handleZoom(e) {
+                let zoomedScaleY = e.transform.rescaleY(y);
+                let zoomedScaleX = e.transform.rescaleX(x);
+                let startDate = zoomedScaleX.invert(0);
+                let endDate = zoomedScaleX.invert(width); 
+                d3.selectAll("#xScale").remove();
+                d3.selectAll("#yScale").remove();
+                xTicks(g,zoomedScaleX,zoomedScaleY,width,height)    
+                yTicks(g,zoomedScaleX,zoomedScaleY,width,height)  
+                //g.attr("transform", "translate(" + e.translate + ")scale(" + e.scale + ")");
+                //g.translate([((width*e.scale/2)+e.translate[0]),((height*e.scale/2)+e.translate[1])]);  
+                let resetvals = origCharData.filter(item => moment(item.date) >= moment(startDate) && moment(item.date) <= moment(endDate))
+                //console.log("post zoom and pan values...",resetvals)
+                resetvals.length === charData.length ? null : (d3.selectAll("#multilines").remove(),setcharData([...resetvals]))
+            }
 
             const swapStk = () => props.swap ? props.swap(props.stock): null
             const classNameAppend = props.main ? "_M" : "_N"

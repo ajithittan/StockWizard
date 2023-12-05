@@ -24,7 +24,7 @@ const CompanyStockPrice = (props) =>{
             {
                 compDtls && dur? 
                 <div style={{paddingLeft:"20px",paddingBottom:"10px"}}><LineChartv2 background={"none"} key={compDtls} 
-                        stock={compDtls} margin={margin} swap={false} duration={dur} main={false} allticks={true}/></div>
+                        stock={compDtls} margin={margin} swap={false} duration={dur} main={false} allticks={false} noofticks={6}/></div>
                 :null
             }
         </>

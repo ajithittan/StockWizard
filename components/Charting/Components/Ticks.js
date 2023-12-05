@@ -11,13 +11,21 @@ const noOfXTicks = (width) =>{
     }
 }
 
-const xTicks = (g,xScale,yScale,width,height,allticks) => {
-    let no_of_ticks = allticks ? 1 : noOfXTicks(width)
-    g.append("g")
-    .attr("id", "xScale")
-    .attr("class", "xaxis")
-    .attr("transform", "translate(0," + yScale.range()[0] + ")")
-    .call(axisBottom(xScale).ticks(timeMonth.every(no_of_ticks)).tickFormat(timeFormat("%b")))
+const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks) => {
+    if (numberOfTicks){
+        g.append("g")
+        .attr("id", "xScale")
+        .attr("class", "xaxis")
+        .attr("transform", "translate(0," + yScale.range()[0] + ")")
+        .call(axisBottom(xScale).ticks(numberOfTicks).tickFormat(timeFormat("%b")))   
+    }else{
+        let no_of_ticks = allticks ? 1 : noOfXTicks(width)
+        g.append("g")
+        .attr("id", "xScale")
+        .attr("class", "xaxis")
+        .attr("transform", "translate(0," + yScale.range()[0] + ")")
+        .call(axisBottom(xScale).ticks(timeMonth.every(no_of_ticks)).tickFormat(timeFormat("%b")))    
+    }
 
     g.append("g")
     .attr("id", "xScale")
