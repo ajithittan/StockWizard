@@ -5,10 +5,8 @@ import {XScale,YScale} from '../../components/Charting/Components/Scales'
 import Rectangle from '../../components/Charting/Components/Rectangle'
 import {Line} from '../../components/Charting/Components/Line'
 import ToolTip from '../../components/Charting/Components/ToolTip'
-import getStockPriceHist from '../../modules/cache/cacheprice'
 import { xTicks,yTicks } from "../../components/Charting/Components/Ticks"
 import Text from '../../components/Charting/Components/Text'
-import WaitingForResonse from '../../components/WaitingForResponse'
 
 const LineChartv2 = (props) =>{
 
@@ -20,8 +18,7 @@ const LineChartv2 = (props) =>{
     let height = ref.current?.parentElement.offsetHeight
     let domainwidth = width - margin.left - margin.right
     let domainheight = height - margin.top - margin.bottom
-    const [waiting,setWaiting] = useState(true) 
-
+    
     useEffect(() => {
         window.addEventListener('resize', updateDimensions);
         return () => {
@@ -29,19 +26,18 @@ const LineChartv2 = (props) =>{
         }
       }, [])
 
+      useEffect(() =>{
+        if (props.chartdata){
+            setcharData(props.chartdata)
+        }
+      },[props.chartdata])
+
     const updateDimensions = () => {
         width = window.innerWidth*0.90
         height = window.innerHeight*0.90
         domainwidth = width - 20 
         domainheight = height - 20
     }
-
-    useEffect(() => {
-        if (!charData){
-            let cacheKey = props.stock + "_" + props.duration + "_PRICE"
-            getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration}).then(res => res?.length ? (setcharData(res),setWaiting(false)) : null)
-        }
-    },[])    
 
     useEffect (() =>{
         if (charData) {

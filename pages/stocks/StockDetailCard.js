@@ -67,8 +67,11 @@ const StockDetailCard = (props) => {
     }
 
     const getContent = () =>{
+        let queryparams = {}
+        queryparams.stock = stock
+        queryparams.duration = dashboardsliderdur > 0 ? dashboardsliderdur : 3
         let retVal = {
-            "Basic":<CompanyStockPrice stock={stock} duration={dashboardsliderdur > 0 ? dashboardsliderdur : 3} key={dashboardsliderdur}></CompanyStockPrice>,
+            "Basic":<CompanyStockPrice inpvals={queryparams} key={dashboardsliderdur}></CompanyStockPrice>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }

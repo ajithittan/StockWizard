@@ -13,7 +13,7 @@ const Line = (g,chardata,x,y,color,animate) =>{
       .y(d => y(d.close)))
       .transition()
       .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)
-      .duration(animate?800:50)
+      .duration(animate?200:50)
 }
 
 const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) =>{

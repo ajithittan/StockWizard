@@ -1,31 +1,32 @@
 import { useEffect, useState } from "react"
-import {getCompanyQtrPerf} from '../../modules/api/StockMaster'
-import Image from 'next/image';
-import myGif from '../../public/loading-loading-forever.gif'
 import LineChartv2 from '../Charts/LineChartv2'
+import WaitingForResonse from '../../components/WaitingForResponse'
+import getStockPriceHist from '../../modules/cache/cacheprice'
 
 const CompanyStockPrice = (props) =>{
-    const [compDtls,setcompDtls] = useState(null)
+
     const margin = {top: 20, right: 5, bottom: 0, left: 0}
-    const [dur,setDur] = useState(null)
+    const [chartData,setChartData] = useState(null)
+    const [waiting,setWaiting] = useState(true) 
 
     useEffect(() => {
-        setcompDtls(props.stock)
-    },[props.stock])
-
-    useEffect(() =>{
-        if (props.duration){
-            setDur(props.duration)
+        if (props.inpvals){
+            let cacheKey = props.inpvals.stock + "_" + props.inpvals.duration + "_PRICE"
+            getStockPriceHist(cacheKey,{stock:props.inpvals.stock,duration:props.inpvals.duration}).then(res => res?.length ? (setChartData(res),setWaiting(false)) : setWaiting(false))
         }
-    },[props.duration])
+    },[props.inpvals])    
 
     return (
         <>
             {
-                compDtls && dur? 
-                <div style={{paddingLeft:"20px",paddingBottom:"10px"}}><LineChartv2 background={"none"} key={compDtls} 
-                        stock={compDtls} margin={margin} swap={false} duration={dur} main={false} allticks={false} noofticks={6}/></div>
-                :null
+                <div style={{paddingLeft:"20px",paddingBottom:"10px"}}>
+                    {
+                        waiting ? <WaitingForResonse width={50} height={50}/> : 
+                                  <LineChartv2 background={"none"} chartdata={chartData} margin={margin} swap={false} 
+                                            main={false} allticks={false} noofticks={6}/>
+
+                    }
+                </div>
             }
         </>
     )

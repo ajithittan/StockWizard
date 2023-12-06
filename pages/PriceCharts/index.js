@@ -8,12 +8,10 @@ import {getRollingSMA,} from '../../modules/api/StockIndicators'
 import {getPredictionsForStock} from '../../modules/api/StockPrediction'
 import Image from 'next/image';
 import cloneDeep from 'lodash/cloneDeep';
-import DisplaySelections from './DisplaySelections'
 import moment from 'moment';
 import ModalBox from '../../components/ModalBox'
 import FloatController from '../../components/FloatController'
 import {getStockPortfolioPos} from '../../modules/api/UserPreferences'
-import StreamStockPrice from '../../components/StreamStockPrice'
 import BottomNav from './BottomNav'
 import {getColorFromPreDefinedSeq} from '../../modules/utils/UtilFunctions'
 
@@ -276,16 +274,10 @@ const index = (props) =>{
                 stock && width > 0 ? 
                   <div>
                     {processing ? <ModalBox content={getProcessingContent()} doNotClose={true}  onClose={() => setProcessing(false)}></ModalBox> : null }
-                    {/*<StreamStockPrice add={addStreamData} stocks={[stock]}></StreamStockPrice>*/}
                     <LineChart key={Math.round(width) + stock + charData + initialSetUp?.duration} chartData={charData} fullData={fullData}
                               width={Math.round(width)} height={Math.round(height*.85)} margin={margin} 
                               stock={stock} main={true} positions={allPortPositions} line={undefined} 
                               streamdata={realtimeStkPrc} displayfrom={initialSetUp?.duration} addOns={addLines}/>
-                              {
-                                /***
-                                 <DisplaySelections key={selections} selections={selections} adjSelections={adjustSelections} remSelections={removeSelections}></DisplaySelections>                                
-                                 */
-                              }
                   </div> : <Image src={myGif} alt="wait" height={30} width={30} />
               }
             </div>
