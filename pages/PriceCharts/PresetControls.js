@@ -9,11 +9,15 @@ const PresetControls = (props) =>{
     
     const handleSmaChanges = (inpType,value) =>{
         let currVal = presetConfig.filter(item => item.type === inpType && item.value === value)[0]["selected"]
+        let applyChanges = {}
         if (currVal){
-            props.adjSelections(inpType,value)
+            applyChanges.action = "R"
         }else{
-            props.onChanges(inpType,value)
+            applyChanges.action = "A"
         }
+        applyChanges.type = inpType
+        applyChanges.value = value
+        props.onChanges(applyChanges)
         setPresetConfig([...presetConfig.map(item => item.type === inpType && item.value === value? {...item,"selected":!currVal} : item)])
     }
 

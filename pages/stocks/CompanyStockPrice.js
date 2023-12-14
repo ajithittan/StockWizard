@@ -23,7 +23,7 @@ const CompanyStockPrice = (props) =>{
                     {
                         waiting ? <WaitingForResonse width={50} height={50}/> : 
                                   <LineChartv2 background={"none"} chartdata={chartData} margin={margin} swap={false} 
-                                            main={false} allticks={false} noofticks={6}/>
+                                            main={false} allticks={false} noofticks={3}/>
 
                     }
                 </div>
