@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState,forwardRef,useRef } from "react";
 import StockDetailCard from './StockDetailCard'
 import Grid from '@mui/material/Grid';
 import AddPositions from './AddPositions'
@@ -13,6 +13,7 @@ const index = (props) =>{
     const [stkQuotes,setStkQuote] = useState(null)
     const [stkStreamedQuotes,setStkStreamedQuotes] = useState(null)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
+    const ref = useRef()
 
     useEffect(() =>{
         if (props.stocks){
@@ -55,7 +56,7 @@ const index = (props) =>{
         >
         {
 
-            stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3}><StockDetailCard key={item} stock={item} 
+            stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3} ref={ref}><StockDetailCard ref={ref} key={item} stock={item} 
                                    stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}
                                    streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
                                 </StockDetailCard></Grid>) 
@@ -66,5 +67,5 @@ const index = (props) =>{
   )
 }
 
-export default index
+export default forwardRef(index)
 

@@ -326,6 +326,13 @@ color: white;
       color: black;
       z-index: 100;
     }
+    .tooltip_C{
+      font-size: 11px;
+      padding: 7px;      
+      opacity: 0.9;
+      color:gray;
+      z-index: 100;
+    }
     .line_label{
       font-size: 12px;
     }
@@ -432,9 +439,8 @@ color: white;
     font-size: 15px;
   }
   .ToolTipText_M{
-    font-size: 14px;
-    font-weight: bold;
-    background-color: blue;
+    font-size: 12px;
+    color: blue;
   }
   .ToolTipText_N{
     font-size: 12px;

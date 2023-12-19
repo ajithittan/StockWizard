@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { useEffect, useState } from "react"
+import { useEffect, useState,forwardRef } from "react"
 import { useRouter } from 'next/router'
 import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +16,7 @@ import CompanyInformation from '../CompanyDetails/CompanyInformation'
 import InfoIcon from '@mui/icons-material/Info';
 import {useSelector} from 'react-redux'
 
-const StockDetailCard = (props) => {
+const StockDetailCard = (props,ref) => {
     const [stkQuote,setStkQuote] = useState(null)
     const [stock,setStock] = useState(null)
     const router = useRouter()
@@ -71,7 +71,7 @@ const StockDetailCard = (props) => {
         queryparams.stock = stock
         queryparams.duration = dashboardsliderdur > 0 ? dashboardsliderdur : 3
         let retVal = {
-            "Basic":<CompanyStockPrice inpvals={queryparams} key={dashboardsliderdur}></CompanyStockPrice>,
+            "Basic":<CompanyStockPrice inpvals={queryparams} key={dashboardsliderdur} ref={ref}></CompanyStockPrice>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }
@@ -118,4 +118,4 @@ const StockDetailCard = (props) => {
     );
   }
 
-export default StockDetailCard
+export default forwardRef(StockDetailCard)
