@@ -951,3 +951,6 @@ color: white;
 .axisOrange text{
   fill: #FFA500;
 } 
+body {
+  overflow-x: hidden;
+}
