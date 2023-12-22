@@ -6,7 +6,7 @@ import * as d3 from "d3";
 const ChartToolTip = (props,ref) =>{
 
     const tooltipref = useRef()
-    
+
     useEffect(() =>{
         if (props.propchartscale && props.chartdims){
             const svgElement = d3.select(ref.current)    
@@ -14,7 +14,7 @@ const ChartToolTip = (props,ref) =>{
             const resetOnMouseOver = () => {}
             const {tooltip,onMouseOver,onMouseOut,onMouseMove} = ToolTipv2(g,tooltipref.current,props.propchartscale.x,
                 props.propchartscale.y,props.data,null,"_M",true,false,null,props.chartdims.type)
-            Rectangle(g,props.chartdims.domainwidth,props.chartdims.domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,null,"white",resetOnMouseOver)    
+            Rectangle(g,props.chartdims.domainwidth,props.chartdims.domainheight,tooltip,onMouseOver,onMouseOut,onMouseMove,null,"rgba(0, 0, 0, 0)",resetOnMouseOver)    
         }
     },[props.propchartscale , props.chartdims])
 
