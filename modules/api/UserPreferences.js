@@ -24,6 +24,12 @@ const updStockPortfolioPos = async (stkPos) =>{
     return data.data
 }
 
+const delStockFromPortfolioPos = async (stksym) =>{
+    let url = "/personalize/delstockfromportfolio/" + stksym
+    const data = await axios.post(url)
+    return data.data
+}
+
 
 const getUserNotifications = async (inpType) =>{
     let url = "/personalize/usernotifications/" + inpType
@@ -78,4 +84,5 @@ const updateUserCompanyStats = async (compstats) =>{
 }
 
 export {saveStockPositions,delStockPositions,getStockPortfolioPos,updStockPortfolioPos,getUserNotifications,
-    getUserStocks,getUserDashBoardLayout,updateUserDashBoardLayout,getUserCompanyStats,updateUserCompanyStats}
+    getUserStocks,getUserDashBoardLayout,updateUserDashBoardLayout,getUserCompanyStats,updateUserCompanyStats,
+    delStockFromPortfolioPos}

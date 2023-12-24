@@ -28,8 +28,7 @@ const ToolTipv2 = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,
             .attr("fill", "orange")
             .on("mouseover", handleMouseOver)
             .style("cursor", "pointer")
-            .on("click",(e,d,i) => callbacks({"close":d.values.filter(item => x.isSame(item.date))[0].close,
-                                             "date":d.values.filter(item => x.isSame(item.date))[0].date}))
+            .on("click",() => callbacks({"close":y,"date":x}))
     }
     const addCrossHairs = (x,y,d) => {
         const minDt = moment(linedata.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()

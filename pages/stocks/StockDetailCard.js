@@ -1,46 +1,41 @@
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
+import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import { useEffect, useState,forwardRef } from "react"
-import { useRouter } from 'next/router'
-import {DeleteStkFromPositions} from '../../modules/api/StockMaster'
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CardHeader from '@mui/material/CardHeader'
 import CompanyStockPrice from './CompanyStockPrice'
 import MovingAvg from './MovingAvg'
 import CompanyInformation from '../CompanyDetails/CompanyInformation'
-import InfoIcon from '@mui/icons-material/Info';
 import {useSelector} from 'react-redux'
+import StockDetailCardActions from './StockDetailCardActions'
+import StockDetailCardOverlay from './StockDetailCardOverlay'
+import { useRouter } from 'next/router'
 
 const StockDetailCard = (props,ref) => {
+    const router = useRouter()
     const [stkQuote,setStkQuote] = useState(null)
     const [stock,setStock] = useState(null)
-    const router = useRouter()
     const [type,setType] = useState("Basic")
     const [companySubHeader, setCompanySubHeader] = useState(null)
     const sm = useMediaQuery("(max-width: 960px)");
     const {dashboardsliderdur} = useSelector((state) => state.dashboardlayout)
+    const [changeDur,setChangeDur] = useState(3)
+    const [showOverLay,setShowOverlay] = useState(false)
 
     let cardStyle = {
         height:"90%",
-        //width: '10vw',
         transitionDuration: '0.3s',
-        //height: '20vw',
-        //display: 'block',
-        //height: sm ? "80%" : "300px",
-        //width: sm ? "80%" : "300px", 
         transitionDuration: '0.3s',
-        //marginLeft: sm ? "10px" : "15px",
         marginTop: sm ? "10px" : "15px",
-        //paddingLeft: sm ? "5%" : "1px",
         backgroundColor: stkQuote?.perchange?.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
         alignItems:"center",
     }
+
+    useEffect(() =>{
+        setChangeDur(dashboardsliderdur)
+    },[dashboardsliderdur])
 
     useEffect(() => {
         if(props.stock){
@@ -58,20 +53,13 @@ const StockDetailCard = (props,ref) => {
     },[props.stockQuote,props.streamedQuotes])
 
     const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:dashboardsliderdur > 0 ? dashboardsliderdur : 3}})
-    
-    const showAllCompanyStats = (stk) => router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
-
-    const stopTrackingStk = () =>{
-        props.remove(stock)
-        let res = DeleteStkFromPositions(stock)
-    }
 
     const getContent = () =>{
         let queryparams = {}
         queryparams.stock = stock
-        queryparams.duration = dashboardsliderdur > 0 ? dashboardsliderdur : 3
+        queryparams.duration = changeDur > 0 ? changeDur : 3
         let retVal = {
-            "Basic":<CompanyStockPrice inpvals={queryparams} key={dashboardsliderdur} ref={ref}></CompanyStockPrice>,
+            "Basic":<CompanyStockPrice inpvals={queryparams} key={changeDur} ref={ref}></CompanyStockPrice>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }
@@ -87,32 +75,21 @@ const StockDetailCard = (props,ref) => {
 
     const gettitle = () => <>{stock ? stock + " - " + (stkQuote ? stkQuote.close : "Looking..") + 
                               (stkQuote ? " (" + stkQuote?.perchange?.toFixed(2) + "%)" : "..") : "Looking"}</>
-    
+
     return (
-      <Card style={cardStyle}>
-          <CardHeader title={gettitle()}
+      <Card style={cardStyle} onMouseLeave = {() => setShowOverlay(false)}>
+        <CardHeader title={gettitle()}
                       subheader = {getsubheader()}
                       onClick={() => showPriceChart(stock)}
                       style={{cursor:"pointer"}}
           />
         <CardContent>
-          <div style={{height:"90%"}}>
+          <div style={{height:"90%"}} onMouseEnter={() => setShowOverlay(true)}>
               {getContent()}
           </div>
-          <CardActions>
-                <IconButton aria-label="reset">
-                    <ShowChartIcon onClick={() => setType("Basic")} />
-                </IconButton>
-                <IconButton aria-label="Information">
-                    <InfoIcon onClick={() => setType("Companyinfo")} />
-                </IconButton>
-                <IconButton aria-label="delete">
-                    <DeleteIcon onClick={stopTrackingStk} />
-                </IconButton>
-                <IconButton aria-label="More Information">
-                    <ReadMoreIcon onClick={() => showAllCompanyStats(stock)} />
-                </IconButton>
-          </CardActions>
+          <Box display='flex' justifyContent='center'paddingTop={2} paddingBottom={2}>
+            {showOverLay ? <StockDetailCardOverlay type={type} callbackduration={setChangeDur}/> : <StockDetailCardActions type={type} stock={stock} ontypechange={setType}></StockDetailCardActions>}
+          </Box>
         </CardContent>
       </Card>
     );
