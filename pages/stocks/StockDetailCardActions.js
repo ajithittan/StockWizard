@@ -9,6 +9,7 @@ import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
 import { useDispatch} from 'react-redux'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
+import StockDetailCardOverlay from './StockDetailCardOverlay'
 
 const StockDetailCardActions = (props) =>{
     const router = useRouter()
@@ -31,33 +32,33 @@ const StockDetailCardActions = (props) =>{
     const arrOfActions = {"Basic":defaultActions,"Companyinfo":defaultActions}
 
     return (
-        <Grid
-        container
-        direction="row"
-        justify="space-evenly"
-        align="stretch"
-        >
-        <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                <IconButton aria-label="reset">
-                    <ShowChartIcon onClick={() => props.ontypechange("Basic")} />
-                </IconButton>
-            </Grid>
+            <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            align="stretch"
+            >
             <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                <IconButton aria-label="Information">
-                    <InfoIcon onClick={() => props.ontypechange("Companyinfo")} />
-                </IconButton>
-            </Grid>
-            <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                <IconButton aria-label="delete">
-                    <DeleteIcon onClick={() => dispatch(removePortfolioStock(props.stock))} />
-                </IconButton>            
-            </Grid>
-            <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                <IconButton aria-label="More Information">
-                    <ReadMoreIcon onClick={() => showAllCompanyStats(props.stock)} />
-                </IconButton>            
-            </Grid>
-        </Grid>
+                    <IconButton aria-label="reset">
+                        <ShowChartIcon onClick={() => props.ontypechange("Basic")} />
+                    </IconButton>
+                </Grid>
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="Information">
+                        <InfoIcon onClick={() => props.ontypechange("Companyinfo")} />
+                    </IconButton>
+                </Grid>
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="More Information">
+                        <ReadMoreIcon onClick={() => showAllCompanyStats(props.stock)} />
+                    </IconButton>                     
+                </Grid>
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="delete">
+                        <DeleteIcon onClick={() => dispatch(removePortfolioStock(props.stock))} />
+                    </IconButton>   
+                </Grid>
+                </Grid>
            
     )
 

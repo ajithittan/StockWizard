@@ -1,4 +1,3 @@
-import {AppSkinWrapper} from '../modules/state/GlobalSkinState'
 import {AuthWrapper} from '../modules/state/authState'
 import '../styles/globals.css'
 import '../styles/sectormaint.css'
@@ -8,12 +7,10 @@ import store from '../redux/store'
 
 function MyApp({ Component, pageProps }) {
   return (  
-          <AuthWrapper>
+           <AuthWrapper>
             <Provider store={store}>
-              <AppSkinWrapper>
                     <Header />
                     <Component {...pageProps} />   
-              </AppSkinWrapper>
             </Provider>
           </AuthWrapper>
   )

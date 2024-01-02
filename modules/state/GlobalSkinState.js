@@ -7,6 +7,7 @@ const getSessionVal = () => {
   return localStorage.getItem("theme") || 1
 }
 
+
 export function AppSkinWrapper({ children }) {
 
   const [skinState,setskinState] = useState(allSkinState[0])

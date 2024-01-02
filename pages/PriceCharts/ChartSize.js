@@ -1,9 +1,9 @@
 import { useState,useEffect,forwardRef } from "react"
 import * as d3 from "d3";
 
-const ChartSize = (props,ref) => {
+const ChartSize = forwardRef((props,ref) => {
 
-  const margin = {top: 20, right: 5, bottom: 0, left: 20}
+  const margin = {top: 20, right: 5, bottom: 0, left: 30}
 
     useEffect(() => {
       if (props.wh_props){
@@ -33,10 +33,11 @@ const ChartSize = (props,ref) => {
           setDimensions(width,height);
         }
         calcWidth();
-        const updateDimensions = () => calcWidth()
-        window.addEventListener("resize", updateDimensions);
-        return () => window.removeEventListener("resize", updateDimensions);
+        //const updateDimensions = () => calcWidth()
+        //window.addEventListener("resize", updateDimensions);
+        //return () => window.removeEventListener("resize", updateDimensions);
       }
     }, [props.wh_props]);
-}
-export default forwardRef(ChartSize)
+})
+
+export default ChartSize

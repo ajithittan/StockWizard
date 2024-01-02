@@ -3,22 +3,23 @@ import StockDetailCard from './StockDetailCard'
 import Grid from '@mui/material/Grid';
 import AddPositions from './AddPositions'
 import {StockPriceV2} from '../../modules/api/StockMaster'
-import StreamStockPrice from '../../components/StreamStockPrice'
 import { useSelector, useDispatch} from 'react-redux'
-import {UPD_STOCK_QUOTES} from '../../redux/reducers/portfolioStockSlice'
+import {ADD_TO_QUOTES} from '../../redux/reducers/streamingQuotesSlice'
+import {PriceChartWrapper} from '../../modules/state/ChartStateMgmt'
 
 const index = (props) =>{
     const dispatch = useDispatch()
     const [stocks,setStocks] = useState(null)
     const [stkQuotes,setStkQuote] = useState(null)
-    const [stkStreamedQuotes,setStkStreamedQuotes] = useState(null)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
     const ref = useRef()
 
     useEffect(() =>{
         if (props.stocks){
             setStocks(props.stocks)
-            setTimeout(() => getStkQuotes(props.stocks),1000) 
+            //not sure why I did the below? puzzled....
+            //setTimeout(() => getStkQuotes(props.stocks),1000) 
+            getStkQuotes(props.stocks)
         }
     },[props.stocks])
 
@@ -33,18 +34,10 @@ const index = (props) =>{
     const getStkQuotes = async (stock) => {
         StockPriceV2(stock).then(res => {
             if (res && res.length > 0 ){
-                setStkQuote(res)
-                dispatch(UPD_STOCK_QUOTES(res))
+                //setStkQuote(res)
+                dispatch(ADD_TO_QUOTES(res))
             }      
         })
-    }
-
-    let counter = 0
-
-    const streamedQuotes = async (quotes) => {
-        quotes? setStkStreamedQuotes(quotes) : null
-        counter++
-        counter/5 === 0 ? setStkQuote(quotes) : null
     }
 
     return (
@@ -56,16 +49,16 @@ const index = (props) =>{
         >
         {
 
-            stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3} ref={ref}><StockDetailCard ref={ref} key={item} stock={item} 
-                                   stockQuote={stkQuotes?.filter(dtls => dtls.symbol === item)[0]} remove={removeFromList}
-                                   streamedQuotes={stkStreamedQuotes?.filter(dtls => dtls.symbol === item)[0]}>
-                                </StockDetailCard></Grid>) 
+            stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3} ref={ref}>
+                                    <PriceChartWrapper>
+                                        <StockDetailCard ref={ref} key={item} stock={item} remove={removeFromList}>
+                                        </StockDetailCard>
+                                    </PriceChartWrapper>
+                                </Grid>) 
         }
         {dashboardsector ? null : <AddPositions initialSetOfStocks={stocks}></AddPositions>}
-        <StreamStockPrice add={streamedQuotes} stocks={stocks}></StreamStockPrice>
       </Grid>
   )
 }
 
-export default forwardRef(index)
-
+export default index

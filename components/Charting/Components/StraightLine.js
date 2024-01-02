@@ -1,25 +1,9 @@
 import moment from 'moment';
-import * as d3 from "d3";
-
-const Line = (g,chardata,x,y,color,animate) =>{
-    //console.log("tooltip",tooltip)
-    g.append("path")
-      .attr("class", "line")
-      .datum(chardata)
-      .attr("fill", "none")
-      .attr("stroke", color ? color : "#1E90FF")
-      .attr("d", d3.line()
-      .x(d => x(moment(d.date)))
-      .y(d => y(d.close)))
-      .transition()
-      .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)
-      .duration(animate?200:50)
-}
 
 const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) => {
   let textToDisplay = inpVals.close + (inpVals.position ? "(" + inpVals.position + ")" : "")
-  const minDt = moment(chardata[0].values.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()
-  const maxDt = moment(chardata[0].values.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toDate()
+  const minDt = moment(chardata.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()
+  const maxDt = moment(chardata.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item.date)?acc:item.date},'')).toDate()
 
   g.append("line")
    .attr("class", "StraightXLine")
@@ -55,4 +39,4 @@ const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) => {
    .style("cursor", "pointer") 
 }
 
-export {Line,StraightXLine}
+export {StraightXLine}

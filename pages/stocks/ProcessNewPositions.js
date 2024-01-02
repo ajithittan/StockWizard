@@ -7,6 +7,7 @@ const ProcessNewPositions = (props) =>{
     const dispatch = useDispatch()
     
     const AddtoList = (stockSym) =>{
+        console.log("in here?",stockSym)
         props.updates([...stockSym])
     }
 

@@ -16,9 +16,15 @@ export default function StockSymbolSelector(props) {
 
   const LISTBOX_PADDING = 8; // px
   const [allStks,setAllStks] = useState(null)
-  let [initialSetUp,setInitialSetUp] = useState(props.initialset)
+  let [initialSetUp,setInitialSetUp] = useState(null)
   let [newlyAdded,setNewlyAdded] = useState([])
   let [noShowSelections, setNoShowSelections] = useState(false)
+
+  useEffect(() =>{
+    if(props.initialset){
+      setInitialSetUp([...props.initialset])
+    }
+  },[props.initialset])
 
   useEffect(() =>{
     setNoShowSelections(props.noSelections)

@@ -2,13 +2,22 @@ import { useEffect,useRef,forwardRef, useState } from "react"
 import Rectangle from '../../components/Charting/Components/Rectangle'
 import ToolTipv2 from '../../components/Charting/Components/ToolTipv2'
 import * as d3 from "d3";
+import {useDispatch} from 'react-redux'
+import {ADD_ELEMENTS_TO_CHART} from '../../redux/reducers/chartDataSlice'
 
-const ChartToolTip = (props,ref) =>{
+const ChartToolTip = forwardRef((props,ref) =>{
 
+    const dispatch = useDispatch()
     const tooltipref = useRef()
-
-    const callBackFunction = (d) => console.log("callBackFunction",d)
-
+    const callBackFunction = (inpobj) => {
+        let chartElementToAdd = {}
+        chartElementToAdd.symbol = props?.data[0]?.symbol
+        chartElementToAdd.charttype = "IMAGE"
+        chartElementToAdd.chartdata = inpobj 
+        //chartElementToAdd.chartfulldata = props.data
+        //chartElementToAdd.convertto = "STRAIGHTLINE"
+        dispatch(ADD_ELEMENTS_TO_CHART(chartElementToAdd))
+    }        
     useEffect(() =>{
         if (props.propchartscale && props.chartdims){
             const svgElement = d3.select(ref.current)    
@@ -25,6 +34,6 @@ const ChartToolTip = (props,ref) =>{
             <div ref={tooltipref} style={{position:"absolute"}}></div>
         </div>
     )
-}
+})
 
-export default forwardRef(ChartToolTip)
+export default ChartToolTip

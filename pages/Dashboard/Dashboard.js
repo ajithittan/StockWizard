@@ -15,7 +15,7 @@ const Dashboard = () =>{
     const {dashboardlayout,loading} = useSelector((state) => state.dashboardlayout)
     const {stockList} = useSelector((state) => state.porfoliostock)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
- 
+    
     useEffect(() =>{
         if (!dashboardstocks){
             setStocksAndStream(stockList)
@@ -47,7 +47,7 @@ const Dashboard = () =>{
 
     const getComponentToDisplay = (arrLayoutId) =>{
         const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard stocks={dashboardstocks} actionChangeList={changesToStkList} header="Performance"/>},
-                                {itemId:2,component:<Stocks key={dashboardstocks} stocks={dashboardstocks} actionChangeList={changesToStkList}/>},
+                                {itemId:2,component:<Stocks stocks={dashboardstocks} actionChangeList={changesToStkList}/>},
                                 {itemId:3,component:<></>},
                                 {itemId:4,component:<TopMovers header="Movers & Shakers"/>},
                                 {itemId:5,component:<TopNews key={dashboardstocks} stocks={dashboardstocks} header="Top News"/>}]

@@ -59,8 +59,8 @@ const DurationPicker = (props) =>{
         >
         {
           options?.map(item => 
-            <Grid xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid} sx={{cursor:"pointer"}}>
-              <Typography variant="overline" onClick={() => changeDuration(item.value)}>
+            <Grid xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid} sx={{cursor:"pointer"}} onClick={() => changeDuration(item.value)}>
+              <Typography variant="overline" color={props.color}>
                 {item.label}
               </Typography>
             </Grid>

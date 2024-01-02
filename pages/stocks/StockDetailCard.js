@@ -11,6 +11,8 @@ import {useSelector} from 'react-redux'
 import StockDetailCardActions from './StockDetailCardActions'
 import StockDetailCardOverlay from './StockDetailCardOverlay'
 import { useRouter } from 'next/router'
+import Divider from '@mui/material/Divider';
+import StockDetailCardHeader from './StockDetailCardHeader'
 
 const StockDetailCard = (props,ref) => {
     const router = useRouter()
@@ -21,7 +23,6 @@ const StockDetailCard = (props,ref) => {
     const sm = useMediaQuery("(max-width: 960px)");
     const {dashboardsliderdur} = useSelector((state) => state.dashboardlayout)
     const [changeDur,setChangeDur] = useState(3)
-    const [showOverLay,setShowOverlay] = useState(false)
 
     let cardStyle = {
         height:"90%",
@@ -43,23 +44,11 @@ const StockDetailCard = (props,ref) => {
         }
     },[props.stock])
 
-    useEffect(() => {
-        if (props.streamedQuotes){
-            setStkQuote(props.streamedQuotes)
-        }
-       else if (props.stockQuote){
-            setStkQuote(props.stockQuote)
-       } 
-    },[props.stockQuote,props.streamedQuotes])
-
     const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:dashboardsliderdur > 0 ? dashboardsliderdur : 3}})
 
     const getContent = () =>{
-        let queryparams = {}
-        queryparams.stock = stock
-        queryparams.duration = changeDur > 0 ? changeDur : 3
         let retVal = {
-            "Basic":<CompanyStockPrice inpvals={queryparams} key={changeDur} ref={ref}></CompanyStockPrice>,
+            "Basic":<CompanyStockPrice stock={stock} duration={changeDur} key={changeDur} ref={ref}></CompanyStockPrice>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }
@@ -67,28 +56,30 @@ const StockDetailCard = (props,ref) => {
     const getsubheader = () => {
         let retVal = {
             "Basic": <><MovingAvg symbol = {props.stock} type={"SMA_50"}/>(50D)&nbsp;&nbsp;&nbsp;
-                        <MovingAvg symbol = {props.stock} type={"SMA_200"}/>(200D)</>,
+                        <MovingAvg symbol = {props.stock} type={"SMA_200"}/>(200D)
+                        </>,
             "Companyinfo": companySubHeader
         }
         return retVal[type]    
     }
 
-    const gettitle = () => <>{stock ? stock + " - " + (stkQuote ? stkQuote.close : "Looking..") + 
-                              (stkQuote ? " (" + stkQuote?.perchange?.toFixed(2) + "%)" : "..") : "Looking"}</>
-
     return (
-      <Card style={cardStyle} onMouseLeave = {() => setShowOverlay(false)}>
-        <CardHeader title={gettitle()}
+      <Card style={cardStyle}>
+        <CardHeader title={<StockDetailCardHeader key={stock} stock={stock}></StockDetailCardHeader>}
                       subheader = {getsubheader()}
                       onClick={() => showPriceChart(stock)}
                       style={{cursor:"pointer"}}
           />
-        <CardContent>
-          <div style={{height:"90%"}} onMouseEnter={() => setShowOverlay(true)}>
+        <CardContent>  
+          <div style={{height:"90%"}}>
               {getContent()}
           </div>
-          <Box display='flex' justifyContent='center'paddingTop={2} paddingBottom={2}>
-            {showOverLay ? <StockDetailCardOverlay type={type} callbackduration={setChangeDur}/> : <StockDetailCardActions type={type} stock={stock} ontypechange={setType}></StockDetailCardActions>}
+          <Box display='flex' justifyContent='center'paddingTop={2}>
+              <StockDetailCardOverlay type={type} callbackduration={setChangeDur}></StockDetailCardOverlay>
+          </Box>
+          <Divider></Divider>
+          <Box display='flex' justifyContent='center' paddingBottom={2}>
+              <StockDetailCardActions type={type} stock={stock} ontypechange={setType}></StockDetailCardActions>
           </Box>
         </CardContent>
       </Card>
