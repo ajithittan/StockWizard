@@ -1,9 +1,15 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
 import {getUserStocks,updStockPortfolioPos,delStockFromPortfolioPos} from '../../modules/api/UserPreferences'
+import {saveStockAlerts} from '../../modules/api/UserAlerts'
 
 export const getChartDataFromSource = createAsyncThunk("chartdataslice/getchartdata",async(obj,thunkAPI)=>{
     let res = await getUserStocks()
     return res
+}) 
+
+export const addStockPriceAlerts = createAsyncThunk("chartdataslice/addchartdata",async(obj,thunkAPI)=>{
+    thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART(obj))
+    saveStockAlerts(obj.chartdata,obj.symbol)
 }) 
 
 const chartDataSlice = createSlice({

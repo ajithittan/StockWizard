@@ -3,20 +3,20 @@ import Rectangle from '../../components/Charting/Components/Rectangle'
 import ToolTipv2 from '../../components/Charting/Components/ToolTipv2'
 import * as d3 from "d3";
 import {useDispatch} from 'react-redux'
-import {ADD_ELEMENTS_TO_CHART} from '../../redux/reducers/chartDataSlice'
+import {addStockPriceAlerts} from '../../redux/reducers/chartDataSlice'
 
 const ChartToolTip = forwardRef((props,ref) =>{
 
     const dispatch = useDispatch()
     const tooltipref = useRef()
     const callBackFunction = (inpobj) => {
+        inpobj.symbol = props?.data[0]?.symbol
+        inpobj.alerttype = "B"
         let chartElementToAdd = {}
         chartElementToAdd.symbol = props?.data[0]?.symbol
         chartElementToAdd.charttype = "IMAGE"
         chartElementToAdd.chartdata = inpobj 
-        //chartElementToAdd.chartfulldata = props.data
-        //chartElementToAdd.convertto = "STRAIGHTLINE"
-        dispatch(ADD_ELEMENTS_TO_CHART(chartElementToAdd))
+        dispatch(addStockPriceAlerts(chartElementToAdd))
     }        
     useEffect(() =>{
         if (props.propchartscale && props.chartdims){
