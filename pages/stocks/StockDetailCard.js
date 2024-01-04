@@ -29,7 +29,7 @@ const StockDetailCard = (props,ref) => {
         transitionDuration: '0.3s',
         transitionDuration: '0.3s',
         marginTop: sm ? "10px" : "15px",
-        backgroundColor: stkQuote?.perchange?.toFixed(2) > 0 ? "#F5FEF8" :"#FFF8F9",
+        backgroundColor: stkQuote > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
         alignItems:"center",
     }
@@ -65,7 +65,7 @@ const StockDetailCard = (props,ref) => {
 
     return (
       <Card style={cardStyle}>
-        <CardHeader title={<StockDetailCardHeader key={stock} stock={stock}></StockDetailCardHeader>}
+        <CardHeader title={<StockDetailCardHeader key={stock} stock={stock} callBackForColor={setStkQuote}></StockDetailCardHeader>}
                       subheader = {getsubheader()}
                       onClick={() => showPriceChart(stock)}
                       style={{cursor:"pointer"}}

@@ -5,7 +5,6 @@ import AddPositions from './AddPositions'
 import {StockPriceV2} from '../../modules/api/StockMaster'
 import { useSelector, useDispatch} from 'react-redux'
 import {ADD_TO_QUOTES} from '../../redux/reducers/streamingQuotesSlice'
-import {PriceChartWrapper} from '../../modules/state/ChartStateMgmt'
 
 const index = (props) =>{
     const dispatch = useDispatch()
@@ -16,25 +15,20 @@ const index = (props) =>{
 
     useEffect(() =>{
         if (props.stocks){
-            setStocks(props.stocks)
+            //setStocks(props.stocks)
             //not sure why I did the below? puzzled....
             //setTimeout(() => getStkQuotes(props.stocks),1000) 
             getStkQuotes(props.stocks)
         }
     },[props.stocks])
 
-    useEffect(() =>{
-        if(stkQuotes){
-            setStocks([...stkQuotes.map(item => item.symbol)])
-        }
-    },[stkQuotes])
-
     const removeFromList = (stkSym) => setStocks([...stocks.filter(stk => stk !==stkSym)])
 
-    const getStkQuotes = async (stock) => {
-        StockPriceV2(stock).then(res => {
+    const getStkQuotes = async (stocks) => {
+        StockPriceV2(stocks).then(res => {
             if (res && res.length > 0 ){
-                //setStkQuote(res)
+                console.log("quotes are?",res)
+                setStocks([...res.map(item => item.symbol)])
                 dispatch(ADD_TO_QUOTES(res))
             }      
         })
@@ -50,10 +44,8 @@ const index = (props) =>{
         {
 
             stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={3} xl={3} ref={ref}>
-                                    <PriceChartWrapper>
                                         <StockDetailCard ref={ref} key={item} stock={item} remove={removeFromList}>
                                         </StockDetailCard>
-                                    </PriceChartWrapper>
                                 </Grid>) 
         }
         {dashboardsector ? null : <AddPositions initialSetOfStocks={stocks}></AddPositions>}
