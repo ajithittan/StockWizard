@@ -11,12 +11,50 @@ const ToolTipv2 = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,
 
     const bisectDate = d3.bisector(function(d) { return moment(d.date); }).left;  
     
-    function handleMouseOver(d, i) {   
+    function handleMouseOver(d, i) {  
       d3.select(this).transition()
           .duration(1)
           .attr("r", 10)
-          .attr("fill", "white")
+          .attr("fill", "#FFD580")
           .style("cursor", "pointer")
+    }
+
+    function upArrow (d,x,y){
+      d3.selectAll("#arrowUP").remove()
+      g.append("text")  
+      .attr("id", "arrowUP")
+      .attr("x", d.offsetX)
+      .attr("y", d.offsetY)
+      .style("z-index",50)
+      .style('opacity',0.8)
+      .style("fill", "green")
+      .style("font-size", "30px")
+      .style("cursor", "pointer")
+      .on("click",() => callbacks({"alerttype":"U","close":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
+      .html("&#8599;")
+      setTimeout(() => d3.selectAll("#arrowUP").transition().style('opacity',0.5).duration(800).remove(),5000)
+    }
+
+    function downArrow (d,x,y){
+      d3.selectAll("#arrowDN").remove()
+      g.append("text")
+        .attr("id", "arrowDN")
+        .attr("x", d.offsetX-20)
+        .attr("y", d.offsetY+20)
+        .style('opacity',0.8)
+        .style("z-index",50)
+        .style("fill", "red")
+        .style("font-size", "30px")
+        .style("cursor", "pointer")
+        .on("click",() => callbacks({"alerttype":"D","close":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
+        .html("&#8601;")
+        setTimeout(() => d3.selectAll("#arrowDN").transition().style('opacity',0.5).duration(900).remove(),5000)
+    }
+
+
+    function addCallToAction(d,x,y) {
+      upArrow(d,x,y)
+      downArrow(d,x,y)
     }
 
     const addCircle = (x,y) => {
@@ -27,8 +65,10 @@ const ToolTipv2 = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,
             .attr("stroke", "black")
             .attr("fill", "orange")
             .on("mouseover", handleMouseOver)
+            //.on("mouseout", () => setTimeout(() => d3.selectAll("#arrows").remove(),1500))
             .style("cursor", "pointer")
-            .on("click",() => callbacks({"close":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
+            //.on("click",() => callbacks({"close":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
+            .on("click",(d,i) => addCallToAction(d,x,y))
     }
     const addCrossHairs = (x,y,d) => {
         const minDt = moment(linedata.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item.date)?acc:item.date},'')).toDate()

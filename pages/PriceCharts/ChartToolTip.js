@@ -11,7 +11,6 @@ const ChartToolTip = forwardRef((props,ref) =>{
     const tooltipref = useRef()
     const callBackFunction = (inpobj) => {
         inpobj.symbol = props?.data[0]?.symbol
-        inpobj.alerttype = "B"
         let chartElementToAdd = {}
         chartElementToAdd.symbol = props?.data[0]?.symbol
         chartElementToAdd.charttype = "IMAGE"

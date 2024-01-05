@@ -27,7 +27,6 @@ const index = (props) =>{
     const getStkQuotes = async (stocks) => {
         StockPriceV2(stocks).then(res => {
             if (res && res.length > 0 ){
-                console.log("quotes are?",res)
                 setStocks([...res.map(item => item.symbol)])
                 dispatch(ADD_TO_QUOTES(res))
             }      

@@ -9,7 +9,7 @@ export const getChartDataFromSource = createAsyncThunk("chartdataslice/getchartd
 
 export const addStockPriceAlerts = createAsyncThunk("chartdataslice/addchartdata",async(obj,thunkAPI)=>{
     thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART(obj))
-    saveStockAlerts(obj.chartdata,obj.symbol)
+    saveStockAlerts(obj.chartdata)
 }) 
 
 const chartDataSlice = createSlice({
