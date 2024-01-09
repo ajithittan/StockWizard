@@ -30,7 +30,7 @@ const ToolTipv2 = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,
       .style("fill", "green")
       .style("font-size", "30px")
       .style("cursor", "pointer")
-      .on("click",() => callbacks({"alerttype":"U","close":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
+      .on("click",() => callbacks({"alerttype":"U","close":y,"threshold":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
       .html("&#8599;")
       setTimeout(() => d3.selectAll("#arrowUP").transition().style('opacity',0.5).duration(800).remove(),5000)
     }
@@ -46,7 +46,7 @@ const ToolTipv2 = (g,tooltipref,xScale,yScale,linedata,dblClick,classNameAppend,
         .style("fill", "red")
         .style("font-size", "30px")
         .style("cursor", "pointer")
-        .on("click",() => callbacks({"alerttype":"D","close":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
+        .on("click",() => callbacks({"alerttype":"D","close":y,"threshold":y,"date":x,"xPos":xScale(x),"yPos":yScale(y)}))
         .html("&#8601;")
         setTimeout(() => d3.selectAll("#arrowDN").transition().style('opacity',0.5).duration(900).remove(),5000)
     }

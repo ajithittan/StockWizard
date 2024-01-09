@@ -7,7 +7,7 @@ import CardHeader from '@mui/material/CardHeader'
 import CompanyStockPrice from './CompanyStockPrice'
 import MovingAvg from './MovingAvg'
 import CompanyInformation from '../CompanyDetails/CompanyInformation'
-import {useSelector} from 'react-redux'
+import {useSelector,shallowEqual} from 'react-redux'
 import StockDetailCardActions from './StockDetailCardActions'
 import StockDetailCardOverlay from './StockDetailCardOverlay'
 import { useRouter } from 'next/router'
@@ -16,7 +16,6 @@ import StockDetailCardHeader from './StockDetailCardHeader'
 
 const StockDetailCard = (props,ref) => {
     const router = useRouter()
-    const [stkQuote,setStkQuote] = useState(null)
     const [stock,setStock] = useState(null)
     const [type,setType] = useState("Basic")
     const [companySubHeader, setCompanySubHeader] = useState(null)
@@ -24,12 +23,16 @@ const StockDetailCard = (props,ref) => {
     const {dashboardsliderdur} = useSelector((state) => state.dashboardlayout)
     const [changeDur,setChangeDur] = useState(3)
 
+    const stkQuote = useSelector(state => state.streamingquotes?.streamdata?.find(m=> {
+        return m.symbol === props.stock
+    }), shallowEqual)
+
     let cardStyle = {
         height:"90%",
         transitionDuration: '0.3s',
         transitionDuration: '0.3s',
         marginTop: sm ? "10px" : "15px",
-        backgroundColor: stkQuote > 0 ? "#F5FEF8" :"#FFF8F9",
+        backgroundColor: stkQuote?.perchange > 0 ? "#F5FEF8" :"#FFF8F9",
         color:'text.secondary',
         alignItems:"center",
     }
@@ -65,7 +68,7 @@ const StockDetailCard = (props,ref) => {
 
     return (
       <Card style={cardStyle}>
-        <CardHeader title={<StockDetailCardHeader key={stock} stock={stock} callBackForColor={setStkQuote}></StockDetailCardHeader>}
+        <CardHeader title={<StockDetailCardHeader stock={stock}></StockDetailCardHeader>}
                       subheader = {getsubheader()}
                       onClick={() => showPriceChart(stock)}
                       style={{cursor:"pointer"}}

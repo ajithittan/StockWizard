@@ -5,14 +5,21 @@ import ChartLine from "./ChartLine"
 import ChartToolTip from './ChartToolTip'
 import ChartImage from './ChartImage'
 import ChartSingleStraightLine from './ChartSingleStraightLine'
+import {useSelector,shallowEqual,useDispatch} from 'react-redux'
 
 const ChartContainer = forwardRef((props,inpref) => {
-
-    const [chartComponents,setChartComponents] = useState(null)
     const [chartDims,setChartDims] = useState(null)
     const [chartscales,setChartScales] = useState(null)
     const [inpSizes,setInpSizes] = useState(null)
     const ref = useRef()
+
+    const chartfulldata = useSelector(state => state.chartdata?.initialchartdata?.find(m=> {
+        return m.symbol === props.stock
+    })?.chartfulldata, shallowEqual)
+
+    const chartComponents = useSelector(state => state.chartdata?.chartelements?.find(m=> {
+        return m.symbol === props.stock
+    })?.chartelements, shallowEqual)
 
     useEffect(() =>{
         if (inpref){
@@ -23,19 +30,13 @@ const ChartContainer = forwardRef((props,inpref) => {
         }
     },[inpref])
 
-    useEffect(() =>{
-        if (props.chartprops){
-            setChartComponents(props.chartprops)
-        }
-    },[props.chartprops])
-
-    const drawChartComponent = (type, data,fulldata) => {
+    const drawChartComponent = (type, data) => {
         const mapping = [
-                            {charttype:"AXIS",chartcomp:<ChartAxis data={data} ref={ref} wh_props={inpSizes} chartdims={chartDims} setchartscales={setChartScales}></ChartAxis>},
-                            {charttype:"LINE",chartcomp:<ChartLine data={data} ref={ref} propchartscale={chartscales}></ChartLine>},
-                            {charttype:"TOOLTIP",chartcomp:<ChartToolTip data={data} ref={ref} propchartscale={chartscales} chartdims={chartDims}></ChartToolTip>},
+                            {charttype:"AXIS",chartcomp:<ChartAxis data={data || chartfulldata} ref={ref} wh_props={inpSizes} chartdims={chartDims} setchartscales={setChartScales}></ChartAxis>},
+                            {charttype:"LINE",chartcomp:<ChartLine data={data || chartfulldata } ref={ref} propchartscale={chartscales}></ChartLine>},
+                            {charttype:"TOOLTIP",chartcomp:<ChartToolTip data={data || chartfulldata } ref={ref} propchartscale={chartscales} chartdims={chartDims}></ChartToolTip>},
                             {charttype:"IMAGE",chartcomp:<ChartImage data={data} ref={ref} propchartscale={chartscales} chartdims={chartDims} ></ChartImage>},
-                            {charttype:"STRAIGHTLINE",chartcomp:<ChartSingleStraightLine data={data} fulldata={fulldata} ref={ref} propchartscale={chartscales} chartdims={chartDims} ></ChartSingleStraightLine>}
+                            {charttype:"STRAIGHTLINE",chartcomp:<ChartSingleStraightLine stock={props.stock} data={data} ref={ref} propchartscale={chartscales} chartdims={chartDims} ></ChartSingleStraightLine>}
                         ]
 
         return mapping.filter(item => item.charttype === type)[0]?.chartcomp
@@ -45,7 +46,7 @@ const ChartContainer = forwardRef((props,inpref) => {
         <>
             <ChartSize ref={ref} setchartdims={setChartDims} wh_props={inpSizes}></ChartSize>
             {
-                chartComponents?.map(eachComponent => drawChartComponent(eachComponent.charttype,eachComponent.chartdata,eachComponent.chartfulldata))
+                chartComponents?.map(eachComponent => drawChartComponent(eachComponent.charttype,eachComponent.chartdata))
             }
             <svg ref={ref} />
         </>

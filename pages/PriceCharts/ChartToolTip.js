@@ -11,9 +11,11 @@ const ChartToolTip = forwardRef((props,ref) =>{
     const tooltipref = useRef()
     const callBackFunction = (inpobj) => {
         inpobj.symbol = props?.data[0]?.symbol
+        let uniq = 'id' + (new Date()).getTime();
         let chartElementToAdd = {}
+        chartElementToAdd.id = uniq
         chartElementToAdd.symbol = props?.data[0]?.symbol
-        chartElementToAdd.charttype = "IMAGE"
+        chartElementToAdd.type = "ALERT"
         chartElementToAdd.chartdata = inpobj 
         dispatch(addStockPriceAlerts(chartElementToAdd))
     }        

@@ -5,11 +5,12 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import InfoIcon from '@mui/icons-material/Info';
 import CardActions from '@mui/material/CardActions';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
 import { useDispatch} from 'react-redux'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
-import StockDetailCardOverlay from './StockDetailCardOverlay'
+import {getNotificationsForChart} from '../../redux/reducers/chartDataSlice'
 
 const StockDetailCardActions = (props) =>{
     const router = useRouter()
@@ -38,9 +39,14 @@ const StockDetailCardActions = (props) =>{
             justify="space-evenly"
             align="stretch"
             >
-            <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="reset">
                         <ShowChartIcon onClick={() => props.ontypechange("Basic")} />
+                    </IconButton>
+                </Grid>
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="reset">
+                        <NotificationsIcon  color="secondary" onClick={() => dispatch(getNotificationsForChart(props.stock))} />
                     </IconButton>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
@@ -58,7 +64,7 @@ const StockDetailCardActions = (props) =>{
                         <DeleteIcon onClick={() => dispatch(removePortfolioStock(props.stock))} />
                     </IconButton>   
                 </Grid>
-                </Grid>
+            </Grid>
            
     )
 

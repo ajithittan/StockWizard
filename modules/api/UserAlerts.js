@@ -6,4 +6,10 @@ const saveStockAlerts  = async (inpvals) =>{
     return data.data
 }
 
-export {saveStockAlerts}
+const getStockAlerts  = async (stock) =>{
+    let url = "/personalize/stockalerts/" + stock
+    const data = await axios.get(url)
+    return data.data
+}
+
+export {saveStockAlerts,getStockAlerts}

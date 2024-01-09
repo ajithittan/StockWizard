@@ -1,42 +1,39 @@
-import { useEffect, useState,forwardRef } from 'react'
+import { useEffect, forwardRef } from 'react'
 import ChartContainer from './ChartContainer'
-import {useSelector,useDispatch} from 'react-redux'
-import {ADD_ELEMENTS_TO_CHART} from '../../redux/reducers/chartDataSlice'
+import {useDispatch} from 'react-redux'
+import {INITIAL_CHART_DATA,INITIAL_CHART_ELEMENTS} from '../../redux/reducers/chartDataSlice'
 
-const ChartMain = forwardRef((props,inpref) =>{
+const ChartMain = forwardRef((props,inpref) => {
     const dispatch = useDispatch()
-    const [chartState,setChartState] = useState(null)
-    const {newchartelements} = useSelector((state) => state.chartdata)
 
     useEffect(() =>{
-        if (props.initchartprops){
-            const newElements = addNewElementsToCharts()
-            if (newElements && newElements.length > 0){
-                setChartState([...props.initchartprops,...newElements])
-            }else{
-                setChartState([...props.initchartprops])
+        if (props.initchartdata && props.stock){
+            let obj = {}
+            obj.symbol=props.stock
+            obj.chartfulldata = props.initchartdata
+            dispatch(INITIAL_CHART_DATA(obj))
+        }
+    },[props.initchartdata,props.stock])
+
+    useEffect(() =>{
+        if (props.initchartprops && props.stock){
+            let arr = []
+            for (let i=0; i<props.initchartprops.length;i++){
+                let obj = {}
+                obj.charttype = props.initchartprops[i]
+                arr.push(obj)
+            }
+            if (arr.length > 0){
+                let obj = {}
+                obj.symbol=props.stock
+                obj.chartelements = arr
+                dispatch(INITIAL_CHART_ELEMENTS(obj))
             }
         }
-    },[props.initchartprops])
-
-    useEffect(() =>{
-        if (newchartelements && chartState){
-            const changedData = addNewElementsToCharts()
-            if(changedData.length > 0){
-                chartState.push(...changedData)
-                setChartState([...chartState])  
-            }     
-        }
-    },[newchartelements])
-
-    const addNewElementsToCharts = () => {
-        if (newchartelements) {
-            return newchartelements.filter(item => item.symbol === props.stock)
-        }
-    }
-
+    },[props.initchartprops,props.stock])
+    
     return (
-        <ChartContainer chartprops={chartState} ref={inpref} stock={props.stock}></ChartContainer>
+        <ChartContainer ref={inpref} stock={props.stock}></ChartContainer>
     )
 })
 

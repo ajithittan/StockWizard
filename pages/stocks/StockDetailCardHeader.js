@@ -1,26 +1,18 @@
-import { useEffect, useState,forwardRef } from "react"
-import {useSelector} from 'react-redux'
+import { useEffect } from 'react'
+import {useSelector,shallowEqual} from 'react-redux'
 
 const StockDetailCardHeader = (props) =>{
 
-    const {streamdata} = useSelector(state => state.streamingquotes)
-
-    useEffect(() =>{
-        props.callBackForColor(streamdata?.filter(dtls => dtls.symbol === props.stock)[0]?.perchange?.toFixed(2))
-    },[props.stock,streamdata])
-    
-    const gettitle = () => 
-    <>
-    {   
-        props.stock ? 
-        (streamdata ? streamdata?.filter(dtls => dtls.symbol === props.stock)[0]?.close || 0.00 : "Looking..") + 
-        (streamdata ? " (" + (streamdata?.filter(dtls => dtls.symbol === props.stock)[0]?.perchange?.toFixed(2) || 0.0) + "%)"  : "..") : "Looking"
-    }
-    </>
+    const streamdata = useSelector(state => state.streamingquotes?.streamdata?.find(m=> {
+        return m.symbol === props.stock
+    }), shallowEqual)
 
     return (
         <>
-            {props.stock}&nbsp;-&nbsp;{gettitle()}
+            {props.stock}&nbsp;-&nbsp;
+            {
+                streamdata ? streamdata?.close + " (" + streamdata?.perchange?.toFixed(2)  + "%)" : "Looking.."  
+            }
         </>
     )
 }
