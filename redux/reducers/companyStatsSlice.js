@@ -46,7 +46,6 @@ const companyStatsSlice = createSlice({
             state.companystats = filteredArr
         },        
         MODIFY_COMPANY_STATS: (state=initialState, action) => {
-            console.log("action.payload",Object.keys(action.payload))
             let keyToUpd = Object.keys(action.payload)[0]
             state.companystats.map(item => {
                 item[keyToUpd] = action.payload[keyToUpd]

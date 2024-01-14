@@ -7,28 +7,24 @@ import InfoIcon from '@mui/icons-material/Info';
 import CardActions from '@mui/material/CardActions';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
-import { useDispatch} from 'react-redux'
+import {getNotificationsForChart,HIDE_ADDED_ITEMS_FROM_DB} from '../../redux/reducers/chartDataSlice'
+import {useSelector, useDispatch,shallowEqual} from 'react-redux'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
-import {getNotificationsForChart} from '../../redux/reducers/chartDataSlice'
 
 const StockDetailCardActions = (props) =>{
     const router = useRouter()
     const dispatch = useDispatch()
-    const [type,setType] = useState(null)
     const [sizeOfGrid,setSizeOfGrid] = useState(1.6)
-
-    useEffect(() =>{
-        if (props.type){
-            setType(props.type)
-        }
-    },[props.type])
+    const [clicked,setClicked] = useState(false)
 
     const showAllCompanyStats = (stk) => router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
 
-    const defaultActions = <CardActions disableSpacing sx={{ mt: "auto" }}>
+    const stockAlerts = useSelector((state) => state.stockalerts?.stockalerts?.find(m=> {
+        return m.symbol === props.stock
+    }), shallowEqual)
 
-    </CardActions>
+    const defaultActions = <CardActions disableSpacing sx={{ mt: "auto" }} />
 
     const arrOfActions = {"Basic":defaultActions,"Companyinfo":defaultActions}
 
@@ -45,9 +41,21 @@ const StockDetailCardActions = (props) =>{
                     </IconButton>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <IconButton aria-label="reset">
-                        <NotificationsIcon  color="secondary" onClick={() => dispatch(getNotificationsForChart(props.stock))} />
-                    </IconButton>
+                    {
+                        clicked ? <IconButton aria-label="reset">
+                                    <NotificationsIcon  color={stockAlerts?.alerts?.length > 0 ? "primary" : "secondary"} 
+                                    onClick={() => {dispatch(HIDE_ADDED_ITEMS_FROM_DB(stockAlerts?.alerts)),setClicked(false)}}/>
+                                  </IconButton> : 
+                                  <IconButton aria-label="reset">
+                                    <NotificationsIcon  color={stockAlerts?.alerts?.length > 0 ? "primary" : "secondary"} 
+                                    onClick={() => {
+                                        dispatch(getNotificationsForChart(stockAlerts?.alerts));
+                                        if (stockAlerts?.alerts?.length > 0){
+                                            setClicked(true)
+                                        }
+                                    }}/>
+                                  </IconButton>
+                    }
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="Information">

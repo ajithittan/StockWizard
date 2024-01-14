@@ -4,6 +4,7 @@ import portfolioStockReducer from './reducers/portfolioStockSlice'
 import companyStatsReducer from './reducers/companyStatsSlice'
 import chartDataReducer from './reducers/chartDataSlice'
 import streamQuotesReducer from './reducers/streamingQuotesSlice'
+import stockalertsReducer from './reducers/stockAlertsSlice'
 
 export default configureStore({
     reducer:{
@@ -11,6 +12,7 @@ export default configureStore({
         porfoliostock: portfolioStockReducer,
         companystats:companyStatsReducer,
         chartdata:chartDataReducer,
-        streamingquotes:streamQuotesReducer
+        streamingquotes:streamQuotesReducer,
+        stockalerts:stockalertsReducer
     }
 })

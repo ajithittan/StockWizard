@@ -13,8 +13,11 @@ import StockDetailCardOverlay from './StockDetailCardOverlay'
 import { useRouter } from 'next/router'
 import Divider from '@mui/material/Divider';
 import StockDetailCardHeader from './StockDetailCardHeader'
+import {getAlerts} from '../../redux/reducers/stockAlertsSlice'
+import { useDispatch} from 'react-redux'
 
 const StockDetailCard = (props,ref) => {
+    const dispatch = useDispatch()
     const router = useRouter()
     const [stock,setStock] = useState(null)
     const [type,setType] = useState("Basic")
@@ -44,6 +47,7 @@ const StockDetailCard = (props,ref) => {
     useEffect(() => {
         if(props.stock){
             setStock(props.stock)
+            dispatch(getAlerts(props.stock))
         }
     },[props.stock])
 

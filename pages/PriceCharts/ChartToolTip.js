@@ -10,8 +10,9 @@ const ChartToolTip = forwardRef((props,ref) =>{
     const dispatch = useDispatch()
     const tooltipref = useRef()
     const callBackFunction = (inpobj) => {
+        let uniq = (new Date()).getTime();
         inpobj.symbol = props?.data[0]?.symbol
-        let uniq = 'id' + (new Date()).getTime();
+        inpobj.id = uniq
         let chartElementToAdd = {}
         chartElementToAdd.id = uniq
         chartElementToAdd.symbol = props?.data[0]?.symbol

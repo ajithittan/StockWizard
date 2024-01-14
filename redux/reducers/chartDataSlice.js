@@ -9,19 +9,19 @@ export const addStockPriceAlerts = createAsyncThunk("chartdataslice/addchartdata
 }) 
 
 const standardizeDataFromDb = (inpData) =>{
-    return inpData.map(obj => ({ ...obj, chartdata:{close:obj.threshold}}))
+    return inpData.map(obj => ({ ...obj, chartdata:{close:obj.threshold,id:obj.id}}))
 }
 
-export const getNotificationsForChart = createAsyncThunk("chartdataslice/addchartdata",async(stock,thunkAPI)=>{
-    getStockAlerts(stock).then(retval => thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART(standardizeDataFromDb(retval))))
+export const getNotificationsForChart = createAsyncThunk("chartdataslice/addchartdata",async(inpFromDb,thunkAPI)=>{
+    thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART(standardizeDataFromDb(inpFromDb)))
 }) 
 
 const chartDataSlice = createSlice({
     name: 'chartdata',
     initialState: {
         initialchartdata: null,
+        deletedchartelements:null,
         chartelements:null,
-        test:null,
         loading:true
     },
     reducers: {
@@ -71,6 +71,43 @@ const chartDataSlice = createSlice({
                 }
             }
         },
+        HIDE_ADDED_ITEMS_FROM_DB:(state=initialState, action) => {
+            if(action.payload){
+                if (state.chartelements){
+                    const stock = action.payload[0].symbol
+                    const indx = state.chartelements.findIndex(item => item.symbol === stock)
+                    if (indx > -1){
+                        let obj = {}
+                        obj.ids = state.chartelements[indx].chartelements.map(item => item.id).filter(item => item)
+                        obj.symbol = stock
+                        if(state.deletedchartelements){
+                            const ind = state.deletedchartelements.findIndex(item => item.symbol === stock)
+                            if (ind > -1){
+                                state.deletedchartelements[ind] = obj
+                            }else{
+                                state.deletedchartelements.push(obj) 
+                            }      
+                        }else{
+                            state.deletedchartelements = [obj]
+                        }
+                        state.chartelements[indx].chartelements = [...state.chartelements[indx].chartelements.filter(item => !action.payload.map(inner => inner.id).includes(item.id))]
+                    }
+                }
+            }
+        },
+        RESET_REMOVED_ITEMS:(state=initialState, action) => {
+            if(action.payload){
+                if (state.deletedchartelements){
+                    const stock = action.payload.symbol
+                    const indx = state.deletedchartelements.findIndex(item => item.symbol === stock)
+                    if (indx > -1){
+                        if(state.deletedchartelements){
+                            state.deletedchartelements[indx].ids = state.deletedchartelements[indx]?.ids.filter(item => !action.payload.ids.includes(item))
+                        }
+                    }
+                }
+            }
+        },
         DELETE_FROM_ADDED_ITEMS_BY_TYPE:(state=initialState, action) => {
             if(action.payload){
                 if (state.chartelements){
@@ -82,5 +119,6 @@ const chartDataSlice = createSlice({
     },
 }) 
 
-export const {INITIAL_CHART_DATA,ADD_ELEMENTS_TO_CHART,DELETE_FROM_ADDED_ITEMS,INITIAL_CHART_ELEMENTS} = chartDataSlice.actions;
+export const {INITIAL_CHART_DATA,ADD_ELEMENTS_TO_CHART,DELETE_FROM_ADDED_ITEMS,
+    HIDE_ADDED_ITEMS_FROM_DB,INITIAL_CHART_ELEMENTS,RESET_REMOVED_ITEMS} = chartDataSlice.actions;
 export default chartDataSlice.reducer;
