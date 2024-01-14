@@ -27,7 +27,7 @@ const ChartContainer = forwardRef((props,inpref) => {
     const deletedChartComponents = useSelector(state => state.chartdata?.deletedchartelements?.find(m=> {
         return m.symbol === props.stock
     })?.ids)
-
+   
     useEffect(() =>{
         if (inpref){
             let tempsize = {}
@@ -36,8 +36,6 @@ const ChartContainer = forwardRef((props,inpref) => {
             setInpSizes(tempsize)
         }
     },[inpref])
-
-    console.log("is it reloading?")
 
     useEffect(() =>{
         if(deletedChartComponents && deletedChartComponents.length >0){

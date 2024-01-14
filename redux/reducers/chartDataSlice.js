@@ -1,18 +1,12 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
-import {saveStockAlerts,getStockAlerts} from '../../modules/api/UserAlerts'
 
 const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE"}
-
-export const addStockPriceAlerts = createAsyncThunk("chartdataslice/addchartdata",async(obj,thunkAPI)=>{
-    thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART([obj]))
-    saveStockAlerts(obj.chartdata)
-}) 
 
 const standardizeDataFromDb = (inpData) =>{
     return inpData.map(obj => ({ ...obj, chartdata:{close:obj.threshold,id:obj.id}}))
 }
 
-export const getNotificationsForChart = createAsyncThunk("chartdataslice/addchartdata",async(inpFromDb,thunkAPI)=>{
+export const addAlertsOnChart = createAsyncThunk("chartdataslice/addchartdata",async(inpFromDb,thunkAPI)=>{
     thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART(standardizeDataFromDb(inpFromDb)))
 }) 
 
@@ -67,7 +61,8 @@ const chartDataSlice = createSlice({
         DELETE_FROM_ADDED_ITEMS:(state=initialState, action) => {
             if(action.payload){
                 if (state.chartelements){
-                    state.chartelements = state.chartelements.filter(item => item.id !== action.payload)
+                    const indx = state.chartelements.findIndex(item => item.symbol === action.payload.symbol)
+                    state.chartelements[indx].chartelements = state.chartelements[indx].chartelements.filter(item => item.id !== action.payload.id)
                 }
             }
         },
@@ -78,7 +73,7 @@ const chartDataSlice = createSlice({
                     const indx = state.chartelements.findIndex(item => item.symbol === stock)
                     if (indx > -1){
                         let obj = {}
-                        obj.ids = state.chartelements[indx].chartelements.map(item => item.id).filter(item => item)
+                        obj.ids = action.payload.map(item => item.id)
                         obj.symbol = stock
                         if(state.deletedchartelements){
                             const ind = state.deletedchartelements.findIndex(item => item.symbol === stock)

@@ -12,4 +12,10 @@ const getStockAlerts  = async (stock) =>{
     return data.data
 }
 
-export {saveStockAlerts,getStockAlerts}
+const delStockAlerts  = async (id) =>{
+    let url = "/personalize/deletealert/" + id
+    const data = await axios.post(url)
+    return data.data
+}
+
+export {saveStockAlerts,getStockAlerts,delStockAlerts}

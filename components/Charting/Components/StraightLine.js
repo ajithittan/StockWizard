@@ -15,12 +15,15 @@ const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) => {
    .style("cursor", "pointer") 
 
   g.append("text")
-   .attr("x", xScale(moment(minDt)))
-   .attr("class","StraightXLineLabel")
+   .attr("x", xScale(moment(maxDt)))
+   .style('fill', 'gray')
    .attr("id", "id_"+inpVals.id.toString())
    .attr("y", yScale(inpVals.close))
    .text(textToDisplay)   
+   .on("click", () => callback(inpVals))  
+   .style("cursor", "pointer")
   
+  /*** 
   g.append("text")
    .attr("x", xScale(moment(maxDt)) + 10)
    .attr("class","StraightXLineLabel")
@@ -29,7 +32,7 @@ const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) => {
    .text("X")
    .on("click", () => callback(inpVals))  
    .style("cursor", "pointer")
-
+   
    g.append("text")
    .attr("x", xScale(moment(minDt)) - 10)
    .attr("class","StraightXLineLabel")
@@ -38,6 +41,7 @@ const StraightXLine =(g,chardata,xScale,yScale,inpVals,callback) => {
    .text("X")
    .on("click", () => callback(inpVals))  
    .style("cursor", "pointer") 
+    */
 }
 
 export {StraightXLine}

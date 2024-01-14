@@ -7,7 +7,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import CardActions from '@mui/material/CardActions';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
-import {getNotificationsForChart,HIDE_ADDED_ITEMS_FROM_DB} from '../../redux/reducers/chartDataSlice'
+import {addAlertsOnChart,HIDE_ADDED_ITEMS_FROM_DB} from '../../redux/reducers/chartDataSlice'
 import {useSelector, useDispatch,shallowEqual} from 'react-redux'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
@@ -37,7 +37,12 @@ const StockDetailCardActions = (props) =>{
             >
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="reset">
-                        <ShowChartIcon onClick={() => props.ontypechange("Basic")} />
+                        <ShowChartIcon color="primary" onClick={() => props.ontypechange("Basic")} />
+                    </IconButton>
+                </Grid>
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="Information">
+                        <InfoIcon color="primary" onClick={() => props.ontypechange("Companyinfo")} />
                     </IconButton>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
@@ -49,18 +54,13 @@ const StockDetailCardActions = (props) =>{
                                   <IconButton aria-label="reset">
                                     <NotificationsIcon  color={stockAlerts?.alerts?.length > 0 ? "primary" : "secondary"} 
                                     onClick={() => {
-                                        dispatch(getNotificationsForChart(stockAlerts?.alerts));
+                                        dispatch(addAlertsOnChart(stockAlerts?.alerts));
                                         if (stockAlerts?.alerts?.length > 0){
                                             setClicked(true)
                                         }
                                     }}/>
                                   </IconButton>
                     }
-                </Grid>
-                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <IconButton aria-label="Information">
-                        <InfoIcon onClick={() => props.ontypechange("Companyinfo")} />
-                    </IconButton>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="More Information">
