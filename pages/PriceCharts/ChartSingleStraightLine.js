@@ -14,7 +14,9 @@ const ChartSingleStraightLine = forwardRef((props,ref) =>{
 
     const removeItems = (inpData) => {
         dispatch(HIDE_ADDED_ITEMS_FROM_DB([{...inpData,symbol:props.stock}]))
-        dispatch(deleteStockPriceAlerts({...inpData,symbol:props.stock}))
+        if (inpData.update){
+            dispatch(deleteStockPriceAlerts({...inpData,symbol:props.stock}))
+        }
     }
 
     useEffect(() =>{

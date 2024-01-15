@@ -1,9 +1,18 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
 
-const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE"}
+const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE","SAR":"STRAIGHTLINE"}
 
 const standardizeDataFromDb = (inpData) =>{
-    return inpData.map(obj => ({ ...obj, chartdata:{close:obj.threshold,id:obj.id}}))
+    const obj = (symbol,type,data,id) => {return {symbol:symbol,id:id,type:type,chartdata:{close:data,id:id}}}
+    if (inpData.type === "ALERT"){
+        return inpData.data.map(obj => ({ ...obj, chartdata:{close:obj.threshold,id:obj.id,update:true}}))
+    }else if (inpData.type === "SAR"){
+        let transformeddata = []
+        for (let i=0;i<inpData.data.limit;i++){
+            transformeddata.push(obj(inpData.data.symbol,inpData.data.type,inpData.data.data[i].toFixed(2),Number((inpData.data.data[i]*100).toFixed(0))))
+        }
+        return transformeddata
+    }
 }
 
 export const addAlertsOnChart = createAsyncThunk("chartdataslice/addchartdata",async(inpFromDb,thunkAPI)=>{

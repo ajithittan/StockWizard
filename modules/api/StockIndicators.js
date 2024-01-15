@@ -10,4 +10,9 @@ const getRollingSMA  = async (stock,indVal,duration) =>{
     return data.data
 }
 
-export {getSimpleMovingAverages,getRollingSMA}
+const getSupportResistanace  = async (stock) =>{
+    const data = await axios.get(`/api/stocksignals/suppresistance/` + stock)
+    return data.data
+}
+
+export {getSimpleMovingAverages,getRollingSMA,getSupportResistanace}
