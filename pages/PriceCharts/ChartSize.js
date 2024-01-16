@@ -12,7 +12,7 @@ const ChartSize = forwardRef((props,ref) => {
             let obj={}
             obj.width=props.wh_props.w
             obj.height=props.wh_props.h
-            if (props.wh_props.w < 600){
+            if (props.wh_props.w < 500){
               //Compact
               obj.type="C"
             }else{
@@ -25,9 +25,9 @@ const ChartSize = forwardRef((props,ref) => {
             props.setchartdims(obj)
         }
         const calcWidth = () =>{
-          let width=props.wh_props.w*.85
+          let width=props.wh_props.w*.90
           let height = 180
-          if (props.wh_props.h > 800){
+          if (props.wh_props.h > 500){
             height = props.wh_props.h*.90
           }
           setDimensions(width,height);

@@ -3,19 +3,14 @@ import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
 const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE","SAR":"STRAIGHTLINE"}
 
 const standardizeDataFromDb = (inpData) =>{
-    const obj = (symbol,type,data,id) => {return {symbol:symbol,id:id,type:type,chartdata:{close:data,id:id}}}
     if (inpData.type === "ALERT"){
         return inpData.data.map(obj => ({ ...obj, chartdata:{close:obj.threshold,id:obj.id,update:true}}))
-    }else if (inpData.type === "SAR"){
-        let transformeddata = []
-        for (let i=0;i<inpData.data.limit;i++){
-            transformeddata.push(obj(inpData.data.symbol,inpData.data.type,inpData.data.data[i].toFixed(2),Number((inpData.data.data[i]*100).toFixed(0))))
-        }
-        return transformeddata
+    }else {
+        return inpData.map(obj => ({ ...obj, chartdata:{close:obj.data,id:obj.id,update:false}}))
     }
 }
 
-export const addAlertsOnChart = createAsyncThunk("chartdataslice/addchartdata",async(inpFromDb,thunkAPI)=>{
+export const addItemsToChart = createAsyncThunk("chartdataslice/addchartdata",async(inpFromDb,thunkAPI)=>{
     thunkAPI.dispatch(ADD_ELEMENTS_TO_CHART(standardizeDataFromDb(inpFromDb)))
 }) 
 
@@ -67,15 +62,7 @@ const chartDataSlice = createSlice({
                 state.chartelements[indx]?.chartelements?.push(...inpobj)
             }
         },
-        DELETE_FROM_ADDED_ITEMS:(state=initialState, action) => {
-            if(action.payload){
-                if (state.chartelements){
-                    const indx = state.chartelements.findIndex(item => item.symbol === action.payload.symbol)
-                    state.chartelements[indx].chartelements = state.chartelements[indx].chartelements.filter(item => item.id !== action.payload.id)
-                }
-            }
-        },
-        HIDE_ADDED_ITEMS_FROM_DB:(state=initialState, action) => {
+        HIDE_ADDED_ITEMS_IN_CHART:(state=initialState, action) => {
             if(action.payload){
                 if (state.chartelements){
                     const stock = action.payload[0].symbol
@@ -111,18 +98,9 @@ const chartDataSlice = createSlice({
                     }
                 }
             }
-        },
-        DELETE_FROM_ADDED_ITEMS_BY_TYPE:(state=initialState, action) => {
-            if(action.payload){
-                if (state.chartelements){
-                    state.chartelements = state.chartelements.filter(item => item.type !== action.payload)
-                }
-            }
         }
-
-    },
+    }
 }) 
 
-export const {INITIAL_CHART_DATA,ADD_ELEMENTS_TO_CHART,DELETE_FROM_ADDED_ITEMS,
-    HIDE_ADDED_ITEMS_FROM_DB,INITIAL_CHART_ELEMENTS,RESET_REMOVED_ITEMS} = chartDataSlice.actions;
+export const {INITIAL_CHART_DATA,ADD_ELEMENTS_TO_CHART,HIDE_ADDED_ITEMS_IN_CHART,INITIAL_CHART_ELEMENTS,RESET_REMOVED_ITEMS} = chartDataSlice.actions;
 export default chartDataSlice.reducer;

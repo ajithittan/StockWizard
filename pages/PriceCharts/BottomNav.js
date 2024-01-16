@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react' 
 import PresetControls from './PresetControls'
 import {initiateCaching} from '../../modules/api/StockMaster'
+import ChartActions from './ChartActions'
+import Duration from '../../components/Duration'
 
 const BottomNav = (props) => {
   
@@ -13,8 +15,12 @@ const BottomNav = (props) => {
   },[props.stock])
 
    return (
+        <>
+        <Duration changedval={props.onchangedur}></Duration>
+        <ChartActions stock={props.stock}></ChartActions>
         <PresetControls onChanges={props.onChanges} adjSelections={props.adjSelections}></PresetControls>
-  )
+        </>
+  ) 
 }
 
 export default BottomNav

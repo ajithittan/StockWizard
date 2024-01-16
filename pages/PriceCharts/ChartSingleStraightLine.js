@@ -2,7 +2,7 @@ import { useEffect, forwardRef, useState } from 'react'
 import {StraightXLine} from "../../components/Charting/Components/StraightLine";
 import * as d3 from "d3";
 import {useSelector,shallowEqual,useDispatch} from 'react-redux'
-import {HIDE_ADDED_ITEMS_FROM_DB} from '../../redux/reducers/chartDataSlice'
+import {HIDE_ADDED_ITEMS_IN_CHART} from '../../redux/reducers/chartDataSlice'
 import {deleteStockPriceAlerts} from '../../redux/reducers/stockAlertsSlice'
 
 const ChartSingleStraightLine = forwardRef((props,ref) =>{
@@ -13,7 +13,7 @@ const ChartSingleStraightLine = forwardRef((props,ref) =>{
     }), shallowEqual)
 
     const removeItems = (inpData) => {
-        dispatch(HIDE_ADDED_ITEMS_FROM_DB([{...inpData,symbol:props.stock}]))
+        dispatch(HIDE_ADDED_ITEMS_IN_CHART([{...inpData,symbol:props.stock}]))
         if (inpData.update){
             dispatch(deleteStockPriceAlerts({...inpData,symbol:props.stock}))
         }

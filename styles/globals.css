@@ -461,9 +461,9 @@ color: white;
 }
 
 .Duration{
-  width: 90%;
+  width: 500;
   height: 30px;
-  background-color: rgb(10, 88, 233);
+  background-color: rgb(13, 93, 241);
   color: whitesmoke;
   align-items: center;
 }

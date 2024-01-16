@@ -4,7 +4,6 @@ import CardContent from '@mui/material/CardContent';
 import { useEffect, useState,forwardRef } from "react"
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CardHeader from '@mui/material/CardHeader'
-import CompanyStockPrice from './CompanyStockPrice'
 import MovingAvg from './MovingAvg'
 import CompanyInformation from '../CompanyDetails/CompanyInformation'
 import {useSelector,shallowEqual} from 'react-redux'
@@ -15,6 +14,7 @@ import Divider from '@mui/material/Divider';
 import StockDetailCardHeader from './StockDetailCardHeader'
 import {getAlerts} from '../../redux/reducers/stockAlertsSlice'
 import { useDispatch} from 'react-redux'
+import ChartEntry from '../PriceCharts/ChartEntry'
 
 const StockDetailCard = (props,ref) => {
     const dispatch = useDispatch()
@@ -31,7 +31,7 @@ const StockDetailCard = (props,ref) => {
     }), shallowEqual)
 
     let cardStyle = {
-        height:"90%",
+        height:"95%",
         transitionDuration: '0.3s',
         transitionDuration: '0.3s',
         marginTop: sm ? "10px" : "15px",
@@ -41,7 +41,9 @@ const StockDetailCard = (props,ref) => {
     }
 
     useEffect(() =>{
-        setChangeDur(dashboardsliderdur)
+        if (dashboardsliderdur > 0){
+            setChangeDur(dashboardsliderdur)
+        }
     },[dashboardsliderdur])
 
     useEffect(() => {
@@ -51,11 +53,11 @@ const StockDetailCard = (props,ref) => {
         }
     },[props.stock])
 
-    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:dashboardsliderdur > 0 ? dashboardsliderdur : 3}})
+    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:changeDur || dashboardsliderdur || 3}})
 
     const getContent = () =>{
         let retVal = {
-            "Basic":<CompanyStockPrice stock={stock} duration={changeDur} key={changeDur} ref={ref}></CompanyStockPrice>,
+            "Basic":<ChartEntry stock={stock} duration={changeDur} key={changeDur} ref={ref}></ChartEntry>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }
@@ -85,8 +87,8 @@ const StockDetailCard = (props,ref) => {
               <StockDetailCardOverlay type={type} callbackduration={setChangeDur}></StockDetailCardOverlay>
           </Box>
           <Divider></Divider>
-          <Box display='flex' justifyContent='center' paddingBottom={2}>
-              <StockDetailCardActions type={type} stock={stock} ontypechange={setType}></StockDetailCardActions>
+          <Box display='flex' justifyContent='center' paddingTop={2}>
+              <StockDetailCardActions type={type} stock={stock} ontypechange={setType} openinfull={() => props.openinModal(props.stock)}></StockDetailCardActions>
           </Box>
         </CardContent>
       </Card>
