@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import {addItemsToChart,HIDE_ADDED_ITEMS_IN_CHART} from '../../../redux/reducers/chartDataSlice'
 import {useDispatch} from 'react-redux'
 import { useState } from 'react';
-import getCachedSupportResistanace from '../../../modules/cache/cachesupportandresistance'
+import {getCachedSupportResistanace} from '../../../modules/cache/cachesupportandresistance'
 
 const SupportAndResistance = (props) =>{
     const dispatch = useDispatch()
@@ -24,7 +24,7 @@ const SupportAndResistance = (props) =>{
     const normalizeDataForCharts = (inpData) =>{
         const obj = (symbol,type,data,id) => {return {symbol:symbol,id:id,type:type,data:data}}
         let chartdata = []
-        for (let i=0;i<limitSaR;i++){
+        for (let i=0; i < Math.min(limitSaR, inpData.data.length); i++){
             chartdata.push(obj(props.stock,inpData.type,inpData.data[i].toFixed(2),Number((inpData.data[i]*100).toFixed(0))))
         }
         setInpData(chartdata)

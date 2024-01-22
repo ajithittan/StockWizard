@@ -1,6 +1,7 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
+import {getRandomColor} from '../../modules/utils/UtilFunctions'
 
-const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE","SAR":"STRAIGHTLINE"}
+const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE","SAR":"STRAIGHTLINE","LINE":"LINE","AXIS":"AXIS"}
 
 const standardizeDataFromDb = (inpData) =>{
     if (inpData.type === "ALERT"){
@@ -55,11 +56,27 @@ const chartDataSlice = createSlice({
             }
         },
         ADD_ELEMENTS_TO_CHART:(state=initialState, action) => {
+            const checkAndAdjust = (inpData) => {
+                const index = state.initialchartdata.findIndex(item => item.symbol === inpData[0].symbol)
+                return [...inpData.reverse().splice(0,state.initialchartdata[index].chartfulldata.length).reverse()]
+            }
+            
+            const getNormalizedData = (obj) =>{
+                if (obj.normalize){ 
+                    let normalizedData = checkAndAdjust(obj.chartdata)
+                    return { ...obj,chartdata:normalizedData,color:getRandomColor(),id:obj.id, charttype: mapping_type_chartElement[obj.type]}
+                }else{
+                    return { ...obj, charttype: mapping_type_chartElement[obj.type]}
+                }
+            }
             if(action.payload && action.payload.length >0){
                 const indx = state.chartelements.findIndex(item => item.symbol === action.payload[0].symbol)
                 let inpobj = [...action.payload]
-                inpobj = inpobj.map(obj => ({ ...obj, charttype: mapping_type_chartElement[obj.type]}))
+                inpobj = inpobj.map(obj => (getNormalizedData(obj)))
                 state.chartelements[indx]?.chartelements?.push(...inpobj)
+                //const indx1 = state.initialchartdata.findIndex(item => item.symbol === action.payload[0].symbol)
+                //state.initialchartdata[indx1].chartfulldata = action.payload[0].chartdata
+                //console.log("inpobj",state.initialchartdata)
             }
         },
         HIDE_ADDED_ITEMS_IN_CHART:(state=initialState, action) => {

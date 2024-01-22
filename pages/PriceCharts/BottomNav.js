@@ -18,7 +18,7 @@ const BottomNav = (props) => {
         <>
         <Duration changedval={props.onchangedur}></Duration>
         <ChartActions stock={props.stock}></ChartActions>
-        <PresetControls onChanges={props.onChanges} adjSelections={props.adjSelections}></PresetControls>
+        <PresetControls stock={props.stock} onChanges={props.onChanges} adjSelections={props.adjSelections}></PresetControls>
         </>
   ) 
 }

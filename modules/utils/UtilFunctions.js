@@ -24,4 +24,13 @@ const getColorFromPreDefinedSeq = (inpSeq) => {
     return colorList.filter(item => item.seq === inpSeq)[0].color || "gray"        
 }
 
-export {intToString,getConciseValuesForLargeNums,getColorFromPreDefinedSeq}
+const  getRandomColor = () => {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+         color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+export {intToString,getConciseValuesForLargeNums,getColorFromPreDefinedSeq,getRandomColor}

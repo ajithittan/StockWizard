@@ -13,7 +13,7 @@ const ChartEntry = forwardRef((props,inpref) =>{
         if (props.stock && props.duration){
             let cacheKey = props.stock + "_" + props.duration + "_PRICE"
             getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration}).then(
-                res => res?.length ? (console.log("res",res),setChartFullData(res),setWaiting(false)) : setWaiting(false)
+                res => res?.length ? (setChartFullData(res),setWaiting(false)) : setWaiting(false)
             )
         }
     },[props.stock && props.duration])    

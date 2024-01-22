@@ -1,18 +1,21 @@
 import moment from 'moment';
 import * as d3 from "d3";
 
-const Line = (g,chardata,x,y,color,animate) =>{
-    //console.log("tooltip",tooltip)
+const Line = (g,chardata,x,y,color,animate,id) =>{
+    let strk_wid = color === "#1E90FF" ? 0.9 : 0.5
+    let opacity = color === "#1E90FF" ? 0.9 : 0.5
     g.append("path")
       .attr("class", "line")
+      .attr("id", "id_"+id?.toString())
       .datum(chardata)
       .attr("fill", "none")
       .attr("stroke", color ? color : "#1E90FF")
+      .attr("stroke-width", strk_wid)
+      .attr("stroke-opacity", opacity)
       .attr("d", d3.line()
       .x(d => x(moment(d.date)))
       .y(d => y(d.close)))
       .transition()
-      .attr("stroke-width", (d,indx) => indx===0? 0.9 : 0.6)
       .duration(animate?200:50)
 }
 

@@ -48,10 +48,10 @@ const ChartContainer = forwardRef((props,inpref) => {
         }
     },[deletedChartComponents])
 
-    const drawChartComponent = (type, data) => {
+    const drawChartComponent = (type, data , color,id) => {
         const mapping = [
                             {charttype:"AXIS",chartcomp:<ChartAxis data={data || chartfulldata} ref={ref} wh_props={inpSizes} chartdims={chartDims} setchartscales={setChartScales}></ChartAxis>},
-                            {charttype:"LINE",chartcomp:<ChartLine data={data || chartfulldata } ref={ref} propchartscale={chartscales}></ChartLine>},
+                            {charttype:"LINE",chartcomp:<ChartLine data={data || chartfulldata } ref={ref} propchartscale={chartscales} color={color || "#1E90FF"} id={id || "000"}></ChartLine>},
                             {charttype:"TOOLTIP",chartcomp:<ChartToolTip data={data || chartfulldata } ref={ref} propchartscale={chartscales} chartdims={chartDims}></ChartToolTip>},
                             {charttype:"IMAGE",chartcomp:<ChartImage data={data} ref={ref} propchartscale={chartscales} chartdims={chartDims} ></ChartImage>},
                             {charttype:"STRAIGHTLINE",chartcomp:<ChartSingleStraightLine stock={props.stock} data={data} ref={ref} propchartscale={chartscales} chartdims={chartDims} ></ChartSingleStraightLine>}
@@ -63,7 +63,7 @@ const ChartContainer = forwardRef((props,inpref) => {
         <>
             <ChartSize ref={ref} setchartdims={setChartDims} wh_props={inpSizes}></ChartSize>
             {
-                chartComponents?.map(eachComponent => drawChartComponent(eachComponent.charttype,eachComponent.chartdata))
+                chartComponents?.map(eachComponent => drawChartComponent(eachComponent.charttype,eachComponent.chartdata,eachComponent.color,eachComponent.id))
             }
             <svg ref={ref} />
         </>
