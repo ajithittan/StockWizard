@@ -11,10 +11,10 @@ const noOfXTicks = (width) =>{
     }
 }
 
-const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks) => {
+const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks,id) => {
     if (numberOfTicks){
         g.append("g")
-        .attr("id", "xScale")
+        .attr("id", "xScale_" + id||0)
         .attr("class", "xaxis")
         .attr("transform", "translate(0," + yScale.range()[0] + ")")
         .call(axisBottom(xScale).ticks(numberOfTicks).tickFormat(timeFormat("%b")))   
@@ -33,9 +33,9 @@ const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks) => {
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
     .call(axisBottom(xScale).ticks(timeYear).tickFormat(timeFormat("%Y")).tickPadding([20]))
 }
-const yTicks = (g,xScale,yScale,width,height) => {
+const yTicks = (g,xScale,yScale,width,height,id) => {
     g.append("g")
-    .attr("id", "yScale")
+    .attr("id", "yScale" + id||0)
     .attr("class", "y axis")
     .attr("transform", "translate(" + xScale.range()[0] / 2 + ", 0)")
     .call(axisLeft(yScale).ticks(5))

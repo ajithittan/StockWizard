@@ -6,10 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import ExpandIcon from '@mui/icons-material/Expand';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CardHeader from '@mui/material/CardHeader'
+import StockPatterns from './StockPatterns'
 
 const Sectors = (props) => {
     const [stkQuote,setStkQuote] = useState(null)
-    const [sector,setSector] = useState(null)
+    const [stocks,setStocks] = useState(props.stocks)
+    const [sector,setSector] = useState(props.sector)
     const [type,setType] = useState("Basic")
     const sm = useMediaQuery("(max-width: 960px)");
 
@@ -23,23 +25,13 @@ const Sectors = (props) => {
         alignItems:"center",
     }
 
-    useEffect(() => {
-        if(props.sector){
-            setSector(props.sector)
-        }
-    },[props.sector])
-
-    const getContent = () => {
-        let retVal = {}
-        return retVal[type]
-    }
-
     return (
+      <>
       <Card style={cardStyle}>
           <CardHeader title={sector}/>
         <CardContent>
           <div style={{height:"90%"}}>
-              {getContent()}
+            {stocks?.map(stk => <StockPatterns stock={stk}></StockPatterns>)}
           </div>
           <CardActions>
                 <IconButton aria-label="reset">
@@ -48,6 +40,7 @@ const Sectors = (props) => {
           </CardActions>
         </CardContent>
       </Card>
+      </>
     );
   }
 

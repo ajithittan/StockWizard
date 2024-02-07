@@ -5,7 +5,7 @@ const XScale = (chartdata,domainwidth,field) =>{
 
     let minDt = moment(chartdata.reduce((acc,item)=>{return acc&&new Date(acc)<new Date(item[field])?acc:item[field]},'')).toDate()
     let maxDt = moment(chartdata.reduce((acc,item)=>{return acc&&new Date(acc)>new Date(item[field])?acc:item[field]},'')).toDate()
-    maxDt = timeDay.offset(maxDt, 2)
+    maxDt = timeDay.offset(maxDt, 10)
 
     let x = scaleTime()
     .domain([minDt,maxDt])
@@ -17,7 +17,7 @@ const XScale = (chartdata,domainwidth,field) =>{
 const YScale = (chartdata,domainheight,field) =>{
 
     let yExtent = extent(chartdata.map(item => item[field]));
-    yExtent = [yExtent[0],yExtent[1] * 1.01]
+    yExtent = [yExtent[0]*0.98,yExtent[1] * 1.05]
     let y = scaleLinear()
     .domain(yExtent)
     .range([domainheight, 0])

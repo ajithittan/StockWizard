@@ -29,4 +29,12 @@ const deletePredictionModel  = async (modelId) =>{
     return data.data
 }
 
-export {generatePredictionModel,savePredictionModel,getPredictionModel,getPredictionsForStock,deletePredictionModel}
+const createModelAndGeneratePredictions  = async (stock,modalParams) =>{
+    console.log("modalParams",modalParams)
+    let url = "/api/genpredictions/" + stock
+    const data = await axios.post(url,modalParams)
+    return data.data
+} 
+
+export {generatePredictionModel,savePredictionModel,getPredictionModel,getPredictionsForStock,deletePredictionModel,
+    createModelAndGeneratePredictions}

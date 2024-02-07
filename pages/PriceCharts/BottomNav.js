@@ -8,7 +8,8 @@ const BottomNav = (props) => {
   
   let presetConfig = [{"type":"IND","options":[{"value":"SMA"},{"value":50},{"value":120}]},
                       {"type":"IND","options":[{"value":"SMA"},{"value":100},{"value":120}]},
-                      {"type":"IND","options":[{"value":"SMA"},{"value":200},{"value":120}]}]
+                      {"type":"IND","options":[{"value":"SMA"},{"value":200},{"value":120}]},
+                      ]
 
   useEffect(() =>{
     initiateCaching(props.stock,presetConfig)
@@ -16,9 +17,9 @@ const BottomNav = (props) => {
 
    return (
         <>
-        <Duration changedval={props.onchangedur}></Duration>
-        <ChartActions stock={props.stock}></ChartActions>
-        <PresetControls stock={props.stock} onChanges={props.onChanges} adjSelections={props.adjSelections}></PresetControls>
+          <Duration changedval={props.onchangedur}></Duration>
+          <ChartActions stock={props.stock}></ChartActions>
+          <PresetControls stock={props.stock} onChanges={props.onChanges} adjSelections={props.adjSelections}></PresetControls>
         </>
   ) 
 }
