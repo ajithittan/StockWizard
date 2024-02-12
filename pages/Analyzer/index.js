@@ -6,7 +6,7 @@ import axios from "axios";
 const index = ({sectors}) =>{
 
     return (
-        <div style={{marginLeft:"20px"}}>
+        <div style={{marginLeft:"10px"}}>
         <Grid
             container
             direction="row"
@@ -16,7 +16,7 @@ const index = ({sectors}) =>{
         >
         {
 
-            sectors?.map(item => <Grid xs={12} sm={12} md={6} lg={5.5} xl={5.5} marginLeft={0.5}>
+            sectors?.map(item => <Grid xs={12} sm={12} md={5.9} lg={3.9} xl={3.9} marginLeft={0.4}>
                                     <Sectors key={item.sector} sector={item.sector} stocks={item.stocks}></Sectors>
                                 </Grid>
                         ) 
