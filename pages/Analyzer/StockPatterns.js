@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {getPatternsForStock} from '../../modules/api/StockPatterns'
+import getStockPatterns from '../../modules/cache/cachestockpatterns'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -21,7 +21,8 @@ const StockPatterns = (props) =>{
 
     useEffect(() =>{
         if(props.stock){
-            getPatternsForStock(props.stock).then(retval => {
+            const cacheKey = "STK_PTRNS_" + props.stock
+            getStockPatterns(cacheKey,{stock:props.stock}).then(retval => {
                 if (retval.length > 0){
                     setPatterns(retval)
                     }
