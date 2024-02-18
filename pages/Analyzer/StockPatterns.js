@@ -11,13 +11,6 @@ const StockPatterns = (props) =>{
 
     const [patterns,setPatterns] = useState(null)
     const router = useRouter()
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? "none" : "none",
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        height:"100%"
-      }));
 
     useEffect(() =>{
         if(props.stock){
@@ -25,6 +18,7 @@ const StockPatterns = (props) =>{
             getStockPatterns(cacheKey,{stock:props.stock}).then(retval => {
                 if (retval.length > 0){
                     setPatterns(retval)
+                    props.onupdCnt()
                     }
                 }
             )
@@ -32,6 +26,14 @@ const StockPatterns = (props) =>{
     },[props.stock])
 
     const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:12}})
+
+    const getColorForPattern = () => {
+        if(patterns.length > 2){
+            return "blue"
+        } else {
+            return "text.secondary"
+        }
+    }
 
     return(
         <>
@@ -45,22 +47,22 @@ const StockPatterns = (props) =>{
                         borderColor="primary.main">
                         <Grid container direction='row' alignItems="center" justify="center">
                             <Grid xs justify = "center">
-                                <Typography color="text.secondary" variant="body1">
+                                <Typography color={getColorForPattern()} variant="body1">
                                     <a href="#" onClick={() => showPriceChart(props.stock)}>
                                     {props.stock}
                                     </a>
                                 </Typography>
-                                <Typography color="text.secondary" variant="subtitle2">{patterns[0]?.date}</Typography>
+                                <Typography color={getColorForPattern()} variant="subtitle2">{patterns[0]?.date}</Typography>
                             </Grid>
                             {
                                 patterns?.map(eachpattern =>
                                     <Grid xs justify = "center">
-                                        <Typography color="text.primary" variant="body2">{eachpattern.type}</Typography>
+                                        <Typography color={getColorForPattern()} variant="body2">{eachpattern.type}</Typography>
                                             <Grid container direction='row' alignItems="center" justify="center">
                                             {
                                                 eachpattern.bullishpatterns.map(eachbull => 
                                                     <Grid xs justify = "center">
-                                                        <Typography color="text.secondary" variant="subtitle2">{eachbull}</Typography>
+                                                        <Typography color={getColorForPattern()} variant="subtitle2">{eachbull}</Typography>
                                                     </Grid>
                                                 )
                                             }
