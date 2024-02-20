@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import Sectors from './Sectors'
 import Grid from '@mui/material/Grid';
 import axios from "axios";
+import LatestPatterns from './LatestPatterns'
 
 const index = ({sectors}) =>{
 
     return (
         <div style={{marginLeft:"10px"}}>
+        <LatestPatterns></LatestPatterns>
         <Grid
             container
             direction="row"

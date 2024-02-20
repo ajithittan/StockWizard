@@ -5,4 +5,9 @@ const getPatternsForStock  = async (stock) =>{
     return data.data
 }
 
-export {getPatternsForStock}
+const getTopPatternsForStock = async (limitrows) =>{
+    const data = await axios.get(`/api/patterns/all/` + limitrows)
+    return data.data
+}
+
+export {getPatternsForStock,getTopPatternsForStock}

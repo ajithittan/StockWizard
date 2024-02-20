@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import getStockPatterns from '../../modules/cache/cachestockpatterns'
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router'
@@ -10,6 +8,7 @@ import { useRouter } from 'next/router'
 const StockPatterns = (props) =>{
 
     const [patterns,setPatterns] = useState(null)
+    const [stock,setStock] = useState(null)
     const router = useRouter()
 
     useEffect(() =>{
@@ -18,6 +17,7 @@ const StockPatterns = (props) =>{
             getStockPatterns(cacheKey,{stock:props.stock}).then(retval => {
                 if (retval.length > 0){
                     setPatterns(retval)
+                    setStock(props.stock)
                     props.onupdCnt()
                     }
                 }
@@ -25,10 +25,17 @@ const StockPatterns = (props) =>{
         }
     },[props.stock])
 
+    useState(() =>{
+        if (props.patterns){
+            setStock(props.patterns[0].stock)
+            setPatterns(props.patterns)
+        }
+    },[props.patterns])
+
     const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:12}})
 
     const getColorForPattern = () => {
-        if(patterns.length > 2){
+        if(patterns.length > 2 && props.textcolor){
             return "blue"
         } else {
             return "text.secondary"
@@ -39,7 +46,7 @@ const StockPatterns = (props) =>{
         <>
             { 
                 patterns?
-                    <Box sx={{ flexGrow: 1}}       
+                    <Box sx={{ flexGrow: 1,display: props.expand ? "" : "none"}}       
                         border={0.2}
                         borderTop={0}
                         borderLeft={0}
@@ -48,8 +55,8 @@ const StockPatterns = (props) =>{
                         <Grid container direction='row' alignItems="center" justify="center">
                             <Grid xs justify = "center">
                                 <Typography color={getColorForPattern()} variant="body1">
-                                    <a href="#" onClick={() => showPriceChart(props.stock)}>
-                                    {props.stock}
+                                    <a href="#" onClick={() => showPriceChart(stock)}>
+                                    {stock}
                                     </a>
                                 </Typography>
                                 <Typography color={getColorForPattern()} variant="subtitle2">{patterns[0]?.date}</Typography>
