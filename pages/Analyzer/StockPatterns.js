@@ -4,10 +4,12 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router'
+import StockPatternsMoreInfo from './StockPatternsMoreInfo'
 
 const StockPatterns = (props) =>{
 
     const [patterns,setPatterns] = useState(null)
+    const [moreInfo,setMoreInfo] = useState(props.moreinfo)
     const [stock,setStock] = useState(null)
     const router = useRouter()
 
@@ -76,6 +78,9 @@ const StockPatterns = (props) =>{
                                         </Grid>                                                     
                                     </Grid>
                                 )
+                            }
+                            {
+                                moreInfo? <StockPatternsMoreInfo stock={stock}/> : null
                             }
                         </Grid>
                     </Box> : null        

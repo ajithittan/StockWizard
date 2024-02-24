@@ -1,6 +1,6 @@
+import {useState } from "react"
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import {useState } from "react"
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CardHeader from '@mui/material/CardHeader'
 import StockPatterns from './StockPatterns'
