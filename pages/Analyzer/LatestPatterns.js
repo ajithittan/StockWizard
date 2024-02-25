@@ -10,7 +10,6 @@ const LatestPatterns = (props) =>{
         const cacheKey = "PTRN_DTS_" + limitDays || 10
         getCachedDatesForLastTopPatterns(cacheKey,{limitDays:limitDays || 10}).then(retval => {
             if (retval.length > 0){
-                    console.log("retvalretvalretval",retval)
                     setDatesForPatterns(retval)
                 }
             }

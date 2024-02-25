@@ -7,7 +7,8 @@ import {initiateStreaming} from '../../modules/api/StockStream'
 import TopMovers from './TopMovers'
 import TopNews from './TopNews'
 import { useSelector, useDispatch} from 'react-redux'
-import {getDashboardLayout,SET_DASH_STOCKS,SET_SECTOR} from '../../redux/reducers/profileDashSlice'
+import {getDashboardLayout,SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import {getMostRecentPatternsFormed} from '../../redux/reducers/stockPatternsSlice'
 
 const Dashboard = () =>{
     const dispatch = useDispatch()
@@ -55,16 +56,7 @@ const Dashboard = () =>{
         return mappingOfItems.filter(item => arrLayoutId.includes(item.itemId)).map(item => item.component)                         
     }
 
-    const setStocksAndStream = async (stks) => {dispatch(SET_DASH_STOCKS(stks)),initiateStreaming(stks)}
-
-    const stockChanges = async (stks) =>{
-        if (stks){
-            setStocksAndStream (stks.stocks)
-            dispatch(SET_SECTOR(true))
-        }else{
-            setStocksAndStream (stockList)
-        }
-    }
+    const setStocksAndStream = async (stks) => {dispatch(SET_DASH_STOCKS(stks)),initiateStreaming(stks),dispatch(getMostRecentPatternsFormed())}
 
     return (
         <>

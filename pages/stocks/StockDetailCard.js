@@ -12,6 +12,7 @@ import StockDetailCardOverlay from './StockDetailCardOverlay'
 import { useRouter } from 'next/router'
 import Divider from '@mui/material/Divider';
 import StockDetailCardHeader from './StockDetailCardHeader'
+import StockDetailCardPatterns from './StockDetailCardPatterns'
 import {getAlerts} from '../../redux/reducers/stockAlertsSlice'
 import { useDispatch} from 'react-redux'
 import ChartEntry from '../PriceCharts/ChartEntry'
@@ -58,7 +59,8 @@ const StockDetailCard = (props,ref) => {
     const getContent = () =>{
         let retVal = {
             "Basic":<ChartEntry stock={stock} duration={changeDur} key={changeDur} ref={ref}></ChartEntry>,
-            "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/> }
+            "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/>,
+            "StkPtrns": <StockDetailCardPatterns stock={stock} setSubHeader={setCompanySubHeader}/> }
         return retVal[type]
     }
 

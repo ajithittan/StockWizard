@@ -8,11 +8,11 @@ import InfoIcon from '@mui/icons-material/Info';
 import CardActions from '@mui/material/CardActions';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
 import {useDispatch} from 'react-redux'
-import PatternIcon from '@mui/icons-material/Pattern';
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
 import SupportAndResistance from './actions/SupportAndResistance'
 import PriceAlerts from './actions/PriceAlerts'
+import LatestPatternsFormed from './actions/LatestPatternsFormed'
 
 const StockDetailCardActions = (props) =>{
     const router = useRouter()
@@ -44,9 +44,7 @@ const StockDetailCardActions = (props) =>{
                     <SupportAndResistance stock={props.stock} limit={5}/>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <IconButton aria-label="More Information">
-                        <PatternIcon color="primary" onClick={() => props.ontypechange("Companyinfo")} />
-                    </IconButton>                     
+                    <LatestPatternsFormed stock={props.stock} onshowpatterns={props.ontypechange}></LatestPatternsFormed>
                 </Grid>                
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <PriceAlerts stock={props.stock}></PriceAlerts>
