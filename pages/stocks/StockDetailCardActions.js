@@ -7,7 +7,8 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import InfoIcon from '@mui/icons-material/Info';
 import CardActions from '@mui/material/CardActions';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
-import {useSelector, useDispatch,shallowEqual} from 'react-redux'
+import {useDispatch} from 'react-redux'
+import PatternIcon from '@mui/icons-material/Pattern';
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
 import SupportAndResistance from './actions/SupportAndResistance'
@@ -16,7 +17,7 @@ import PriceAlerts from './actions/PriceAlerts'
 const StockDetailCardActions = (props) =>{
     const router = useRouter()
     const dispatch = useDispatch()
-    const [sizeOfGrid,setSizeOfGrid] = useState(1.6)
+    const [sizeOfGrid,setSizeOfGrid] = useState(1.5)
 
     const showAllCompanyStats = (stk) => router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
 
@@ -43,10 +44,15 @@ const StockDetailCardActions = (props) =>{
                     <SupportAndResistance stock={props.stock} limit={5}/>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="More Information">
+                        <PatternIcon color="primary" onClick={() => props.ontypechange("Companyinfo")} />
+                    </IconButton>                     
+                </Grid>                
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <PriceAlerts stock={props.stock}></PriceAlerts>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <IconButton aria-label="More Information">
+                    <IconButton aria-label="Patterns">
                         <ReadMoreIcon onClick={() => showAllCompanyStats(props.stock)} />
                     </IconButton>                     
                 </Grid>

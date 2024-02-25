@@ -6,9 +6,8 @@ import LatestPatterns from './LatestPatterns'
 
 const index = ({sectors}) =>{
 
-    return (
+     return (
         <div style={{marginLeft:"10px"}}>
-        <LatestPatterns></LatestPatterns>
         <Grid
             container
             direction="row"
@@ -16,13 +15,25 @@ const index = ({sectors}) =>{
             align="stretch"
             style={{height:"100%"}}
         >
-        {
+          <Grid xs={12} sm={12} md={9} lg={9} xl={9}>
+                <LatestPatterns></LatestPatterns>
+          </Grid>
+          <Grid xs={12} sm={12} md={3} lg={3} xl={3}>
+            <Grid
+                container
+                direction="row"
+                justify="space-evenly"
+                align="stretch"
+            >
+            {
 
-            sectors?.map(item => <Grid xs={12} sm={12} md={5.9} lg={3.9} xl={3.9} marginLeft={0.4}>
-                                    <Sectors key={item.sector} sector={item.sector} stocks={item.stocks}></Sectors>
-                                </Grid>
-                        ) 
-        }
+                sectors?.map(item => 
+                      <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
+                              <Sectors key={item.sector} sector={item.sector} stocks={item.stocks}></Sectors>
+                      </Grid>) 
+            }
+          </Grid>
+        </Grid>
       </Grid>
       </div>
   )

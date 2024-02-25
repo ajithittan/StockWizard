@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -6,30 +6,53 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import StockPatterns from './StockPatterns'
 import Grid from '@mui/material/Grid';
+import {getCachedPatternsByDate} from '../../modules/cache/cachetopstockpatterns'
+import WaitingForResonse from '../../components/WaitingForResponse'
 
 const SectorAnalysisByTab = (props) => {
-  const [patternByDate, setPatternByDate] = useState(props.patterns)
+  const [datesOfPatterns,setDatesOfPatterns] = useState(null)
+  const [patternByDate, setPatternByDate] = useState(null)
   const [value, setValue] = useState(null);
   const [getMoreInfo,setGetMoreInfo] = useState(false)
 
+  useEffect(() =>{
+    if(props.patterndates){
+      setDatesOfPatterns(props.patterndates)
+      setValue(props.patterndates[0]?.date)
+      getPatterns(props.patterndates[0]?.date)
+    }
+  },[props.patterndates])
+
   const handleChange = (event, newValue) => {
+    setPatternByDate(null)
     setValue(newValue);
     setGetMoreInfo(true)
+    getPatterns(newValue)
   };
+
+  const getPatterns = async (inpdate) =>{
+    const cacheKey = "PTRN_BY_DT_" + inpdate
+    getCachedPatternsByDate(cacheKey,{date:inpdate}).then(retval => {
+        if (retval.length > 0){
+              setPatternByDate([...retval])
+            }
+        }
+    )
+  }
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange}>
             {
-                patternByDate?.map(pattern => <Tab label={pattern.date} value={pattern.date} />)
+                datesOfPatterns?.map(pattern => <Tab label={pattern.date + "(" + pattern.patterncount + ")"} value={pattern.date} />)
             }
           </TabList>
         </Box>
         {
-            patternByDate?.map(pattern => 
-            <TabPanel value={pattern.date}>
+            patternByDate ? 
+            <TabPanel value={value}>
                 <Grid
                         container
                         direction="row"
@@ -38,14 +61,12 @@ const SectorAnalysisByTab = (props) => {
                         style={{height:"100%"}}
                     >
                     {
-    
-                        pattern.patterns?.map(item => <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <StockPatterns patterns={item.stockpatterns} expand={true} moreinfo={getMoreInfo}></StockPatterns>
+                        patternByDate.map(item => <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
+                                    <StockPatterns key={item.stockpatterns} patterns={item.stockpatterns} expand={true} moreinfo={true}></StockPatterns>
                                     </Grid>) 
                     }
                 </Grid>
-            </TabPanel>
-            )
+            </TabPanel> : <WaitingForResonse/>
         }
       </TabContext>
     </Box>

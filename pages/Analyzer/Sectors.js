@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CardHeader from '@mui/material/CardHeader'
 import StockPatterns from './StockPatterns'
+import Box from '@mui/material/Box';
 
 const Sectors = (props) => {
     const [stocks,setStocks] = useState(props.stocks)
@@ -18,7 +19,7 @@ const Sectors = (props) => {
         transitionDuration: '0.3s',
         transitionDuration: '0.3s',
         marginTop: sm ? "10px" : "15px",
-        backgroundColor: "#F5FEF8",
+        backgroundColor: "#f9f9f7",
         color:'text.secondary',
         alignItems:"center",
         marginBottom: show ? "50px" :"1px",
@@ -34,11 +35,11 @@ const Sectors = (props) => {
     return (
         <>
           <Card style={cardStyle}>
-              <CardHeader sx={{cursor:"pointer"}} title={sector + "(" + counts + "/" + stocks?.length +  ")"} onClick={showHideToggle}/>
+              <CardHeader sx={{cursor:"pointer",position:"sticky"}} title={sector + "(" + counts + "/" + stocks?.length +  ")"} onClick={showHideToggle}/>
             <CardContent>
-              <div style={{height:show ? "92%" : "10%"}}>
+              <Box style={{maxHeight: '100vh', overflow: 'auto'}}>
                 {stocks?.map((stk,idx) => <StockPatterns stock={stk} onupdCnt={updCount} expand={show} textcolor={true}></StockPatterns>)}
-              </div>
+              </Box>
             </CardContent>
           </Card>
         </>

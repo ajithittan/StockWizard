@@ -10,4 +10,14 @@ const getTopPatternsForStock = async (limitrows) =>{
     return data.data
 }
 
-export {getPatternsForStock,getTopPatternsForStock}
+const getDatesForLastTopPatterns = async (limitdays) =>{
+    const data = await axios.get(`/api/patterns/dates/` + limitdays)
+    return data.data
+}
+
+const getPatternsByDate = async (inpdate) =>{
+    const data = await axios.get(`/api/patterns/bydate/` + inpdate)
+    return data.data
+}
+
+export {getPatternsForStock,getTopPatternsForStock,getDatesForLastTopPatterns,getPatternsByDate}

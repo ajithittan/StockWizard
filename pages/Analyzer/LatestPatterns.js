@@ -1,34 +1,26 @@
 import { useEffect, useState } from "react"
-import getTopStockPatterns from '../../modules/cache/cachetopstockpatterns'
+import {getCachedDatesForLastTopPatterns} from '../../modules/cache/cachetopstockpatterns'
 import SectorAnalysisByTab from './SectorAnalysisByTab'
 
 const LatestPatterns = (props) =>{
-    let [patternsByDate,setPatternsByDate] = useState([])
-    const [limitOfRows,setLimitOfRows] = useState(200)
+    const [datesForPatterns,setDatesForPatterns] = useState([])
+    const [limitDays,setLimitDays] = useState(10)
 
     useEffect(() =>{
-        const cacheKey = "STK_ALL_PTRNS_" + limitOfRows || 200
-        getTopStockPatterns(cacheKey,{limitrows:limitOfRows ||200}).then(retval => {
+        const cacheKey = "PTRN_DTS_" + limitDays || 10
+        getCachedDatesForLastTopPatterns(cacheKey,{limitDays:limitDays || 10}).then(retval => {
             if (retval.length > 0){
-                    retval.sort((a, b) => a.symbol.localeCompare(b.symbol))
-                    let uniquedates = [...new Set(retval.map(eachitem => eachitem.date))]
-                    uniquedates.forEach(date => {
-                        let itemsByDate = retval.filter(eachitem => eachitem.date === date)
-                        let tempset = {}
-                        tempset.date = date
-                        tempset.patterns = itemsByDate
-                        patternsByDate.push(tempset)
-                    })
-                    setPatternsByDate([...patternsByDate])
+                    console.log("retvalretvalretval",retval)
+                    setDatesForPatterns(retval)
                 }
             }
         )
     },[])
 
     return (
-        <div style={{width:"90%",marginLeft:"2%",marginTop:"2%" }}>
-            <SectorAnalysisByTab patterns={patternsByDate}> moreinfo={true}</SectorAnalysisByTab>
-        </div>
+        <>
+            <SectorAnalysisByTab patterndates={datesForPatterns}></SectorAnalysisByTab>
+        </>
     )
 }
 

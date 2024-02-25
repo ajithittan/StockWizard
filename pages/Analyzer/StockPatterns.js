@@ -15,15 +15,17 @@ const StockPatterns = (props) =>{
 
     useEffect(() =>{
         if(props.stock){
-            const cacheKey = "STK_PTRNS_" + props.stock
-            getStockPatterns(cacheKey,{stock:props.stock}).then(retval => {
-                if (retval.length > 0){
-                    setPatterns(retval)
-                    setStock(props.stock)
-                    props.onupdCnt()
+            setTimeout(() => {
+                const cacheKey = "STK_PTRNS_" + props.stock
+                getStockPatterns(cacheKey,{stock:props.stock}).then(retval => {
+                    if (retval.length > 0){
+                        setPatterns(retval)
+                        setStock(props.stock)
+                        props.onupdCnt()
+                        }
                     }
-                }
-            )
+                )
+              }, 10000);
         }
     },[props.stock])
 
