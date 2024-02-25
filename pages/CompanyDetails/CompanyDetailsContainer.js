@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {getCompanyKeyStats} from '../../modules/api/StockDetails'
-import getCacheCompanyKeyStats from '../../modules/cache/cachecompanystats'
+import {getCacheCompanyKeyStats} from '../../modules/cache/cachecompanystats'
 import getStockPerChange from '../../modules/cache/cacheperchange'
 import CompanyRevenue from './CompanyRevenue'
 import myGif from "../../public/loading-loading-forever.gif"
