@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import StockDetailCardPerformance from './StockDetailCardPerformance'
  
 const StockDetailCardPatterns = (props) =>{
 
@@ -45,19 +46,39 @@ const StockDetailCardPatterns = (props) =>{
         }
     }
 
+    const sortPatternTypes = (inpTypes) =>{
+        let sortedVals = []
+        const sortedPattern = ["BB","MACD","RSI","OBV"]
+        sortedPattern.forEach(item =>{
+            let tempPtntps = inpTypes.filter(eachPattern => eachPattern.type.indexOf(item) > -1)
+
+            if (tempPtntps.length > 0){
+                sortedVals.push(...tempPtntps)
+                inpTypes.splice(inpTypes.findIndex(eachPattern => eachPattern.type.indexOf(item) > -1), 1);
+            }
+        })
+        return ([...sortedVals,...inpTypes])
+    }
+
     const GetItemContent = (props1) =>{
         let size = 9/props1?.inpvals?.stockpatterns.length
-        //let patternTypes = props1?.inpvals?.stockpatterns.map(item => item.type)
+        let patterndata = props1?.inpvals?.stockpatterns
+        patterndata = sortPatternTypes([...patterndata])
         return(
             <>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Divider></Divider>
             </Grid>
             <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
-                <Typography variant="overline">{props1.inpvals.date}</Typography>               
+                <Typography  variant="caption">{props1.inpvals.date}</Typography>
+                <Grid container direction='column'>
+                        <Grid >
+                            <StockDetailCardPerformance stock={props.stock} datefrom={props1.inpvals.date}></StockDetailCardPerformance>
+                        </Grid>
+                    </Grid>  
             </Grid>  
             {
-                props1?.inpvals?.stockpatterns?.map(eachpattern =>
+                patterndata?.map(eachpattern =>
                     <Grid item xs={size} sm={size} md={size} lg={size} xl={size}>
                         <Typography variant="caption">{eachpattern.type}</Typography>
                             <Grid container direction='column'>

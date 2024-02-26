@@ -68,12 +68,12 @@ const StockPatterns = (props) =>{
                             {
                                 patterns?.map(eachpattern =>
                                     <Grid xs justify = "center">
-                                        <Typography color={getColorForPattern()} variant="body2">{eachpattern.type}</Typography>
+                                        <Typography color={getColorForPattern()} variant="caption">{eachpattern.type}</Typography>
                                             <Grid container direction='row' alignItems="center" justify="center">
                                             {
                                                 eachpattern.bullishpatterns.map(eachbull => 
                                                     <Grid xs justify = "center">
-                                                        <Typography color={getColorForPattern()} variant="subtitle2">{eachbull}</Typography>
+                                                        <Typography color={getColorForPattern()} variant="caption">{eachbull}</Typography>
                                                     </Grid>
                                                 )
                                             }

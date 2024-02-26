@@ -17,10 +17,10 @@ const StockAnalyzerChart = (props) =>{
     const GridToDisplay = (props1) =>{
         return (
             <Grid xs justify = "center">
-                <Typography variant="body2">{props1.label}</Typography>
+                <Typography color={"text.secondary"} variant="caption">{props1.label}</Typography>
                     <Grid container direction='row' alignItems="center" justify="center">
                         <Grid xs justify = "center">
-                            <Typography color={props1.text > 0 ? null : "red"} variant="subtitle2">{props1.text}</Typography>
+                            <Typography color={props1.text > 0 ? "text.secondary" : "red"} variant="caption">{props1.text}</Typography>
                         </Grid>
                 </Grid>                                                     
             </Grid>

@@ -1,6 +1,6 @@
 import memoize from "lodash.memoize";
 import {getTopPatternsForStock,getDatesForLastTopPatterns,getPatternsByDate,getMostRecentPatterns,getRecentPatternsForAStock
-  } from '../api/StockPatterns'
+  ,getPatternPerformanceFromDate} from '../api/StockPatterns'
 
 const getTopStockPatterns = memoize(async (key,args) => {
   let res = await getTopPatternsForStock(args.limitrows)
@@ -27,5 +27,10 @@ const getCachedRecentPatternsForStock = memoize(async (key,args) => {
   return res
 })
 
+const getCachedPerformanceStkDate = memoize(async (key,args) => {
+  let res = await getPatternPerformanceFromDate(args.stock,args.datefrom)
+  return res
+})
+
 export {getTopStockPatterns,getCachedDatesForLastTopPatterns,getCachedPatternsByDate,getCachedPatternsMostRecent,
-  getCachedRecentPatternsForStock}
+  getCachedRecentPatternsForStock,getCachedPerformanceStkDate}
