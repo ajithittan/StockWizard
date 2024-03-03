@@ -92,6 +92,7 @@ const StockPatterns = (props) =>{
                                     </Grid> : null
                             }
                         </Grid>
+
                     </Box> : null        
             }
         </>

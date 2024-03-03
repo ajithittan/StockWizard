@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
+import DispPatternTrack from './DispPatternTrack'
 
 const DispPatternHeader = (props) =>{
 
@@ -17,7 +18,8 @@ const DispPatternHeader = (props) =>{
     return(
         <>
         <Grid container>
-            <Grid item xs={5}> 
+            <Grid item xs={2}> 
+                <DispPatternTrack></DispPatternTrack>
             </Grid>
             <Grid item xs={2}> 
                 <Typography color={getColorForPattern()} variant="body1">

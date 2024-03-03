@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Sectors from './Sectors'
 import Grid from '@mui/material/Grid';
 import axios from "axios";
