@@ -61,8 +61,9 @@ const SectorAnalysisByTab = (props) => {
                         style={{height:"100%"}}
                     >
                     {
-                        patternByDate.map(item => <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <StockPatterns key={item.stockpatterns} patterns={item.stockpatterns} expand={true} moreinfo={true}></StockPatterns>
+                        patternByDate.map(item => 
+                                    <Grid xs={12} sm={12} md={6} lg={4} xl={4} >
+                                      <StockPatterns key={item.stockpatterns} patterns={item.stockpatterns} expand={true} moreinfo={true}></StockPatterns>
                                     </Grid>) 
                     }
                 </Grid>

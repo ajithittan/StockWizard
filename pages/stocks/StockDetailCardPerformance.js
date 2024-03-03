@@ -20,7 +20,7 @@ const StockDetailCardPerformance = (props) =>{
     },[props.stock,props.datefrom])
 
     return(
-        <Typography  variant="caption" color={perfdata > 0 ? "green" : "red"}>{perfdata ? perfdata : 0}</Typography>
+        <Typography  variant={props.variant ? props.variant : "caption"} color={perfdata > 0 ? "green" : "red"}>{perfdata ? perfdata : 0}</Typography>
     )
 }
 
