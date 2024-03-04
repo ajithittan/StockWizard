@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { useSelector, useDispatch} from 'react-redux'
-import {ADD_TO_QUOTES} from '../redux/reducers/streamingQuotesSlice'
+import {ADD_TO_STREAMED_QUOTES} from '../redux/reducers/streamingQuotesSlice'
 
 const StreamStockPrice = () => {
 
@@ -8,7 +8,7 @@ const StreamStockPrice = () => {
   const {dashboardstocks} = useSelector((state) => state.dashboardlayout)
   const streamedQuotes = async (quotes) => {
     if (quotes && quotes.length > 0){
-      dispatch(ADD_TO_QUOTES(quotes))
+      dispatch(ADD_TO_STREAMED_QUOTES(quotes))
     }
   }
  

@@ -39,11 +39,10 @@ const StockPatternsMoreInfo = (props) =>{
             {
                 moreDetails ? 
                 <Grid xs justify = "center">
-                        <GridToDisplay label="Close" text={moreDetails.close}/> 
-                        <GridToDisplay label="Day%" text={moreDetails.changepct}/> 
                         <GridToDisplay label="52W-H" text={moreDetails.high52}/> 
                         <GridToDisplay label="52W-L" text={moreDetails.low52}/> 
                         <GridToDisplay label="EPS" text={moreDetails.eps}/> 
+                        <GridToDisplay label="PE" text={moreDetails.pe}/> 
                         <GridToDisplay label="MCAP" text={getConciseValuesForLargeNums(moreDetails.marketcap)}/>                                                 
                 </Grid>
                 : null

@@ -2,6 +2,7 @@ import Sectors from './Sectors'
 import Grid from '@mui/material/Grid';
 import axios from "axios";
 import LatestPatterns from './LatestPatterns'
+import StreamStockPrice from '../../components/StreamStockPrice'
 
 const index = ({sectors}) =>{
 
@@ -34,6 +35,7 @@ const index = ({sectors}) =>{
           </Grid>
         </Grid>
       </Grid>
+      <StreamStockPrice></StreamStockPrice>
       </div>
   )
 }

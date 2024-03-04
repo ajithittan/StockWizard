@@ -15,6 +15,18 @@ const streamingQuotesSlice = createSlice({
     reducers: {
         ADD_TO_QUOTES: (state=initialState, action) => {
                 state.streamdata = action.payload
+        },
+        ADD_TO_STREAMED_QUOTES: (state=initialState, action) => {
+            if(action.payload){
+                action.payload.forEach(element => {
+                    const indx = state.streamdata.findIndex(item => item.symbol === element.symbol)
+                    if (indx > -1){
+                        state.streamdata[indx] = element
+                    }else{
+                        state.streamdata.push(element)
+                    }
+                });
+            }
         }
     },
     extraReducers:(builder)=>{
@@ -33,5 +45,5 @@ const streamingQuotesSlice = createSlice({
     }        
 }) 
 
-export const {ADD_TO_QUOTES} = streamingQuotesSlice.actions;
+export const {ADD_TO_QUOTES,ADD_TO_STREAMED_QUOTES} = streamingQuotesSlice.actions;
 export default streamingQuotesSlice.reducer;

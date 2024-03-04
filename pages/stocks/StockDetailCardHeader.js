@@ -11,7 +11,7 @@ const StockDetailCardHeader = (props) => {
         <>
             {props.stock}&nbsp;-&nbsp;
             {
-                streamdata ? streamdata?.close + " (" + streamdata?.perchange?.toFixed(2)  + "%)" : "Looking.."  
+                streamdata ? streamdata?.close + " (" + streamdata?.perchange?.toFixed(2)  + "%)" : null  
             }
         </>
     )
