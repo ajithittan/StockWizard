@@ -20,7 +20,7 @@ const DispPatternHeader = (props) =>{
         <>
             <Grid container>
                 <Grid item xs={2}> 
-                    <DispPatternTrack></DispPatternTrack>
+                    <DispPatternTrack stock={props.stock}></DispPatternTrack>
                 </Grid>
                 <Grid item xs={6}> 
                     <Typography color={getColorForPattern()} variant="body1">

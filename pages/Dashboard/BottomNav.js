@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import RestoreIcon from '@mui/icons-material/Restore';
+import ListIcon from '@mui/icons-material/List';
 import SectorDropDown from '../../components/SectorDropDown'
 import {useSelector,useDispatch} from 'react-redux'
 import {SET_DASH_SECTOR,SET_SECTOR,SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
@@ -18,11 +19,18 @@ const BottomNav = (props) => {
   }
 
   const {dashboardselsector} = useSelector((state) => state.dashboardlayout)
+  const {watchlist} = useSelector(state => state.dashboardlayout)
 
   const updSelSector = async (sectorVal) => {
     dispatch(SET_DASH_STOCKS(sectorVal.stocks))
     dispatch(SET_DASH_SECTOR(sectorVal.idstocksector))
     dispatch(SET_SECTOR(true))
+  }
+
+  const getWatchList = async () =>{
+    if(watchlist && watchlist.length > 0){
+      updSelSector({stocks:watchlist,idstocksector:0})
+    }
   }
 
   return (
@@ -34,7 +42,8 @@ const BottomNav = (props) => {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="My Stocks" icon={<RestoreIcon />} onClick={restoreDefault}/>
+          <BottomNavigationAction label="My Positions" icon={<RestoreIcon />} onClick={restoreDefault}/>
+          <BottomNavigationAction label="Watch List" icon={<ListIcon />} onClick={getWatchList}/>
           <div style={{marginTop:"10px"}}><SectorDropDown selectedVal={dashboardselsector} callBackSectorChange={updSelSector}></SectorDropDown></div>
         </BottomNavigation>
       </Box>

@@ -19,11 +19,15 @@ const streamingQuotesSlice = createSlice({
         ADD_TO_STREAMED_QUOTES: (state=initialState, action) => {
             if(action.payload){
                 action.payload.forEach(element => {
-                    const indx = state.streamdata.findIndex(item => item.symbol === element.symbol)
-                    if (indx > -1){
-                        state.streamdata[indx] = element
+                    if(state.streamdata){
+                        const indx = state.streamdata.findIndex(item => item.symbol === element.symbol)
+                        if (indx > -1){
+                            state.streamdata[indx] = element
+                        }else{
+                            state.streamdata.push(element)
+                        }    
                     }else{
-                        state.streamdata.push(element)
+                        state.streamdata = [element]
                     }
                 });
             }

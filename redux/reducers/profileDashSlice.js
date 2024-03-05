@@ -1,5 +1,6 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
 import {updateUserDashBoardLayout,getUserDashBoardLayout} from '../../modules/api/UserPreferences'
+import {saveWatchList,getWatchList} from '../../modules/api/UserWatchList'
 
 export const updDashboardLayout = createAsyncThunk("dashboardlayout/updDashLay",async(obj,thunkAPI)=>{
     thunkAPI.dispatch(SET_DASHLAYOUT(obj))
@@ -19,6 +20,18 @@ export const getDashboardLayout = createAsyncThunk("dashboardlayout/getDashLay",
     return res
 }) 
 
+export const updUserWatchList = createAsyncThunk("dashboardlayout/updWatchList",async(obj,thunkAPI)=>{
+    saveWatchList(obj)
+    thunkAPI.dispatch(UPD_WATCH_LIST(obj))
+  })
+
+export const getUserWatchList = createAsyncThunk("dashboardlayout/getWatchList",async(obj,thunkAPI)=>{
+    let watchList = await getWatchList()
+    if (watchList && watchList.length >0){
+        thunkAPI.dispatch(SET_WATCH_LIST(watchList))
+    }
+  })  
+
 const profileDashSlice = createSlice({
     name: 'dashboardlayout',
     initialState: {
@@ -27,6 +40,7 @@ const profileDashSlice = createSlice({
         dashboardsector: false,
         dashboardselsector: 0,
         dashboardsliderdur:3,
+        watchlist:null,
         loading:true
     },
     reducers: {
@@ -56,6 +70,18 @@ const profileDashSlice = createSlice({
         },
         SET_DASH_SLIDER_DUR: (state=initialState, action) => {
             state.dashboardsliderdur = action.payload
+        },
+        SET_WATCH_LIST: (state=initialState, action) => {
+            state.watchlist = action.payload
+        },
+        UPD_WATCH_LIST: (state=initialState, action) => {
+            if(action.payload && action.payload.length > 0){
+                if (state.watchlist){
+                    state.watchlist = Array.from(new Set([...state.watchlist,...action.payload]))
+                }else{
+                    state.watchlist = action.payload
+                }    
+            }
         }},
     extraReducers:(builder)=>{
         builder
@@ -73,5 +99,6 @@ const profileDashSlice = createSlice({
     }        
 }) 
 
-export const {SET_DASHLAYOUT,SET_INITIAL,SET_DASH_STOCKS,SET_SECTOR,SET_DASH_SECTOR,SET_DASH_SLIDER_DUR} = profileDashSlice.actions;
+export const {SET_DASHLAYOUT,SET_INITIAL,SET_DASH_STOCKS,SET_SECTOR,
+    SET_DASH_SECTOR,SET_DASH_SLIDER_DUR,SET_WATCH_LIST,UPD_WATCH_LIST} = profileDashSlice.actions;
 export default profileDashSlice.reducer;
