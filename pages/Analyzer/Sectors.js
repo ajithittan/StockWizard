@@ -23,6 +23,9 @@ const Sectors = (props) => {
         color:'text.secondary',
         alignItems:"center",
         marginBottom: show ? "50px" :"1px",
+        marginLeft:sm ? null : "5px",
+        margin:"5px",
+        marginRight:sm ? null : "15px"
     }
 
     const updCount = () =>{
@@ -35,7 +38,7 @@ const Sectors = (props) => {
     return (
         <>
           <Card style={cardStyle}>
-              <CardHeader sx={{cursor:"pointer",position:"sticky"}} title={sector + "(" + counts + "/" + stocks?.length +  ")"} onClick={showHideToggle}/>
+              <CardHeader titleTypographyProps={{variant:'subtitle1' }} sx={{cursor:"pointer",position:"sticky"}} title={sector + "(" + counts + "/" + stocks?.length +  ")"} onClick={showHideToggle}/>
             <CardContent>
               <Box style={{maxHeight: '100vh', overflow: 'auto'}}>
                 {stocks?.map((stk,idx) => <StockPatterns stock={stk} onupdCnt={updCount} expand={show} textcolor={true}></StockPatterns>)}

@@ -15,10 +15,10 @@ const index = ({sectors}) =>{
             align="stretch"
             style={{height:"100%"}}
         >
-          <Grid xs={12} sm={12} md={9} lg={9} xl={9}>
+          <Grid xs={12} sm={12} md={9} lg={10} xl={10}>
                 <LatestPatterns></LatestPatterns>
           </Grid>
-          <Grid xs={12} sm={12} md={3} lg={3} xl={3}>
+          <Grid xs={12} sm={12} md={3} lg={2} xl={2}>
             <Grid
                 container
                 direction="row"
