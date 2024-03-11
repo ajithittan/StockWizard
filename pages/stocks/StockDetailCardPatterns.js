@@ -48,7 +48,7 @@ const StockDetailCardPatterns = (props) =>{
 
     const sortPatternTypes = (inpTypes) =>{
         let sortedVals = []
-        const sortedPattern = ["BB","MACD","RSI","OBV"]
+        const sortedPattern = ["CLASS_MDL","BB","MACD","RSI","OBV"]
         sortedPattern.forEach(item =>{
             let tempPtntps = inpTypes.filter(eachPattern => eachPattern.type.indexOf(item) > -1)
 

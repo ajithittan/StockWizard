@@ -21,12 +21,14 @@ const PresetControls = (props) =>{
                         'predictlastdays': 60,
                         'model':"LASSOR"}
                 },
-                {"type":"prediction", "value":"14 Day RSI 5 days ahead","selected":false,"state":undefined,"waiting":false,
+                {"type":"prediction", "value":"Classifier 5 days ahead","selected":false,"state":undefined,"waiting":false,
                 "options":{
-                    'daysAhead': 5, 
-                    'features': [{'feature': 'SMA', 'value': '5'},{'feature': 'SMA', 'value': '20'}, {'feature': 'C'}], 
+                    'daysAhead': 8, 
+                    'features': [{'feature': 'BB', 'value': '50'},{'feature': 'MACD', 'value': '14'}, 
+                    {'feature': 'DI', 'value': '14'},{'feature': 'ADX', 'value': '14'},{'feature': 'CPER'},
+                    {'feature': 'RSI', 'value': '14'}], 
                     'predictlastdays': 60,
-                    'model':"LASSOR"}
+                    'model':"KNNCLASS"}
                 }
      
             ]
@@ -39,6 +41,7 @@ const PresetControls = (props) =>{
 
     const getPredictions  = async(stock,reqBody) =>{
         let retVal = await createModelAndGeneratePredictions(stock,reqBody)
+        console.log("return from prediction",retVal)
         retVal = await JSON.parse(retVal.prediction)
         retVal = await retVal.map(item => ({close:item["prediction"],symbol:stock,date:item.pred_date}))
         return retVal
