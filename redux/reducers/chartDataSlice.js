@@ -1,12 +1,14 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
 import {getRandomColor} from '../../modules/utils/UtilFunctions'
 
-const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE","SAR":"STRAIGHTLINE","LINE":"LINE","AXIS":"AXIS"}
+const mapping_type_chartElement = {"ALERT":"STRAIGHTLINE","SAR":"STRAIGHTLINE","LINE":"LINE","AXIS":"AXIS","IMAGE":"IMAGE"}
 
 const standardizeDataFromDb = (inpData) =>{
     if (inpData.type === "ALERT"){
         return inpData.data.map(obj => ({ ...obj, chartdata:{close:obj.threshold,id:obj.id,update:true}}))
-    }else {
+    }else if (inpData.type === "IMAGE"){
+        return [{...inpData,chartdata:inpData.data}]
+    }else{
         return inpData.map(obj => ({ ...obj, chartdata:{close:obj.data,id:obj.id,update:false}}))
     }
 }

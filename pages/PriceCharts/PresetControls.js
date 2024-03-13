@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import Chip from '@mui/material/Chip';
-import {ADD_ELEMENTS_TO_CHART,HIDE_ADDED_ITEMS_IN_CHART} from '../../redux/reducers/chartDataSlice'
+import {ADD_ELEMENTS_TO_CHART,HIDE_ADDED_ITEMS_IN_CHART,addItemsToChart} from '../../redux/reducers/chartDataSlice'
 import {getRollingSMA,} from '../../modules/api/StockIndicators'
 import {useDispatch} from 'react-redux'
 import {createModelAndGeneratePredictions} from '../../modules/api/StockPrediction'
 import WaitingForResonse from '../../components/WaitingForResponse'
+import moment from 'moment';
+import cloneDeep from 'lodash/cloneDeep';
 
 const PresetControls = (props) =>{
     const dispatch = useDispatch()
@@ -19,16 +21,18 @@ const PresetControls = (props) =>{
                         'daysAhead': 5, 
                         'features': [{'feature': 'RSI', 'value': '5'},{'feature': 'RSI', 'value': '14'}, {'feature': 'C'}], 
                         'predictlastdays': 60,
-                        'model':"LASSOR"}
+                        'model':"LASSOR"},
+                  "charttype":"LINE"                           
                 },
-                {"type":"prediction", "value":"Classifier 5 days ahead","selected":false,"state":undefined,"waiting":false,
+                {"type":"prediction", "value":"Classifier 8 days ahead","selected":false,"state":undefined,"waiting":false,
                 "options":{
                     'daysAhead': 8, 
                     'features': [{'feature': 'BB', 'value': '50'},{'feature': 'MACD', 'value': '14'}, 
                     {'feature': 'DI', 'value': '14'},{'feature': 'ADX', 'value': '14'},{'feature': 'CPER'},
                     {'feature': 'RSI', 'value': '14'}], 
                     'predictlastdays': 60,
-                    'model':"KNNCLASS"}
+                    'model':"KNNCLASS"},
+                    "charttype":"IMAGE"                        
                 }
      
             ]
@@ -41,22 +45,42 @@ const PresetControls = (props) =>{
 
     const getPredictions  = async(stock,reqBody) =>{
         let retVal = await createModelAndGeneratePredictions(stock,reqBody)
-        console.log("return from prediction",retVal)
-        retVal = await JSON.parse(retVal.prediction)
-        retVal = await retVal.map(item => ({close:item["prediction"],symbol:stock,date:item.pred_date}))
+        if (reqBody.model === "KNNCLASS"){
+            retVal = await JSON.parse(retVal.prediction)
+            retVal = retVal.filter(item => item.prediction === 1)   
+            retVal = retVal.map(item => ({close:item.close,symbol:stock,date:moment(item.date).format(moment.HTML5_FMT.DATE)})) 
+        }else{
+            retVal = await JSON.parse(retVal.prediction)
+            retVal = await retVal.map(item => ({close:item["prediction"],symbol:stock,date:item.pred_date}))    
+        }
         return retVal
     }
 
     const addElementsToChart = async (inpdata,type) =>{
-        console.log("inpdata",inpdata)
-        let uniq = (new Date()).getTime();
-        let chartElementToAdd = {}
-        chartElementToAdd.id = uniq
-        chartElementToAdd.symbol = props.stock
-        chartElementToAdd.type = type
-        chartElementToAdd.chartdata = [...inpdata]
-        chartElementToAdd.normalize = true
-        return [chartElementToAdd]
+        if (type === "IMAGE"){
+            return normalizeDataForCharts(inpdata,type)
+        }else{
+            let uniq = (new Date()).getTime();
+            let chartElementToAdd = {}
+            chartElementToAdd.id = uniq
+            chartElementToAdd.symbol = props.stock
+            chartElementToAdd.type = type
+            chartElementToAdd.chartdata = [...inpdata]
+            chartElementToAdd.normalize = true
+            return [chartElementToAdd]    
+        }
+    }
+
+    const normalizeDataForCharts = (inpData,type) =>{
+        const obj = (symbol,type,data,id) => {return {symbol:symbol,id:id,type:type,data:data}}
+        let chartdata = []
+        for (let i=0; i < inpData.length; i++){
+            let datapoint = {}
+            datapoint.close = inpData[i].close
+            datapoint.date = inpData[i].date
+            chartdata.push(obj(props.stock,type,datapoint,inpData[i].close.toFixed(2),))
+        }
+        return chartdata
     }
 
     const getLabel = (inpType,value) => {
@@ -94,11 +118,16 @@ const PresetControls = (props) =>{
             setPresetConfig([...presetConfig.map(item => item.type === inpType && item.value === value? {...item, "selected":!currVal} : item)])    
         }else{
             let pred_options = presetConfig.filter(item => item.type === inpType && item.value === value)[0]["options"]
+            let charttp = presetConfig.filter(item => item.type === inpType && item.value === value)[0]["charttype"]
             getPredictions(props.stock,pred_options).then(retval => {
-                addElementsToChart(retval,"LINE").then(ret => 
+                addElementsToChart(retval,charttp).then(ret => 
                     {
                         setPresetConfig([...presetConfig.map(item => item.type === inpType && item.value === value? {...item, "state": ret,"selected":!currVal} : item)])    
-                        dispatch(ADD_ELEMENTS_TO_CHART(ret))
+                        if (charttp === "IMAGE"){
+                            ret.forEach(item => dispatch(addItemsToChart(item))) 
+                        }else{
+                            dispatch(ADD_ELEMENTS_TO_CHART(ret))
+                        }
                     })
                 }
             )
