@@ -21,7 +21,7 @@ const index = (props) =>{
    return(
        <>
        <title>Price Charts</title>
-        <Box ref={ref} sx={{ flexGrow: 1,paddingLeft:"30px",paddingTop:"10px",height:"90vh"}}>
+        <Box ref={ref} sx={{ flexGrow: 1,paddingLeft:"30px",paddingTop:"10px",height:"95vh"}}>
             <Grid container direction="rows">
                 <Grid item ref={ref}>
                     <ChartEntry key={duration} stock={stock} duration={duration} changes={applyChanges} ref={ref}/>

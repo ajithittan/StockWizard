@@ -35,5 +35,10 @@ const getPatternPerformanceFromDate = async (stock,datefrom) =>{
     return data.data
 }
 
+const getRecentStkCntPtrnsDays = async (limitdays) =>{
+    const data = await axios.get(`/api/patterns/groupbysym/` + limitdays)
+    return data.data
+}
+
 export {getPatternsForStock,getTopPatternsForStock,getDatesForLastTopPatterns,getPatternsByDate,getMostRecentPatterns,
-        getRecentPatternsForAStock,getPatternPerformanceFromDate}
+        getRecentPatternsForAStock,getPatternPerformanceFromDate,getRecentStkCntPtrnsDays}

@@ -25,7 +25,7 @@ const ChartSize = forwardRef((props,ref) => {
             props.setchartdims(obj)
         }
         const calcWidth = () =>{
-          let width=props.wh_props.w*.90
+          let width=props.wh_props.w*.95
           let height = 180
           if (props.wh_props.h > 500){
             height = props.wh_props.h*.90

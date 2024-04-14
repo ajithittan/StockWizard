@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from "react"
+import {useState } from "react"
 
 const DispPatternsFormed = (props) =>{
 
@@ -14,7 +14,27 @@ const DispPatternsFormed = (props) =>{
         }
     }
 
-    const normalizePattern = inpPatterns => inpPatterns.toString()
+    const stripDown = (inpval) =>{
+        const strippedvals = {middle:"M",lower:"L"}
+        if (strippedvals[inpval])
+        return strippedvals[inpval]
+        else if (inpval.indexOf( "CrossOver" ) > -1) {
+            return "CO-" + inpval.split('-')[1]
+        }else if (inpval.indexOf( "CDL" ) > -1) {
+            return inpval.split('CDL')[1]
+        }
+        else{
+            return inpval
+        }
+    }
+
+    const normalizePattern = inpPatterns => {
+        let strippedArr = []
+        inpPatterns?.forEach(element => {
+            strippedArr.push(stripDown(element.toString()))
+        });
+        return strippedArr.toString()
+    }
 
     return (
             patterns?.map(eachpattern =>

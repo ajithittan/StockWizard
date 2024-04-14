@@ -1,10 +1,26 @@
+import { useEffect, useState } from "react"
 import Sectors from './Sectors'
 import Grid from '@mui/material/Grid';
 import axios from "axios";
 import LatestPatterns from './LatestPatterns'
 import StreamStockPrice from '../../components/StreamStockPrice'
+import SpeedDialComp from './SpeedDialComp'
+import StockAnalyzerList from './StockAnalyzerList'
 
 const index = ({sectors}) =>{
+
+    const [tpOfList, setTpOfList] = useState(null)
+
+    useEffect(() =>{
+      if(!tpOfList){
+        setTpOfList("LP")
+      }
+    },[])
+
+    const getDispComponent = () =>{
+      const compList = {"LP": <LatestPatterns />,"SL" : <StockAnalyzerList />}
+      return compList[tpOfList]
+    }
 
      return (
         <div style={{marginLeft:"10px"}}>
@@ -16,7 +32,7 @@ const index = ({sectors}) =>{
             style={{height:"100%"}}
         >
           <Grid xs={12} sm={12} md={9} lg={10} xl={10}>
-                <LatestPatterns></LatestPatterns>
+              {getDispComponent()}
           </Grid>
           <Grid xs={12} sm={12} md={3} lg={2} xl={2}>
             <Grid
@@ -36,6 +52,7 @@ const index = ({sectors}) =>{
         </Grid>
       </Grid>
       <StreamStockPrice></StreamStockPrice>
+      <SpeedDialComp onsettype={setTpOfList}></SpeedDialComp>
       </div>
   )
 }
