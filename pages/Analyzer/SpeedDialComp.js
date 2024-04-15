@@ -3,11 +3,13 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import GridViewIcon from '@mui/icons-material/GridView';
 
 const SpeedDialComp = (props) => {
 
   const actions = [
-    { icon: <ViewListIcon onClick={() => props.onsettype("SL")}/>, name: 'Stock List' },
+    { icon: <ViewListIcon onClick={() => props.onsettype("SL")}/>, name: 'List View' },
+    { icon: <GridViewIcon onClick={() => props.onsettype("LP")}/>, name: 'Stock List' }
   ];
   
   return (

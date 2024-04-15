@@ -2,7 +2,7 @@ import {useEffect, useState} from "react"
 import Grid from '@mui/material/Grid';
 import {getCachedRecentPatternsForStock} from '../../modules/cache/cachetopstockpatterns'
 import DispPatternsFormed from './DispPatternsFormed'
-import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 const StockAnalyzerPatterns = (props) =>{
     const [pattern,setPattern] = useState(null)
@@ -41,7 +41,7 @@ const StockAnalyzerPatterns = (props) =>{
                                             borderColor: 'rgba(0, 0, 0, 0.12)',
                                             borderWidth: '0 0 0 1px'
                                           }}>
-                                            {item.date}
+                                            <Typography color="text.secondary" variant="caption">{item.date}</Typography>
                                             <DispPatternsFormed key={item.stockpatterns} patterns={item.stockpatterns} />
                                         </Grid>
                                         </>) 

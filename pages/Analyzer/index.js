@@ -10,6 +10,8 @@ import StockAnalyzerList from './StockAnalyzerList'
 const index = ({sectors}) =>{
 
     const [tpOfList, setTpOfList] = useState(null)
+    const [componentWid,setComponentWid] = useState(10)
+    const fullscreenlist = ["SL"]
 
     useEffect(() =>{
       if(!tpOfList){
@@ -17,12 +19,22 @@ const index = ({sectors}) =>{
       }
     },[])
 
+    useEffect(() =>{
+      if(tpOfList){
+        if(fullscreenlist.includes(tpOfList)){
+          setComponentWid(12)
+        }else{
+          setComponentWid(10)
+        }
+      }
+    },[tpOfList])
+
     const getDispComponent = () =>{
       const compList = {"LP": <LatestPatterns />,"SL" : <StockAnalyzerList />}
       return compList[tpOfList]
     }
 
-     return (
+    return (
         <div style={{marginLeft:"10px"}}>
         <Grid
             container
@@ -31,10 +43,10 @@ const index = ({sectors}) =>{
             align="stretch"
             style={{height:"100%"}}
         >
-          <Grid xs={12} sm={12} md={9} lg={10} xl={10}>
+          <Grid xs={12} sm={12} md={componentWid} lg={componentWid} xl={componentWid}>
               {getDispComponent()}
           </Grid>
-          <Grid xs={12} sm={12} md={3} lg={2} xl={2}>
+          <Grid xs={12} sm={12} md={2} lg={2} xl={2}>
             <Grid
                 container
                 direction="row"

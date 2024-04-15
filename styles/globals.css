@@ -954,3 +954,10 @@ color: white;
 body {
   overflow-x: hidden;
 }
+
+.even{
+  background-color: #e0e0e7;
+}
+.odd{
+  background-color:rgb(248, 250, 245);
+}

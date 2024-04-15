@@ -38,7 +38,7 @@ const DispPatternsFormed = (props) =>{
 
     return (
             patterns?.map(eachpattern =>
-                <Grid xs justify = "center">
+                <Grid xs justify = "center" margin={0.2}>
                         <Grid container direction='row'>
                             <Grid xs justify = "center">
                                 <Typography color={getColorForPattern()} variant="caption">{eachpattern.type}</Typography>
