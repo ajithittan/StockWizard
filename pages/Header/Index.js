@@ -19,8 +19,8 @@ import BadgeNotification from '../../components/BadgeNotification'
 import {useDispatch} from 'react-redux'
 import {getPortfolioStocks} from '../../redux/reducers/portfolioStockSlice'
 
-const pages = ['Sectors','Performance','Charting','SEC Data','Prediction','Analyzer','Art']
-const links = ['SectorSetUp','SectorPerformance','Charting','SecData','Prediction','Analyzer','Art']
+const pages = ['Sectors','Performance','Charting','SEC Data','Prediction','Analyzer','Correlate','Art']
+const links = ['SectorSetUp','SectorPerformance','Charting','SecData','Prediction','Analyzer','Correlate','Art']
 const settings = ['Logout']
 
 const ResponsiveAppBar = () => {  

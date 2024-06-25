@@ -40,5 +40,10 @@ const getRecentStkCntPtrnsDays = async (limitdays) =>{
     return data.data
 }
 
+const getCorrelationsByPerChange = async (stks,dur) =>{
+    const data = await axios.get(`/api/corelation/` + dur + `?stks=` + stks.toString())
+    return data.data
+}
+
 export {getPatternsForStock,getTopPatternsForStock,getDatesForLastTopPatterns,getPatternsByDate,getMostRecentPatterns,
-        getRecentPatternsForAStock,getPatternPerformanceFromDate,getRecentStkCntPtrnsDays}
+        getRecentPatternsForAStock,getPatternPerformanceFromDate,getRecentStkCntPtrnsDays,getCorrelationsByPerChange}
