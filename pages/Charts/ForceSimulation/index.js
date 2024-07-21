@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import BubblesChart from './BubblesChart'
 const ForceSimulation = (props) =>{
 
     useEffect(() =>{
@@ -6,7 +7,7 @@ const ForceSimulation = (props) =>{
     },[props.chartdata])
 
     return(
-        <div>loading the chart.....</div>
+        <BubblesChart nodes={props.chartdata}></BubblesChart>
     )
 }
 

@@ -961,3 +961,9 @@ body {
 .odd{
   background-color:rgb(248, 250, 245);
 }
+.globe-svg {
+  position: absolute;
+  left: 30%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+}

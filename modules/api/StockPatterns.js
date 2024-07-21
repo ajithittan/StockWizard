@@ -40,8 +40,8 @@ const getRecentStkCntPtrnsDays = async (limitdays) =>{
     return data.data
 }
 
-const getCorrelationsByPerChange = async (stks,dur) =>{
-    const data = await axios.get(`/api/corelation/` + dur + `?stks=` + stks.toString())
+const getCorrelationsByPerChange = async (stks,dur,format) =>{
+    const data = await axios.get(`/api/corelation/` + dur + `/` + format + `/` + `?stks=` + stks.toString())
     return data.data
 }
 

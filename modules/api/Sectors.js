@@ -12,4 +12,9 @@ const getAnalysisForStock = async (stock,indType,duration,profit) =>{
     return data.data
 }
 
-export {getStocksInSector,getAnalysisForStock}
+const getExternalSectorsAndStocks = async () =>{
+    const data = await axios.get(`api/extsectorsstocks`)
+    return data.data
+}
+
+export {getStocksInSector,getAnalysisForStock,getExternalSectorsAndStocks}
