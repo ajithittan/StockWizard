@@ -3,7 +3,8 @@ import {Box} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 const ListViewAnalysis = (props) =>{
-    let streamingData = [{'perchange':10,'symbol':"AAPL",'close':211.5,'volume':1122334443}]
+    //{'perchange':10,'symbol':"AAPL",'close':211.5,'volume':1122334443}
+    let streamingData = []
     const streamdata = useSelector(state => state.streamingquotes?.streamdata)
     //perchange,symbol,volume,close
     if (streamdata){
