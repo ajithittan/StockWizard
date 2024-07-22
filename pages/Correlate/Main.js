@@ -6,9 +6,12 @@ import ForceSimulation from '../Charts/ForceSimulation'
 import ListView from './ListView'
 import WaitingForResonse from '../../components/WaitingForResponse'
 import Grid from '@mui/material/Grid';
+import {useDispatch} from 'react-redux'
 import RealtimeAnalysis from './RealtimeAnalysis'
+import {SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
 
 const Main = (props) =>{
+    const dispatch = useDispatch()
     const [showDefStks,setShowDefStks] = useState(props.showDefStks)
     const [showAnalyzer,setShowAnalyzer] = useState(null)    
     const [listtocluster,setListtocluster] = useState([])
@@ -24,6 +27,12 @@ const Main = (props) =>{
             setClusterData(null)
         }
     },[listtocluster])
+
+    useEffect(() =>{
+        if(showAnalyzer){
+            dispatch(SET_DASH_STOCKS(showAnalyzer?.map(item => item.stock)))
+        }
+    },[showAnalyzer])
 
     const addtolist = (stk) => setListtocluster([...new Set([...listtocluster, stk])]);
 
