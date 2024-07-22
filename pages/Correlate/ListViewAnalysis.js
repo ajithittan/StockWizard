@@ -1,16 +1,19 @@
+import { useState,useEffect } from 'react'
 import { useSelector} from 'react-redux'
 import {Box} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 const ListViewAnalysis = (props) =>{
     //{'perchange':10,'symbol':"AAPL",'close':211.5,'volume':1122334443}
-    let streamingData = []
+    const [streamingData,setStreamingData] = useState([])
     const streamdata = useSelector(state => state.streamingquotes?.streamdata)
     //perchange,symbol,volume,close
-    if (streamdata){
-        streamingData.push(streamdata)
-    }
-    console.log("streamdatastreamdatastreamdata",streamdata)
+    useEffect(() =>{
+        if (streamdata){
+            let tempstream = streamdata.filter(item => props?.stocks?.includes(item.symbol))
+            setStreamingData(tempstream.sort((a,b) => Math.abs(b.perchange) - Math.abs(a.perchange)))
+        }    
+    },[streamdata])
 
     const columns = [
         {field: 'symbol', headerName: 'Stock', headerAlign: 'center',flex: 1, align:'center'},

@@ -16,7 +16,7 @@ const RealtimeAnalysis = (props) =>{
     },[props.stocks])
 
     const getComponentTypeToDisplay = () =>{
-        const typesOfDisp = {"LIST":<ListViewAnalysis />}
+        const typesOfDisp = {"LIST":<ListViewAnalysis stocks={props.stocks}/>}
         return typesOfDisp[dispType]
     }
  
