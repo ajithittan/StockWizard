@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import {useDispatch} from 'react-redux'
 import RealtimeAnalysis from './RealtimeAnalysis'
 import {SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import StackChipView from './StackChipView'
 
 const Main = (props) =>{
     const dispatch = useDispatch()
@@ -21,13 +22,28 @@ const Main = (props) =>{
     const [mode,setMode] = useState("default")
 
     useEffect(() =>{
+        let eventSource = undefined
+        if (listtocluster?.length > 0){
+          eventSource = new EventSource('/stream/corelation/' + dur + "/" + mode)  
+          eventSource.onmessage = e => {
+              let stkcorrdata = JSON.parse(e.data)
+              stkcorrdata ? setClusterData(stkcorrdata) : null
+          }
+          eventSource.onerror = (e) => {
+              console.log("An error occurred while attempting to connect.",e);
+          };   
+        }
+        return () => eventSource?.close()
+      },[listtocluster])
+    /**
+    useEffect(() =>{
         if(listtocluster.length > 2){
             fetchCorrls(listtocluster)
         }else{
             setClusterData(null)
         }
     },[listtocluster])
-
+    */  
     useEffect(() =>{
         if(showAnalyzer){
             dispatch(SET_DASH_STOCKS(showAnalyzer?.map(item => item.stock)))
@@ -52,19 +68,24 @@ const Main = (props) =>{
             {
             showDefStks ? <Grid item xs={12}> <ListExtSectors onselect={addSectStkstoList}></ListExtSectors><ListStocks onselect={addtolist}></ListStocks></Grid> : null
             }            
-            {
+            {/**
                 //clusterData ? <ForceSimulation chartdata={clusterData}></ForceSimulation> : null
                 clusterData ? 
                     <Grid item xs={11} sm={11} md={2} lg={2} xl={2} margin={0.5} marginTop={2}>
                         <ListView key={clusterData} inputvals={clusterData} onselect={setShowAnalyzer}></ListView>
                     </Grid>: <WaitingForResonse />
-            }
-            {
+             */}
+             {
+                 clusterData ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={2}>
+                            <StackChipView key={clusterData} inputvals={clusterData} onselect={setShowAnalyzer} />
+                    </Grid>: <WaitingForResonse />
+             }
+            {/** 
                 showAnalyzer ? 
                 <Grid xs={11} sm={11} md={9} lg={9} xl={9} margin={0.5} marginTop={2}>
                     <RealtimeAnalysis stocks={showAnalyzer?.map(item => item.stock)}></RealtimeAnalysis>
                 </Grid>: null
-            }
+             */}
         </Grid>
     )
 }

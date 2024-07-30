@@ -74,7 +74,7 @@ const ListView = (props) =>{
 
     return(
         <>
-            <Box sx={{ minHeight:"40vh", maxHeight: "80vh", borderRadius: 1,overflow: "auto"
+            <Box sx={{ minHeight:"85vh", maxHeight: "85vh", borderRadius: 1,overflow: "auto"
                     ,scrollbarWidth: "none", // Hide the scrollbar for firefox
                     '&::-webkit-scrollbar': {
                         display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)

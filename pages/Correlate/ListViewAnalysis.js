@@ -30,6 +30,7 @@ const ListViewAnalysis = (props) =>{
                 rows={streamingData}
                 columns={columns}
                 pageSize={100}
+                rowHeight={30}
                 rowsPerPageOptions={[100]}
                 getRowId={row => Math.random()}
             />   
