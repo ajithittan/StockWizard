@@ -7,6 +7,7 @@ const StackChipView = (props) => {
 
     useEffect(() =>{
         if (props.inputvals){
+            console.log(props.inputvals)
             setInpData(props.inputvals)
         }
     },[props.inputvals])
@@ -14,13 +15,13 @@ const StackChipView = (props) => {
   return (
     <Grid container layout={'row'}>
         {
-            inpData?.map(item => item.length > 3 ?
+            inpData ? Object.keys(inpData).map(item => inpData[item].length > 3 ?
                     <Grid style={{border: "1px solid lightgray",borderRadius: "5px"}} item xs={11} sm={11} md={3.5} lg={3.5} xl={3.5} margin={1}>
                         {
-                            item.map(eachitem => <Chip style={{opacity:eachitem.value,margin:"1.5px"}} label={eachitem.stock} color="primary"/>)
+                            inpData[item].map(eachitem => <Chip style={{margin:"1.5px"}} label={eachitem} color="primary"/>)
                         }
-                    </Grid>    : null
-            )
+                    </Grid>    : null 
+            ) : null
         }  
     </Grid> 
   );
