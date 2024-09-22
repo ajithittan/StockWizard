@@ -19,7 +19,7 @@ const Container = (props) =>{
                 components?.map (eachComp =>{
                     let widthOfGrid = 12/eachComp.components.length;
                     return eachComp.components.map(listOfItems => 
-                      <Grid key={listOfItems.key} item md={widthOfGrid} lg={widthOfGrid} xl={widthOfGrid} sm={12} xs={12}>          
+                      <Grid key={listOfItems.key} item md={12} lg={widthOfGrid} xl={widthOfGrid} sm={12} xs={12}>          
                           {listOfItems.props.header?
                             <Paper component="fieldset"
                                   key={widthOfGrid}

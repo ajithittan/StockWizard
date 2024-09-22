@@ -1,13 +1,8 @@
-import { useEffect, useState } from "react"
 import StockSymbolSelector from '../../components/StockSymbolSelector'
-import {useDispatch} from 'react-redux'
-import {ADD_STOCKS_TO_PORTFOLIO} from '../../redux/reducers/portfolioStockSlice'
 
 const ProcessNewPositions = (props) =>{
-    const dispatch = useDispatch()
     
     const AddtoList = (stockSym) =>{
-        console.log("in here?",stockSym)
         props.updates([...stockSym])
     }
 
