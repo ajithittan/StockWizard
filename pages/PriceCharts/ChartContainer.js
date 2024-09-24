@@ -31,8 +31,8 @@ const ChartContainer = forwardRef((props,inpref) => {
     useEffect(() =>{
         if (inpref){
             let tempsize = {}
-            tempsize.w = inpref?.current.offsetWidth 
-            tempsize.h = inpref?.current.offsetHeight 
+            tempsize.w = inpref?.current?.offsetWidth 
+            tempsize.h = inpref?.current?.offsetHeight 
             setInpSizes(tempsize)
         }
     },[inpref])

@@ -79,7 +79,7 @@ const index = (props) =>{
                                     <SingleNewsCard key={item} newscontent={item} 
                                                     onSelectSingleStk={showOnlySelectStock} 
                                                     onShowAll={showAll} selStock={singleStk} 
-                                                    color={assignedColor?.filter(color => color.stock===item.stock)[0].color}/>
+                                                    color={assignedColor?.filter(color => color.stock===item.stock)[0]?.color}/>
                                 </Paper>
                             </Grid>
                         ))}

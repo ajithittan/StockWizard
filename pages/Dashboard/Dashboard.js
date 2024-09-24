@@ -48,10 +48,10 @@ const Dashboard = () =>{
 
     const getComponentToDisplay = (arrLayoutId) =>{
         const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard stocks={dashboardstocks} actionChangeList={changesToStkList} header="Performance"/>},
-                                {itemId:2,component:<Stocks stocks={dashboardstocks} actionChangeList={changesToStkList}/>},
+                                {itemId:2,component:<Stocks/>},
                                 {itemId:3,component:<></>},
                                 {itemId:4,component:<TopMovers header="Gainers, Losers & Active"/>},
-                                {itemId:5,component:<TopNews key={dashboardstocks} stocks={dashboardstocks} header="Top News"/>}]
+                                {itemId:5,component:<TopNews header="Top News"/>}]
 
         return mappingOfItems.filter(item => arrLayoutId.includes(item.itemId)).map(item => item.component)                         
     }
@@ -62,7 +62,7 @@ const Dashboard = () =>{
         <>
             {
                 dashboardlayout && dashboardstocks ? 
-                    <Container key={dashboardstocks+dashboardlayout} components={getAllComponents}></Container> 
+                    <Container components={getAllComponents()}></Container> 
                 : <WaitingForResonse />              
             }
         </> 

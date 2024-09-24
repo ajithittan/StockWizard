@@ -11,11 +11,13 @@ import {SET_DASH_SECTOR,SET_SECTOR,SET_DASH_STOCKS} from '../../redux/reducers/p
 const BottomNav = (props) => {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch()
+  //const {stockList} = useSelector((state) => state.porfoliostock)
 
   const restoreDefault = () => {
     dispatch(SET_DASH_SECTOR(0));
     dispatch(SET_SECTOR(false));
     dispatch(SET_DASH_STOCKS(null))
+    //dispatch(SET_DASH_STOCKS(stockList))
   }
 
   const {dashboardselsector} = useSelector((state) => state.dashboardlayout)

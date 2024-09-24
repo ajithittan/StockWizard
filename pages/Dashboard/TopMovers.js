@@ -11,7 +11,7 @@ import DoneIcon from '@mui/icons-material/Done';
 const TopMovers = () =>{
     const dispatch = useDispatch()
     const sm = useMediaQuery("(max-width: 700px)");
-    const {stockList} = useSelector((state) => state.porfoliostock)
+    const {dashboardstocks} = useSelector((state) => state.dashboardlayout)
     let LIMIT_ITEMS = 100
     let [topGainers,setTopGainers] = useState(null)
     let [topLosers,setTopLosers] = useState(null)
@@ -27,7 +27,7 @@ const TopMovers = () =>{
 
     const saveNewPositions = (stocksel) => dispatch(updPortfolioStocks(stocksel))
 
-    const stockIsInPortfolio = (stock) => stockList?.includes(stock)
+    const stockIsInPortfolio = (stock) => dashboardstocks?.includes(stock)
 
     const getChipComponent = (inpLabel,inpVal,stock) =>{
         const getColor = {"positive":"#B1FFCA","negative":"#F08080"}

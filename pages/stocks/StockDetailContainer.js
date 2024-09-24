@@ -12,19 +12,17 @@ const index = (props) =>{
     const [stocks,setStocks] = useState(null)
     const [stkQuotes,setStkQuote] = useState(null)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
+    const {dashboardstocks} = useSelector((state) => state.dashboardlayout)
     const ref = useRef()
     const refModal = useRef()
     const [showModal,setShowModal] = useState(false)
     const [modalStock,setModalStock] = useState(null)
 
     useEffect(() =>{
-        if (props.stocks){
-            //setStocks(props.stocks)
-            //not sure why I did the below? puzzled....
-            //setTimeout(() => getStkQuotes(props.stocks),1000) 
-            getStkQuotes(props.stocks)
+        if (dashboardstocks){
+            getStkQuotes(dashboardstocks)
         }
-    },[props.stocks])
+    },[dashboardstocks])
 
     const removeFromList = (stkSym) => setStocks([...stocks.filter(stk => stk !==stkSym)])
 
@@ -59,8 +57,8 @@ const index = (props) =>{
         >
         {
 
-            stocks?.map(item => <Grid xs={12} sm={12} md={6} lg={4} xl={3} ref={ref}>
-                                        <StockDetailCard ref={ref} key={item} stock={item} remove={removeFromList} openinModal={openInModal}>
+            dashboardstocks?.map(item => <Grid xs={12} sm={12} md={6} lg={4} xl={3} ref={ref}>
+                                        <StockDetailCard ref={ref} key={item} stock={item} openinModal={openInModal}>
                                         </StockDetailCard>
                                 </Grid>) 
         }
