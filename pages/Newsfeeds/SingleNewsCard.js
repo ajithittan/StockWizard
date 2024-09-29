@@ -1,5 +1,7 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from "react"
 import CardHeader from '@mui/material/CardHeader'
 import Link from "next/link"; 
@@ -49,7 +51,9 @@ const SingleNewsCard = (props) => {
     const getTitle = (title,stock) =>{
         return(
             <>
-                <Link href={newsContent?.link || '/'} target="_blank">{title}</Link>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Typography sx={{fontSize:"14px"}}>
+                        <Link href={newsContent?.link || '/'} target="_blank">{title}</Link>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <Chip
                         variant={selected ? "filled" : "outlined"}
                         label={stock}
@@ -58,6 +62,7 @@ const SingleNewsCard = (props) => {
                         sx={{ color: selected ? "none" : props?.color}}
                         size="small"
                     />
+                    </Typography>
             </>    
         )
     }
@@ -66,14 +71,19 @@ const SingleNewsCard = (props) => {
     {
         return(
             <> 
-                <hr style={{height:"0.5px"}}></hr> 
+                <Typography sx={{fontSize:"11px"}}>{newsContent?.date}</Typography>
+                <Divider></Divider>
+                <Typography sx={{fontSize:"14px"}}>
                 <Link href={newsContent?.link || '/'} target="_blank">
-                    {newsContent?.summary?.substring(0,400-newsContent?.title?.length) + "..."}
+                    {newsContent?.summary?.substring(0,250-newsContent?.title?.length) + "..."}
                 </Link>
+                </Typography>
+                
             </>
         )
     }
-    
+
+   
     return (
         <>
         {
@@ -83,12 +93,6 @@ const SingleNewsCard = (props) => {
                         titleTypographyProps={{variant:'h9' }}
                         subheader = {getHeader()}
                         style={{cursor:"pointer"}}/>
-                <CardContent>
-                <div height="90%" style={{fontSize:"12px",position:"relative",bottom:0}}>
-                    {newsContent?.source}<br></br>
-                    {newsContent?.date}
-                </div>
-                </CardContent>
             </Card> : <WaitingForResonse height={25} width={25}/>
         }
         </>
