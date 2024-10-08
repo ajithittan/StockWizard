@@ -76,7 +76,7 @@ const Main = (props) =>{
                     </Grid>: <WaitingForResonse />
              */}
              {
-                 clusterData ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={2}>
+                 clusterData ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={0.5}>
                             <StackChipView key={clusterData} inputvals={clusterData} onselect={setShowAnalyzer} />
                     </Grid>: <WaitingForResonse />
              }
