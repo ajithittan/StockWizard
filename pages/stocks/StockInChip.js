@@ -27,7 +27,7 @@ const StockInChip = (props) =>{
                 <Chip
                     variant="outlined"
                     deleteIcon={watchedstk ? <DoneIcon /> : null}
-                    label={inpLabel}
+                    label={inpLabel} 
                     size="small"
                     sx={{
                         backgroundColor:inpVal >=0 ? getColor["positive"] : getColor["negative"],
@@ -43,7 +43,7 @@ const StockInChip = (props) =>{
 
     return (
         <>
-            {getChipComponent(stockdtls?.stock,stockdtls?.close,stockdtls?.stock)}
+            {getChipComponent(stockdtls?.stock + " " + stockdtls?.perchange,stockdtls?.perchange,stockdtls?.stock)}
         </>
     )
 }
