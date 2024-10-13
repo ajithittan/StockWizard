@@ -2,7 +2,7 @@ import Main from './Main'
 
 const Correlate = () => {
     return(
-        <Main showDefStks={true}></Main>
+        <Main showDefStks={false}></Main>
     )
 }
 
