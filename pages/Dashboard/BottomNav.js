@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import {initiateStreaming} from '../../modules/api/StockStream'
 import RestoreIcon from '@mui/icons-material/Restore';
 import ListIcon from '@mui/icons-material/List';
 import SectorDropDown from '../../components/SectorDropDown'
@@ -27,6 +28,7 @@ const BottomNav = (props) => {
     dispatch(SET_DASH_STOCKS(sectorVal.stocks))
     dispatch(SET_DASH_SECTOR(sectorVal.idstocksector))
     dispatch(SET_SECTOR(true))
+    initiateStreaming(sectorVal.stocks)
   }
 
   const getWatchList = async () =>{
