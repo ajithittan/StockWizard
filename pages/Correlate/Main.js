@@ -23,18 +23,16 @@ const Main = (props) =>{
 
     useEffect(() =>{
         let eventSource = undefined
-        if (listtocluster?.length > 0){
-          eventSource = new EventSource('/stream/corelation/' + dur + "/" + mode)  
-          eventSource.onmessage = e => {
-              let stkcorrdata = JSON.parse(e.data)
-              stkcorrdata ? setClusterData(stkcorrdata) : null
-          }
-          eventSource.onerror = (e) => {
-              console.log("An error occurred while attempting to connect.",e);
-          };   
+        eventSource = new EventSource('/stream/corelation/' + dur + "/" + mode)  
+        eventSource.onmessage = e => {
+            let stkcorrdata = JSON.parse(e.data)
+            stkcorrdata ? setClusterData(stkcorrdata) : null
         }
+        eventSource.onerror = (e) => {
+            console.log("An error occurred while attempting to connect.",e);
+        };   
         return () => eventSource?.close()
-      },[listtocluster])
+      },[])
     /**
     useEffect(() =>{
         if(listtocluster.length > 2){
