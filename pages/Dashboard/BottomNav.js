@@ -7,7 +7,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import ListIcon from '@mui/icons-material/List';
 import SectorDropDown from '../../components/SectorDropDown'
 import {useSelector,useDispatch} from 'react-redux'
-import {SET_DASH_SECTOR,SET_SECTOR,SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import {SET_DASH_SECTOR,SET_SECTOR,SET_DASH_STOCKS,SET_WATCH_LIST_CONTEXT} from '../../redux/reducers/profileDashSlice'
 
 const BottomNav = (props) => {
   const [value, setValue] = useState(0);
@@ -18,6 +18,7 @@ const BottomNav = (props) => {
     dispatch(SET_DASH_SECTOR(0));
     dispatch(SET_SECTOR(false));
     dispatch(SET_DASH_STOCKS(null))
+    dispatch(SET_WATCH_LIST_CONTEXT(false))
     //dispatch(SET_DASH_STOCKS(stockList))
   }
 
@@ -28,12 +29,16 @@ const BottomNav = (props) => {
     dispatch(SET_DASH_STOCKS(sectorVal.stocks))
     dispatch(SET_DASH_SECTOR(sectorVal.idstocksector))
     dispatch(SET_SECTOR(true))
+    dispatch(SET_WATCH_LIST_CONTEXT(false))
     initiateStreaming(sectorVal.stocks)
   }
 
   const getWatchList = async () =>{
     if(watchlist && watchlist.length > 0){
-      updSelSector({stocks:watchlist,idstocksector:0})
+      dispatch(SET_DASH_STOCKS(watchlist))
+      dispatch(SET_DASH_SECTOR(0))
+      dispatch(SET_WATCH_LIST_CONTEXT(true))
+      initiateStreaming(watchlist)
     }
   }
 

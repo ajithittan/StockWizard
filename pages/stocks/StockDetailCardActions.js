@@ -7,7 +7,8 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import InfoIcon from '@mui/icons-material/Info';
 import CardActions from '@mui/material/CardActions';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
-import {useDispatch} from 'react-redux'
+import {remStockFromWatchList} from '../../redux/reducers/profileDashSlice'
+import {useDispatch,useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid';
 import SupportAndResistance from './actions/SupportAndResistance'
@@ -18,10 +19,19 @@ const StockDetailCardActions = (props) =>{
     const router = useRouter()
     const dispatch = useDispatch()
     const [sizeOfGrid,setSizeOfGrid] = useState(1.5)
+    const {watchlistincontext} = useSelector((state) => state.dashboardlayout)
 
     const showAllCompanyStats = (stk) => router.push({pathname: '/CompanyDetails',query: {stock:stk,dur:3}})
 
     const defaultActions = <CardActions disableSpacing sx={{ mt: "auto" }} />
+
+    const actionToDelete = () =>{
+        if (watchlistincontext){
+            dispatch(remStockFromWatchList(props.stock))
+        }else{
+            dispatch(removePortfolioStock(props.stock))
+        }
+    }
 
     return (
             <Grid
@@ -56,7 +66,7 @@ const StockDetailCardActions = (props) =>{
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="delete">
-                        <DeleteIcon onClick={() => dispatch(removePortfolioStock(props.stock))} />
+                        <DeleteIcon onClick={actionToDelete} />
                     </IconButton>   
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>

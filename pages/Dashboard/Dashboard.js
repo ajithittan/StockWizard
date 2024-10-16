@@ -48,7 +48,7 @@ const Dashboard = () =>{
 
     const getComponentToDisplay = (arrLayoutId) =>{
         const mappingOfItems = [{itemId:1,component:<ChartsForDashBoard stocks={dashboardstocks} actionChangeList={changesToStkList} header="Performance"/>},
-                                {itemId:2,component:<Stocks/>},
+                                {itemId:2,component:<Stocks stocks={dashboardstocks}/>},
                                 {itemId:3,component:<></>},
                                 {itemId:4,component:<TopMovers header="Gainers, Losers & Active"/>},
                                 {itemId:5,component:<TopNews header="Top News"/>}]

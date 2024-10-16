@@ -12,4 +12,10 @@ const getWatchList = async () =>{
     return data.data
 }
 
-export {saveWatchList,getWatchList}
+const removefromwatchlist = async (stk) =>{
+    let url = "/personalize/delstkwatchlist/" + stk
+    const data = await axios.post(url)
+    return data.data
+}
+
+export {saveWatchList,getWatchList,removefromwatchlist}
