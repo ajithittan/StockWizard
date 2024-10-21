@@ -10,6 +10,7 @@ import {useDispatch} from 'react-redux'
 import RealtimeAnalysis from './RealtimeAnalysis'
 import {SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
 import StackChipView from './StackChipView'
+import DrillIntoCluster from './DrillIntoCluster'
 
 const Main = (props) =>{
     const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const Main = (props) =>{
     const [showAnalyzer,setShowAnalyzer] = useState(null)    
     const [listtocluster,setListtocluster] = useState([])
     const [clusterData,setClusterData] = useState(null)
+    const [selectedCluster,setSelectedCluster] = useState(null)
     const [dur,setDur] = useState(5)
     //bubblecht as type to populate bubble chart
     const [mode,setMode] = useState("default")
@@ -74,8 +76,13 @@ const Main = (props) =>{
                     </Grid>: <WaitingForResonse />
              */}
              {
+                selectedCluster ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={0.5}>
+                                    <DrillIntoCluster close={setSelectedCluster} stocks={selectedCluster}></DrillIntoCluster>
+                                  </Grid> : null
+             }
+             {
                  clusterData ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={0.5}>
-                            <StackChipView key={clusterData} inputvals={clusterData} onselect={setShowAnalyzer} />
+                            <StackChipView key={clusterData} inputvals={clusterData} onselect={setSelectedCluster} />
                     </Grid>: <WaitingForResonse />
              }
             {/** 
