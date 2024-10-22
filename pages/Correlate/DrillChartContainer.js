@@ -32,14 +32,14 @@ const DrillChartContainer = (props) => {
             svgElement.attr("width",width).attr("height",height)
     
             const x = XScaleNum(charData,domainwidth,"etime")
-            const y = YScale(charData,domainheight,"close")  
+            const y = YScale(charData,domainheight,"perchange")  
             
             const g = svgElement.append("g")
                 .attr("transform", "translate(" + 40 + "," + 40 + ")");   
             
             xTicksNum(g,x,y,width,height)    
             yTicks(g,x,y,width,height)     
-            Circle(g,charData,x,y,"etime","close","symbol")
+            Circle(g,charData,x,y,"etime","perchange","symbol")
         }
       }, [charData]);
     
