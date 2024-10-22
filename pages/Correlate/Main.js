@@ -76,7 +76,7 @@ const Main = (props) =>{
                     </Grid>: <WaitingForResonse />
              */}
              {
-                selectedCluster ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={0.5}>
+                selectedCluster ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={0.5} marginBottom={1.5}>
                                     <DrillIntoCluster close={setSelectedCluster} stocks={selectedCluster}></DrillIntoCluster>
                                   </Grid> : null
              }

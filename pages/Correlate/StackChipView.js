@@ -10,7 +10,6 @@ const StackChipView = (props) => {
     const [widthFactor,setWidthFactor] = useState(null)
 
     useEffect(() =>{
-        console.log(props.inputvals)
         setInpData(props.inputvals)
         if (props.inputvals[2]){
             setWidthFactor(1)

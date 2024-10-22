@@ -40,4 +40,11 @@ const yTicks = (g,xScale,yScale,width,height,id) => {
     .attr("transform", "translate(" + xScale.range()[0] / 2 + ", 0)")
     .call(axisLeft(yScale).ticks(5))
 }
-export {xTicks,yTicks}
+const xTicksNum = (g,xScale,yScale,width,height,id) => {
+    g.append("g")
+    .attr("id", "xScale")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + yScale.range()[0] + ")")
+    .call(axisBottom(xScale).ticks(5))
+}
+export {xTicks,yTicks,xTicksNum}

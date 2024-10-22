@@ -25,4 +25,16 @@ const YScale = (chartdata,domainheight,field) =>{
     return y
 }
 
-export {XScale, YScale}
+const XScaleNum = (chartdata,domainwidth,field) =>{
+    let xExtent = extent(chartdata.map(item => item[field]));
+    xExtent = [xExtent[0]*0.99,xExtent[1] * 1.05]
+
+    let x = scaleLinear()
+    .domain(xExtent)
+    .range([0, domainwidth])
+
+    return x
+}
+
+
+export {XScale, YScale ,XScaleNum}

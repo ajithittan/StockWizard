@@ -1,49 +1,48 @@
 import { useEffect, useState,useRef,forwardRef } from "react"
 import * as d3 from "d3";
+import {XScaleNum,YScale} from '../../components/Charting/Components/Scales'
+import Rectangle from '../../components/Charting/Components/Rectangle'
+import {Line} from '../../components/Charting/Components/Line'
+import ToolTip from '../../components/Charting/Components/ToolTip'
+import Circle from '../../components/Charting/Components/Circlev2'
+import { xTicksNum,yTicks } from "../../components/Charting/Components/Ticks"
+import Text from '../../components/Charting/Components/Text'
 
 const DrillChartContainer = (props) => {
 
     const ref = useRef()
-    const svgElement = d3.select(ref.current)
+    const margin = {top: 20, right: 25, bottom: 20, left: 30}
+    const [charData, setcharData] = useState(null)
+    let width = ref.current?.parentElement.offsetWidth
+    let height = ref.current?.parentElement.offsetHeight
+    let domainwidth = width - margin.left - margin.right
+    let domainheight = height - margin.top - margin.bottom
 
     useEffect(() =>{
-        console.log("chartstream in DrillChartContainer",props.chartstream)
+      if (props.chartstream){
+          setcharData(props.chartstream)
+      }
     },[props.chartstream])
 
-    const setDimensions = (width,height) => {
-        svgElement.attr("width",width).attr("height",height)
-    }
-
-    const addAxis = (width,height) => {
-        var x = d3.scaleLinear()
-        .domain([0, 100])
-        .range([ 0, width ]);
-
-        svgElement.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
-    }
 
     useEffect(() => {
-        if (props.size){
-
-          const calcWidth = () =>{
-            let width=props.size.w*.95
-            let height = 180
-            if (props.size.h > 500){
-              height = props.size.h*.85
-            }
-            setDimensions(width,height);
-            addAxis(width,height)
-          }
-          calcWidth();
-          const updateDimensions = () => calcWidth()
-          window.addEventListener("resize", updateDimensions);
-          return () => window.removeEventListener("resize", updateDimensions);
-        }
-      }, [props.size]);
+        if (charData){
+            d3.selectAll("svg > *").remove();
+            const svgElement = d3.select(ref.current)
+            svgElement.attr("width",width).attr("height",height)
     
-
+            const x = XScaleNum(charData,domainwidth,"etime")
+            const y = YScale(charData,domainheight,"close")  
+            
+            const g = svgElement.append("g")
+                .attr("transform", "translate(" + 40 + "," + 40 + ")");   
+            
+            xTicksNum(g,x,y,width,height)    
+            yTicks(g,x,y,width,height)     
+            Circle(g,charData,x,y,"etime","close","symbol")
+        }
+      }, [charData]);
+    
     return(
         <>
             <svg ref={ref}/>
