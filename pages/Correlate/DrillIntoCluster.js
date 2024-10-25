@@ -22,6 +22,7 @@ const DrillIntoCluster = (props) =>{
 
     useEffect(() =>{
         if (props.stocks){
+            setStreamChartData([])
             let eventSource = undefined
             eventSource = new EventSource('/stream/analyzecorrelations/' + count + '?inpdata=' + JSON.stringify(props.stocks.map(item => item.stock)))  
             eventSource.onmessage = e => {
