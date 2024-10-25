@@ -30,16 +30,38 @@ const DrillChartContainer = (props) => {
             d3.selectAll("svg > *").remove();
             const svgElement = d3.select(ref.current)
             svgElement.attr("width",width).attr("height",height)
-    
+
             const x = XScaleNum(charData,domainwidth,"etime")
             const y = YScale(charData,domainheight,"perchange")  
-            
+
             const g = svgElement.append("g")
-                .attr("transform", "translate(" + 40 + "," + 40 + ")");   
-            
+                                .attr("transform", "translate(" + 40 + "," + 40 + ")");   
+
+            let clickedSymbols = []
+            let symbols = charData.map(item => item.symbol)    
+                    
+            const callBackFn = (stock) => {
+                if (clickedSymbols.includes(stock)){
+                    clickedSymbols = clickedSymbols.filter(item => item !== stock)
+                }
+                else{
+                    clickedSymbols.push(stock)
+                }
+                symbols.filter(item => !clickedSymbols.includes(item)).map(item =>{
+                    d3.selectAll("#c_" + item).style("fill", "white")
+                      .style("stroke", "gray")
+                    d3.selectAll("#ct_" + item).style("fill", "#C8C8C8");
+                })
+                clickedSymbols.map(
+                    itm => {
+                        d3.selectAll("#c_" + itm).style("fill", "#DB7093")
+                        d3.selectAll("#ct_" + itm).style("fill", "#841617")
+                })
+            }                
+
             xTicksNum(g,x,y,width,height)    
             yTicks(g,x,y,width,height)     
-            Circle(g,charData,x,y,"etime","perchange","symbol")
+            Circle(g,charData,x,y,"etime","perchange","symbol",callBackFn)
         }
       }, [charData]);
     

@@ -1,4 +1,4 @@
-const Circle = (g,charData,x,y,xfield,yfield,lfield) => {
+const Circle = (g,charData,x,y,xfield,yfield,lfield,callBackFunction) => {
 
     console.log("circle",charData)
     g.selectAll("circle")
@@ -6,8 +6,9 @@ const Circle = (g,charData,x,y,xfield,yfield,lfield) => {
     .join("circle")
         .attr("cx",d => x(d[xfield]))
         .attr("cy",d => y(d[yfield]))
-        .attr("r",15)  
-        .on("click", (event, d) => props.openPrcChart(d.symbol))
+        .attr("r",8)  
+        .on("click", (event, d) => callBackFunction(d.symbol))
+        .attr("id", (d) => "c_" + d.symbol)
         .style("cursor", "pointer")
         .style("fill", "#DAF7A6")
         .transition()
@@ -20,10 +21,11 @@ const Circle = (g,charData,x,y,xfield,yfield,lfield) => {
             .attr("x", d => x(d[xfield])+20)
             .attr("y", d => y(d[yfield]))
             .text(d => d[lfield])
+            .on("click", (event, d) => callBackFunction(d.symbol))
+            .attr("id", (d) => "ct_" + d.symbol)
             .style("text-anchor", "middle")
-            .style("font-size", "10pt")
+            .style("font-size", "8pt")
             .style("fill", "#344761");
-              
 }
 
 export default Circle
