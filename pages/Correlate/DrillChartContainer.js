@@ -12,12 +12,11 @@ import Text from '../../components/Charting/Components/Text'
 const DrillChartContainer = (props) => {
 
     const ref = useRef()
-    const [count,setCount] = useState(2)
-    const [ySclRngFctr, setYSclRngFctr] = useState({low:0.9,high:1.2})
+    const [count,setCount] = useState(30)
+    const [ySclRngFctr, setYSclRngFctr] = useState({low:1.2,high:1.2})
     const [yScaleData,setYScaleData] = useState(null)
     const [xScaleData,setXScaleData] = useState(null)
     const [charData, setcharData] = useState([])
-    const [newChartData, setNewChartData] = useState([])
     const margin = {top: 20, right: 25, bottom: 20, left: 30}
     let width = ref.current?.parentElement.offsetWidth
     let height = ref.current?.parentElement.offsetHeight
@@ -43,7 +42,6 @@ const DrillChartContainer = (props) => {
                 let stkcorrdata = JSON.parse(e.data)
                 if (stkcorrdata && stkcorrdata.length > 0){
                     setcharData(initialdata => [...stkcorrdata,...initialdata])
-                    setNewChartData([...stkcorrdata])
                 }
             }
             eventSource.onerror = (e) => {
@@ -75,6 +73,8 @@ const DrillChartContainer = (props) => {
 
     useEffect(() =>{
         if(charData && yScale && xScale){
+            d3.selectAll("circle[id*='c_']").remove()
+            d3.selectAll("text[id*='ct_']").remove()
             Circle(g,charData,xScale["action"],yScale["action"],"etime","perchange","symbol",callBackFn)
         }
     },[charData,xScale,yScale])
@@ -83,7 +83,7 @@ const DrillChartContainer = (props) => {
         if (xScaleData) {
             let xscale = XScaleNum([xScaleData[0],xScaleData[xScaleData.length-1]],domainwidth)
             TriggerDraw({type:"xscale",action:xscale})    
-            setXScale({type:"xscale",action:xscale})
+            setXScale({type:"xscale",action:xscale,data:xScaleData})
         }
     },[xScaleData])
 
@@ -101,7 +101,7 @@ const DrillChartContainer = (props) => {
             yTicks(g,actionToDraw.action)                   
         }else if(actionToDraw.type === "xscale"){
             d3.selectAll("#xScaleTicks").remove()
-            xTicksNum(g,actionToDraw.action,domainheight)                
+            xTicksNum(g,actionToDraw.action,domainheight,actionToDraw.data)                
         }
     }
 
@@ -128,7 +128,7 @@ const DrillChartContainer = (props) => {
                     setXScaleData(initialval => [...diff,...initialval].sort((a,b) => a - b))
                 }
             }else{
-                setXScaleData(datavals)  
+                setXScaleData(datavals.sort((a,b) => a - b))  
             }     
         }
     }
