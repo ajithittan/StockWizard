@@ -43,7 +43,7 @@ const BottomNav = (props) => {
   }
 
   return (
-      <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+      <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, maxWidth:"98%" }}>
         <BottomNavigation
           showLabels
           value={value}
