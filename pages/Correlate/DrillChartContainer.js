@@ -31,6 +31,8 @@ const DrillChartContainer = (props) => {
     const [xScale,setXScale] = useState(null)
 
     useEffect(() => {
+        d3.selectAll("svg > *").remove()
+        setcharData([])
         return () => d3.selectAll("svg > *").remove()
     }, [])
 
