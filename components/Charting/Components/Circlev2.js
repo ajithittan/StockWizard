@@ -10,7 +10,8 @@ const Circle = (g,charData,x,y,xfield,yfield,lfield,callBackFunction) => {
         .on("click", (event, d) => callBackFunction(d.symbol))
         .attr("id", (d) => "c_" + d.symbol)
         .style("cursor", "pointer")
-        .style("fill", "#DAF7A6")
+        .style("fill", "white")
+        .style("stroke", "gray")
         .transition()
         .duration(500)   
         
@@ -25,7 +26,7 @@ const Circle = (g,charData,x,y,xfield,yfield,lfield,callBackFunction) => {
             .attr("id", (d) => "ct_" + d.symbol)
             .style("text-anchor", "middle")
             .style("font-size", "8pt")
-            .style("fill", "#344761");
+            .style("fill", "#C8C8C8");
 }
 
 export default Circle
