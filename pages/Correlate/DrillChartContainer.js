@@ -13,6 +13,7 @@ const DrillChartContainer = (props) => {
 
     const ref = useRef()
     const [count,setCount] = useState(30)
+    const [minutes,setMinutes] = useState(60)
     const [ySclRngFctr, setYSclRngFctr] = useState({low:1.2,high:1.2})
     const [yScaleData,setYScaleData] = useState(null)
     const [xScaleData,setXScaleData] = useState(null)
@@ -39,7 +40,7 @@ const DrillChartContainer = (props) => {
     useEffect(() =>{
         if (props.stocks){
             let eventSource = undefined
-            eventSource = new EventSource('/stream/analyzecorrelations/' + count + '?inpdata=' + JSON.stringify(props.stocks))  
+            eventSource = new EventSource('/stream/analyzecorrelations/' + count + '/' + minutes + '?inpdata=' + JSON.stringify(props.stocks))  
             eventSource.onmessage = e => {
                 let stkcorrdata = JSON.parse(e.data)
                 if (stkcorrdata && stkcorrdata.length > 0){

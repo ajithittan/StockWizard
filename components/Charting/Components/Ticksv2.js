@@ -45,6 +45,6 @@ const xTicksNum = (g,xScale,height,tickvals) => {
     .attr("id", "xScaleTicks")
     .attr("class", "x axis")
     .attr("transform", `translate(0, ${height})`)
-    .call(axisBottom(xScale).tickValues(tickvals).tickFormat((d, i) => new Date(d/1000).toLocaleTimeString("en-US")).ticks(5))
+    .call(axisBottom(xScale).tickValues(tickvals).tickFormat((d, i) => new Date(d).toLocaleTimeString("en-US")).ticks(5))
 }
 export {xTicks,yTicks,xTicksNum}
