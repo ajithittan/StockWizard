@@ -15,7 +15,7 @@ const DrillChartContainer = (props) => {
     const [count,setCount] = useState(30)
     const [minutes,setMinutes] = useState(60)
     const [ySclRngFctr, setYSclRngFctr] = useState({low:1.2,high:1.2})
-    const [yScaleData,setYScaleData] = useState(null)
+    const [yScaleData,setYScaleData] = useState([])
     const [xScaleData,setXScaleData] = useState(null)
     const [charData, setcharData] = useState([])
     const margin = {top: 20, right: 25, bottom: 20, left: 30}
@@ -112,13 +112,11 @@ const DrillChartContainer = (props) => {
         if (charData && charData.length >0) {
             let datavals = charData.map(item => item[field]).sort((a,b) => a - b)
             if (yScaleData){
-                if (yScaleData[0] <= datavals[0] && yScaleData[yScaleData.length-1] >= datavals[datavals.length -1]){
-                }else{
-                    setYScaleData([datavals[0],datavals[datavals.length -1]])  
-                }
-            }else{
-                setYScaleData([datavals[0],datavals[datavals.length -1]])  
-            }     
+                setYScaleData(initialval => {
+                    let newval = [...initialval,datavals[0],datavals[datavals.length -1]].sort((a,b) => a - b)
+                    return ([newval[0],newval[newval.length-1]])
+                })  
+            }  
         }
     }
 

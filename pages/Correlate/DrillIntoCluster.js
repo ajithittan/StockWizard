@@ -39,7 +39,7 @@ const DrillIntoCluster = (props) =>{
                             '&::-webkit-scrollbar': {
                                 display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
                             },}} ref={ref}>
-                        <DrillChartContainer stocks={stocks} />
+                        <DrillChartContainer key={stocks} stocks={stocks} />
                     </Paper>
             </Grid>
             <Grid item xs={0.2} sm={0.2} md={0.2} lg={0.2} xl={0.2}>
