@@ -9,7 +9,7 @@ import { useSelector} from 'react-redux'
 const DrillChartContainer = (props) => {
     const ref = useRef()
     const [count,setCount] = useState(30)
-    const [minutes,setMinutes] = useState(600)
+    const [minutes,setMinutes] = useState(500)
     const [ySclRngFctr, setYSclRngFctr] = useState({low:1.2,high:1.2})
     const [yScaleData,setYScaleData] = useState([])
     const [xScaleData,setXScaleData] = useState(null)
@@ -98,7 +98,11 @@ const DrillChartContainer = (props) => {
 
     useEffect(() =>{
         if(charData && yScale && xScale){
-            DrawCircles(charData,xScale["action"],yScale["action"],"etime","perchange","symbol")
+            if (selectedstocks && selectedstocks.length >0){
+                DrawCircles(charData.filter(item => selectedstocks.includes(item["symbol"])),xScale["action"],yScale["action"],"etime","perchange","symbol")
+            }else{
+                DrawCircles(charData,xScale["action"],yScale["action"],"etime","perchange","symbol")
+            }
         }
     },[charData,xScale,yScale])
 
