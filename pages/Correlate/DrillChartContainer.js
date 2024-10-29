@@ -2,18 +2,14 @@ import { useEffect, useState,useRef,forwardRef } from "react"
 import * as d3 from "d3";
 import _ from 'lodash';
 import {XScaleNum,YScale} from '../../components/Charting/Components/Scalesv2'
-import Rectangle from '../../components/Charting/Components/Rectangle'
-import {Line} from '../../components/Charting/Components/Line'
-import ToolTip from '../../components/Charting/Components/ToolTip'
 import Circle from '../../components/Charting/Components/Circlev2'
 import { xTicksNum,yTicks } from "../../components/Charting/Components/Ticksv2"
-import Text from '../../components/Charting/Components/Text'
+import { useSelector} from 'react-redux'
 
 const DrillChartContainer = (props) => {
-
     const ref = useRef()
     const [count,setCount] = useState(30)
-    const [minutes,setMinutes] = useState(60)
+    const [minutes,setMinutes] = useState(600)
     const [ySclRngFctr, setYSclRngFctr] = useState({low:1.2,high:1.2})
     const [yScaleData,setYScaleData] = useState([])
     const [xScaleData,setXScaleData] = useState(null)
@@ -31,11 +27,37 @@ const DrillChartContainer = (props) => {
     const [yScale,setYScale] = useState(null)
     const [xScale,setXScale] = useState(null)
 
+    const {selectedstocks} = useSelector((state) => state.chartdrill)
+
     useEffect(() => {
         d3.selectAll("svg > *").remove()
         setcharData([])
         return () => d3.selectAll("svg > *").remove()
     }, [])
+
+    useEffect(() =>{
+        if(selectedstocks){
+            let symbols = charData.map(item => item.symbol).filter(item => !selectedstocks.includes(item))
+            selectedstocks.map(item => {
+                d3.selectAll("#c_" + item).style("visibility", "visible")
+                d3.selectAll("#ct_" + item).style("visibility", "visible")
+                d3.selectAll("#c_" + item).style("fill", "#DB7093")
+                d3.selectAll("#ct_" + item).style("fill", "#841617")
+            })
+            symbols.map(item => {
+                d3.selectAll("#c_" + item).style("visibility", "hidden")
+                d3.selectAll("#ct_" + item).style("visibility", "hidden")
+            })
+            if(selectedstocks.length === 0){
+                symbols.map(item => {
+                    d3.selectAll("#c_" + item).style("fill", "white").style("stroke", "gray")
+                    d3.selectAll("#ct_" + item).style("fill", "#C8C8C8")
+                    d3.selectAll("#c_" + item).style("visibility", "visible")
+                    d3.selectAll("#ct_" + item).style("visibility", "visible")
+                })    
+            }
+        }
+    },[selectedstocks])
 
     useEffect(() =>{
         if (props.stocks){
@@ -76,9 +98,7 @@ const DrillChartContainer = (props) => {
 
     useEffect(() =>{
         if(charData && yScale && xScale){
-            d3.selectAll("circle[id*='c_']").remove()
-            d3.selectAll("text[id*='ct_']").remove()
-            Circle(g,charData,xScale["action"],yScale["action"],"etime","perchange","symbol",callBackFn)
+            DrawCircles(charData,xScale["action"],yScale["action"],"etime","perchange","symbol")
         }
     },[charData,xScale,yScale])
 
@@ -97,6 +117,12 @@ const DrillChartContainer = (props) => {
             setYScale({type:"yscale",action:yscale})  
         }
     },[yScaleData])
+
+    const DrawCircles = (inpData,xScl,yScl,xAxis,yAxis,identifier) =>{
+        d3.selectAll("circle[id*='c_']").remove()
+        d3.selectAll("text[id*='ct_']").remove()
+        Circle(g,inpData,xScl,yScl,xAxis,yAxis,identifier,callBackFn)
+    }
 
     const TriggerDraw = (actionToDraw) => {
         if (actionToDraw.type === "yscale"){
