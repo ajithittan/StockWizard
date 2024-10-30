@@ -2,9 +2,11 @@ import { useEffect, useState,useRef,forwardRef } from "react"
 import * as d3 from "d3";
 import _ from 'lodash';
 import {XScaleNum,YScale} from '../../components/Charting/Components/Scalesv2'
+import {Linev2} from '../../components/Charting/Components/Line'
 import Circle from '../../components/Charting/Components/Circlev2'
 import { xTicksNum,yTicks } from "../../components/Charting/Components/Ticksv2"
 import { useSelector} from 'react-redux'
+import {getRandomColor} from '../../modules/utils/UtilFunctions'
 
 const DrillChartContainer = (props) => {
     const ref = useRef()
@@ -14,6 +16,7 @@ const DrillChartContainer = (props) => {
     const [yScaleData,setYScaleData] = useState([])
     const [xScaleData,setXScaleData] = useState(null)
     const [charData, setcharData] = useState([])
+    const [stkColor,setStkColor] = useState(null)
     const margin = {top: 20, right: 25, bottom: 20, left: 30}
     let width = ref.current?.parentElement.offsetWidth
     let height = ref.current?.parentElement.offsetHeight
@@ -37,18 +40,18 @@ const DrillChartContainer = (props) => {
 
     useEffect(() =>{
         if(selectedstocks){
-            let symbols = charData.map(item => item.symbol).filter(item => !selectedstocks.includes(item))
-            selectedstocks.map(item => {
-                d3.selectAll("#c_" + item).style("visibility", "visible")
-                d3.selectAll("#ct_" + item).style("visibility", "visible")
-                d3.selectAll("#c_" + item).style("fill", "#DB7093")
-                d3.selectAll("#ct_" + item).style("fill", "#841617")
-            })
+            let symbols = charData.map(item => item.symbol)
+
+            if (selectedstocks.length > 0){
+                DrawLines(selectedstocks,xScale["action"],yScale["action"])
+            }
+
             symbols.map(item => {
                 d3.selectAll("#c_" + item).style("visibility", "hidden")
                 d3.selectAll("#ct_" + item).style("visibility", "hidden")
             })
             if(selectedstocks.length === 0){
+                RemoveAllLines()
                 symbols.map(item => {
                     d3.selectAll("#c_" + item).style("fill", "white").style("stroke", "gray")
                     d3.selectAll("#ct_" + item).style("fill", "#C8C8C8")
@@ -99,7 +102,10 @@ const DrillChartContainer = (props) => {
     useEffect(() =>{
         if(charData && yScale && xScale){
             if (selectedstocks && selectedstocks.length >0){
-                DrawCircles(charData.filter(item => selectedstocks.includes(item["symbol"])),xScale["action"],yScale["action"],"etime","perchange","symbol")
+                if(xScale && yScale){
+                    DrawLines(selectedstocks,xScale["action"],yScale["action"])
+                }
+                //DrawCircles(charData.filter(item => selectedstocks.includes(item["symbol"])),xScale["action"],yScale["action"],"etime","perchange","symbol")
             }else{
                 DrawCircles(charData,xScale["action"],yScale["action"],"etime","perchange","symbol")
             }
@@ -121,6 +127,31 @@ const DrillChartContainer = (props) => {
             setYScale({type:"yscale",action:yscale})  
         }
     },[yScaleData])
+
+    const getStockColor = (stk) =>{
+        if(stkColor && stkColor.filter(item => item.stk === stk).length > 0){
+            return stkColor.filter(item => item.stk === stk)[0]["clr"]
+        }
+        let randomColor = getRandomColor()
+        if (stkColor){
+                setStkColor(initval => [...initval,{stk:stk,clr:randomColor}])
+        }else{
+            setStkColor([{stk:stk,clr:randomColor}])
+        }
+        return randomColor
+    }
+
+    const RemoveAllLines = () => {
+        d3.selectAll("path[id*='ln_']").remove()
+        d3.selectAll("text[id*='ln_t_']").remove()
+    }
+
+    const DrawLines = (inpData,xScl,yScl) =>{
+        RemoveAllLines()
+        inpData.map(stk =>{
+            Linev2(g,charData.filter(item => item["symbol"] === stk),xScl,yScl,getStockColor(stk),200,stk,"etime","perchange")
+        })
+    }
 
     const DrawCircles = (inpData,xScl,yScl,xAxis,yAxis,identifier) =>{
         d3.selectAll("circle[id*='c_']").remove()
