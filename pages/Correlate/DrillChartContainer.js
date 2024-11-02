@@ -12,7 +12,7 @@ const DrillChartContainer = (props) => {
     const ref = useRef()
     const [count,setCount] = useState(30)
     const [minutes,setMinutes] = useState(500)
-    const [ySclRngFctr, setYSclRngFctr] = useState({low:1.2,high:1.2})
+    const [ySclRngFctr, setYSclRngFctr] = useState({low:1,high:1})
     const [yScaleData,setYScaleData] = useState([])
     const [xScaleData,setXScaleData] = useState(null)
     const [charData, setcharData] = useState([])
@@ -103,10 +103,12 @@ const DrillChartContainer = (props) => {
         if(charData && yScale && xScale){
             if (selectedstocks && selectedstocks.length >0){
                 if(xScale && yScale){
+                    RemoveAllLines()
                     DrawLines(selectedstocks,xScale["action"],yScale["action"])
                 }
                 //DrawCircles(charData.filter(item => selectedstocks.includes(item["symbol"])),xScale["action"],yScale["action"],"etime","perchange","symbol")
             }else{
+                RemoveAllCircleAndText()
                 DrawCircles(charData,xScale["action"],yScale["action"],"etime","perchange","symbol")
             }
         }
@@ -115,6 +117,7 @@ const DrillChartContainer = (props) => {
     useEffect(() =>{
         if (xScaleData) {
             let xscale = XScaleNum([xScaleData[0],xScaleData[xScaleData.length-1]],domainwidth)
+            RemoveXScale()
             TriggerDraw({type:"xscale",action:xscale})    
             setXScale({type:"xscale",action:xscale,data:xScaleData})
         }
@@ -123,6 +126,7 @@ const DrillChartContainer = (props) => {
     useEffect(() =>{
         if (yScaleData) {
             let yscale = YScale([yScaleData[0]*ySclRngFctr.low,yScaleData[yScaleData.length - 1]*ySclRngFctr.high],domainheight)
+            RemoveYScale()
             TriggerDraw({type:"yscale",action:yscale})  
             setYScale({type:"yscale",action:yscale})  
         }
@@ -146,25 +150,29 @@ const DrillChartContainer = (props) => {
         d3.selectAll("text[id*='ln_t_']").remove()
     }
 
+    const RemoveAllCircleAndText = () => {
+        d3.selectAll("circle[id*='c_']").remove()
+        d3.selectAll("text[id*='ct_']").remove()    
+    }
+
+    const RemoveYScale = () => d3.selectAll("#yScaleTicks").remove()
+
+    const RemoveXScale = () => d3.selectAll("#xScaleTicks").remove()
+
     const DrawLines = (inpData,xScl,yScl) =>{
-        RemoveAllLines()
         inpData.map(stk =>{
-            Linev2(g,charData.filter(item => item["symbol"] === stk),xScl,yScl,getStockColor(stk),200,stk,"etime","perchange")
+            if (charData.filter(item => item["symbol"] === stk).length > 0){
+                Linev2(g,charData.filter(item => item["symbol"] === stk),xScl,yScl,getStockColor(stk),200,stk,"etime","perchange")
+            }
         })
     }
 
-    const DrawCircles = (inpData,xScl,yScl,xAxis,yAxis,identifier) =>{
-        d3.selectAll("circle[id*='c_']").remove()
-        d3.selectAll("text[id*='ct_']").remove()
-        Circle(g,inpData,xScl,yScl,xAxis,yAxis,identifier,callBackFn)
-    }
+    const DrawCircles = (inpData,xScl,yScl,xAxis,yAxis,identifier) => Circle(g,inpData,xScl,yScl,xAxis,yAxis,identifier,callBackFn)
 
     const TriggerDraw = (actionToDraw) => {
         if (actionToDraw.type === "yscale"){
-            d3.selectAll("#yScaleTicks").remove()
             yTicks(g,actionToDraw.action)                   
         }else if(actionToDraw.type === "xscale"){
-            d3.selectAll("#xScaleTicks").remove()
             xTicksNum(g,actionToDraw.action,domainheight,actionToDraw.data)                
         }
     }
