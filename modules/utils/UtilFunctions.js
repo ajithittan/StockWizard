@@ -33,4 +33,12 @@ const  getRandomColor = () => {
     return color;
 }
 
-export {intToString,getConciseValuesForLargeNums,getColorFromPreDefinedSeq,getRandomColor}
+const getRandomDarkColor = () => {
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += Math.floor(Math.random() * 10);
+    }
+    return color;
+}
+
+export {intToString,getConciseValuesForLargeNums,getColorFromPreDefinedSeq,getRandomColor,getRandomDarkColor}

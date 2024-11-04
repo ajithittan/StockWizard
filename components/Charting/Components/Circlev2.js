@@ -1,6 +1,6 @@
 const Circle = (g,charData,x,y,xfield,yfield,lfield,callBackFunction) => {
 
-    console.log("circle",charData)
+    //console.log("circle",charData)
     g.selectAll("circle")
     .data(charData)
     .join("circle")

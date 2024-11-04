@@ -6,16 +6,21 @@ import {Linev2} from '../../components/Charting/Components/Line'
 import Circle from '../../components/Charting/Components/Circlev2'
 import { xTicksNum,yTicks } from "../../components/Charting/Components/Ticksv2"
 import { useSelector} from 'react-redux'
-import {getRandomColor} from '../../modules/utils/UtilFunctions'
+import {getRandomDarkColor} from '../../modules/utils/UtilFunctions'
+import { Button } from "@mui/material"
 
 const DrillChartContainer = (props) => {
+    const [zooma,setzooma] = useState(1)
+    const [zoomb,setzoomb] = useState(1)
     const ref = useRef()
     const [count,setCount] = useState(30)
     const [minutes,setMinutes] = useState(500)
     const [ySclRngFctr, setYSclRngFctr] = useState({low:1,high:1})
     const [yScaleData,setYScaleData] = useState([])
-    const [xScaleData,setXScaleData] = useState(null)
+    const [xScaleData,setXScaleData] = useState([])
     const [charData, setcharData] = useState([])
+    const [zoomval, setZoomVal] = useState(false)
+    const [charAllData, setCharAllData] = useState([])
     const [stkColor,setStkColor] = useState(null)
     const margin = {top: 20, right: 25, bottom: 20, left: 30}
     let width = ref.current?.parentElement.offsetWidth
@@ -32,6 +37,37 @@ const DrillChartContainer = (props) => {
 
     const {selectedstocks} = useSelector((state) => state.chartdrill)
 
+    const zoom = d3.zoom()
+                    //.scaleExtent([1, Infinity])
+                    .translateExtent([[0, 0], [width, height]])
+                    //.extent([[0, 0], [width, height]])
+                    .on('zoom', handleZoom);                 
+
+    const resetChart = () => {
+        console.log("huh?",[...charAllData])
+        setcharData([...charAllData])
+        setZoomVal(false)
+        //zoom.transform(svgElement,d3.zoomIdentity.scale(1))
+        svgElement.call(zoom.transform, d3.zoomIdentity.scale(1));
+    }                    
+
+    function handleZoom(e) {
+        let zoomedScaleX = e.transform.rescaleX(xScale["action"]);
+        let startDate = zoomedScaleX.invert(0);
+        let endDate = zoomedScaleX.invert(width); 
+        setzooma(new Date(parseInt(startDate)).toLocaleTimeString("en-US"))
+        setzoomb(new Date(parseInt(endDate)).toLocaleTimeString("en-US"))
+        //console.log(new Date(parseInt(startDate)).toLocaleTimeString("en-US"),new Date(parseInt(endDate)).toLocaleTimeString("en-US"))
+        //g.attr("transform", "translate(" + e.translate + ")scale(" + e.scale + ")");
+        //g.translate([((width*e.scale/2)+e.translate[0]),((height*e.scale/2)+e.translate[1])]);  
+        let resetvals = charAllData.filter(item => parseInt(item["etime"]) >= parseInt(startDate) && parseInt(item["etime"]) <= parseInt(endDate))
+        console.log("post zoom and pan values...",startDate,endDate,resetvals)
+        setZoomVal(true)
+        setcharData([...resetvals])
+        //formAndGetXScale("etime",resetvals,true)
+        //resetvals.length === charData.length ? null : (setcharData([...resetvals]))
+    }
+
     useEffect(() => {
         d3.selectAll("svg > *").remove()
         setcharData([])
@@ -43,6 +79,7 @@ const DrillChartContainer = (props) => {
             let symbols = charData.map(item => item.symbol)
 
             if (selectedstocks.length > 0){
+                RemoveAllLines()
                 DrawLines(selectedstocks,xScale["action"],yScale["action"])
             }
 
@@ -70,6 +107,7 @@ const DrillChartContainer = (props) => {
                 let stkcorrdata = JSON.parse(e.data)
                 if (stkcorrdata && stkcorrdata.length > 0){
                     setcharData(initialdata => [...stkcorrdata,...initialdata])
+                    setCharAllData(initData => [...stkcorrdata,...initData])
                 }
             }
             eventSource.onerror = (e) => {
@@ -106,7 +144,6 @@ const DrillChartContainer = (props) => {
                     RemoveAllLines()
                     DrawLines(selectedstocks,xScale["action"],yScale["action"])
                 }
-                //DrawCircles(charData.filter(item => selectedstocks.includes(item["symbol"])),xScale["action"],yScale["action"],"etime","perchange","symbol")
             }else{
                 RemoveAllCircleAndText()
                 DrawCircles(charData,xScale["action"],yScale["action"],"etime","perchange","symbol")
@@ -120,6 +157,7 @@ const DrillChartContainer = (props) => {
             RemoveXScale()
             TriggerDraw({type:"xscale",action:xscale})    
             setXScale({type:"xscale",action:xscale,data:xScaleData})
+            //zoom.scaleExtent([xScaleData[0],xScaleData[xScaleData.length-1]])
         }
     },[xScaleData])
 
@@ -136,7 +174,7 @@ const DrillChartContainer = (props) => {
         if(stkColor && stkColor.filter(item => item.stk === stk).length > 0){
             return stkColor.filter(item => item.stk === stk)[0]["clr"]
         }
-        let randomColor = getRandomColor()
+        let randomColor = getRandomDarkColor()
         if (stkColor){
                 setStkColor(initval => [...initval,{stk:stk,clr:randomColor}])
         }else{
@@ -167,20 +205,26 @@ const DrillChartContainer = (props) => {
         })
     }
 
-    const DrawCircles = (inpData,xScl,yScl,xAxis,yAxis,identifier) => Circle(g,inpData,xScl,yScl,xAxis,yAxis,identifier,callBackFn)
+    const DrawCircles = (inpData,xScl,yScl,xAxis,yAxis,identifier) => {
+        Circle(g,inpData,xScl,yScl,xAxis,yAxis,identifier,callBackFn)
+        //d3.selectAll("circle[id*='c_']").raise()
+    }
 
     const TriggerDraw = (actionToDraw) => {
         if (actionToDraw.type === "yscale"){
             yTicks(g,actionToDraw.action)                   
         }else if(actionToDraw.type === "xscale"){
-            xTicksNum(g,actionToDraw.action,domainheight,actionToDraw.data)                
+            xTicksNum(g,actionToDraw.action,domainheight)                
         }
     }
 
-    const formAndGetYScale = (field) =>{
-        if (charData && charData.length >0) {
-            let datavals = charData.map(item => item[field]).sort((a,b) => a - b)
-            if (yScaleData){
+    const formAndGetYScale = (field,inpData,zoomval) =>{
+        if (inpData && inpData.length >0) {
+            let datavals = inpData.map(item => item[field]).sort((a,b) => a - b)
+            if (zoomval){
+                setYScaleData([...datavals.sort((a,b) => a - b)])
+            }
+            else if (yScaleData){
                 setYScaleData(initialval => {
                     let newval = [...initialval,datavals[0],datavals[datavals.length -1]].sort((a,b) => a - b)
                     return ([newval[0],newval[newval.length-1]])
@@ -189,10 +233,14 @@ const DrillChartContainer = (props) => {
         }
     }
 
-    const formAndGetXScale = (field) =>{
-        if (charData && charData.length >0) {
-            let datavals = [...new Set(charData.map(item => item[field]))]
-            if (xScaleData){
+    const formAndGetXScale = (field,inpData,zoomval) =>{
+        if (inpData && inpData.length >0) {
+            let datavals = [...new Set(inpData.map(item => item[field]))]
+            if (zoomval){
+                //console.log("zoomed x scale - ",zoomval,datavals)
+                setXScaleData([...datavals.sort((a,b) => a - b)])
+            }
+            else if (xScaleData){
                 let diff = _.difference(datavals,xScaleData)
                 if (diff.length > 0){
                     setXScaleData(initialval => [...diff,...initialval].sort((a,b) => a - b))
@@ -206,15 +254,20 @@ const DrillChartContainer = (props) => {
 
     useEffect(() => {
         if (charData){
+            console.log("charData",charData)
             //d3.selectAll("svg > *").remove();
             //symbols = charData.map(item => item.symbol)                    
-            formAndGetXScale("etime")
-            formAndGetYScale("perchange")
+            formAndGetXScale("etime",charData,zoomval)
+            formAndGetYScale("perchange",charData,zoomval)
+            svgElement.call(zoom)
         }
-      }, [charData]);
+      }, [charData,zoomval]);
     
     return(
         <>
+            <Button style = {{width: 100}} variant="contained" 
+                        size="medium" pt={1} onClick={resetChart}>Reset</Button>
+                        {zooma + "||||" + zoomb}
             <svg ref={ref}/>
         </>
     )
