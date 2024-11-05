@@ -14,7 +14,7 @@ const DrillIntoCluster = (props) =>{
         }
     },[props.stocks])
 
-    const closeSelected = () => props.close(null)
+    const closeSelected = () => props.close()
 
     return(
         <Grid container layout={'column'}>

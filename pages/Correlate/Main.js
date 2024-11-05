@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import {useDispatch} from 'react-redux'
 import RealtimeAnalysis from './RealtimeAnalysis'
 import {SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import {SET_SELECT_STOCKS} from '../../redux/reducers/chartDrillSlice'
 import StackChipView from './StackChipView'
 import DrillIntoCluster from './DrillIntoCluster'
 
@@ -62,6 +63,11 @@ const Main = (props) =>{
         })
     }
 
+    const closeCluster = () =>{
+        setSelectedCluster(null)
+        dispatch(SET_SELECT_STOCKS([]))
+    }
+
     return (
         <Grid container layout={'row'} margin={1}>        
             {/** <ListStocks onselect={addtolist}></ListStocks>**/}
@@ -77,7 +83,7 @@ const Main = (props) =>{
              */}
              {
                 selectedCluster ? <Grid item xs={11} sm={11} md={11} lg={11} xl={11} margin={0.5} marginTop={0.5} marginBottom={1.5}>
-                                    <DrillIntoCluster close={setSelectedCluster} stocks={selectedCluster}></DrillIntoCluster>
+                                    <DrillIntoCluster close={closeCluster} stocks={selectedCluster}></DrillIntoCluster>
                                   </Grid> : null
              }
              {
