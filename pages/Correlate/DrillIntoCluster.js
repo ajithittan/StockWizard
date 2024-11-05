@@ -1,8 +1,6 @@
 import { useEffect, useState} from 'react'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import CancelIcon from '@mui/icons-material/Cancel';
-import { pink } from '@mui/material/colors';
 import DrillChartContainer from './DrillChartContainer'
 import DrillIntoController from './DrillIntoController'
 
@@ -27,11 +25,8 @@ const DrillIntoCluster = (props) =>{
                             '&::-webkit-scrollbar': {
                                 display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
                             },}}>
-                        <DrillChartContainer key={stocks} stocks={stocks} />
+                        <DrillChartContainer key={stocks} stocks={stocks} closeaction={closeSelected}/>
                     </Paper>
-            </Grid>
-            <Grid item xs={0.2} sm={0.2} md={0.2} lg={0.2} xl={0.2}>
-                <a href="#"><CancelIcon sx={{ color: pink[500] }} onClick={() => closeSelected() }/></a>
             </Grid>
             <Grid item xs={11.5} sm={11.5} md={11.5} lg={11.5} xl={11.5} marginLeft={3}>
                         <Paper 

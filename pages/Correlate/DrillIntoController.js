@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
-import { useSelector, useDispatch} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import {SET_SELECT_STOCKS} from '../../redux/reducers/chartDrillSlice'
 
 const DrillIntoController = (props) =>{

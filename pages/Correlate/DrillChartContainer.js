@@ -5,11 +5,14 @@ import {XScaleNum,YScale} from '../../components/Charting/Components/Scalesv2'
 import {Linev2} from '../../components/Charting/Components/Line'
 import Circle from '../../components/Charting/Components/Circlev2'
 import { xTicksNum,yTicks } from "../../components/Charting/Components/Ticksv2"
-import { useSelector} from 'react-redux'
+import { useDispatch,useSelector} from 'react-redux'
 import {getRandomDarkColor} from '../../modules/utils/UtilFunctions'
 import { Button } from "@mui/material"
+import Typography from '@mui/material/Typography';
+import {SET_SELECT_STOCKS} from '../../redux/reducers/chartDrillSlice'
 
 const DrillChartContainer = (props) => {
+    const dispatch = useDispatch()
     const [zooma,setzooma] = useState(1)
     const [zoomb,setzoomb] = useState(1)
     const ref = useRef()
@@ -41,14 +44,15 @@ const DrillChartContainer = (props) => {
                     //.scaleExtent([1, Infinity])
                     .translateExtent([[0, 0], [width, height]])
                     //.extent([[0, 0], [width, height]])
-                    .on('zoom', handleZoom);                 
+                    .on('zoom', handleZoom);    
+                    
+    const setAllLines = () => dispatch(SET_SELECT_STOCKS(props.stocks))
 
     const resetChart = () => {
-        console.log("huh?",[...charAllData])
-        setcharData([...charAllData])
         setZoomVal(false)
-        //zoom.transform(svgElement,d3.zoomIdentity.scale(1))
         svgElement.call(zoom.transform, d3.zoomIdentity.scale(1));
+        setcharData([...charAllData])
+        //zoom.transform(svgElement,d3.zoomIdentity.scale(1))
     }                    
 
     function handleZoom(e) {
@@ -254,7 +258,6 @@ const DrillChartContainer = (props) => {
 
     useEffect(() => {
         if (charData){
-            console.log("charData",charData)
             //d3.selectAll("svg > *").remove();
             //symbols = charData.map(item => item.symbol)                    
             formAndGetXScale("etime",charData,zoomval)
@@ -265,9 +268,12 @@ const DrillChartContainer = (props) => {
     
     return(
         <>
-            <Button style = {{width: 100}} variant="contained" 
-                        size="medium" pt={1} onClick={resetChart}>Reset</Button>
-                        {zooma + "||||" + zoomb}
+            <div style={{marginLeft:"2vw"}}>
+                <Button style = {{width: 100}} variant="outlined" size="small" pt={1} onClick={props.closeaction}>Close</Button>&nbsp;&nbsp;
+                <Button style = {{width: 100}} variant="outlined" size="small" pt={1} onClick={setAllLines}>Lines</Button>&nbsp;&nbsp;
+                <Button style = {{width: 100}} variant="outlined" size="small" pt={1} onClick={resetChart}>Reset</Button>&nbsp;&nbsp;
+                <Typography variant="caption">{zooma + " to " + zoomb}</Typography>
+            </div>
             <svg ref={ref}/>
         </>
     )

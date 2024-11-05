@@ -32,7 +32,7 @@ const StackChipView = (props) => {
                                             display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
                                         },}}>
                                     <legend align="center">
-                                        <Typography variant="overline">Cluster-{Number(item)+1}</Typography>&nbsp;
+                                        <a href="#" onClick={() =>selectCluster(item)}><Typography variant="overline">Cluster-{Number(item)+1}</Typography></a>&nbsp;
                                         <a href="#"><AutoGraphIcon onClick={() =>selectCluster(item)}/></a>
                                     </legend>
                                     {
