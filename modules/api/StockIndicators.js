@@ -15,4 +15,10 @@ const getSupportResistanace  = async (stock) =>{
     return data.data
 }
 
-export {getSimpleMovingAverages,getRollingSMA,getSupportResistanace}
+const getSearchResults = async (searchParams) =>{
+    let url = "/api/stocksignals/searchdataset"
+    const data = await axios.post(url,searchParams)
+    return data.data
+}
+
+export {getSimpleMovingAverages,getRollingSMA,getSupportResistanace,getSearchResults}
