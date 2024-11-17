@@ -21,4 +21,12 @@ const getSearchResults = async (searchParams) =>{
     return data.data
 }
 
-export {getSimpleMovingAverages,getRollingSMA,getSupportResistanace,getSearchResults}
+const getSearchParamsFromText = async (inpText) =>{
+    let url = "/api/stocksignals/parsesearchtext"
+    const data = await axios.get(url,{
+        params: {parsetext:inpText}
+    })
+    return data.data
+}
+
+export {getSimpleMovingAverages,getRollingSMA,getSupportResistanace,getSearchResults,getSearchParamsFromText}
