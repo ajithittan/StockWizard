@@ -14,7 +14,7 @@ const SearchResults = (props) =>{
             setWaiting(true)
             let finalQuery = {}
             finalQuery["search"] = props.query
-            getSearchResults(finalQuery).then(output => {console.log(output); setResults(output),setWaiting(false)})
+            getSearchResults(finalQuery).then(output => {setResults(output),setWaiting(false)})
         }
     },[props.query])
 

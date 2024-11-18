@@ -7,6 +7,7 @@ const SearchItems = (props) =>{
     const [query,setQuery] = useState([])
 
     useEffect(() =>{
+        console.log("queryqueryqueryqueryquery",query)
         if(query && query.length > 0){
             props.onsetquery(query)
         }
