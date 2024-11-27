@@ -20,6 +20,7 @@ export default function SearchAssist(props) {
     {label: 'Large Caps' , query:{type:"mcap",param:0,op:">",val:10000000000}},
     {label: 'Mid Caps' , query:{type:"mcap",param:0,op:"bet",val:[2000000000 , 10000000000]}},
     {label: 'Small Caps' , query:{type:"mcap",param:0,op:"<",val:2000000000}},
+    {label: 'Bullish Patterns' , query:{type:"pattern_***_",param:0,op:"not_like",val:'null'}}
   ])
 
   useEffect(() =>{
