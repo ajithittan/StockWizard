@@ -83,6 +83,7 @@ const SearchResults = (props) =>{
             tempFieldObj["field"]=item
             tempFieldObj["headerName"]=item.replace(/\b[a-z]/g, (x) => x.toUpperCase())
             tempFieldObj["flex"]=1
+            tempFieldObj["headerClassName"]="super-app-theme--header"
             if (item === "marketcap"){
                 tempFieldObj["valueFormatter"]= (params) => getConciseValuesForLargeNums(params.value)
             }
@@ -109,7 +110,7 @@ const SearchResults = (props) =>{
         let cols = sm ? hideColPhone : hideCol
         let arrcols = Object?.keys(cols)
         return (
-            <>
+            <div style={{marginBottom:"5px"}}>
                 {
                     arrcols?.map(key => {
                         if (!cols[key]){
@@ -118,7 +119,7 @@ const SearchResults = (props) =>{
                                 variant={"outlined"}
                                 label={key}
                                 color= {"primary"}
-                                size="small"
+                                size={sm ? "small" : "medium"}
                                 cursor="pointer"
                                 onClick={() => {
                                     cols[key]=true,
@@ -130,7 +131,8 @@ const SearchResults = (props) =>{
                         }
                     })    
                 }
-            </>
+                <br></br>
+            </div>
         )
     }
 
@@ -141,6 +143,24 @@ const SearchResults = (props) =>{
                 <Box sx={{height:"100%",width: "98vw"}} margin={0.5}>
                     {getHiddenColumns()}                    
                     <DataGrid
+                        sx={{
+                            boxShadow: 2,
+                            border: 2,
+                            borderColor: '#B9D9EB',
+                            '& .MuiDataGrid-cell:hover': {
+                            color: 'primary.main',
+                            },
+                            '& .super-app-theme--header': {
+                                backgroundColor: '#B9D9EB',
+                            },
+                            "& .MuiDataGrid-cell": {
+                                border: 1,
+                                borderRight: 0,
+                                borderTop: 0,
+                                borderColor: '#B9D9EB',
+                                // add more css for customization
+                            },
+                        }}
                         autoHeight
                         initialState={{
                             density: {density},
@@ -148,7 +168,7 @@ const SearchResults = (props) =>{
                         rows={results}
                         columns={columns}
                         pageSize={100}
-                        rowHeight={30}
+                        rowHeight={25}
                         rowsPerPageOptions={[100]}
                         getRowId={row => Math.random()}
                         columnVisibilityModel={sm ? hideColPhone : hideCol}
