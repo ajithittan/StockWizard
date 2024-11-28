@@ -165,6 +165,7 @@ const SearchResults = (props) =>{
                         initialState={{
                             density: {density},
                         }}
+                        headerHeight={30} 
                         rows={results}
                         columns={columns}
                         pageSize={100}
