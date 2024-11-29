@@ -22,7 +22,11 @@ const SearchResults = (props) =>{
             setWaiting(true)
             let finalQuery = {}
             finalQuery["search"] = props.query
-            getSearchResults(finalQuery).then(output => {setResults(output),setWaiting(false),extractColumns(output.pop()),resetColumns(props.query)})
+            getSearchResults(finalQuery).then(output => { 
+                if(output?.length > 0){
+                    setResults(output),setWaiting(false),extractColumns(output[output.length - 1]),resetColumns(props.query)
+                }
+            })
         }
     },[props.query])
 
@@ -71,14 +75,14 @@ const SearchResults = (props) =>{
 
     const selectColumnsToDisplay = (allColumns) =>{
         const columnsToShow={'small':['symbol','close','perchange'],
-                            'large':['symbol','sector','close','perchange','SMA_20','SMA_50']}
+                            'large':['symbol','sector','close','perchange','SMA_20','SMA_50','MACD','rsi_14']}
         let colArr = sm ? columnsToShow['small']: columnsToShow['large']
         hideColumns(allColumns.filter(item => !colArr.includes(item.field)))
     }
 
     const extractColumns = (inpvals) => {
         let tempCols = []
-        Object.keys(inpvals).map(item =>{
+        Object?.keys(inpvals).map(item =>{
             let tempFieldObj = {}
             tempFieldObj["field"]=item
             tempFieldObj["headerName"]=item.replace(/\b[a-z]/g, (x) => x.toUpperCase())
@@ -108,32 +112,46 @@ const SearchResults = (props) =>{
 
     const getHiddenColumns = () =>{
         let cols = sm ? hideColPhone : hideCol
-        let arrcols = Object?.keys(cols)
-        return (
-            <div style={{marginBottom:"5px"}}>
-                {
-                    arrcols?.map(key => {
-                        if (!cols[key]){
-                            return (
-                                <Chip
-                                variant={"outlined"}
-                                label={key}
-                                color= {"primary"}
-                                size={sm ? "small" : "medium"}
-                                cursor="pointer"
-                                onClick={() => {
-                                    cols[key]=true,
-                                    unHideColumm(key)
-                                    sm ? setHideColPhone(cols) : setHideCol(cols)
-                                }}
-                                />
-                            )
-                        }
-                    })    
-                }
-                <br></br>
-            </div>
-        )
+        if (cols){
+            let arrcols = Object?.keys(cols)
+            return (
+                <div style={{marginBottom:"5px"}}>
+                    {
+                        arrcols?.map(key => {
+                            if (!cols[key]){
+                                return (
+                                    <Chip
+                                    variant={"outlined"}
+                                    label={key}
+                                    color= {"primary"}
+                                    size={sm ? "small" : "medium"}
+                                    cursor="pointer"
+                                    onClick={() => {
+                                        cols[key]=true,
+                                        unHideColumm(key)
+                                        sm ? setHideColPhone(cols) : setHideCol(cols)
+                                    }}
+                                    />
+                                )
+                            }
+                        })    
+                    }
+                    <br></br>
+                </div>
+            )
+        }
+    }
+
+    const clickedCell = (rowvals) => {
+        const colsToAct = ['sector','pattern_']
+        if (colsToAct.filter(item => rowvals['field'].includes(item)).length > 0){
+            let qryval = rowvals["formattedValue"]
+            if (Array.isArray(rowvals["formattedValue"])){
+                qryval = rowvals["formattedValue"][0]
+            }
+            let query = {label: rowvals['field'] + " " + qryval, query:{type:rowvals['field'],param:0,op:"contains",val:qryval}}
+            props.addToQuery(query)    
+        }
     }
 
     return(
@@ -173,6 +191,7 @@ const SearchResults = (props) =>{
                         rowsPerPageOptions={[100]}
                         getRowId={row => Math.random()}
                         columnVisibilityModel={sm ? hideColPhone : hideCol}
+                        onCellDoubleClick={clickedCell}
                         onColumnVisibilityModelChange={(newModel) => sm ? setHideColPhone(newModel) : setHideCol(newModel)}
                     />   
                 </Box>                          

@@ -10,6 +10,7 @@ export default function SearchAssist(props) {
   const [collectQry,setCollectQry] = useState([])
   const [freeSoloQrys,setFreeSoloQrys] = useState([])
   const [qresToExec,setQresToExec] = useState([])
+  const [qresFrmSrch,setQresFrmSrch] = useState([])
 
   const [top20querys,setTop20querys] = useState([
     {label: 'close < 50D Moving Avg', query:{type:"close",param:0,op:"<",val:"SMA_50"}},
@@ -22,6 +23,14 @@ export default function SearchAssist(props) {
     {label: 'Small Caps' , query:{type:"mcap",param:0,op:"<",val:2000000000}},
     {label: 'Bullish Patterns' , query:{type:"pattern_***_",param:0,op:"not_like",val:'null'}}
   ])
+
+  useEffect(() =>{
+    if(props.qryfrmres){
+      setTop20querys(initval => [...initval,props.qryfrmres])
+      setCollectQry(initval => [...initval,props.qryfrmres])
+      setQresToExec(initval => [...initval,props.qryfrmres["query"]])
+    }
+  },[props.qryfrmres])
 
   useEffect(() =>{
     let tempqry=[]
@@ -44,9 +53,12 @@ export default function SearchAssist(props) {
   }
 
   const handleChange = (event, newValue) => {
+      //console.log("event, newValue",event, newValue)
       if(newValue.length===0){
         setQresToExec([])
         setFreeSoloQrys([])
+        setQresFrmSrch([])
+        //props.resetResQry(null)
       }
       if (event.target.value) {parseQuery(event.target.value)}
       else{
@@ -75,13 +87,15 @@ export default function SearchAssist(props) {
         options={top20querys}
         getOptionLabel={option => option.label}
         defaultValue={[]}
-        freeSolo
+        freeSolo={true}
+        filterOptions={(options) => options}
         renderTags={(value, getTagProps) =>
             collectQry.map((option,index) => {
             const { key, ...tagProps } = getTagProps({ index });
+            //console.log("option and key",option,key)
             return (
                     option.label ? 
-                        <Chip color='primary' variant="outlined" label={option.label || option} key={key} {...tagProps} /> : 
+                        <Chip color='success' variant="outlined" label={option.label || option} key={key} {...tagProps} /> : 
                         <Chip color='secondary' variant="outlined" label={option} key={key} {...tagProps} />
             );
           })

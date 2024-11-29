@@ -33,7 +33,7 @@ const SearchItems = (props) =>{
                     <Button variant="outlined" size="small" pt={1} onClick={() => queryBuilder("perchange",0,5,">") }>5% and Above Moves</Button>&nbsp;&nbsp;                 
                  */
             }
-            <SearchAssist addToQuery={setQuery}></SearchAssist>
+            <SearchAssist addToQuery={setQuery} qryfrmres={props.qryfrmres}></SearchAssist>
         </>
     )
 }
