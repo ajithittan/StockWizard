@@ -1,19 +1,8 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
-import {getUserStocks,updStockPortfolioPos,delStockFromPortfolioPos} from '../../modules/api/UserPreferences'
+import {getStockAlertQuery} from '../../modules/api/UserAlerts'
 
-export const getPortfolioStocks = createAsyncThunk("porfoliostock/getstocks",async(obj,thunkAPI)=>{
-    let res = await getUserStocks()
-    return res
-}) 
-
-export const updPortfolioStocks = createAsyncThunk("porfoliostock/upd",async(obj,thunkAPI)=>{
-    thunkAPI.dispatch(ADD_STOCKS_TO_PORTFOLIO(obj))
-    updStockPortfolioPos(thunkAPI.getState()?.porfoliostock?.stockList)
-}) 
-
-export const removePortfolioStock = createAsyncThunk("porfoliostock/upd",async(obj,thunkAPI)=>{
-    thunkAPI.dispatch(REMOVE_STOCK_FROM_PORFOLIO(obj))
-    delStockFromPortfolioPos(obj)
+export const getAlertQueries = createAsyncThunk("stockSearchAdvSlice/getQueryAlert",async(inpval,thunkAPI)=>{
+    getStockAlertQuery().then(retval => thunkAPI.dispatch(ADD_SAVED_QRY(retval)))
 }) 
 
 const stockSearchAdv = createSlice({
@@ -36,6 +25,9 @@ const stockSearchAdv = createSlice({
         ADD_QUERY_TO_SEARCH: (state=initialState, action) => {
             state.searchquery = [...state.searchquery,action.payload]
         },
+        ADD_MULTIPLE_QUERIES_SEARCH: (state=initialState, action) => {
+            state.searchquery = [...state.searchquery,...action.payload]
+        },
         REMOVE_QUERY_FROM_SEARCH : (state=initialState, action) => 
         {
             state.searchquery = state.searchquery.filter(item => item.label !== action.payload["label"])
@@ -43,22 +35,36 @@ const stockSearchAdv = createSlice({
         ADD_TO_AUTO_FILL: (state=initialState, action) => {
             state.searchautofill = [...state.searchautofill,action.payload]
         },
+        ADD_SAVED_QRY: (state=initialState, action) => {
+            if (action.payload && action.payload.length >0){
+                let arrqrys=[]
+                for (let i=0;i<action.payload.length;i++){
+                    let qry = {}
+                    qry['label'] = action.payload[i]["queryname"]
+                    qry['query'] = action.payload[i]["query"]
+                    qry['type'] = action.payload[i]["type"]
+                    qry['color'] = "#FFFFFF"
+                    arrqrys.push(qry)
+                }
+                state.searchautofill = [...state.searchautofill,...arrqrys]
+            }
+        },
         },
     extraReducers:(builder)=>{
         builder
-        .addCase(getPortfolioStocks.pending,(state)=>{
+        .addCase(getAlertQueries.pending,(state)=>{
             state.loading=true
         })
-        .addCase(getPortfolioStocks.fulfilled,(state,action)=>{
+        .addCase(getAlertQueries.fulfilled,(state,action)=>{
             state.loading=false
             state.stockList=action.payload
         })
-        .addCase(getPortfolioStocks.rejected,(state,action)=>{
+        .addCase(getAlertQueries.rejected,(state,action)=>{
             state.loading=false
             state.error=action.error.message
         })
     }        
 }) 
 
-export const {ADD_QUERY_TO_SEARCH,REMOVE_QUERY_FROM_SEARCH,ADD_TO_AUTO_FILL} = stockSearchAdv.actions;
+export const {ADD_QUERY_TO_SEARCH,REMOVE_QUERY_FROM_SEARCH,ADD_TO_AUTO_FILL,ADD_SAVED_QRY,ADD_MULTIPLE_QUERIES_SEARCH} = stockSearchAdv.actions;
 export default stockSearchAdv.reducer;
