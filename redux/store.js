@@ -7,6 +7,7 @@ import streamQuotesReducer from './reducers/streamingQuotesSlice'
 import stockalertsReducer from './reducers/stockAlertsSlice'
 import stockpatternReducer from './reducers/stockPatternsSlice'
 import chartDrillReducer from './reducers/chartDrillSlice'
+import stockSearchReducer from './reducers/stockSearchAdvSlice'
 
 export default configureStore({
     reducer:{
@@ -17,6 +18,7 @@ export default configureStore({
         streamingquotes:streamQuotesReducer,
         stockalerts:stockalertsReducer,
         stockpatterns:stockpatternReducer,
-        chartdrill:chartDrillReducer
+        chartdrill:chartDrillReducer,
+        stocksearchddv:stockSearchReducer
     }
 })

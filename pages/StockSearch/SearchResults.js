@@ -6,9 +6,11 @@ import WaitingForResonse from '../../components/WaitingForResponse'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Chip from '@mui/material/Chip';
 import {getConciseValuesForLargeNums} from '../../modules/utils/UtilFunctions'
+import {useSelector,useDispatch} from 'react-redux'
+import {ADD_TO_AUTO_FILL,ADD_QUERY_TO_SEARCH} from '../../redux/reducers/stockSearchAdvSlice'
 
 const SearchResults = (props) =>{
-
+    const dispatch = useDispatch()
     const sm = useMediaQuery("(max-width: 1200px)");
     const [results,setResults] = useState(null)
     const [waiting,setWaiting] = useState(false)
@@ -16,19 +18,20 @@ const SearchResults = (props) =>{
     const [hideColPhone,setHideColPhone] = useState(null)
     const [columns,setColumns] = useState([]);
     const [density,setDensity] = useState("compact")
+    const {searchquery} = useSelector((state) => state.stocksearchddv)
 
     useEffect(() =>{
-        if(props.query && props.query.length >0){
+        if(searchquery && searchquery.length >0){
             setWaiting(true)
             let finalQuery = {}
-            finalQuery["search"] = props.query
+            finalQuery["search"] = searchquery.map(item => item.query)
             getSearchResults(finalQuery).then(output => { 
                 if(output?.length > 0){
-                    setResults(output),setWaiting(false),extractColumns(output[output.length - 1]),resetColumns(props.query)
+                    setResults(output),setWaiting(false),extractColumns(output[output.length - 1]),resetColumns(finalQuery["search"])
                 }
             })
         }
-    },[props.query])
+    },[searchquery])
 
     const resetColumns = (inpQuery) =>{
         let arrvals = inpQuery.flatMap(item => [item.type + (item.param > 0 ? "_" + item.param : "") , item.val])
@@ -121,10 +124,11 @@ const SearchResults = (props) =>{
                             if (!cols[key]){
                                 return (
                                     <Chip
+                                    marginLeft={1.2}
                                     variant={"outlined"}
                                     label={key}
                                     color= {"primary"}
-                                    size={sm ? "small" : "medium"}
+                                    size={sm ? "small" : "small"}
                                     cursor="pointer"
                                     onClick={() => {
                                         cols[key]=true,
@@ -150,7 +154,8 @@ const SearchResults = (props) =>{
                 qryval = rowvals["formattedValue"][0]
             }
             let query = {label: rowvals['field'] + " " + qryval, query:{type:rowvals['field'],param:0,op:"contains",val:qryval}}
-            props.addToQuery(query)    
+            dispatch(ADD_QUERY_TO_SEARCH(query))
+            dispatch(ADD_TO_AUTO_FILL(query)) 
         }
     }
 
@@ -158,8 +163,8 @@ const SearchResults = (props) =>{
         <>
             {waiting ? <WaitingForResonse></WaitingForResonse> : null}
             {results ? 
-                <Box sx={{height:"100%",width: "98vw"}} margin={0.5}>
-                    {getHiddenColumns()}                    
+                <>
+                <Box sx={{height:"100%",width: "98vw"}} margin={0.5}>         
                     <DataGrid
                         sx={{
                             boxShadow: 2,
@@ -194,29 +199,12 @@ const SearchResults = (props) =>{
                         onCellDoubleClick={clickedCell}
                         onColumnVisibilityModelChange={(newModel) => sm ? setHideColPhone(newModel) : setHideCol(newModel)}
                     />   
-                </Box>                          
+                </Box>      
+                <Box margin={0.2} sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, maxWidth:"90%", backgroundColor:"white" }}>{getHiddenColumns()}</Box>     
+                </>               
             :null}
         </>
     )
 }
 
 export default SearchResults
-
-        /***
-        const columns = [
-        {field: 'symbol', headerName: 'Stock', flex: 1},
-        {field: 'title', headerName: 'Title', flex: 1},
-        {field: 'sector', headerName: 'Sector', flex: 2},
-        {field: 'close', headerName: 'Close', flex: 1},
-        {field: 'perchange', headerName: '% Change', flex: 1},
-        {field: 'high52', headerName: '52WH', flex: 1},
-        {field: 'low52', headerName: '52WL', flex: 1},
-        {field: 'marketcap', headerName: 'MCap', flex: 1, valueFormatter: (params) => getConciseValuesForLargeNums(params.value)},
-        {field: 'rsi_14', headerName: 'RSI 14', flex: 1},
-        {field: 'SMA_20', headerName: 'SMA 20', flex: 1},
-        {field: 'SMA_50', headerName: 'SMA 50', flex: 1,},
-        {field: 'SMA_200', headerName: 'SMA 200', flex: 1},
-        {field: 'ADX_14', headerName: 'ADX 14', flex: 1},
-        {field: 'MACD', headerName: 'MACD', flex: 1}
-    ];
-    } */
