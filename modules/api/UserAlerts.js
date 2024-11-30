@@ -30,4 +30,10 @@ const getStockAlertQuery  = async (inpqry) =>{
     return data.data
 }
 
-export {saveStockAlerts,getStockAlerts,delStockAlerts,saveStockAlertQuery,getStockAlertQuery}
+const delStockAlertQuery  = async (inpQryId) =>{
+    let url = "/personalize/delstkalertqry/" + inpQryId
+    const data = await axios.post(url)
+    return data.data
+}
+
+export {saveStockAlerts,getStockAlerts,delStockAlerts,saveStockAlertQuery,getStockAlertQuery,delStockAlertQuery}

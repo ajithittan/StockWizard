@@ -1,13 +1,14 @@
 import { useEffect, useState} from 'react'
 import {getSearchResults} from '../../modules/api/StockIndicators'
 import {Box} from '@mui/material';
-import { DataGrid,GridToolbar } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import WaitingForResonse from '../../components/WaitingForResponse'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Chip from '@mui/material/Chip';
 import {getConciseValuesForLargeNums} from '../../modules/utils/UtilFunctions'
 import {useSelector,useDispatch} from 'react-redux'
 import {ADD_TO_AUTO_FILL,ADD_QUERY_TO_SEARCH} from '../../redux/reducers/stockSearchAdvSlice'
+import SearchBottomContainer from './SearchBottomContainer'
 
 const SearchResults = (props) =>{
     const dispatch = useDispatch()
@@ -118,7 +119,7 @@ const SearchResults = (props) =>{
         if (cols){
             let arrcols = Object?.keys(cols)
             return (
-                <div style={{marginBottom:"5px"}}>
+                <>
                     {
                         arrcols?.map(key => {
                             if (!cols[key]){
@@ -140,8 +141,7 @@ const SearchResults = (props) =>{
                             }
                         })    
                     }
-                    <br></br>
-                </div>
+                </>
             )
         }
     }
@@ -200,7 +200,7 @@ const SearchResults = (props) =>{
                         onColumnVisibilityModelChange={(newModel) => sm ? setHideColPhone(newModel) : setHideCol(newModel)}
                     />   
                 </Box>      
-                <Box margin={0.2} sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, maxWidth:"90%", backgroundColor:"white" }}>{getHiddenColumns()}</Box>     
+                {props.selected === "COLS" ? <SearchBottomContainer component={getHiddenColumns()}/> : null}
                 </>               
             :null}
         </>
