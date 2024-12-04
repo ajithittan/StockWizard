@@ -9,6 +9,8 @@ import {getConciseValuesForLargeNums} from '../../modules/utils/UtilFunctions'
 import {useSelector,useDispatch} from 'react-redux'
 import {ADD_TO_AUTO_FILL,ADD_QUERY_TO_SEARCH} from '../../redux/reducers/stockSearchAdvSlice'
 import SearchBottomContainer from './SearchBottomContainer'
+import {updUserWatchList} from '../../redux/reducers/profileDashSlice'
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const SearchResults = (props) =>{
     const dispatch = useDispatch()
@@ -29,6 +31,8 @@ const SearchResults = (props) =>{
             getSearchResults(finalQuery).then(output => { 
                 if(output?.length > 0){
                     setResults(output),setWaiting(false),extractColumns(output[output.length - 1]),resetColumns(finalQuery["search"])
+                }else{
+                    setWaiting(false)
                 }
             })
         }
@@ -84,6 +88,15 @@ const SearchResults = (props) =>{
         hideColumns(allColumns.filter(item => !colArr.includes(item.field)))
     }
 
+    const getIconForAction = (field) =>{
+        if (field === "symbol"){
+            return (row) => <>{row["row"]["symbol"]}&nbsp;
+                <PlaylistAddIcon sx={{cursor:"pointer",marginLeft:"auto"}} 
+                    onClick={() => addWatchList(row["row"]["symbol"])} />
+            </>
+        }
+    }
+
     const extractColumns = (inpvals) => {
         let tempCols = []
         Object?.keys(inpvals).map(item =>{
@@ -95,6 +108,7 @@ const SearchResults = (props) =>{
             if (item === "marketcap"){
                 tempFieldObj["valueFormatter"]= (params) => getConciseValuesForLargeNums(params.value)
             }
+            tempFieldObj["renderCell"]=getIconForAction(item)
             tempCols.push(tempFieldObj)
         })
         if (tempCols.length > 0){
@@ -158,6 +172,8 @@ const SearchResults = (props) =>{
             dispatch(ADD_TO_AUTO_FILL(query)) 
         }
     }
+
+    const addWatchList = (stk) => dispatch(updUserWatchList([stk]))
 
     return(
         <>
