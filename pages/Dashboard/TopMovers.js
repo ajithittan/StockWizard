@@ -6,12 +6,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Chip from '@mui/material/Chip';
 import {useDispatch,useSelector} from 'react-redux'
 import {updPortfolioStocks} from '../../redux/reducers/portfolioStockSlice'
+import {updUserWatchList} from '../../redux/reducers/profileDashSlice'
 import DoneIcon from '@mui/icons-material/Done';
 
 const TopMovers = () =>{
     const dispatch = useDispatch()
     const sm = useMediaQuery("(max-width: 700px)");
     const {dashboardstocks} = useSelector((state) => state.dashboardlayout)
+    const {watchlist} = useSelector((state) => state.dashboardlayout)
     let LIMIT_ITEMS = 100
     let [topGainers,setTopGainers] = useState(null)
     let [topLosers,setTopLosers] = useState(null)
@@ -25,9 +27,9 @@ const TopMovers = () =>{
         })  
     },[])
 
-    const saveNewPositions = (stocksel) => dispatch(updPortfolioStocks(stocksel))
+    const addWatchList = (stk) => dispatch(updUserWatchList(stk))
 
-    const stockIsInPortfolio = (stock) => dashboardstocks?.includes(stock)
+    const stockIsInWatchList = (stock) => watchlist?.includes(stock)
 
     const getChipComponent = (inpLabel,inpVal,stock) =>{
         const getColor = {"positive":"#B1FFCA","negative":"#F08080"}
@@ -35,7 +37,7 @@ const TopMovers = () =>{
             <>
                 <Chip
                     variant="outlined"
-                    deleteIcon={stockIsInPortfolio(stock) ? <DoneIcon /> : null}
+                    deleteIcon={stockIsInWatchList(stock) ? <DoneIcon /> : null}
                     label={inpLabel}
                     size="small"
                     sx={{
@@ -47,8 +49,8 @@ const TopMovers = () =>{
                         overflow: "hidden",
                         color:'text.secondary',
                     }}
-                    onClick={ () => saveNewPositions([stock]) } 
-                    onDelete={stockIsInPortfolio(stock) ? () =>{} : null}
+                    onClick={ () => addWatchList([stock]) } 
+                    onDelete={stockIsInWatchList(stock) ? () =>{} : null}
                 />
             </>
         )

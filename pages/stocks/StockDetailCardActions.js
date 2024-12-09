@@ -5,6 +5,7 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import InfoIcon from '@mui/icons-material/Info';
+import FeedIcon from '@mui/icons-material/Feed';
 import CardActions from '@mui/material/CardActions';
 import {removePortfolioStock} from '../../redux/reducers/portfolioStockSlice'
 import {remStockFromWatchList} from '../../redux/reducers/profileDashSlice'
@@ -57,7 +58,9 @@ const StockDetailCardActions = (props) =>{
                     <LatestPatternsFormed stock={props.stock} onshowpatterns={props.ontypechange}></LatestPatternsFormed>
                 </Grid>                
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <PriceAlerts stock={props.stock}></PriceAlerts>
+                    <IconButton aria-label="Patterns">
+                        <FeedIcon onClick={() => props.ontypechange("StkNews")}></FeedIcon>
+                    </IconButton>                 
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="Patterns">
