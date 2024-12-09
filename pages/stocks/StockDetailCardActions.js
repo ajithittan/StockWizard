@@ -58,7 +58,7 @@ const StockDetailCardActions = (props) =>{
                     <LatestPatternsFormed stock={props.stock} onshowpatterns={props.ontypechange}></LatestPatternsFormed>
                 </Grid>                
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <IconButton aria-label="Patterns">
+                    <IconButton aria-label="Patterns" color="primary">
                         <FeedIcon onClick={() => props.ontypechange("StkNews")}></FeedIcon>
                     </IconButton>                 
                 </Grid>
