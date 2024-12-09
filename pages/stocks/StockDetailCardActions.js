@@ -52,16 +52,16 @@ const StockDetailCardActions = (props) =>{
                     </IconButton>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
+                    <IconButton aria-label="Patterns" color="primary">
+                        <FeedIcon onClick={() => props.ontypechange("StkNews")}></FeedIcon>
+                    </IconButton>                 
+                </Grid>                
+                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <SupportAndResistance stock={props.stock} limit={5}/>
                 </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <LatestPatternsFormed stock={props.stock} onshowpatterns={props.ontypechange}></LatestPatternsFormed>
                 </Grid>                
-                <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
-                    <IconButton aria-label="Patterns" color="primary">
-                        <FeedIcon onClick={() => props.ontypechange("StkNews")}></FeedIcon>
-                    </IconButton>                 
-                </Grid>
                 <Grid item xs={sizeOfGrid} sm={sizeOfGrid} md={sizeOfGrid} lg={sizeOfGrid} xl={sizeOfGrid}>
                     <IconButton aria-label="Patterns">
                         <ReadMoreIcon onClick={() => showAllCompanyStats(props.stock)} />
