@@ -6,8 +6,9 @@ import Typography from '@mui/material/Typography';
  
 const StockDetailCardNews = (props) =>{
     const [feedData,setfeedData] = useState(null)
-    const [newsLimit,setNewsLimit] = useState(10)
+    const [newsLimit,setNewsLimit] = useState(25)
     const [dispLmt,setDispLmt] = useState(5)
+    const [resDispCnt,setResDispCnt] = useState(5)
 
     useEffect(() =>{
         if(props.stock){
@@ -32,7 +33,7 @@ const StockDetailCardNews = (props) =>{
                 minute: 'numeric'
               }); 
             return (
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ borderBottom: 0.5, borderColor:"#DCDCDC" }}>
                     <Typography  variant="caption">
                         <Link href={inpNews?.link || '/'} target="_blank">{formattedDateTime} - {inpNews?.title}</Link>
                     </Typography>
@@ -48,7 +49,8 @@ const StockDetailCardNews = (props) =>{
                 feedData?.map((inp,indx) => getContentToFit(inp,indx))
             }      
         </Grid>
-        <a onClick={() => setDispLmt(100)} href="#"><Typography style={{color:"blue"}} variant="caption">Show All</Typography></a>
+        <Link href="#" onClick={(event) => {event.preventDefault();setDispLmt(100)}} target="_blank"><Typography style={{color:"blue"}} variant="caption">All</Typography></Link>&nbsp;
+        <Link href="#" onClick={(event) => {event.preventDefault();setDispLmt(resDispCnt)}} target="_blank"><Typography style={{color:"gray"}} variant="caption">- Reset</Typography></Link>
         </>
     )
 }
