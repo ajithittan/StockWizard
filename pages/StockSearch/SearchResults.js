@@ -173,6 +173,22 @@ const SearchResults = (props) =>{
         }
     }
 
+    const handleCellDoubleClick = (params) => {
+
+        let tempval = columns.map(item => ({
+            ...item, 
+            hide: item["field"] === params["field"] ? true : false 
+          }));
+          console.log("tempval",tempval)
+        setColumns([...tempval]);
+        //setHideColPhone(initval => [...initval,item["field"]])
+        setHideCol(initval => {
+            initval[params["field"]] = true
+            return initval
+        })    
+      };
+    
+
     const addWatchList = (stk) => dispatch(updUserWatchList([stk]))
 
     return(
@@ -213,6 +229,7 @@ const SearchResults = (props) =>{
                         getRowId={row => Math.random()}
                         columnVisibilityModel={sm ? hideColPhone : hideCol}
                         onCellDoubleClick={clickedCell}
+                        onColumnHeaderDoubleClick={handleCellDoubleClick}
                         onColumnVisibilityModelChange={(newModel) => sm ? setHideColPhone(newModel) : setHideCol(newModel)}
                     />   
                 </Box>      
