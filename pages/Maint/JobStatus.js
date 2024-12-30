@@ -46,8 +46,8 @@ const JobStatus = () =>{
                 density="compact"
                 rows={jobInf}
                 columns={columns}
-                pageSize={15}
-                rowsPerPageOptions={[15]}
+                pageSize={50}
+                rowsPerPageOptions={[50]}
                 getRowId={row => Math.random()}
             />   
             </Box> : null 
