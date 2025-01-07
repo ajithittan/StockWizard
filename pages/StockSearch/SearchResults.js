@@ -28,13 +28,29 @@ const SearchResults = (props) =>{
             setWaiting(true)
             let finalQuery = {}
             finalQuery["search"] = searchquery.map(item => item.query)
+            let eventSource = undefined
+            eventSource = new EventSource('/api/stocksignals/searchdataset?query=' + JSON.stringify(finalQuery))  
+            eventSource.onmessage = e => {
+                  let output = JSON.parse(e.data)
+                  if(output?.length > 0){
+                    setResults(output),setWaiting(false),extractColumns(output[output.length - 1]),resetColumns(finalQuery["search"])
+                  }
+                  else{
+                        setWaiting(false)
+                  }
+            }
+            eventSource.onerror = (e) => {
+                  console.log("An error occurred while attempting to connect.",e);
+            };   
+            return () => eventSource?.close()
+            /**
             getSearchResults(finalQuery).then(output => { 
                 if(output?.length > 0){
                     setResults(output),setWaiting(false),extractColumns(output[output.length - 1]),resetColumns(finalQuery["search"])
                 }else{
                     setWaiting(false)
                 }
-            })
+            }) */
         }
     },[searchquery])
 
