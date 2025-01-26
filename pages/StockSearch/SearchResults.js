@@ -99,7 +99,7 @@ const SearchResults = (props) =>{
 
     const selectColumnsToDisplay = (allColumns) =>{
         const columnsToShow={'small':['symbol','close','perchange'],
-                            'large':['symbol','sector','close','perchange','SMA_20','SMA_50','MACD','rsi_14']}
+                            'large':['symbol','groupsector','close','perchange','SMA_20','SMA_50','MACD','rsi_14']}
         let colArr = sm ? columnsToShow['small']: columnsToShow['large']
         hideColumns(allColumns.filter(item => !colArr.includes(item.field)))
     }
