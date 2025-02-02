@@ -14,6 +14,7 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const SearchResults = (props) =>{
     const dispatch = useDispatch()
+    const default_stream_time = 30000
     const sm = useMediaQuery("(max-width: 1200px)");
     const [results,setResults] = useState(null)
     const [waiting,setWaiting] = useState(false)
@@ -22,14 +23,19 @@ const SearchResults = (props) =>{
     const [columns,setColumns] = useState([]);
     const [density,setDensity] = useState("compact")
     const {searchquery} = useSelector((state) => state.stocksearchddv)
+    const {searchstream} = useSelector((state) => state.stocksearchddv)
 
     useEffect(() =>{
         if(searchquery && searchquery.length >0){
+            let refsecs = 0
+            if (searchstream){
+                refsecs = default_stream_time
+            }
             setWaiting(true)
             let finalQuery = {}
             finalQuery["search"] = searchquery.map(item => item.query)
             let eventSource = undefined
-            eventSource = new EventSource('/api/stocksignals/searchdataset?query=' + JSON.stringify(finalQuery))  
+            eventSource = new EventSource('/api/stocksignals/searchdataset?query=' + JSON.stringify(finalQuery) + '&refreshsecs=' + refsecs)  
             eventSource.onmessage = e => {
                   let output = JSON.parse(e.data)
                   if(output?.length > 0){
@@ -52,7 +58,7 @@ const SearchResults = (props) =>{
                 }
             }) */
         }
-    },[searchquery])
+    },[searchquery,searchstream])
 
     const resetColumns = (inpQuery) =>{
         let arrvals = inpQuery.flatMap(item => [item.type + (item.param > 0 ? "_" + item.param : "") , item.val])

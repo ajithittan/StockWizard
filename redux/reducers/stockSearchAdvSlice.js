@@ -25,9 +25,17 @@ const stockSearchAdv = createSlice({
             {label: '14 Day RSI < 30' , query:{type:"rsi",param:14,op:"<",val:30}},
             {label: '14 Day RSI > 80' , query:{type:"rsi",param:14,op:">",val:80}}],
         searchsavedquery:[],    
+        searchstream:false,
         loading:true
     },
     reducers: {
+        STREAM_SEARCH: (state=initialState, action) => {
+            if (state.searchstream){
+                state.searchstream = false    
+            }else{
+                state.searchstream = true
+            }
+        },
         ADD_QUERY_TO_SEARCH: (state=initialState, action) => {
             state.searchquery = [...state.searchquery,action.payload]
         },
@@ -79,5 +87,5 @@ const stockSearchAdv = createSlice({
 }) 
 
 export const {ADD_QUERY_TO_SEARCH,REMOVE_QUERY_FROM_SEARCH,ADD_TO_AUTO_FILL,ADD_SAVED_QRY,ADD_MULTIPLE_QUERIES_SEARCH,
-    REMOVE_SAVED_QRY} = stockSearchAdv.actions;
+    REMOVE_SAVED_QRY,STREAM_SEARCH} = stockSearchAdv.actions;
 export default stockSearchAdv.reducer;
