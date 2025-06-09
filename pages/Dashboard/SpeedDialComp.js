@@ -7,23 +7,26 @@ import FeedIcon from '@mui/icons-material/Feed';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import {useDispatch} from 'react-redux'
+import { useRouter } from 'next/router'
 import {updDashboardLayout} from '../../redux/reducers/profileDashSlice'
 
 const SpeedDialComp = (props) => {
 
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const addMoversToDashboard = () => setLayout({layoutId:1,compId:4})
   const addNewsToDashboard = () => setLayout({layoutId:1,compId:5})
   const addChartsToDashboard = () => setLayout({layoutId:1,compId:1})
-  const addIdeasToDashboard = () => setLayout({layoutId:1,compId:1})
   const setLayout = async (item) => {dispatch(updDashboardLayout(item))}
+
+  const loadStockScreener = () => router.push({pathname: '/StockScreener',query: {}})
 
   const actions = [
     { icon: <WhatshotIcon onClick={addMoversToDashboard}/>, name: 'Whats Hot' },
     { icon: <FeedIcon onClick={addNewsToDashboard}/>, name: 'News' },
     { icon: <BarChartIcon onClick={addChartsToDashboard}/>, name: 'Performance' },
-    { icon: <LightbulbIcon onClick={addIdeasToDashboard}/>, name: 'Ideas' },
+    { icon: <LightbulbIcon onClick={loadStockScreener}/>, name: 'Ideas' },
   ];
   
   return (

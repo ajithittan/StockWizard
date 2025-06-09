@@ -48,6 +48,13 @@ const BarChart = (props) =>{
         }
     },[props.data])
 
+    useEffect(() =>{
+        if (props.dimensions){
+            setWidth(props.dimensions.width)
+            setHeight(props.dimensions.height) 
+        }
+    },[props.dimensions])
+
     useEffect (() =>{
         if (props.addLineChart && charData){
             let normalizeddata = props.addLineChart.filter(item => charData.filter(innerdata => innerdata.xAxis === item.xAxis).length)
@@ -156,7 +163,7 @@ const BarChart = (props) =>{
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden")})
                  
         }
-    },[charData,lineData])
+    },[charData,lineData,domainwidth,domainheight])
 
     return (
         <>
