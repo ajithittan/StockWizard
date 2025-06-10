@@ -9,7 +9,7 @@ const MainScreenerContainer = () =>{
     console.log("lstOfItmslstOfItmslstOfItms",lstOfItms)
 
     return (
-        <div style={{marginLeft:"1vh"}}>  
+        <div style={{marginLeft:"1vh",marginTop:"1vh"}}>  
             <ScreenerList onselect={setLstOfItms}></ScreenerList>
             <Grid container >
                 {

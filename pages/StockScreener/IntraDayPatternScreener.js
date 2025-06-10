@@ -21,6 +21,18 @@ const IntraDayPatternScreener = () =>{
         return () => eventSource?.close()
       },[])
 
+      const tableStyle = {
+        borderCollapse: 'collapse',
+        width: '100%',
+        fontSize:16,
+        fontFamily: "sans-serif"
+      };
+
+      const cellStyle = {
+          border: '1px solid gray',
+          textAlign: 'left',
+      };
+
       function JsonTable({ jsonData }) {
         if (!jsonData || jsonData.length === 0) {
           return <p>No data to display.</p>;
@@ -35,17 +47,19 @@ const IntraDayPatternScreener = () =>{
         const rows = jsonData.map((obj, index) => (
           <tr key={index}>
             {headers.map((header, cellIndex) => (
-              <td key={cellIndex}>{obj[header] != null ? String(obj[header]) : '-'}</td>
+              <td key={cellIndex} style={cellStyle}>{obj[header] != null ? String(obj[header]) : '-'}</td>
             ))}
           </tr>
         ));
+
+        const formatheader = (inpval) => inpval.replace("pattern_int_","") 
       
         return (
-          <table>
+          <table style={tableStyle}>
             <thead>
               <tr>
                 {headers.map((header, index) => (
-                  <th key={index}>{header}</th>
+                  <th key={index} style={cellStyle}>{formatheader(header)}</th>
                 ))}
               </tr>
             </thead>
