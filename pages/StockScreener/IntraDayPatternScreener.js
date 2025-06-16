@@ -11,6 +11,7 @@ const IntraDayPatternScreener = () =>{
     const [showNotification, setShowNotification] = useState(false);
     const eventSourceRef = useRef(null);
     const [msgNotification,setMsgNotification] = useState(null)
+    const [grpByCol,setGrpByCol] = useState("symbol")
 
     useEffect(() =>{
       if (newDtFrmStrm && newDtFrmStrm.length > 0){
@@ -29,7 +30,7 @@ const IntraDayPatternScreener = () =>{
     useEffect(() =>{
           eventSourceRef.current = new EventSource('/stream/intradaystkptrns/' + count + '/' + pointer)  
           eventSourceRef.current.onmessage = e => {
-              console.log("e.datae.datae.data",JSON.parse(e.data))
+              //console.log("e.datae.datae.data",JSON.parse(e.data))
               var stkprcdata = JSON.parse(e.data)
               stkprcdata && stkprcdata.length > 0 ? setNewDtFrmStrm((newDtFrmStrm) => [...stkprcdata,...newDtFrmStrm]) : null
           }
@@ -91,12 +92,18 @@ const IntraDayPatternScreener = () =>{
         );
       }
 
+      const reactToActions = (inpActions) =>{
+        if (inpActions["action"] === "chggroupby"){
+          setGrpByCol(inpActions["value"])
+        }
+      }
+
       return (
         <>
           {
             dtFrmStrm ? <div>
-                <JsonTable jsonData={dtFrmStrm} />
-                {/**<DynamicTable jsonData={dtFrmStrm} groupByColumn={"symbol"}></DynamicTable> **/}
+                {/**<JsonTable jsonData={dtFrmStrm} /> **/}
+                <DynamicTable key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions}></DynamicTable>
                 {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
               </div> : 
               <div>no data from backend yet....</div>
