@@ -1,31 +1,54 @@
-import { useState,useEffect } from "react"
-
+import { useState,useEffect,useRef } from "react"
+import Notification from './Notification';
+import DynamicTable from './DynamicTable'
 //generalize this function.. can be done.
 
 const IntraDayPatternScreener = () =>{
     const [dtFrmStrm, setDtFrmStrm] = useState(null)
+    const [newDtFrmStrm, setNewDtFrmStrm] = useState([])
     const [count,setCount] = useState(200)
     const [pointer,setPointer] = useState(0)
+    const [showNotification, setShowNotification] = useState(false);
+    const eventSourceRef = useRef(null);
+    const [msgNotification,setMsgNotification] = useState(null)
 
     useEffect(() =>{
-        let eventSource = undefined
-          eventSource = new EventSource('/stream/intradaystkptrns/' + count + '/' + pointer)  
-          eventSource.onmessage = e => {
+      if (newDtFrmStrm && newDtFrmStrm.length > 0){
+        if (!dtFrmStrm){
+          setDtFrmStrm([...newDtFrmStrm])
+        }
+        else{
+          setMsgNotification(newDtFrmStrm.length - dtFrmStrm.length)
+          setShowNotification(true)
+        }
+      }
+    },[newDtFrmStrm])
+
+    const appendNewUpdates = () => setDtFrmStrm([...newDtFrmStrm])
+
+    useEffect(() =>{
+          eventSourceRef.current = new EventSource('/stream/intradaystkptrns/' + count + '/' + pointer)  
+          eventSourceRef.current.onmessage = e => {
               console.log("e.datae.datae.data",JSON.parse(e.data))
               var stkprcdata = JSON.parse(e.data)
-              stkprcdata ? setDtFrmStrm(stkprcdata) : null
+              stkprcdata && stkprcdata.length > 0 ? setNewDtFrmStrm((newDtFrmStrm) => [...stkprcdata,...newDtFrmStrm]) : null
           }
-          eventSource.onerror = (e) => {
+          eventSourceRef.current.onerror = (e) => {
               console.log("IntraDayStockPatterns - An error occurred while attempting to connect.",e);
           };   
-        return () => eventSource?.close()
+          return () => {
+            if (eventSourceRef.current) {
+              eventSourceRef.current.close();
+            }
+          };
       },[])
 
       const tableStyle = {
         borderCollapse: 'collapse',
         width: '100%',
         fontSize:16,
-        fontFamily: "sans-serif"
+        fontFamily: "sans-serif",
+        height: '70vh'
       };
 
       const cellStyle = {
@@ -73,6 +96,8 @@ const IntraDayPatternScreener = () =>{
           {
             dtFrmStrm ? <div>
                 <JsonTable jsonData={dtFrmStrm} />
+                {/**<DynamicTable jsonData={dtFrmStrm} groupByColumn={"symbol"}></DynamicTable> **/}
+                {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
               </div> : 
               <div>no data from backend yet....</div>
           }
