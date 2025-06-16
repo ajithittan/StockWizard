@@ -42,7 +42,7 @@ function DynamicTable({ jsonData, groupByColumn,actions }) {
 
     // 1. Extract Unique Headers
     const headers = Array.from(
-    new Set(jsonData.flatMap((obj) => Object.keys(obj)))
+    new Set(jsonData?.flatMap((obj) => Object.keys(obj)))
     );
 
   if(!jsonData || jsonData.length === 0){
