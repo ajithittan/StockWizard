@@ -3,7 +3,7 @@ import Image from "../../components/Charting/Components/Image";
 import * as d3 from "d3";
 
 const ChartImage = forwardRef((props,ref) =>{
-    const imgurl = "http://localhost:3000/bell.svg"
+    const imgurl = "https://sarphira.com/bell.svg"
 
     useEffect(() =>{
         if (props.data && props.propchartscale){
