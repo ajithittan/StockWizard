@@ -50,54 +50,6 @@ const IntraDayPatternScreener = () =>{
           };
       },[rowcount])
 
-      const tableStyle = {
-        borderCollapse: 'collapse',
-        width: '100%',
-        fontSize:16,
-        fontFamily: "sans-serif",
-        height: '70vh'
-      };
-
-      const cellStyle = {
-          border: '1px solid gray',
-          textAlign: 'left',
-      };
-
-      function JsonTable({ jsonData }) {
-        if (!jsonData || jsonData.length === 0) {
-          return <p>No data to display.</p>;
-        }
-      
-        // 1. Extract Unique Headers
-        const headers = Array.from(
-          new Set(jsonData.flatMap((obj) => Object.keys(obj)))
-        );
-      
-        // 2. Map Data to Rows
-        const rows = jsonData.map((obj, index) => (
-          <tr key={index}>
-            {headers.map((header, cellIndex) => (
-              <td key={cellIndex} style={cellStyle}>{obj[header] != null ? String(obj[header]) : '-'}</td>
-            ))}
-          </tr>
-        ));
-
-        const formatheader = (inpval) => inpval.replace("pattern_int_","") 
-      
-        return (
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                {headers.map((header, index) => (
-                  <th key={index} style={cellStyle}>{formatheader(header)}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </table>
-        );
-      }
-
       const reactToActions = (inpActions) =>{
         if (inpActions["action"] === "chggroupby"){
           setGrpByCol(inpActions["value"])
@@ -108,7 +60,6 @@ const IntraDayPatternScreener = () =>{
         <>
           {
             dtFrmStrm ? <div>
-                {/**<JsonTable jsonData={dtFrmStrm} /> **/}
                 <DynamicTable key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions}></DynamicTable>
                 {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
               </div> : 

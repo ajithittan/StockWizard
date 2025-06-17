@@ -56,6 +56,14 @@ function DynamicTable({ jsonData, groupByColumn,actions }) {
     actions(actionval)
   }
 
+  <div id="myFloatingDiv" style="display: none; position: absolute; top: 50px; left: 20px; background-color: white; border: 1px solid black; padding: 10px;">
+  <ul>
+    <li>Option 1</li>
+    <li>Option 2</li>
+    <li>Option 3</li>
+  </ul>
+  </div>
+
   return (
     <table style={tableStyle}>
       <thead>
