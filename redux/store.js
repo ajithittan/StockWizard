@@ -8,6 +8,7 @@ import stockalertsReducer from './reducers/stockAlertsSlice'
 import stockpatternReducer from './reducers/stockPatternsSlice'
 import chartDrillReducer from './reducers/chartDrillSlice'
 import stockSearchReducer from './reducers/stockSearchAdvSlice'
+import stockScreenerReducer from './reducers/stockScreenerSlice'
 
 export default configureStore({
     reducer:{
@@ -19,6 +20,7 @@ export default configureStore({
         stockalerts:stockalertsReducer,
         stockpatterns:stockpatternReducer,
         chartdrill:chartDrillReducer,
-        stocksearchddv:stockSearchReducer
+        stocksearchddv:stockSearchReducer,
+        stockscreener:stockScreenerReducer
     }
 })

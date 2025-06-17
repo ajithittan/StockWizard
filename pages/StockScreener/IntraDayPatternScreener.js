@@ -1,17 +1,19 @@
 import { useState,useEffect,useRef } from "react"
 import Notification from './Notification';
 import DynamicTable from './DynamicTable'
+import {useSelector,useDispatch} from 'react-redux'
 //generalize this function.. can be done.
 
 const IntraDayPatternScreener = () =>{
     const [dtFrmStrm, setDtFrmStrm] = useState(null)
     const [newDtFrmStrm, setNewDtFrmStrm] = useState([])
-    const [count,setCount] = useState(200)
     const [pointer,setPointer] = useState(0)
     const [showNotification, setShowNotification] = useState(false);
     const eventSourceRef = useRef(null);
     const [msgNotification,setMsgNotification] = useState(null)
     const [grpByCol,setGrpByCol] = useState("symbol")
+
+    const {rowcount} = useSelector(state => state.stockscreener)
 
     useEffect(() =>{
       if (newDtFrmStrm && newDtFrmStrm.length > 0){
@@ -28,7 +30,11 @@ const IntraDayPatternScreener = () =>{
     const appendNewUpdates = () => setDtFrmStrm([...newDtFrmStrm])
 
     useEffect(() =>{
-          eventSourceRef.current = new EventSource('/stream/intradaystkptrns/' + count + '/' + pointer)  
+      setDtFrmStrm(null)
+    },[rowcount])
+
+    useEffect(() =>{
+          eventSourceRef.current = new EventSource('/stream/intradaystkptrns/' + rowcount + '/' + pointer)  
           eventSourceRef.current.onmessage = e => {
               //console.log("e.datae.datae.data",JSON.parse(e.data))
               var stkprcdata = JSON.parse(e.data)
@@ -42,7 +48,7 @@ const IntraDayPatternScreener = () =>{
               eventSourceRef.current.close();
             }
           };
-      },[])
+      },[rowcount])
 
       const tableStyle = {
         borderCollapse: 'collapse',
