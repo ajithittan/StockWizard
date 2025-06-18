@@ -4,7 +4,7 @@ const stockScreenerSlice = createSlice({
     name: 'stockscreener',
     initialState: {
         stockscreener: null,
-        rowcount:100,
+        rowcount:50,
         loading:true
     },
     reducers: {

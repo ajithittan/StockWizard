@@ -1,13 +1,12 @@
 import MainScreenerContainer from './MainScreenerContainer'
-import BottomNav from './BottomNav'
+import SpeedDialComp from './SpeedDialComp'
 
 const index = () => {
 
   return (
-    //bring mui grid here?
     <>
-      <MainScreenerContainer></MainScreenerContainer>
-      <BottomNav></BottomNav>
+      <MainScreenerContainer />
+      <SpeedDialComp></SpeedDialComp>
     </>
   );
 }

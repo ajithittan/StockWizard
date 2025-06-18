@@ -30,6 +30,7 @@ const IntraDayPatternScreener = () =>{
     const appendNewUpdates = () => setDtFrmStrm([...newDtFrmStrm])
 
     useEffect(() =>{
+      setNewDtFrmStrm([])
       setDtFrmStrm(null)
     },[rowcount])
 

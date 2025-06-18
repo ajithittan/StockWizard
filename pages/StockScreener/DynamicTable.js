@@ -2,27 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 function DynamicTable({ jsonData, groupByColumn,actions }) {
   const [groupedData, setGroupedData] = useState({});
-
-  const tableStyle = {
-    borderCollapse: 'collapse',
-    width: '100%',
-    fontSize:16,
-    fontFamily: "sans-serif",
-    height: '70vh'
-  };
-
-  const cellStyle = {
-      border: '1px solid gray',
-      textAlign: 'left',
-  };
-
-  const headerStyle = {
-    border: '1px solid gray',
-    textAlign: 'left',
-    color:'blue',
-    cursor:'pointer'
-};
-
   const groupBy = (data, key) => {
     return data.reduce((acc, item) => {
       const group = item[key];
@@ -34,16 +13,16 @@ function DynamicTable({ jsonData, groupByColumn,actions }) {
 
   useEffect(() => {
       if(jsonData && jsonData.length > 0){
+
           const grouped = groupBy(jsonData, groupByColumn);
-          //console.log("groupedgroupedgroupedgroupedgrouped",grouped)
           setGroupedData(grouped);
       }
   }, [jsonData, groupByColumn]);
 
-    // 1. Extract Unique Headers
-    const headers = Array.from(
-    new Set(jsonData?.flatMap((obj) => Object.keys(obj)))
-    );
+  // 1. Extract Unique Headers
+  const headers = Array.from(
+  new Set(jsonData?.flatMap((obj) => Object.keys(obj)))
+  );
 
   if(!jsonData || jsonData.length === 0){
       return <p>No data available.</p>;
@@ -56,38 +35,30 @@ function DynamicTable({ jsonData, groupByColumn,actions }) {
     actions(actionval)
   }
 
-  <div id="myFloatingDiv" style="display: none; position: absolute; top: 50px; left: 20px; background-color: white; border: 1px solid black; padding: 10px;">
-  <ul>
-    <li>Option 1</li>
-    <li>Option 2</li>
-    <li>Option 3</li>
-  </ul>
-  </div>
-
   return (
-    <table style={tableStyle}>
+    <table className="styled-table">
       <thead>
         <tr>
-          <th style={headerStyle}>{groupByColumn}</th>
+          <th>{formatheader(groupByColumn)}</th>
           {headers.filter(key => key !== groupByColumn).map(key => (
-            <th style={headerStyle} key={key} onClick={() => changeGroupBy(key)}>{formatheader(key)}</th>
+            <th key={key} onClick={() => changeGroupBy(key)}>{formatheader(key)}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {Object.entries(groupedData).map(([group, items]) => (
-          <React.Fragment key={group}>
+        {Object.entries(groupedData).filter(item => item[0] !== "undefined").map(([group, items]) => (
+          <>
             <tr>
-              <td rowSpan={items.length + 1} style={cellStyle}>{group}</td>
+              <td rowSpan={items.length + 1}>{group}</td>
             </tr>
             {items.map((item, index) => (
               <tr key={index}>
                 {headers.filter(key => key !== groupByColumn).map(key => (
-                    <td key={key} style={cellStyle}>{item[key] != null ? String(item[key]) : '-'}</td>
+                    <td key={key}>{item[key] != null ? String(item[key]) : '-'}</td>
                 ))}
               </tr>
             ))}
-          </React.Fragment>
+          </>
         ))}
       </tbody>
     </table>
