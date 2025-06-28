@@ -118,7 +118,7 @@ const initiateCaching = async (stock,identifiers) =>{
 }
 
 const getTickDataIntraDay = async (stock,timemins) =>{
-    let url = "/realtime/intradaytick/" + stock + "/" + timemins
+    let url = "/realtime/intradaytick/" + stock + "/" + timemins + "/1"
     const data = await axios.get(url)
     return data.data
 }
