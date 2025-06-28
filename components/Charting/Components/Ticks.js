@@ -1,4 +1,4 @@
-import { axisLeft,axisBottom, timeMonth,timeYear,timeFormat,width,height} from "d3"
+import { axisLeft,axisBottom, timeMonth,timeYear,timeFormat,width,height, timeHour} from "d3"
 
 const noOfXTicks = (width) =>{
     if (width > 1200){
@@ -47,4 +47,13 @@ const xTicksNum = (g,xScale,yScale,width,height,id) => {
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
     .call(axisBottom(xScale).ticks(5))
 }
-export {xTicks,yTicks,xTicksNum}
+
+const xTicksTime = (g,xScale,yScale,width,height,id,noofticks) => {
+    g.append("g")
+    .attr("id", "xScale")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + yScale.range()[0] + ")")
+    .call(axisBottom(xScale).ticks(noofticks).tickFormat(timeFormat("%H:%M")))
+}
+
+export {xTicks,yTicks,xTicksNum,xTicksTime}

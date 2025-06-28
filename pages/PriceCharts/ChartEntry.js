@@ -18,6 +18,13 @@ const ChartEntry = forwardRef((props,inpref) =>{
         }
     },[props.stock && props.duration])    
 
+    useEffect(() =>{
+        if (props.chartdata && props.chartdata.length >0){
+            setChartFullData(props.chartdata)
+            setWaiting(false)
+        }
+    },[props.chartdata])
+
     return (
         <>
             {

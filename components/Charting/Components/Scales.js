@@ -17,7 +17,7 @@ const XScale = (chartdata,domainwidth,field) =>{
 const YScale = (chartdata,domainheight,field) =>{
 
     let yExtent = extent(chartdata.map(item => item[field]));
-    yExtent = [yExtent[0]*0.98,yExtent[1] * 1.05]
+    yExtent = [yExtent[0]*0.999,yExtent[1] * 1.0005]
     let y = scaleLinear()
     .domain(yExtent)
     .range([domainheight, 0])
@@ -27,8 +27,8 @@ const YScale = (chartdata,domainheight,field) =>{
 
 const XScaleNum = (chartdata,domainwidth,field) =>{
     let xExtent = extent(chartdata.map(item => item[field]));
-    xExtent = [xExtent[0]*0.99,xExtent[1] * 1.05]
-
+    xExtent = [xExtent[0],xExtent[1]]
+    
     let x = scaleLinear()
     .domain(xExtent)
     .range([0, domainwidth])

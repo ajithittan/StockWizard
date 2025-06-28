@@ -117,7 +117,13 @@ const initiateCaching = async (stock,identifiers) =>{
     return data.data
 }
 
+const getTickDataIntraDay = async (stock,timemins) =>{
+    let url = "/realtime/intradaytick/" + stock + "/" + timemins
+    const data = await axios.get(url)
+    return data.data
+}
+
 export {StockPrice,StockPerChange,StockSector,CreateStockSector,DeleteStockSector,
     SectorStockPerChange,UpdateStockSectors,UpdateStockPrice,SaveNewPositions,DeleteStkFromPositions,checkValidStock,
     getCompanyDetails,getCompanyQtrPerf,StockList,getStockDetailsForStks,PrioritizeStockList,StockPriceV2,FullStockList,
-    initiateCaching}
+    initiateCaching,getTickDataIntraDay}

@@ -35,6 +35,11 @@ function DynamicTable({ jsonData, groupByColumn,actions }) {
     actions(actionval)
   }
 
+  const handleClick = (val) => {
+    const actionval = {action:'transitionact',value:val}
+    actions(actionval)
+  }
+  
   return (
     <table className="styled-table">
       <thead>
@@ -49,12 +54,12 @@ function DynamicTable({ jsonData, groupByColumn,actions }) {
         {Object.entries(groupedData).filter(item => item[0] !== "undefined").map(([group, items]) => (
           <>
             <tr>
-              <td rowSpan={items.length + 1}>{group}</td>
+              <td rowSpan={items.length + 1}><a href="#" onClick={() => handleClick([groupByColumn, items])}>{group}</a> </td>
             </tr>
             {items.map((item, index) => (
               <tr key={index}>
                 {headers.filter(key => key !== groupByColumn).map(key => (
-                    <td key={key}>{item[key] != null ? String(item[key]) : '-'}</td>
+                    <td key={key} >{item[key] != null ? <a href="#" onClick={() => handleClick([groupByColumn, [item]])}>{String(item[key])}</a> : '-'}</td>
                 ))}
               </tr>
             ))}
