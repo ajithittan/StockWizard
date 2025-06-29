@@ -8,7 +8,7 @@ const ScreenerList = forwardRef((props,inpref) => {
     const {clkctxdata} = useSelector(state => state.stockscreener)
     const staticList = [
         {label:'INTRA_DAY',comp:<IntraDayPatternScreener/>, default:true},
-        {label:'STOCK_GRAPH',comp:<StockChart ref={inpref}/>}
+        {label:'STOCK_GRAPH',comp:<StockChart/>}
     ]
     useEffect(() =>{
         if (clkctxdata){

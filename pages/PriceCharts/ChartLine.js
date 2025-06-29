@@ -8,7 +8,7 @@ const ChartLine = forwardRef((props,ref) =>{
                 const svgElement = d3.select(ref.current)    
                 let g = svgElement.append("g")
                 if (props.data[0].hasOwnProperty('uxtime')){
-                    Linev2(g,props.data,props.propchartscale.x,props.propchartscale.y,"blue",null,null,'uxtime','close') 
+                    Linev2(g,props.data,props.propchartscale.x,props.propchartscale.y,"blue",true,1,'uxtime','close') 
                 }else{
                     Line(g,props.data,props.propchartscale.x,props.propchartscale.y,props.color,true,props.id)
                 }
