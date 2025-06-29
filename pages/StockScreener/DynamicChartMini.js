@@ -1,23 +1,26 @@
+import { forwardRef,useRef } from "react"
 import DeleteIcon from '@mui/icons-material/Delete';
+import ChartEntry from '../PriceCharts/ChartEntry'
 
-const DynamicChartMini = ({ label, actions }) =>{
+const DynamicChartMini = forwardRef((props,ref) =>{
 
   const handleClick = (val) => {
       const actionval = {action:'focus'}
-      actions('focus')
+      props.actions('focus')
   }
 
   const removeFromList = () => {
     const actionval = {action:'remove'}
-    actions('remove')
+    props.actions('remove')
   }
 
   return(
       <>
-      <button onClick={handleClick}>{label}</button>
+      <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
+      <button onClick={handleClick}>{props.symbol}</button>
       <DeleteIcon onClick={removeFromList} sx={{cursor:"pointer"}}></DeleteIcon>
       </>
   )
-}
+})
 
 export default DynamicChartMini

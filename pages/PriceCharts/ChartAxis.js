@@ -31,7 +31,7 @@ const ChartAxis = forwardRef((props,ref) => {
             let y = YScale(modifiedData,props.chartdims.domainheight,"close")
             if (modifiedData[0].hasOwnProperty('uxtime')){
                 x = XScaleNum(modifiedData,props.chartdims.domainwidth,'uxtime')
-                xTicksTime(g,x,y,props.chartdims.width,props.chartdims.height,null,10)
+                xTicksTime(g,x,y,props.chartdims.width,props.chartdims.height,null,0)
             }else{
                 x = XScale(modifiedData,props.chartdims.domainwidth,"date")
                 xTicks(g,x,y,props.chartdims.width,props.chartdims.height,null,noOfTicks)

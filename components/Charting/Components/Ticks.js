@@ -11,6 +11,17 @@ const noOfXTicks = (width) =>{
     }
 }
 
+const absNoOfXTicksTime = (width) =>{
+    if (width > 1200){
+        return 10
+    }    
+    else if (width > 960){
+        return 4
+    }else{
+        return 5
+    }
+}
+
 const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks,id) => {
     if (numberOfTicks){
         g.append("g")
@@ -49,11 +60,12 @@ const xTicksNum = (g,xScale,yScale,width,height,id) => {
 }
 
 const xTicksTime = (g,xScale,yScale,width,height,id,noofticks) => {
+    let no_of_ticks = noofticks ? noofticks : absNoOfXTicksTime(width)
     g.append("g")
     .attr("id", "xScale")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
-    .call(axisBottom(xScale).ticks(noofticks).tickFormat(timeFormat("%H:%M")))
+    .call(axisBottom(xScale).ticks(no_of_ticks).tickFormat(timeFormat("%H:%M")))
 }
 
 export {xTicks,yTicks,xTicksNum,xTicksTime}

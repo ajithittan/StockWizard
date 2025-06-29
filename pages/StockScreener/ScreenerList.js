@@ -24,8 +24,8 @@ const ScreenerList = forwardRef((props,inpref) => {
             arrOfComps.push(staticList.filter(item => item.label === clkctxdata[0].type)[0].comp)
             props.onselect(
                 [
-                    cloneAndAddParams(staticList.filter(item => item.label === clkctxdata[0].type)[0].comp,{...clkctxdata[0]?.data,mini:false}),
-                    ...clkctxdata.slice(1).map(item => cloneAndAddParams(staticList.filter(stlist => stlist.label === item.type)[0].comp,{...item.data,mini:true}))
+                    cloneAndAddParams(staticList.filter(item => item.label === clkctxdata[0].type)[0].comp,{...clkctxdata[0]?.data,mini:false,ref:props.refmain}),
+                    ...clkctxdata.slice(1).map(item => cloneAndAddParams(staticList.filter(stlist => stlist.label === item.type)[0].comp,{...item.data,mini:true,ref:props.refSmallCont}))
                 ])
         }else{
             props.onselect([staticList.filter(item => item.default)[0].comp])

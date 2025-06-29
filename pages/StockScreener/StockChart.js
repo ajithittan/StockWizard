@@ -48,7 +48,7 @@ const StockChart = forwardRef((props,ref) => {
         <>
             {
                 props.mini ? 
-                <DynamicChartMini key={props.symbol} actions={handleClick} label={props.symbol} />: 
+                <DynamicChartMini key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} actions={handleClick} />: 
                 <DynamicChart key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref}/>
             }
         </>
