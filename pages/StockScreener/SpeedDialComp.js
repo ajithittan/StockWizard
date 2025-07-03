@@ -5,8 +5,9 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {useDispatch} from 'react-redux'
-import {UPD_ROW_COUNTS} from '../../redux/reducers/stockScreenerSlice'
+import {UPD_ROW_COUNTS,UPD_DISP_SETTINGS} from '../../redux/reducers/stockScreenerSlice'
 
 
 const SpeedDialControl = (props) => {
@@ -16,6 +17,7 @@ const SpeedDialControl = (props) => {
   const dispatch = useDispatch()
 
   const handleChange = (inpval) => dispatch(UPD_ROW_COUNTS(inpval.target.value))
+  const handleShowAll = () => dispatch(UPD_DISP_SETTINGS({"showMainContainer":true}))
 
   const DropDown = () => {
     return (
@@ -34,7 +36,8 @@ const SpeedDialControl = (props) => {
   }
 
   const actions = [
-    { icon: <DropDown/>, name: 'Rows' , size:{width: 55} }
+    { icon: <DropDown/>, name: 'Rows' , size:{width: 55} },
+    { icon: <RestartAltIcon onClick={handleShowAll}/>, name: 'ShowAll' ,  }
   ];
   
   return (

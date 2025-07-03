@@ -1,14 +1,22 @@
 import { useEffect, useState,useRef,forwardRef } from "react"
 import Grid from '@mui/material/Grid';
 import ScreenerList from './ScreenerList'
-import ChartEntry from '../PriceCharts/ChartEntry'
+import Paper from '@mui/material/Paper';
+import {useSelector,useDispatch} from 'react-redux'
+import {UPD_DISP_SETTINGS} from '../../redux/reducers/stockScreenerSlice'
 
 const MainScreenerContainer = () =>{
+    const dispatch = useDispatch()
     const refMainCont = useRef()
     const refSmallCont = useRef()
+    const [display, setDisplay] = useState(true)
     const [lstOfItms, setLstOfItms] = useState(null)
     const [mainContainer,setMainContainer] = useState(null)
     const [restOfItems,setRestOfItems] = useState(null)
+
+    const {dispsettings} = useSelector(state => state.stockscreener)
+
+    console.log("dispsettingsdispsettingsdispsettingsdispsettings",dispsettings)
     
     useEffect(() =>{
         if(lstOfItms?.length){
@@ -18,32 +26,36 @@ const MainScreenerContainer = () =>{
     },[lstOfItms])
 
     return (
-        <div style={{marginLeft:"3vh",marginTop:"1vh"}}>  
+        <>  
             <ScreenerList onselect={setLstOfItms} refmain={refMainCont} refSmallCont={refSmallCont}></ScreenerList>
             <Grid container >
                 {
                     mainContainer ? 
-                        <Grid xs={11.9} sm={11.9} md={11.9} lg={11.9} xl={11.9} marginRight={0.3} 
-                            sx={{overflow: 'auto'}}>
-                                <div ref={refMainCont} style={{width:"90%",height:"80vh" ,margin:"3vh"}}>
-                                    {mainContainer}
-                                </div>
+                        <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showMainContainer? null : "none"}}>
+                                <Paper component="fieldset"
+                                  elevation={0} sx={{height:dispsettings.maincontht + dispsettings.mainconthttp, overflow:"scroll" 
+                                  ,scrollbarWidth: "none", // Hide the scrollbar for firefox
+                                      '&::-webkit-scrollbar': {
+                                          display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+                                      }}}
+                                  ref={refMainCont}>
+                                  <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={() =>dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))}>Intra Day Stock Patterns</a>&nbsp;&nbsp;</h4></legend>
+                                  {mainContainer}
+                                </Paper>
                         </Grid>
                         :null   
                 }
                 {
                     restOfItems?.map(item => (
-                        <Grid xs={12} sm={12} md={2} lg={2} xl={2} marginRight={0.3} sx={{height:"30vh"}}>
-                            <div ref={refSmallCont} style={{width:"90%",height:"20vh" ,margin:"3vh"}}>
+                        <Grid xs={12} sm={12} md={2} lg={2} xl={2} style={{height:dispsettings.restcontht + dispsettings.restconthttp,margin:"1vh"}}>
+                            <div ref={refSmallCont} >
                             {item}
                             </div>
                         </Grid>
                     ))
                 }
             </Grid>
-        </div>
-    )
-
-}
+        </>
+    )}
 
 export default forwardRef(MainScreenerContainer)
