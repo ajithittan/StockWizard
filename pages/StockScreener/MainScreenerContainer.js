@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import ScreenerList from './ScreenerList'
 import Paper from '@mui/material/Paper';
 import {useSelector,useDispatch} from 'react-redux'
-import {UPD_DISP_SETTINGS} from '../../redux/reducers/stockScreenerSlice'
+import {UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT} from '../../redux/reducers/stockScreenerSlice'
 
 const MainScreenerContainer = () =>{
     const dispatch = useDispatch()
@@ -16,19 +16,23 @@ const MainScreenerContainer = () =>{
 
     const {dispsettings} = useSelector(state => state.stockscreener)
 
-    console.log("dispsettingsdispsettingsdispsettingsdispsettings",dispsettings)
-    
+   
     useEffect(() =>{
         if(lstOfItms?.length){
             setMainContainer(lstOfItms[0])
-            setRestOfItems([...lstOfItms.slice(1)])
+            if ([...lstOfItms.slice(1)].length >0){
+                dispatch(SHOW_BOTTOM_CONT())
+                setRestOfItems([...lstOfItms.slice(1)])
+            }else{
+                dispatch(HIDE_BOTTOM_CONT())
+            }
         }
     },[lstOfItms])
 
     return (
         <>  
             <ScreenerList onselect={setLstOfItms} refmain={refMainCont} refSmallCont={refSmallCont}></ScreenerList>
-            <Grid container >
+            <Grid container>
                 {
                     mainContainer ? 
                         <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showMainContainer? null : "none"}}>
@@ -46,13 +50,22 @@ const MainScreenerContainer = () =>{
                         :null   
                 }
                 {
-                    restOfItems?.map(item => (
-                        <Grid xs={12} sm={12} md={2} lg={2} xl={2} style={{height:dispsettings.restcontht + dispsettings.restconthttp,margin:"1vh"}}>
-                            <div ref={refSmallCont} >
-                            {item}
-                            </div>
-                        </Grid>
-                    ))
+                    restOfItems? 
+                    <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showBottomContainer? null : "none",marginRight:"3vh"}}>
+                            <Paper elevation={0} sx={{height:dispsettings.restcontht + dispsettings.restconthttp}}>
+                                <Grid container>
+                                    {
+                                        restOfItems?.map(item => (
+                                            <Grid  xs={12} sm={12} md={2} lg={2} xl={2}>
+                                                <div ref={refSmallCont} >
+                                                {item}
+                                                </div>
+                                            </Grid>
+                                            ))
+                                    }
+                                </Grid>    
+                            </Paper>
+                    </Grid> :null
                 }
             </Grid>
         </>

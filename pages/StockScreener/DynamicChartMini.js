@@ -1,8 +1,9 @@
 import { forwardRef,useRef } from "react"
-import DeleteIcon from '@mui/icons-material/Delete';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import ChartEntry from '../PriceCharts/ChartEntry'
 import {useSelector,useDispatch} from 'react-redux'
 import {UPD_DISP_SETTINGS} from '../../redux/reducers/stockScreenerSlice'
+import Paper from '@mui/material/Paper';
 
 const DynamicChartMini = forwardRef((props,ref) =>{
   const dispatch = useDispatch()
@@ -20,11 +21,18 @@ const DynamicChartMini = forwardRef((props,ref) =>{
   }
 
   return(
-      <>
+    <Paper component="fieldset"
+    elevation={0} sx={{overflow:"scroll" 
+    ,scrollbarWidth: "none", // Hide the scrollbar for firefox
+        '&::-webkit-scrollbar': {
+            display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
+        }}}
+    >
+      <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={handleClick}>{props.symbol}</a>
+      <HighlightOffOutlinedIcon onClick={removeFromList} sx={{cursor:"pointer"}}></HighlightOffOutlinedIcon>&nbsp;&nbsp;</h4></legend>
       <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
-      <button onClick={handleClick}>{props.symbol}</button>
-      <DeleteIcon onClick={removeFromList} sx={{cursor:"pointer"}}></DeleteIcon>
-      </>
+
+      </Paper>
   )
 })
 
