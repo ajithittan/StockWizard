@@ -3,7 +3,7 @@ import Notification from './Notification';
 import DynamicTable from './DynamicTable'
 import DynamicTableMini from './DynamicTableMini'
 import {useSelector,useDispatch} from 'react-redux'
-import {CLICKED_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
+import {CLICKED_ROW_DATA,ADD_STK_STREAM} from '../../redux/reducers/stockScreenerSlice'
 //generalize this function.. can be done.
 
 const IntraDayPatternScreener = (props) =>{
@@ -37,7 +37,7 @@ const IntraDayPatternScreener = (props) =>{
     },[rowcount])
 
     useEffect(() =>{
-          eventSourceRef.current = new EventSource('/stream/intradaystkptrns/' + rowcount + '/' + pointer)  
+          eventSourceRef.current = new EventSource('/stream/allintradaystkptrns/' + rowcount + '/' + pointer)  
           eventSourceRef.current.onmessage = e => {
               //console.log("e.datae.datae.data",JSON.parse(e.data))
               var stkprcdata = JSON.parse(e.data)
@@ -64,6 +64,7 @@ const IntraDayPatternScreener = (props) =>{
             let id = "STOCK_GRAPH_" + inpActions["value"][1][0]["symbol"] 
             let data = {symbol:inpActions["value"][1][0]["symbol"],patterns:matchingKeys,id:id}
             dispatch(CLICKED_ROW_DATA({id:id,type:"STOCK_GRAPH",data:data}))
+            dispatch(ADD_STK_STREAM([inpActions["value"][1][0]["symbol"]]))
           }else{
             console.log("huh?",inpActions)
           }

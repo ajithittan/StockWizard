@@ -11,22 +11,24 @@ const DynamicChart = forwardRef((props,ref) => {
     let chartElementToAdd = {
         "id": 1750526784272,
         "symbol": "MSFT",
-        "type": "ALERT",
+        "type": "IMAGE",
         "chartdata": {
-          "alerttype": "U",
-          "close": 460,
+          "alerttype": "A",
+          "close": 492,
           "threshold": 194.27,
           "date": "2025-04-16T04:00:00.000Z",
-          "xPos": 438.4785714285714,
-          "yPos": 432.1418361620801,
+          "xPos": 498.4785714285714,
+          "yPos": 492.1418361620801,
           "symbol": "MSFT",
-          "id": 1750526784272
+          uxtime: 1751533900000,
+          "id": 1750526884272,
+          label:"Golden Cross"
         }
       }
-    //console.log("chartElementToAddchartElementToAddchartElementToAdd",chartElementToAdd)
+    //console.log("chartElementToAddchartElementToAddchartElementToAdd",chartElementToAdd,props.chartdata)
     //dispatch(ADD_ELEMENTS_TO_CHART([chartElementToAdd]))
     return(
-        <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
+        <ChartEntry key={props.chartdata+ref} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
     )
 })
 

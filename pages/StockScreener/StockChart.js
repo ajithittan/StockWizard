@@ -13,7 +13,6 @@ const StockChart = forwardRef((props,ref) => {
     const [inpChartData,setInpChartData] = useState(null)
 
     useEffect(() =>{
-        console.log("in here???")
         getTickDataIntraDay(props.symbol,5).then(retval => setInpChartData(retval))
     },[props])
 
