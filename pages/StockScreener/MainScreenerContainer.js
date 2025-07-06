@@ -43,7 +43,7 @@ const MainScreenerContainer = () =>{
                                           display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
                                       }}}
                                   ref={refMainCont}>
-                                  <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={() =>dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))}>Intra Day Stock Patterns</a>&nbsp;&nbsp;</h4></legend>
+                                  <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={() =>dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))}>{dispsettings?.showDataTp}&nbsp;Day Stock Patterns</a>&nbsp;&nbsp;</h4></legend>
                                   {mainContainer}
                                 </Paper>
                         </Grid>

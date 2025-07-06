@@ -7,7 +7,7 @@ const stockScreenerSlice = createSlice({
         rowcount:50,
         loading:true,
         clkctxdata:[{id:"INTRA_DAY",type:"INTRA_DAY"}],
-        dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:75,mainconthttp:"vh",restcontht:"au",restconthttp:"to"},
+        dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:75,mainconthttp:"vh",restcontht:"au",restconthttp:"to",showDataTp:"PRIORITY"},
         streamstocks:null
     },
     reducers: {

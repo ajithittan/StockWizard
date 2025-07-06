@@ -7,6 +7,7 @@ import {CLICKED_ROW_DATA,ADD_STK_STREAM} from '../../redux/reducers/stockScreene
 //generalize this function.. can be done.
 
 const IntraDayPatternScreener = (props) =>{
+    const [showAll,setShowAll] = useState(false)
     const dispatch = useDispatch()
     const [dtFrmStrm, setDtFrmStrm] = useState(null)
     const [newDtFrmStrm, setNewDtFrmStrm] = useState([])
@@ -16,6 +17,8 @@ const IntraDayPatternScreener = (props) =>{
     const [msgNotification,setMsgNotification] = useState(null)
     const [grpByCol,setGrpByCol] = useState("symbol")
     const {rowcount} = useSelector(state => state.stockscreener)
+    const {dispsettings} = useSelector(state => state.stockscreener)
+    
     
     useEffect(() =>{
       if (newDtFrmStrm && newDtFrmStrm.length > 0){
@@ -37,21 +40,31 @@ const IntraDayPatternScreener = (props) =>{
     },[rowcount])
 
     useEffect(() =>{
-          eventSourceRef.current = new EventSource('/stream/allintradaystkptrns/' + rowcount + '/' + pointer)  
-          eventSourceRef.current.onmessage = e => {
-              //console.log("e.datae.datae.data",JSON.parse(e.data))
-              var stkprcdata = JSON.parse(e.data)
-              stkprcdata && stkprcdata.length > 0 ? setNewDtFrmStrm((newDtFrmStrm) => [...stkprcdata,...newDtFrmStrm]) : null
-          }
-          eventSourceRef.current.onerror = (e) => {
-              console.log("IntraDayStockPatterns - An error occurred while attempting to connect.",e);
-          };   
-          return () => {
+            //close the stream and reset the data...will run into some race condition in future :)
             if (eventSourceRef.current) {
+              setDtFrmStrm(null)
+              setNewDtFrmStrm([])
               eventSourceRef.current.close();
             }
-          };
-      },[rowcount])
+            if (dispsettings?.showDataTp === "ALL"){
+              eventSourceRef.current = new EventSource('/stream/allintradaystkptrns/' + rowcount + '/' + pointer)
+            }else{
+              eventSourceRef.current = new EventSource('/stream/priorityintradayptrns/' + rowcount + '/' + pointer)
+            }
+            eventSourceRef.current.onmessage = e => {
+                //console.log("e.datae.datae.data",JSON.parse(e.data))
+                var stkprcdata = JSON.parse(e.data)
+                stkprcdata && stkprcdata.length > 0 ? setNewDtFrmStrm((newDtFrmStrm) => [...stkprcdata,...newDtFrmStrm]) : null
+            }
+            eventSourceRef.current.onerror = (e) => {
+                console.log("IntraDayStockPatterns - An error occurred while attempting to connect.",e);
+            };   
+            return () => {
+              if (eventSourceRef.current) {
+                eventSourceRef.current.close();
+              }
+            };  
+      },[rowcount,dispsettings?.showDataTp])
 
       const reactToActions = (inpActions) =>{
         if (inpActions["action"] === "chggroupby"){
