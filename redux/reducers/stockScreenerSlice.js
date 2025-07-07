@@ -8,6 +8,7 @@ const stockScreenerSlice = createSlice({
         loading:true,
         clkctxdata:[{id:"INTRA_DAY",type:"INTRA_DAY"}],
         dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:75,mainconthttp:"vh",restcontht:"au",restconthttp:"to",showDataTp:"PRIORITY"},
+        dispchartpoints:null,
         streamstocks:null
     },
     reducers: {
@@ -44,15 +45,18 @@ const stockScreenerSlice = createSlice({
             state.dispsettings = {...state.dispsettings,...settingval}
         },
         ADD_STK_STREAM: (state=initialState, action) => {
-            console.log("ADD_STK_STREAM",action.payload)
             if (state.streamstocks){
                 state.streamstocks = Array.from(new Set([...state.streamstocks,...action.payload]))
             }else{
                 state.streamstocks = action.payload
             }
         },
+        ADD_STK_CHART_POINTS: (state=initialState, action) => {
+            //console.log("ADD_STK_CHART_POINTS",action.payload)
+            state.dispchartpoints = action.payload
+        },
     }
 }) 
 
-export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,ADD_STK_STREAM} = stockScreenerSlice.actions;
+export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS} = stockScreenerSlice.actions;
 export default stockScreenerSlice.reducer;

@@ -7,8 +7,7 @@ const StreamScreenerData = (props) => {
 
   const streamOutput = async (outputstream) => {
     if (outputstream && outputstream.length > 0){
-      console.log("outputstream",outputstream)
-      //dispatch(props.streamout(outputstream))
+      dispatch(props.streamout(outputstream))
     }
   }
  
@@ -16,11 +15,10 @@ const StreamScreenerData = (props) => {
     
     let eventSource = undefined
     if (props.url && props.inpdata){
-      console.log("props.url, props.data",props.url , props.inpdata)
+      //console.log("props.url, props.data",props.url , props.inpdata)
       eventSource = new EventSource(props.url)  
       eventSource.onmessage = e => {
           let retval = JSON.parse(e.data)
-          console.log("e.datae.datae.datae.datae.data",e.data)
           retval ? streamOutput(retval) : null
       }
       eventSource.onerror = (e) => {

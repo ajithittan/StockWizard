@@ -1,3 +1,7 @@
+function getRandomDecimal(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 const Textv2 = (g,xScale,yScale,xval,yval,dispTxt) =>{
     g.append("text")
     .attr("class","ChartHeader")
