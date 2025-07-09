@@ -9,24 +9,56 @@ const DynamicChart = forwardRef((props,ref) => {
     const dispatch = useDispatch()
     const {dispchartpoints} = useSelector(state => state.stockscreener)
 
+    //console.log("dispchartpoints",dispchartpoints)
+
+    const dispatchElements = (indx,close,uxtime,label) =>{
+      //console.log(indx,close,uxtime,label)
+      let chartElementToAdd = {
+        "id": indx,
+        "symbol": props.symbol,
+        "type": "IMAGE",
+        "chartdata": {
+          "alerttype": "A",
+          "symbol": props.symbol,
+          "close": close,
+          uxtime: uxtime,
+          "id": indx,
+          label:label
+        }
+      }
+      dispatch(ADD_ELEMENTS_TO_CHART([chartElementToAdd]))
+    }
+
+    const cnsolAndDispatch = () =>{
+
+      const uniqueProperties = new Set();
+
+      dispchartpoints.forEach(obj => {
+        Object.keys(obj).forEach(key => {
+          uniqueProperties.add(key);
+        });
+      });
+  
+      const uniquePropertiesArray = [...uniqueProperties].filter(item => item.includes("pattern_int_"));
+  
+      uniquePropertiesArray.map((eachUnq,index) => {
+        const firstIndex = dispchartpoints.findIndex(item => eachUnq in item);
+        const lastIndex = dispchartpoints.findLastIndex(item => eachUnq in item);
+        dispatchElements(index,dispchartpoints[firstIndex].close,dispchartpoints[firstIndex].uxtime,eachUnq.replace("pattern_int_", ""))
+        dispatchElements(index,dispchartpoints[lastIndex].close,dispchartpoints[lastIndex].uxtime,eachUnq.replace("pattern_int_", ""))
+      })
+    }
 
     useEffect(() =>{
       if(dispchartpoints && dispchartpoints[0].symbol === props.symbol){
+        setTimeout(() => cnsolAndDispatch(), 600);
+      }
+    },[dispchartpoints])
+
+    /***
+    useEffect(() =>{    
+      if(dispchartpoints && dispchartpoints[0].symbol === props.symbol){
         dispchartpoints.map((item,index) => {
-          let addelements = {}
-          let chartdata = {}
-          addelements["id"] = index
-          addelements["symbol"] = props.symbol
-          addelements["type"] = "IMAGE"
-          addelements["type"]
-          chartdata["id"] = index
-          chartdata["alerttype"] = "A"
-          chartdata["uxtime"] = 1751562000000
-          chartdata["symbol"] = props.symbol
-          chartdata["close"] = 215
-          chartdata["label"] = "PP"
-          addelements["chartdata"] = chartdata
-          console.log(addelements)
           let chartElementToAdd = {
             "id": index,
             "symbol": props.symbol,
@@ -40,10 +72,12 @@ const DynamicChart = forwardRef((props,ref) => {
               label:"PP"
             }
           }
-          dispatch(ADD_ELEMENTS_TO_CHART([chartElementToAdd]))
+          setTimeout(() => dispatch(ADD_ELEMENTS_TO_CHART([chartElementToAdd])), 600);
         })
       }
-    },[dispchartpoints,props.symbol])
+    },[dispchartpoints])
+
+     */
 
     /***
      * sample addition that works on the chart.
@@ -53,22 +87,23 @@ const DynamicChart = forwardRef((props,ref) => {
         "type": "IMAGE",
         "chartdata": {
           "alerttype": "A",
-          "close": 492,
+          "close": 498.11,
           "threshold": 194.27,
           "date": "2025-04-16T04:00:00.000Z",
           "xPos": 498.4785714285714,
           "yPos": 492.1418361620801,
           "symbol": "MSFT",
-          uxtime: 1751533900000,
+          uxtime: 1751878900022,
           "id": 1750526884272,
           label:"GC"
         }
       }
-    console.log("chartElementToAddchartElementToAddchartElementToAdd",props.chartdata)
+    //console.log("chartElementToAddchartElementToAddchartElementToAdd",props.chartdata)
     //dispatch(ADD_ELEMENTS_TO_CHART([chartElementToAdd]))
-     */
+    */
+     
     return(
-        <ChartEntry key={props.chartdata+ref} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
+        <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
     )
 })
 

@@ -7,6 +7,7 @@ const StreamScreenerData = (props) => {
 
   const streamOutput = async (outputstream) => {
     if (outputstream && outputstream.length > 0){
+      //console.log("outputstreamoutputstreamoutputstreamoutputstream",outputstream)
       dispatch(props.streamout(outputstream))
     }
   }

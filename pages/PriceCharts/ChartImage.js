@@ -9,14 +9,14 @@ const ChartImage = forwardRef((props,ref) =>{
 
     useEffect(() =>{
         if (props.data && props.propchartscale){
-            console.log("in here?/?",props.data.hasOwnProperty('uxtime'),props.data.label)
             if (props.propchartscale.x && props.propchartscale.y){
-                console.log(props.data)
                 const svgElement = d3.select(ref.current)    
                 let g = svgElement.append("g")
                 if (props.data.hasOwnProperty('uxtime')){
                     if (props.data.label){
-                        Textv2(g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,props.data.label)
+                        //console.log("in here before charting the course",g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,props.data.label)
+                        //Textv2(g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,props.data.label)
+                        Imagev2(g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,imgurl,props.data.label)
                     }else{
                         Imagev2(g,props.propchartscale.x,props.propchartscale.y,props.data,imgurl)
                     }
