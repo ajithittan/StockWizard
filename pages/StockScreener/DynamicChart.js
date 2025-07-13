@@ -11,6 +11,8 @@ const DynamicChart = forwardRef((props,ref) => {
 
     //console.log("dispchartpoints",dispchartpoints)
 
+    const groupElementsTogether = (inpelements) => Object.groupBy(inpelements, (item) => item.uxtime);
+
     const dispatchElements = (indx,close,uxtime,label) =>{
       //console.log(indx,close,uxtime,label)
       let chartElementToAdd = {
@@ -40,13 +42,21 @@ const DynamicChart = forwardRef((props,ref) => {
       });
   
       const uniquePropertiesArray = [...uniqueProperties].filter(item => item.includes("pattern_int_"));
+      const chartelements = []
   
       uniquePropertiesArray.map((eachUnq,index) => {
         const firstIndex = dispchartpoints.findIndex(item => eachUnq in item);
         const lastIndex = dispchartpoints.findLastIndex(item => eachUnq in item);
+        const itemstodispatch = {indx:index,x:dispchartpoints[firstIndex].close,y:dispchartpoints[firstIndex].uxtime,label:eachUnq.replace("pattern_int_", "")}
+        chartelements.push(itemstodispatch)
         dispatchElements(index,dispchartpoints[firstIndex].close,dispchartpoints[firstIndex].uxtime,eachUnq.replace("pattern_int_", ""))
         dispatchElements(index,dispchartpoints[lastIndex].close,dispchartpoints[lastIndex].uxtime,eachUnq.replace("pattern_int_", ""))
       })
+
+      if (chartelements.length){
+        console.log(groupElementsTogether(chartelements))
+      }
+
     }
 
     useEffect(() =>{

@@ -56,7 +56,7 @@ const MainScreenerContainer = () =>{
                                 <Grid container>
                                     {
                                         restOfItems?.map(item => (
-                                            <Grid  xs={12} sm={12} md={2} lg={2} xl={2}>
+                                            <Grid  xs={12} sm={12} md={3} lg={2.8} xl={2.8} >
                                                 <div ref={refSmallCont} >
                                                 {item}
                                                 </div>

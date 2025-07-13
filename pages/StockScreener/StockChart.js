@@ -3,17 +3,18 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import DynamicChart from './DynamicChart'
 import DynamicChartMini from './DynamicChartMini'
-import {ADD_ELEMENTS_TO_CHART} from '../../redux/reducers/chartDataSlice'
+import {ADD_ELEMENTS_TO_CHART,INITIAL_CHART_DATA} from '../../redux/reducers/chartDataSlice'
 import {useSelector,useDispatch} from 'react-redux'
 import {CLICKED_ROW_DATA,REMOVE_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
 import {getTickDataIntraDay} from '../../modules/api/StockMaster'
+import StreamScreenerData from './StreamScreenerData'
 
 const StockChart = forwardRef((props,ref) => {
 
     const [inpChartData,setInpChartData] = useState(null)
 
     useEffect(() =>{
-        getTickDataIntraDay(props.symbol,5).then(retval => setInpChartData(retval))
+        getTickDataIntraDay(props.symbol,1).then(retval => setInpChartData(retval))
     },[props])
 
     const dispatch = useDispatch()

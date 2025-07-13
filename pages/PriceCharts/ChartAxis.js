@@ -22,6 +22,8 @@ const ChartAxis = forwardRef((props,ref) => {
         if (props.data && props.chartdims && props.wh_props){
             const modifiedData = normalizeData(props.data)
             const svgElement = d3.select(ref.current)
+            svgElement.selectAll(".xaxis").remove()
+            svgElement.selectAll(".yaxis").remove()
             let g = svgElement.append("g")
             let x = undefined
             let noOfTicks = null

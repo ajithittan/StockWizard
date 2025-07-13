@@ -15,14 +15,14 @@ const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks,id) => {
     if (numberOfTicks){
         g.append("g")
         .attr("id", "xScale_" + id||0)
-        .attr("class", "xaxis")
+        //.attr("class", "x axis")
         .attr("transform", "translate(0," + yScale.range()[0] + ")")
         .call(axisBottom(xScale).ticks(numberOfTicks).tickFormat(timeFormat("%b")))   
     }else{
         let no_of_ticks = allticks ? 1 : noOfXTicks(width)
         g.append("g")
         .attr("id", "xScale")
-        .attr("class", "xaxis")
+        //.attr("class", "x axis")
         .attr("transform", "translate(0," + yScale.range()[0] + ")")
         .call(axisBottom(xScale).ticks(timeMonth.every(no_of_ticks)).tickFormat(timeFormat("%b")))    
     }

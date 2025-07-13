@@ -39,6 +39,7 @@ const IntraDayPatternScreener = (props) =>{
       setDtFrmStrm(null)
     },[rowcount])
 
+    //fix the below stream, this cannot work effectively like...
     useEffect(() =>{
             //close the stream and reset the data...will run into some race condition in future :)
             if (eventSourceRef.current) {

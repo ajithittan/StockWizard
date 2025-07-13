@@ -21,6 +21,7 @@ const chartDataSlice = createSlice({
     name: 'chartdata',
     initialState: {
         initialchartdata: null,
+        updatedchartdata: null,
         deletedchartelements:null,
         chartelements:null,
         loading:true
@@ -38,6 +39,18 @@ const chartDataSlice = createSlice({
                 state.initialchartdata = [action.payload]
             }
         },
+        UPDATED_CHART_DATA: (state=initialState, action) => {
+            if (state.initialchartdata){
+                const indx = state.initialchartdata.findIndex(item => item.symbol === action.payload.symbol)
+                if (indx > -1){
+                    state.initialchartdata[indx].chartfulldata = action.payload.chartdata
+                }else{
+                    state.initialchartdata.push(action.payload)
+                }
+            }else{
+                state.initialchartdata = [action.payload]
+            }
+        },        
         INITIAL_CHART_ELEMENTS:(state=initialState, action) => {
             if(action.payload){
                 if (state.chartelements){
@@ -121,5 +134,5 @@ const chartDataSlice = createSlice({
     }
 }) 
 
-export const {INITIAL_CHART_DATA,ADD_ELEMENTS_TO_CHART,HIDE_ADDED_ITEMS_IN_CHART,INITIAL_CHART_ELEMENTS,RESET_REMOVED_ITEMS} = chartDataSlice.actions;
+export const {INITIAL_CHART_DATA,ADD_ELEMENTS_TO_CHART,HIDE_ADDED_ITEMS_IN_CHART,INITIAL_CHART_ELEMENTS,RESET_REMOVED_ITEMS,UPDATED_CHART_DATA} = chartDataSlice.actions;
 export default chartDataSlice.reducer;

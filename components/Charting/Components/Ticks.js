@@ -26,14 +26,15 @@ const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks,id) => {
     if (numberOfTicks){
         g.append("g")
         .attr("id", "xScale_" + id||0)
-        .attr("class", "xaxis")
+        .attr("class", "x axis")
         .attr("transform", "translate(0," + yScale.range()[0] + ")")
         .call(axisBottom(xScale).ticks(numberOfTicks).tickFormat(timeFormat("%b")))   
     }else{
         let no_of_ticks = allticks ? 1 : noOfXTicks(width)
+        console.log(no_of_ticks)
         g.append("g")
         .attr("id", "xScale")
-        .attr("class", "xaxis")
+        .attr("class", "x axis")
         .attr("transform", "translate(0," + yScale.range()[0] + ")")
         .call(axisBottom(xScale).ticks(timeMonth.every(no_of_ticks)).tickFormat(timeFormat("%b")))    
     }
@@ -47,14 +48,14 @@ const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks,id) => {
 const yTicks = (g,xScale,yScale,width,height,id) => {
     g.append("g")
     .attr("id", "yScale" + id||0)
-    .attr("class", "y axis")
+    .attr("class", "yaxis")
     .attr("transform", "translate(" + xScale.range()[0] / 2 + ", 0)")
     .call(axisLeft(yScale).ticks(5))
 }
 const xTicksNum = (g,xScale,yScale,width,height,id) => {
     g.append("g")
     .attr("id", "xScale")
-    .attr("class", "x axis")
+    .attr("class", "xaxis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
     .call(axisBottom(xScale).ticks(5))
 }
@@ -63,7 +64,7 @@ const xTicksTime = (g,xScale,yScale,width,height,id,noofticks) => {
     let no_of_ticks = noofticks ? noofticks : absNoOfXTicksTime(width)
     g.append("g")
     .attr("id", "xScale")
-    .attr("class", "x axis")
+    .attr("class", "xaxis")
     .attr("transform", "translate(0," + yScale.range()[0] + ")")
     .call(axisBottom(xScale).ticks(no_of_ticks).tickFormat(timeFormat("%H:%M")))
 }
