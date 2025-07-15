@@ -1,13 +1,16 @@
 import { useState,useEffect,useRef } from "react"
 import Notification from './Notification';
-import DynamicTable from './DynamicTable'
 import DynamicTableMini from './DynamicTableMini'
+import DataGridViewComp from './DataGridViewComp'
 import {useSelector,useDispatch} from 'react-redux'
 import {CLICKED_ROW_DATA,ADD_STK_STREAM} from '../../redux/reducers/stockScreenerSlice'
 //generalize this function.. can be done.
 
 const IntraDayPatternScreener = (props) =>{
     const [showAll,setShowAll] = useState(false)
+    const [columnsToShow,setColumnsToShow] = useState(["symbol","datetime","type","pattern_int_ema_co_13_48_5","pattern_int_sma_co_50_200","pattern_int_macd_cross_14","pattern_int_diadx_14",
+                    "pattern_int_rsi_14","close","mcap"])
+    const [style,setStyle] = useState({density:"compact",cntmobcols:4,cntcols:10})
     const dispatch = useDispatch()
     const [dtFrmStrm, setDtFrmStrm] = useState(null)
     const [newDtFrmStrm, setNewDtFrmStrm] = useState([])
@@ -80,6 +83,10 @@ const IntraDayPatternScreener = (props) =>{
             dispatch(CLICKED_ROW_DATA({id:id,type:"STOCK_GRAPH",data:data}))
             dispatch(ADD_STK_STREAM([inpActions["value"][1][0]["symbol"]]))
           }else{
+            let id = "STOCK_GRAPH_" + inpActions["value"]
+            let data = {symbol:inpActions["value"],patterns:[],id:id}
+            dispatch(CLICKED_ROW_DATA({id:id,type:"STOCK_GRAPH",data:data}))
+            dispatch(ADD_STK_STREAM([inpActions["value"]]))
             console.log("huh?",inpActions)
           }
         }else if (inpActions["action"] === "showAllPattrns"){
@@ -95,7 +102,7 @@ const IntraDayPatternScreener = (props) =>{
               {
                 dtFrmStrm ? 
                   <div>
-                    <DynamicTable key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions}></DynamicTable>
+                    <DataGridViewComp key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions} columnsDisp={columnsToShow} style={style}></DataGridViewComp>
                     {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
                   </div> : 
                   <div>no data from backend yet....</div>

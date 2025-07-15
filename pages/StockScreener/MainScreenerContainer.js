@@ -36,14 +36,19 @@ const MainScreenerContainer = () =>{
                 {
                     mainContainer ? 
                         <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showMainContainer? null : "none"}}>
-                                <Paper component="fieldset"
+                                <Paper 
                                   elevation={0} sx={{height:dispsettings.maincontht + dispsettings.mainconthttp, overflow:"scroll" 
                                   ,scrollbarWidth: "none", // Hide the scrollbar for firefox
                                       '&::-webkit-scrollbar': {
                                           display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
                                       }}}
                                   ref={refMainCont}>
-                                  <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={() =>dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))}>{dispsettings?.showDataTp}&nbsp;Day Stock Patterns</a>&nbsp;&nbsp;</h4></legend>
+                                  {
+                                      /*** 
+                                       * <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={() =>dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))}>{dispsettings?.showDataTp}&nbsp;Day Stock Patterns</a>&nbsp;&nbsp;</h4></legend>
+                                      */
+                                  }    
+                                  
                                   {mainContainer}
                                 </Paper>
                         </Grid>
@@ -52,7 +57,7 @@ const MainScreenerContainer = () =>{
                 {
                     restOfItems? 
                     <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showBottomContainer? null : "none",marginRight:"3vh"}}>
-                            <Paper elevation={0} sx={{height:dispsettings.restcontht + dispsettings.restconthttp}}>
+                            <Paper elevation={0} sx={{height:dispsettings.restcontht + dispsettings.restconthttp,marginLeft:"10px",marginTop:"5px"}}>
                                 <Grid container>
                                     {
                                         restOfItems?.map(item => (
