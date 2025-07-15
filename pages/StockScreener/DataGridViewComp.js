@@ -127,7 +127,7 @@ const DataGridViewComp = (props) =>{
                         },
                     }}
                     initialState={{
-                        density: inpStyle.density,
+                        density: inpStyle?.density,
                     }}
                     headerHeight={30} 
                     rows={rowData || []}
