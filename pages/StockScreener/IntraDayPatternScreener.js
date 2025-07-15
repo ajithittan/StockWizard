@@ -87,7 +87,6 @@ const IntraDayPatternScreener = (props) =>{
             let data = {symbol:inpActions["value"],patterns:[],id:id}
             dispatch(CLICKED_ROW_DATA({id:id,type:"STOCK_GRAPH",data:data}))
             dispatch(ADD_STK_STREAM([inpActions["value"]]))
-            console.log("huh?",inpActions)
           }
         }else if (inpActions["action"] === "showAllPattrns"){
             dispatch(CLICKED_ROW_DATA({id:"INTRA_DAY",type:"INTRA_DAY",data:inpActions["value"]}))

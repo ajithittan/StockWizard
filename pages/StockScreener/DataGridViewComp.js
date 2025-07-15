@@ -104,9 +104,7 @@ const DataGridViewComp = (props) =>{
 
     return (
         <Box 
-        sx={{ width:"98%",height:"90vh", marginLeft:"10px",marginTop:"5px" }}>
-            {
-                <Box sx={{height:"100%",width: "98vw"}} margin={0.5}>         
+        sx={{ width:"98%",height:"90vh"}}>   
                 <DataGrid
                     sx={{
                         boxShadow: 2,
@@ -141,8 +139,6 @@ const DataGridViewComp = (props) =>{
                     onColumnHeaderDoubleClick={handleCellDoubleClick}
                     onColumnVisibilityModelChange={(newModel) => sm ? setHideColPhone(newModel) : setHideCol(newModel)}
                 />   
-            </Box>  
-            }
         </Box>  
         )
 }

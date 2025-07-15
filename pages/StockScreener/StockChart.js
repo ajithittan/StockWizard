@@ -8,10 +8,12 @@ import {useSelector,useDispatch} from 'react-redux'
 import {CLICKED_ROW_DATA,REMOVE_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
 import {getTickDataIntraDay} from '../../modules/api/StockMaster'
 import StreamScreenerData from './StreamScreenerData'
+import DynamicChartNotification from './DynamicChartNotification'
 
 const StockChart = forwardRef((props,ref) => {
 
     const [inpChartData,setInpChartData] = useState(null)
+    const [chartNotify,setChartNotify] = useState(null)
 
     useEffect(() =>{
         getTickDataIntraDay(props.symbol,1).then(retval => setInpChartData(retval))
@@ -44,13 +46,23 @@ const StockChart = forwardRef((props,ref) => {
         }
     }
 
+    const callBackFunction = (inpData) =>{
+        if(inpData.type === "notify"){
+            setChartNotify(inpData.msg)
+        }
+    }
+
     return(
         <>
             {
                 props.mini ? 
-                <DynamicChartMini key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} actions={handleClick} />: 
-                <DynamicChart key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref}/>
+                <DynamicChartMini key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} actions={handleClick} callBackFunction={callBackFunction}/>: 
+                <>
+                    <DynamicChartNotification key={chartNotify} notification={chartNotify} symbol={props.symbol}></DynamicChartNotification>
+                    <DynamicChart key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} callBackFunction={callBackFunction}/>
+                </>
             }
+
         </>
     )
 })

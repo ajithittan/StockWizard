@@ -7,8 +7,9 @@ const stockScreenerSlice = createSlice({
         rowcount:50,
         loading:true,
         clkctxdata:[{id:"INTRA_DAY",type:"INTRA_DAY"}],
-        dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:75,mainconthttp:"vh",restcontht:"au",restconthttp:"to",showDataTp:"PRIORITY"},
+        dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:80,mainconthttp:"vh",restcontht:"au",restconthttp:"to",showDataTp:"PRIORITY"},
         dispchartpoints:null,
+        displaynotifications:null,
         streamstocks:null
     },
     reducers: {
@@ -55,8 +56,20 @@ const stockScreenerSlice = createSlice({
             //console.log("ADD_STK_CHART_POINTS",action.payload)
             state.dispchartpoints = action.payload
         },
+        ADD_NOTIFICATIONS: (state=initialState, action) => {
+            if (state.displaynotifications){
+                const indx = state.displaynotifications.findIndex(item => item.symbol === action.payload.symbol)
+                if (indx > -1){
+                    state.displaynotifications[indx].notification = action.payload.notification
+                }else{
+                    state.displaynotifications.push(action.payload)
+                }
+            }else{
+                state.displaynotifications = [action.payload]
+            }
+        },
     }
 }) 
 
-export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS} = stockScreenerSlice.actions;
+export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS,ADD_NOTIFICATIONS} = stockScreenerSlice.actions;
 export default stockScreenerSlice.reducer;

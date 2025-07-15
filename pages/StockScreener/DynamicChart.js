@@ -5,6 +5,7 @@ import ChartEntry from '../PriceCharts/ChartEntry'
 import {ADD_ELEMENTS_TO_CHART} from '../../redux/reducers/chartDataSlice'
 import {useSelector,shallowEqual,useDispatch} from 'react-redux'
 
+
 const DynamicChart = forwardRef((props,ref) => {
     const dispatch = useDispatch()
     const {dispchartpoints} = useSelector(state => state.stockscreener)
@@ -54,9 +55,15 @@ const DynamicChart = forwardRef((props,ref) => {
       })
 
       if (chartelements.length){
-        console.log(groupElementsTogether(chartelements))
+        const moment = require('moment');
+        let msgobj = {}
+        let notificationobj = {}
+        msgobj.symbol = props.symbol
+        msgobj.message = chartelements.map(({ label, y }) => ({ label, dateime:moment.unix(y/1000).format("YYYY-MM-DD HH:mm:ss") }))
+        notificationobj.type="notify"
+        notificationobj.msg=msgobj
+        props?.callBackFunction(notificationobj)
       }
-
     }
 
     useEffect(() =>{
@@ -113,7 +120,9 @@ const DynamicChart = forwardRef((props,ref) => {
     */
      
     return(
+        <>
         <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
+        </>
     )
 })
 

@@ -6,6 +6,7 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
+import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import ListSharpIcon from '@mui/icons-material/ListSharp';
 import {useDispatch} from 'react-redux'
@@ -21,7 +22,8 @@ const SpeedDialControl = (props) => {
   const handleChange = (inpval) => dispatch(UPD_ROW_COUNTS(inpval.target.value))
   const handleShowAll = () => dispatch(UPD_DISP_SETTINGS({"showMainContainer":true}))
   const handleShowType = (inpTp) => dispatch(UPD_DISP_SETTINGS({"showDataTp":inpTp}))
-
+  const handleHideAll = () => dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))
+  
   const DropDown = () => {
     return (
       <Select
@@ -41,6 +43,7 @@ const SpeedDialControl = (props) => {
   const actions = [
     { icon: <DropDown/>, name: 'Rows' , size:{width: 55} },
     { icon: <VisibilitySharpIcon onClick={handleShowAll}/>, name: 'Show' ,  },
+    { icon: <VisibilityOffSharpIcon onClick={handleHideAll}/>, name: 'Hide' ,  },
     { icon: <PriorityHighOutlinedIcon onClick={() => handleShowType("PRIORITY")}/>, name: 'Priority Patterns' ,  },
     { icon: <ListSharpIcon onClick={() => handleShowType("ALL")}/>, name: 'All Patterns' ,  }
   ];

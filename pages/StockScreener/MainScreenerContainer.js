@@ -38,7 +38,7 @@ const MainScreenerContainer = () =>{
                         <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showMainContainer? null : "none"}}>
                                 <Paper 
                                   elevation={0} sx={{height:dispsettings.maincontht + dispsettings.mainconthttp, overflow:"scroll" 
-                                  ,scrollbarWidth: "none", // Hide the scrollbar for firefox
+                                  , marginLeft:"20px",marginTop:"10px",scrollbarWidth: "none", // Hide the scrollbar for firefox
                                       '&::-webkit-scrollbar': {
                                           display: 'none', // Hide the scrollbar for WebKit browsers (Chrome, Safari, Edge, etc.)
                                       }}}
