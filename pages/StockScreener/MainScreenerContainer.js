@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import ScreenerList from './ScreenerList'
 import Paper from '@mui/material/Paper';
 import {useSelector,useDispatch} from 'react-redux'
+import Divider from '@mui/material/Divider';
 import {UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT} from '../../redux/reducers/stockScreenerSlice'
 
 const MainScreenerContainer = () =>{
@@ -56,17 +57,16 @@ const MainScreenerContainer = () =>{
                 }
                 {
                     restOfItems? 
-                    <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showBottomContainer? null : "none",marginRight:"3vh"}}>
+                    <Grid xs={12} sm={12} md={12} lg={12} xl={12} sx={{display: dispsettings.showBottomContainer? null : "none"}}>
                             <Paper elevation={0} sx={{height:dispsettings.restcontht + dispsettings.restconthttp,marginLeft:"10px",marginTop:"5px"}}>
-                                <Grid container>
+                                <Divider></Divider>
+                                <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                                     {
                                         restOfItems?.map(item => (
-                                            <Grid  xs={12} sm={12} md={3} lg={2.8} xl={2.8} >
-                                                <div ref={refSmallCont} >
+                                            <Grid  xs={12} sm={12} md={6} lg={3} xl={3} ref={refSmallCont} marginTop={1}>
                                                 {item}
-                                                </div>
                                             </Grid>
-                                            ))
+                                        ))
                                     }
                                 </Grid>    
                             </Paper>

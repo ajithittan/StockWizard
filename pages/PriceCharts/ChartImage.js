@@ -14,9 +14,11 @@ const ChartImage = forwardRef((props,ref) =>{
                 let g = svgElement.append("g")
                 if (props.data.hasOwnProperty('uxtime')){
                     if (props.data.label){
+                        const id = "imgid_" + props.data.uxtime
+                        svgElement.selectAll("#" + id).remove();
                         //console.log("in here before charting the course",g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,props.data.label)
                         //Textv2(g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,props.data.label)
-                        Imagev2(g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,imgurl,props.data.label)
+                        Imagev2(g,props.propchartscale.x,props.propchartscale.y,props.data.uxtime,props.data.close,imgurl,props.data.label,id)
                     }else{
                         Imagev2(g,props.propchartscale.x,props.propchartscale.y,props.data,imgurl)
                     }

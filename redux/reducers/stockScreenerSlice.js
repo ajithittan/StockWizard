@@ -7,7 +7,7 @@ const stockScreenerSlice = createSlice({
         rowcount:50,
         loading:true,
         clkctxdata:[{id:"INTRA_DAY",type:"INTRA_DAY"}],
-        dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:80,mainconthttp:"vh",restcontht:"au",restconthttp:"to",showDataTp:"PRIORITY"},
+        dispsettings:{showMainContainer:true,showBottomContainer:true,maincontht:90,mainconthttp:"vh",restcontht:"au",restconthttp:"to",showDataTp:"PRIORITY"},
         dispchartpoints:null,
         displaynotifications:null,
         streamstocks:null
@@ -42,7 +42,7 @@ const stockScreenerSlice = createSlice({
             state.dispsettings = {...state.dispsettings,...settingval}
         },
         SHOW_BOTTOM_CONT: (state=initialState, action) => {
-            let settingval = {maincontht:70,mainconthttp:"vh",showBottomContainer:true}
+            let settingval = {maincontht:78,mainconthttp:"vh",showBottomContainer:true}
             state.dispsettings = {...state.dispsettings,...settingval}
         },
         ADD_STK_STREAM: (state=initialState, action) => {

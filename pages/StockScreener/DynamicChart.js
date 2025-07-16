@@ -59,7 +59,7 @@ const DynamicChart = forwardRef((props,ref) => {
         let msgobj = {}
         let notificationobj = {}
         msgobj.symbol = props.symbol
-        msgobj.message = chartelements.map(({ label, y }) => ({ label, dateime:moment.unix(y/1000).format("YYYY-MM-DD HH:mm:ss") }))
+        msgobj.message = chartelements.map(({ label, y }) => ({ label, dateime:moment.unix(y/1000).format("hh:mm A") }))
         notificationobj.type="notify"
         notificationobj.msg=msgobj
         props?.callBackFunction(notificationobj)

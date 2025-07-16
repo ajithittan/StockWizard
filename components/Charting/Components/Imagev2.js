@@ -1,8 +1,9 @@
 import * as d3 from "d3";
 
-const Imagev2 = (g,xScale,yScale,xval,yval,imageurl,onclickshow) =>{
+const Imagev2 = (g,xScale,yScale,xval,yval,imageurl,onclickshow,id) =>{
     g.append("svg:image")
     .attr("xlink:href", imageurl)
+    .attr("id",id)
     .attr("width", 20)
     .attr("height", 20)
     .attr("x", xScale(xval))

@@ -56,9 +56,10 @@ const StockChart = forwardRef((props,ref) => {
         <>
             {
                 props.mini ? 
-                <DynamicChartMini key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} actions={handleClick} callBackFunction={callBackFunction}/>: 
+                <DynamicChartMini key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} actions={handleClick} callBackFunction={callBackFunction} 
+                    notificationcomp={<DynamicChartNotification key={chartNotify} notification={chartNotify} symbol={props.symbol} ref={ref}></DynamicChartNotification>}/>: 
                 <>
-                    <DynamicChartNotification key={chartNotify} notification={chartNotify} symbol={props.symbol}></DynamicChartNotification>
+                    <DynamicChartNotification key={chartNotify} notification={chartNotify} symbol={props.symbol} ref={ref}></DynamicChartNotification>
                     <DynamicChart key={props.symbol} chartdata={inpChartData} symbol={props.symbol} ref={ref} callBackFunction={callBackFunction}/>
                 </>
             }

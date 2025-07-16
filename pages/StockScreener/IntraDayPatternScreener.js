@@ -10,7 +10,7 @@ const IntraDayPatternScreener = (props) =>{
     const [showAll,setShowAll] = useState(false)
     const [columnsToShow,setColumnsToShow] = useState(["symbol","datetime","type","pattern_int_ema_co_13_48_5","pattern_int_sma_co_50_200","pattern_int_macd_cross_14","pattern_int_diadx_14",
                     "pattern_int_rsi_14","close","mcap"])
-    const [style,setStyle] = useState({density:"compact",cntmobcols:4,cntcols:10})
+    const [style,setStyle] = useState({density:"compact",cntmobcols:6,cntcols:10})
     const dispatch = useDispatch()
     const [dtFrmStrm, setDtFrmStrm] = useState(null)
     const [newDtFrmStrm, setNewDtFrmStrm] = useState([])

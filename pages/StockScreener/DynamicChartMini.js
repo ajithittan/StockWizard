@@ -4,6 +4,7 @@ import ChartEntry from '../PriceCharts/ChartEntry'
 import {useSelector,useDispatch} from 'react-redux'
 import {UPD_DISP_SETTINGS} from '../../redux/reducers/stockScreenerSlice'
 import Paper from '@mui/material/Paper';
+import DynamicChart from './DynamicChart'
 
 const DynamicChartMini = forwardRef((props,ref) =>{
   const dispatch = useDispatch()
@@ -30,8 +31,8 @@ const DynamicChartMini = forwardRef((props,ref) =>{
     >
       <legend align="center"><h4>&nbsp;&nbsp;<a href="#" onClick={handleClick}>{props.symbol}</a>
       <HighlightOffOutlinedIcon onClick={removeFromList} sx={{cursor:"pointer"}}></HighlightOffOutlinedIcon>&nbsp;&nbsp;</h4></legend>
-      <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
-
+      <DynamicChart key={props.symbol} chartdata={props.chartdata} symbol={props.symbol} ref={ref} callBackFunction={props.callBackFunction}/>
+      {props?.notificationcomp}
       </Paper>
   )
 })

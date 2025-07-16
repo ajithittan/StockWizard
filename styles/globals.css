@@ -998,3 +998,26 @@ body {
 .styled-table tbody tr:last-of-type {
   border-bottom: 2px solid #009879;
 }
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%); /* Or a suitable value for continuous scrolling */
+  }
+}
+
+.marquee-container {
+  overflow: hidden; /* Hide content outside the container */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.marquee-content {
+  display: inline-block; /* Allow content to scroll horizontally */
+  animation: marquee-scroll 10s linear infinite; /* Apply the animation */
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}

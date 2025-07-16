@@ -24,6 +24,7 @@ const chartDataSlice = createSlice({
         updatedchartdata: null,
         deletedchartelements:null,
         chartelements:null,
+        charttxtnotifications:null,
         loading:true
     },
     reducers: {

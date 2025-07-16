@@ -1,9 +1,9 @@
 import {Box} from '@mui/material';
-import { useEffect, useState} from 'react'
+import { useEffect, useState , forwardRef} from 'react'
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 
-const DynamicChartNotification = (props)=>{
+const DynamicChartNotification = forwardRef((props,ref)=>{
 
     const [notifications,setNotifications] = useState([])
 
@@ -12,6 +12,10 @@ const DynamicChartNotification = (props)=>{
             setNotifications(props.notification.message)
         }
     },[props.notification])
+
+    const handlehover =(e) =>{
+        console.log("eeeeee",e.target.animationPlayState)
+    }
 
     return(
         <>
@@ -25,18 +29,21 @@ const DynamicChartNotification = (props)=>{
             <Typography variant="body2" >
                 {props.symbol}&nbsp;&nbsp;&nbsp;
             </Typography>
-            {
-                notifications.map(item => 
-                        <Typography variant="overline" >
-                            &nbsp;{item.label} - {item.dateime}&nbsp;|
-                        </Typography>
-                    )
-            }
-            
+            <div className="marquee-container">
+          <div className="marquee-content">
+                {
+                    notifications.map(item => 
+                            <Typography variant="overline" >
+                                &nbsp;{item.label} - {item.dateime}&nbsp;|
+                            </Typography>
+                        )
+                }
+          </div>
+          </div>
         </Box>
         <Divider></Divider>
         </>
     )
-}
+})
 
 export default DynamicChartNotification
