@@ -3,11 +3,12 @@ import Grid from '@mui/material/Grid';
 import ScreenerList from './ScreenerList'
 import Paper from '@mui/material/Paper';
 import {useSelector,useDispatch} from 'react-redux'
-import Divider from '@mui/material/Divider';
-import {UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT} from '../../redux/reducers/stockScreenerSlice'
+import Chip from '@mui/material/Chip';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import {HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,REMOVE_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
 import Stocks from '../stocks' 
 import IntraDayPatternScreener from './IntraDayPatternScreener'
-import {SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import {SET_DASH_STOCKS,REM_FRM_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
 
 const MainScreenerContainer = () =>{
     const dispatch = useDispatch()
@@ -75,6 +76,21 @@ const MainScreenerContainer = () =>{
                         </Grid>
                         :null   
                 }
+                <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
+                      {
+                          clkctxdata.filter(item => item.type === "STOCK_GRAPH").map(item => item?.data)?.map(item =>                                     
+                            <Chip
+                            variant={"outlined"}
+                            label={item.symbol}
+                            color= {"primary"}
+                            size="small"
+                            cursor="pointer"
+                            //onClick={() => addNewDataFeed(data)}
+                            onDelete={() => {dispatch(REM_FRM_DASH_STOCKS(item.symbol)),dispatch(REMOVE_ROW_DATA(item.id))}}
+                            deleteIcon={<DeleteOutlinedIcon />}
+                          />)
+                      }      
+                </Grid>    
                 {
                     restOfItems? 
                     <div style={{display: dispsettings.showBottomContainer? null : "none",height:dispsettings.restcontht + dispsettings.restconthttp,width:"100%"}}>

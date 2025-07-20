@@ -27,6 +27,15 @@ const stockScreenerSlice = createSlice({
                 }
             }
         },
+        SELECT_ROW_DATA: (state=initialState, action) => {
+            if (action.payload){
+                if (!state.clkctxdata){
+                    state.clkctxdata = [action.payload]
+                }else{
+                    state.clkctxdata = [...state.clkctxdata.filter(item => item.id !== action.payload.id),action.payload]
+                }
+            }
+        },
         REMOVE_ROW_DATA: (state=initialState, action) => {
             if (action.payload){
                 state.clkctxdata = [...state.clkctxdata.filter(item => item.id !== action.payload)]
@@ -71,5 +80,6 @@ const stockScreenerSlice = createSlice({
     }
 }) 
 
-export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS,ADD_NOTIFICATIONS} = stockScreenerSlice.actions;
+export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SELECT_ROW_DATA,
+    SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS,ADD_NOTIFICATIONS} = stockScreenerSlice.actions;
 export default stockScreenerSlice.reducer;

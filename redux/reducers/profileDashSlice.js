@@ -93,6 +93,18 @@ const profileDashSlice = createSlice({
                 }    
             }
         },
+        ADD_TO_DASH_STOCKS: (state=initialState, action) => {
+            if (state.dashboardstocks){
+                state.dashboardstocks = [...new Set([...state.dashboardstocks,...action.payload])]
+            }else{
+                state.dashboardstocks = [...new Set([...action.payload])]
+            }
+        },   
+        REM_FRM_DASH_STOCKS: (state=initialState, action) => {
+            if(action.payload){
+                state.dashboardstocks = state.dashboardstocks.filter(item => item !== action.payload)
+            }
+        },         
         UPD_DASH_OPTIONS : (state=initialState, action) => {
             const keys = Object.keys(action.payload);
             keys.map(item => state.dashboardoptions[item] = action.payload[item])
@@ -123,5 +135,5 @@ const profileDashSlice = createSlice({
 
 export const {SET_DASHLAYOUT,SET_INITIAL,SET_DASH_STOCKS,SET_SECTOR,
               SET_DASH_SECTOR,SET_DASH_SLIDER_DUR,SET_WATCH_LIST,UPD_WATCH_LIST,
-              SET_WATCH_LIST_CONTEXT,DEL_WATCH_LIST,UPD_DASH_OPTIONS} = profileDashSlice.actions;
+              SET_WATCH_LIST_CONTEXT,DEL_WATCH_LIST,UPD_DASH_OPTIONS,ADD_TO_DASH_STOCKS,REM_FRM_DASH_STOCKS} = profileDashSlice.actions;
 export default profileDashSlice.reducer;

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react"
+import {useEffect, useState,cloneElement} from "react"
 import {Box} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -38,12 +38,19 @@ const DataGridViewComp = (props) =>{
         hideColumns(colArr)
     }
 
+    let cloneAndAddParams = (inpObj,newProps) => {
+        return cloneElement(
+            inpObj, // The original component instance
+            newProps // The object containing new props
+        )
+    }
+
     //make this generic move this to the caller.
     const getIconForAction = (field) =>{
-        if (field === "symbol"){
-            return (row) => <>{row["row"]["symbol"]}&nbsp;
-                <ShowChartIcon sx={{cursor:"pointer",marginLeft:"auto"}} 
-                    onClick={() => handleClick(row["row"]["symbol"])} />
+        if (field === "actions"){
+            return (row) => <>
+            {cloneAndAddParams(props.comps,{data:row["row"]["symbol"]})}
+            <ShowChartIcon sx={{cursor:"pointer",marginLeft:"auto"}} onClick={() => handleClick(row["row"]["symbol"])} />
             </>
         }
     }
@@ -60,8 +67,9 @@ const DataGridViewComp = (props) =>{
             new Set(inpData?.flatMap((obj) => Object.keys(obj)))
         );
         colsTodisp.map(item =>{
+            let flexval = item === "actions" ? 0:1
             let col = {field: item, variant:"contained", headerName: formatheader(item), headerClassName: 'super-app-theme--header', align:'left' , 
-                        headerAlign: 'left', flex: 1, renderCell:getIconForAction(item)}
+                        headerAlign: 'left', flex:flexval, renderCell:getIconForAction(item)}
             arrCols.push(col)
         })
         let remaincols = headers.filter(item => !colsTodisp.includes(item))

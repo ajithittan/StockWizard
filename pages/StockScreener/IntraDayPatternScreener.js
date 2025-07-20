@@ -3,14 +3,16 @@ import Notification from './Notification';
 import DynamicTableMini from './DynamicTableMini'
 import DataGridViewComp from './DataGridViewComp'
 import {useSelector,useDispatch} from 'react-redux'
-import {CLICKED_ROW_DATA,ADD_STK_STREAM} from '../../redux/reducers/stockScreenerSlice'
+import {CLICKED_ROW_DATA,ADD_STK_STREAM,SELECT_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
+import SelectionCheckBox from './SelectionCheckBox'
+import {ADD_TO_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
 //generalize this function.. can be done.
 
 const IntraDayPatternScreener = (props) =>{
     const [showAll,setShowAll] = useState(false)
-    const [columnsToShow,setColumnsToShow] = useState(["symbol","datetime","type","pattern_int_ema_co_13_48_5","pattern_int_sma_co_50_200","pattern_int_macd_cross_14","pattern_int_diadx_14",
+    const [columnsToShow,setColumnsToShow] = useState(["actions","symbol","datetime","type","pattern_int_ema_co_13_48_5","pattern_int_sma_co_50_200","pattern_int_macd_cross_14","pattern_int_diadx_14",
                     "pattern_int_rsi_14","close","mcap"])
-    const [style,setStyle] = useState({density:"compact",cntmobcols:6,cntcols:10})
+    const [style,setStyle] = useState({density:"compact",cntmobcols:6,cntcols:columnsToShow.length})
     const dispatch = useDispatch()
     const [dtFrmStrm, setDtFrmStrm] = useState(null)
     const [newDtFrmStrm, setNewDtFrmStrm] = useState([])
@@ -21,12 +23,13 @@ const IntraDayPatternScreener = (props) =>{
     const [grpByCol,setGrpByCol] = useState("symbol")
     const {rowcount} = useSelector(state => state.stockscreener)
     const {dispsettings} = useSelector(state => state.stockscreener)
-    
-    
+  
     useEffect(() =>{
       if (newDtFrmStrm && newDtFrmStrm.length > 0){
         if (!dtFrmStrm){
-          setDtFrmStrm([...newDtFrmStrm])
+          let dataForGrid = [...newDtFrmStrm]
+          dataForGrid = dataForGrid.map(item =>({...item,actions:""}))
+          setDtFrmStrm([...dataForGrid])
         }
         else{
           setMsgNotification(newDtFrmStrm.length - dtFrmStrm.length)
@@ -70,6 +73,14 @@ const IntraDayPatternScreener = (props) =>{
             };  
       },[rowcount,dispsettings?.showDataTp])
 
+      const addStockCharts = (stksymbol) =>{
+        let id = "STOCK_GRAPH_" + stksymbol
+        let data = {symbol:stksymbol,patterns:null,id:id}
+        dispatch(SELECT_ROW_DATA({id:id,type:"STOCK_GRAPH",data:data}))
+        dispatch(ADD_STK_STREAM([stksymbol]))
+        dispatch(ADD_TO_DASH_STOCKS([stksymbol]))
+      }
+
       const reactToActions = (inpActions) =>{
         if (inpActions["action"] === "chggroupby"){
           setGrpByCol(inpActions["value"])
@@ -93,6 +104,14 @@ const IntraDayPatternScreener = (props) =>{
          }
       }
 
+      const callbacktoadd = (inpval) => addStockCharts(inpval)
+
+      const getComponentsForAction = () =>{
+        return (
+          <SelectionCheckBox selector={(state) => state?.dashboardlayout?.dashboardstocks} callbackfn={callbacktoadd}></SelectionCheckBox>
+        )
+      }
+
       return (
         <>
           {
@@ -101,8 +120,9 @@ const IntraDayPatternScreener = (props) =>{
               {
                 dtFrmStrm ? 
                   <>
-                    <DataGridViewComp key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions} columnsDisp={columnsToShow} style={style}></DataGridViewComp>
-                    {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
+                      <DataGridViewComp key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions} columnsDisp={columnsToShow} style={style} 
+                                    comps={getComponentsForAction()}></DataGridViewComp>
+                      {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
                   </> : 
                   <div>no data from backend yet....</div>
               }
