@@ -25,7 +25,7 @@ const ChartsForDashBoard = (props) => {
 
     useEffect (() =>{
         if(stockList && stockList.length > 0){
-            retrieveChartData(dashboardsliderdur)
+            retrieveChartData(dashboardsliderdur.type,dashboardsliderdur.val)
         }
     },[stockList,stockquotes])
 
@@ -43,11 +43,12 @@ const ChartsForDashBoard = (props) => {
         return getStockPerChange(cacheKey,{'stock':stkSym,'duration':dur,'rollup':1,'unit':"M",'byType':"C"})
     }
 
-    const retrieveChartData = (duration) =>{
+    const retrieveChartData = (type,duration) =>{
         chartData = []
         //get quotes from cache as it is already available, no need to go to db.
-        if (duration === -1){
-            setChartData([...stockquotes.map(item => ({"yAxis":item.symbol,"xAxis":+item.perchange}))])
+        if (type === "D"){
+            console.log("idk what the heck?")
+            //setChartData([...stockquotes.map(item => ({"yAxis":item.symbol,"xAxis":+item.perchange}))])
         }else{
             for(let i=0;i < stockList.length; i++){
                 getStkDataFromBackEnd(stockList[i],duration).then(result => {
@@ -62,7 +63,7 @@ const ChartsForDashBoard = (props) => {
 
     const changeDuration = (duration) =>{
         if (stockList && stockList.length > 0){
-            retrieveChartData(duration)
+            retrieveChartData(duration.type,duration.val)
         }
         dispatch(SET_DASH_SLIDER_DUR(duration))
     }

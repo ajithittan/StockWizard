@@ -44,7 +44,8 @@ const profileDashSlice = createSlice({
         dashboardstocks: null,
         dashboardsector: false,
         dashboardselsector: 0,
-        dashboardsliderdur:3,
+        dashboardoptions:{addstks:true},
+        dashboardsliderdur:{type:"M",val:3},
         watchlist:null,
         watchlistincontext:null,
         loading:true
@@ -92,6 +93,10 @@ const profileDashSlice = createSlice({
                 }    
             }
         },
+        UPD_DASH_OPTIONS : (state=initialState, action) => {
+            const keys = Object.keys(action.payload);
+            keys.map(item => state.dashboardoptions[item] = action.payload[item])
+        },
         DEL_WATCH_LIST: (state=initialState, action) => {
             if(action.payload){
                 if (state.watchlist){
@@ -99,6 +104,7 @@ const profileDashSlice = createSlice({
                 }    
             }
         }},
+
     extraReducers:(builder)=>{
         builder
         .addCase(getDashboardLayout.pending,(state)=>{
@@ -117,5 +123,5 @@ const profileDashSlice = createSlice({
 
 export const {SET_DASHLAYOUT,SET_INITIAL,SET_DASH_STOCKS,SET_SECTOR,
               SET_DASH_SECTOR,SET_DASH_SLIDER_DUR,SET_WATCH_LIST,UPD_WATCH_LIST,
-              SET_WATCH_LIST_CONTEXT,DEL_WATCH_LIST} = profileDashSlice.actions;
+              SET_WATCH_LIST_CONTEXT,DEL_WATCH_LIST,UPD_DASH_OPTIONS} = profileDashSlice.actions;
 export default profileDashSlice.reducer;

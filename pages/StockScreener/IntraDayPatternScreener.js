@@ -100,12 +100,13 @@ const IntraDayPatternScreener = (props) =>{
             <>
               {
                 dtFrmStrm ? 
-                  <div>
+                  <>
                     <DataGridViewComp key={dtFrmStrm+grpByCol} jsonData={dtFrmStrm} groupByColumn={grpByCol} actions={reactToActions} columnsDisp={columnsToShow} style={style}></DataGridViewComp>
                     {showNotification && <Notification key={showNotification+msgNotification} message={msgNotification} onclickshow={appendNewUpdates} visible={showNotification}/>}
-                  </div> : 
+                  </> : 
                   <div>no data from backend yet....</div>
               }
+              
             </>
           }
         </>

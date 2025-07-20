@@ -1015,7 +1015,7 @@ body {
 
 .marquee-content {
   display: inline-block; /* Allow content to scroll horizontally */
-  animation: marquee-scroll 10s linear infinite; /* Apply the animation */
+  animation: marquee-scroll 20s linear infinite; /* Apply the animation */
 }
 
 .marquee-container:hover .marquee-content {

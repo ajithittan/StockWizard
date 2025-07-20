@@ -13,6 +13,7 @@ const index = (props) =>{
     const [stkQuotes,setStkQuote] = useState(null)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
     const {dashboardstocks} = useSelector((state) => state.dashboardlayout)
+    const {dashboardoptions} = useSelector((state) => state.dashboardlayout)
     const ref = useRef()
     const refModal = useRef()
     const [showModal,setShowModal] = useState(false)
@@ -67,7 +68,7 @@ const index = (props) =>{
                 <ModalBox ref={refModal} content={getModalContent("AAPL")} onClose={() => setShowModal(false)} />
             </Grid> 
         : null}
-        {dashboardsector ? null : <AddPositions initialSetOfStocks={stocks}></AddPositions>}
+        {dashboardsector ? null : dashboardoptions["addstks"] ? <AddPositions initialSetOfStocks={stocks}></AddPositions> : null}
       </Grid>
       </>
   )

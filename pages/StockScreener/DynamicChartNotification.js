@@ -41,7 +41,6 @@ const DynamicChartNotification = forwardRef((props,ref)=>{
           </div>
           </div>
         </Box>
-        <Divider></Divider>
         </>
     )
 })

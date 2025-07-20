@@ -104,7 +104,7 @@ const DataGridViewComp = (props) =>{
 
     return (
         <Box 
-        sx={{ width:"98%",height:"90vh"}}>   
+        sx={{height:"100vh"}}>   
                 <DataGrid
                     sx={{
                         boxShadow: 2,

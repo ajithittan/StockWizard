@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 const DurationPicker = (props) =>{
 
     const [options,setOptions] = useState(null)
-    const [sizeOfGrid,setSizeOfGrid] = useState(1.6)
+    const [sizeOfGrid,setSizeOfGrid] = useState(null)
 
     useEffect(() =>{
       if(props.inpvals){
@@ -13,34 +13,43 @@ const DurationPicker = (props) =>{
       }else{
         const inpvals = [
           {
-              value: 1,
+            value: {type:"D",val:"1"},
+            label: '1D',
+          },  
+          {
+            value: {type:"D",val:"5"},
+            label: '5D',
+          },  
+          {
+              value: {type:"M",val:"1"},
               label: '1M',
           },  
           {
-            value: 3,
+            value: {type:"M",val:"3"},
             label: '3M',
           },
           {
-              value: 6,
+              value: {type:"M",val:"6"},
               label: '6M',
           },
           {
-              value: 12,
+              value: {type:"M",val:"12"},
               label: '1Y',
             },
             {
-              value: 24,
+              value: {type:"M",val:"24"},
               label: '2Y',
             },
             {
-              value: 60,
+              value: {type:"M",val:"60"},
               label: '5Y',
             },
             {
-              value: 120,
+              value: {type:"M",val:"120"},
               label: '10Y',
             },   
         ]
+        setSizeOfGrid(12/inpvals.length)
         setOptions(inpvals)
       }
     },[props.inpvals])

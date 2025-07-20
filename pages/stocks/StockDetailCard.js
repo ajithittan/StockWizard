@@ -17,8 +17,11 @@ import StockDetailCardNews from './StockDetailCardNews'
 import {getAlerts} from '../../redux/reducers/stockAlertsSlice'
 import { useDispatch} from 'react-redux'
 import ChartEntry from '../PriceCharts/ChartEntry'
+import getStockPriceHist from '../../modules/cache/cacheprice'
+import {getTickDataIntraDay} from '../../modules/api/StockMaster'
 
 const StockDetailCard = (props,ref) => {
+    const [chartData,setChartData] = useState(null)
     const dispatch = useDispatch()
     const router = useRouter()
     const [stock,setStock] = useState(null)
@@ -26,7 +29,7 @@ const StockDetailCard = (props,ref) => {
     const [companySubHeader, setCompanySubHeader] = useState(null)
     const sm = useMediaQuery("(max-width: 960px)");
     const {dashboardsliderdur} = useSelector((state) => state.dashboardlayout)
-    const [changeDur,setChangeDur] = useState(3)
+    const [changeDur,setChangeDur] = useState(null)
 
     const stkQuote = useSelector(state => state.streamingquotes?.streamdata?.find(m=> {
         return m.symbol === props.stock
@@ -43,10 +46,17 @@ const StockDetailCard = (props,ref) => {
     }
 
     useEffect(() =>{
-        if (dashboardsliderdur > 0){
-            setChangeDur(dashboardsliderdur)
+        if (changeDur){
+            getChartData(props.stock,changeDur.val,changeDur.type)
         }
-    },[dashboardsliderdur])
+    },[changeDur])
+
+    useEffect(() =>{
+        if (props.stock && dashboardsliderdur && dashboardsliderdur.val > 0){
+            //setChangeDur(dashboardsliderdur.val)
+            getChartData(props.stock,dashboardsliderdur.val,dashboardsliderdur.type)
+        }
+    },[dashboardsliderdur,props.stock])
 
     useEffect(() => {
         if(props.stock){
@@ -55,11 +65,22 @@ const StockDetailCard = (props,ref) => {
         }
     },[props.stock])
 
-    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur:changeDur || dashboardsliderdur || 3}})
+    const showPriceChart = (stk) => router.push({pathname: '/PriceCharts',query: {stock:stk,dur: changeDur ? JSON.stringify(changeDur) : JSON.stringify(dashboardsliderdur)}})
+
+    const getChartData = async (stock,duration,type) =>{
+        if (type === "M"){
+            let cacheKey = stock + "_" + duration + "_PRICE"
+            getStockPriceHist(cacheKey,{stock:stock,duration:duration}).then(
+                res => res?.length ? setChartData(res) : null
+            )
+        }else if (type === "D"){
+            getTickDataIntraDay(stock,1).then(retval => setChartData(retval))
+        }
+    }
 
     const getContent = () =>{
         let retVal = {
-            "Basic":<ChartEntry stock={stock} duration={changeDur} key={changeDur} ref={ref}></ChartEntry>,
+            "Basic":<ChartEntry stock={stock} chartdata={chartData} key={chartData} ref={ref}></ChartEntry>,
             "Companyinfo": <CompanyInformation stock={stock} setSubHeader={setCompanySubHeader}/>,
             "StkPtrns": <StockDetailCardPatterns stock={stock} setSubHeader={setCompanySubHeader}/>,
             "StkNews": <StockDetailCardNews stock={stock} setSubHeader={setCompanySubHeader}/>  

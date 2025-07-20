@@ -7,7 +7,7 @@ import {initiateStreaming} from '../../modules/api/StockStream'
 import TopMovers from './TopMovers'
 import TopNews from './TopNews'
 import { useSelector, useDispatch} from 'react-redux'
-import {getDashboardLayout,SET_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import {getDashboardLayout,SET_DASH_STOCKS,UPD_DASH_OPTIONS} from '../../redux/reducers/profileDashSlice'
 import {getMostRecentPatternsFormed} from '../../redux/reducers/stockPatternsSlice'
 
 const Dashboard = () =>{
@@ -17,6 +17,10 @@ const Dashboard = () =>{
     const {stockList} = useSelector((state) => state.porfoliostock)
     const {dashboardsector} = useSelector((state) => state.dashboardlayout)
     
+    useEffect(() =>{
+        //show the ability to add stocks to portfolio
+        dispatch(UPD_DASH_OPTIONS({addstks:true}))
+    },[])
     useEffect(() =>{
         if (!dashboardstocks){
             setStocksAndStream(stockList)

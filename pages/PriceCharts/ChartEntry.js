@@ -1,6 +1,5 @@
 import { useState,useEffect,forwardRef } from 'react'
 import WaitingForResonse from '../../components/WaitingForResponse'
-import getStockPriceHist from '../../modules/cache/cacheprice'
 import ChartMain from './ChartMain'
 
 const ChartEntry = forwardRef((props,inpref) =>{
@@ -9,15 +8,6 @@ const ChartEntry = forwardRef((props,inpref) =>{
     const [chartFullData,setChartFullData] = useState(null)
     const [chartelements,setChartElements] = useState(["AXIS","LINE","TOOLTIP"])
     
-    useEffect(() => {
-        if (props.stock && props.duration){
-            let cacheKey = props.stock + "_" + props.duration + "_PRICE"
-            getStockPriceHist(cacheKey,{stock:props.stock,duration:props.duration}).then(
-                res => res?.length ? (setChartFullData(res),setWaiting(false)) : setWaiting(false)
-            )
-        }
-    },[props.stock && props.duration])    
-
     useEffect(() =>{
         if (props.chartdata && props.chartdata.length >0){
             setChartFullData(props.chartdata)

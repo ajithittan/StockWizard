@@ -31,7 +31,6 @@ const xTicks = (g,xScale,yScale,width,height,allticks,numberOfTicks,id) => {
         .call(axisBottom(xScale).ticks(numberOfTicks).tickFormat(timeFormat("%b")))   
     }else{
         let no_of_ticks = allticks ? 1 : noOfXTicks(width)
-        console.log(no_of_ticks)
         g.append("g")
         .attr("id", "xScale")
         .attr("class", "x axis")

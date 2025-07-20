@@ -121,7 +121,7 @@ const DynamicChart = forwardRef((props,ref) => {
      
     return(
         <>
-        <ChartEntry key={props.chartdata} chartdata={props.chartdata} stock={props.symbol} ref={ref}/>
+        <ChartEntry stock={props.symbol} chartdata={props.chartdata} ref={ref}/>
         </>
     )
 })

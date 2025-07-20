@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button';
+
 const DynamicTableMini = ({ jsonData, actions }) =>{
 
     const handleClick = (val) => {
@@ -6,7 +8,7 @@ const DynamicTableMini = ({ jsonData, actions }) =>{
       }
 
     return(
-        <button onClick={handleClick}>Click Me</button>
+        <Button size="small" variant="contained" onClick={handleClick}>Back to List</Button>
     )
 }
 
