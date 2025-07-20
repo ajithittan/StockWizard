@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux'
 const SelectionCheckBox = (props) =>{
     
     const [checkstat,setCheckStat] = useState(false)
-    const inpvals = useSelector(props.selector)    
+    const inpvals = useSelector(props.selector || (() => {}))
 
     useEffect(() =>{
         if(props.data && inpvals){
