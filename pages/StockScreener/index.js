@@ -16,7 +16,7 @@ const index = () => {
   useEffect(() =>{
     //this is to ensure everytime this page loads, it opens today's chart
     dispatch(SET_DASH_SLIDER_DUR({type:"D",val:1}))
-    dispatch(UPD_DASH_OPTIONS({addstks:false}))
+    dispatch(UPD_DASH_OPTIONS({addstks:false,subheader:"notification",showcarddetail:false,showcardactions:false}))
   },[])
   //console.log("stocks to streamstocks - ",streamstocks)
 

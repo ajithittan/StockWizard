@@ -61,6 +61,11 @@ const stockScreenerSlice = createSlice({
                 state.streamstocks = action.payload
             }
         },
+        REM_STK_STREAM: (state=initialState, action) => {
+            if (action.payload){
+                state.streamstocks = state.streamstocks.filter(item => item !==action.payload)
+            }
+        },
         ADD_STK_CHART_POINTS: (state=initialState, action) => {
             //console.log("ADD_STK_CHART_POINTS",action.payload)
             state.dispchartpoints = action.payload
@@ -81,5 +86,5 @@ const stockScreenerSlice = createSlice({
 }) 
 
 export const {UPD_ROW_COUNTS,CLICKED_ROW_DATA,REMOVE_ROW_DATA,UPD_DISP_SETTINGS,HIDE_BOTTOM_CONT,SELECT_ROW_DATA,
-    SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS,ADD_NOTIFICATIONS} = stockScreenerSlice.actions;
+    SHOW_BOTTOM_CONT,ADD_STK_STREAM,ADD_STK_CHART_POINTS,ADD_NOTIFICATIONS,REM_STK_STREAM} = stockScreenerSlice.actions;
 export default stockScreenerSlice.reducer;

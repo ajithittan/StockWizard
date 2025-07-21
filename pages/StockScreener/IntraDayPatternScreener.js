@@ -23,7 +23,14 @@ const IntraDayPatternScreener = (props) =>{
     const [grpByCol,setGrpByCol] = useState("symbol")
     const {rowcount} = useSelector(state => state.stockscreener)
     const {dispsettings} = useSelector(state => state.stockscreener)
-  
+    const {streamstocks} = useSelector(state => state.stockscreener)
+
+    useEffect(() =>{
+      if (streamstocks && streamstocks.length >0){
+        setDtFrmStrm ([...newDtFrmStrm?.filter(item => !streamstocks.includes(item.symbol))])
+      }
+    },[streamstocks,newDtFrmStrm])
+
     useEffect(() =>{
       if (newDtFrmStrm && newDtFrmStrm.length > 0){
         if (!dtFrmStrm){

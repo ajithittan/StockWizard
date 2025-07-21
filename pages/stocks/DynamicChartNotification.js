@@ -12,10 +12,6 @@ const DynamicChartNotification = forwardRef((props,ref)=>{
         }
     },[props.notification])
 
-    const handlehover =(e) =>{
-        console.log("eeeeee",e.target.animationPlayState)
-    }
-
     return(
         <>
         <Box sx={{
@@ -25,11 +21,8 @@ const DynamicChartNotification = forwardRef((props,ref)=>{
             justifyContent: 'center',
             alignItems: 'center',
           }}>   
-            <Typography variant="body2" >
-                {props.symbol}&nbsp;&nbsp;&nbsp;
-            </Typography>
             <div className="marquee-container">
-          <div className="marquee-content">
+                <div className="marquee-content">
                 {
                     notifications.map(item => 
                             <Typography variant="overline" >

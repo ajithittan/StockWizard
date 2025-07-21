@@ -1,14 +1,15 @@
 import { useEffect, useState,useRef,forwardRef } from "react"
-import Grid from '@mui/material/Grid';
-import ScreenerList from './ScreenerList'
-import Paper from '@mui/material/Paper';
 import {useSelector,useDispatch} from 'react-redux'
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import {HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,REMOVE_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
 import Stocks from '../stocks' 
 import IntraDayPatternScreener from './IntraDayPatternScreener'
+import ScreenerList from './ScreenerList'
+import {HIDE_BOTTOM_CONT,SHOW_BOTTOM_CONT,REMOVE_ROW_DATA,REM_STK_STREAM,ADD_STK_CHART_POINTS} from '../../redux/reducers/stockScreenerSlice'
 import {SET_DASH_STOCKS,REM_FRM_DASH_STOCKS} from '../../redux/reducers/profileDashSlice'
+import {UPDATED_CHART_DATA} from '../../redux/reducers/chartDataSlice'
 
 const MainScreenerContainer = () =>{
     const dispatch = useDispatch()
@@ -86,7 +87,8 @@ const MainScreenerContainer = () =>{
                             size="small"
                             cursor="pointer"
                             //onClick={() => addNewDataFeed(data)}
-                            onDelete={() => {dispatch(REM_FRM_DASH_STOCKS(item.symbol)),dispatch(REMOVE_ROW_DATA(item.id))}}
+                            //remove from dash, remove from stream, remove from the row.
+                            onDelete={() => {dispatch(REM_FRM_DASH_STOCKS(item.symbol)),dispatch(REM_STK_STREAM(item.symbol)),dispatch(REMOVE_ROW_DATA(item.id))}}
                             deleteIcon={<DeleteOutlinedIcon />}
                           />)
                       }      

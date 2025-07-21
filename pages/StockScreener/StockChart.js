@@ -7,7 +7,6 @@ import {ADD_ELEMENTS_TO_CHART,INITIAL_CHART_DATA} from '../../redux/reducers/cha
 import {useSelector,useDispatch} from 'react-redux'
 import {CLICKED_ROW_DATA,REMOVE_ROW_DATA} from '../../redux/reducers/stockScreenerSlice'
 import {getTickDataIntraDay} from '../../modules/api/StockMaster'
-import StreamScreenerData from './StreamScreenerData'
 import DynamicChartNotification from './DynamicChartNotification'
 
 const StockChart = forwardRef((props,ref) => {

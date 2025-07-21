@@ -8,9 +8,11 @@ import Select from '@mui/material/Select';
 import VisibilitySharpIcon from '@mui/icons-material/VisibilitySharp';
 import VisibilityOffSharpIcon from '@mui/icons-material/VisibilityOffSharp';
 import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
+import UnfoldMoreDoubleIcon from '@mui/icons-material/UnfoldMoreDouble';
 import ListSharpIcon from '@mui/icons-material/ListSharp';
 import {useDispatch} from 'react-redux'
 import {UPD_ROW_COUNTS,UPD_DISP_SETTINGS} from '../../redux/reducers/stockScreenerSlice'
+import {UPD_DASH_OPTIONS} from '../../redux/reducers/profileDashSlice'
 
 
 const SpeedDialControl = (props) => {
@@ -23,6 +25,7 @@ const SpeedDialControl = (props) => {
   const handleShowAll = () => dispatch(UPD_DISP_SETTINGS({"showMainContainer":true}))
   const handleShowType = (inpTp) => dispatch(UPD_DISP_SETTINGS({"showDataTp":inpTp}))
   const handleHideAll = () => dispatch(UPD_DISP_SETTINGS({"showMainContainer":false}))
+  const handleMoreChartOpts = () => dispatch(UPD_DASH_OPTIONS({showcarddetail:true,showcardactions:true}))
   
   const DropDown = () => {
     return (
@@ -45,7 +48,8 @@ const SpeedDialControl = (props) => {
     { icon: <VisibilitySharpIcon onClick={handleShowAll}/>, name: 'Show' ,  },
     { icon: <VisibilityOffSharpIcon onClick={handleHideAll}/>, name: 'Hide' ,  },
     { icon: <PriorityHighOutlinedIcon onClick={() => handleShowType("PRIORITY")}/>, name: 'Priority Patterns' ,  },
-    { icon: <ListSharpIcon onClick={() => handleShowType("ALL")}/>, name: 'All Patterns' ,  }
+    { icon: <ListSharpIcon onClick={() => handleShowType("ALL")}/>, name: 'All Patterns' ,  },
+    { icon: <UnfoldMoreDoubleIcon onClick={() => handleMoreChartOpts()}/>, name: 'More Chart Options' ,  }
   ];
   
   return (

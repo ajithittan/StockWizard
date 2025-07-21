@@ -26,10 +26,15 @@ const StreamScreenerData = (props) => {
       dispatch(props.streamout(outputstream))
     }
   }
- 
+  
+  let eventSource = undefined
+
   useEffect(() =>{
-    
-    let eventSource = undefined
+    eventSource?.close()
+  },[])
+
+  useEffect(() =>{
+    eventSource?.close()
     if (props.url && props.inpdata){
       //console.log("props.url, props.data",props.url , props.inpdata)
       eventSource = new EventSource(props.url)  

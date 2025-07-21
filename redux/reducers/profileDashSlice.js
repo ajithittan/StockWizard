@@ -44,7 +44,7 @@ const profileDashSlice = createSlice({
         dashboardstocks: null,
         dashboardsector: false,
         dashboardselsector: 0,
-        dashboardoptions:{addstks:true},
+        dashboardoptions:{addstks:true,subheader:"basic",showcarddetail:true,showcardactions:true},
         dashboardsliderdur:{type:"M",val:3},
         watchlist:null,
         watchlistincontext:null,
